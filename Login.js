@@ -1,0 +1,73 @@
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "",
+      password: ""
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: [event.target.value]
+    });
+  }
+
+  handleSubmit(event) {
+    alert("A username was submitted: " + this.state.username);
+    alert("A password was submitted: " + this.state.password);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <div class="p-5">
+        <br />
+        <h2 class="text-center">Please Log In</h2>
+        <br />
+        <form onSubmit={this.handleSubmit}>
+          <div class="form-group">
+            <label>Username:</label>
+            <input
+              type="text"
+              class="form-control"
+              name="username"
+              value={this.state.username}
+              onChange={this.handleChange}
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Password:</label>
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              value={this.state.password}
+              onChange={this.handleChange}
+              required
+            />
+            <br />
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary">
+                Sign In
+              </button>
+            </div>
+          </div>
+        </form>
+        <div class="text-center">
+          <Link to="/Signup">Dont have an account? Click here to sign up.</Link>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default Login;
