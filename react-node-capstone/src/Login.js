@@ -27,27 +27,27 @@ class Login extends Component {
 
   render() {
     return (
-      <div class="p-5">
+      <div className="p-5">
         <br />
-        <h2 class="text-center">Please Log In</h2>
+        <h2 className="text-center">Please Log In</h2>
         <br />
         <form onSubmit={this.handleSubmit}>
-          <div class="form-group">
+          <div className="form-group">
             <label>Username:</label>
             <input
               type="text"
-              class="form-control"
+              className="form-control"
               name="username"
               value={this.state.username}
               onChange={this.handleChange}
               required
             />
           </div>
-          <div class="form-group">
+          <div className="form-group">
             <label>Password:</label>
             <input
               type="password"
-              class="form-control"
+              className="form-control"
               name="password"
               value={this.state.password}
               onChange={this.handleChange}
@@ -55,14 +55,14 @@ class Login extends Component {
             />
             <br />
 
-            <div class="text-center">
-              <button type="submit" class="btn btn-primary">
+            <div className="text-center">
+              <button type="submit" className="btn btn-primary">
                 Sign In
               </button>
             </div>
           </div>
         </form>
-        <div class="text-center">
+        <div className="text-center">
           <Link to="/Signup">Dont have an account? Click here to sign up.</Link>
         </div>
       </div>

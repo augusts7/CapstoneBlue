@@ -3,37 +3,37 @@ import { NavLink } from "react-router-dom";
 
 const Header = () => (
   <div>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-danger">
-      <NavLink class="navbar-brand" to="/">
+    <nav className="navbar navbar-expand-sm navbar-dark bg-danger">
+      <NavLink className="navbar-brand" to="/">
         Comm System
       </NavLink>
 
       <button
-        class="navbar-toggler"
+        className="navbar-toggler"
         type="button"
         data-toggle="collapse"
         data-target="#collapsibleNavbar"
       >
-        <span class="navbar-toggler-icon" />
+        <span className="navbar-toggler-icon" />
       </button>
-      <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        <ul class="navbar-nav">
-          <li class="nav-item">
+      <div className="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul className="navbar-nav">
+          <li className="nav-item">
             <NavLink to="/Login">
-              <a href="google.com" class="nav-link">Calender</a>
+              <a href="google.com" className="nav-link">Calender</a>
             </NavLink>
           </li>
         </ul>
       </div>
 
       <div
-        class="collapse navbar-collapse justify-content-end"
+        className="collapse navbar-collapse justify-content-end"
         id="collapsibleNavbar"
       >
-        <ul class="navbar-nav">
-          <li class="nav-item">
+        <ul className="navbar-nav">
+          <li className="nav-item">
             <NavLink to="/Login">
-              <a href="google.com" class="nav-link">Hello. Sign in here</a>
+              <a href="google.com" className="nav-link">Hello. Sign in here</a>
             </NavLink>
           </li>
         </ul>
