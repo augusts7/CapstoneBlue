@@ -1,0 +1,14 @@
+.AddEvent{
+    margin-top:5em;
+}
+
+.btn{
+    background-color: maroon;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.btn:hover{
+    background-color:grey;
+    color:white;
+}
