@@ -22,6 +22,8 @@ class Login extends Component {
   handleSubmit(event) {
     alert("A username was submitted: " + this.state.username);
     alert("A password was submitted: " + this.state.password);
+    
+  
     event.preventDefault();
   }
 
