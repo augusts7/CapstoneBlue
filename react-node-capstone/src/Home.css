@@ -4,6 +4,11 @@
 
 .btn{
     background-color: maroon;
-    margin-bottom: 1em;
+    margin-bottom: 5px;
     color: white;
+}
+
+.btn:hover{
+    background-color:grey;
+    color:white;
 }
