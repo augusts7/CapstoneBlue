@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import "./Login.css";
 
 class Login extends Component {
   constructor(props) {
@@ -29,43 +30,45 @@ class Login extends Component {
 
   render() {
     return (
-      <div className="p-5">
-        <br />
-        <h2 className="text-center">Please Log In</h2>
-        <br />
-        <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label>Username:</label>
-            <input
-              type="text"
-              className="form-control"
-              name="username"
-              value={this.state.username}
-              onChange={this.handleChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Password:</label>
-            <input
-              type="password"
-              className="form-control"
-              name="password"
-              value={this.state.password}
-              onChange={this.handleChange}
-              required
-            />
-            <br />
+      <div className="p-5" id="Login">
+        <div className="LoginBar">
+          <div className="LoginContent">
+            <h2 className="text-center">Please Log In</h2>
+            <form onSubmit={this.handleSubmit}>
+              <div className="form-group">
+                <label>Username:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="username"
+                  value={this.state.username}
+                  onChange={this.handleChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Password:</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  name="password"
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                  required
+                />
+                <br />
 
-            <div className="text-center">
-              <button type="submit" className="btn btn-primary">
-                Sign In
+                <div className="text-center">
+                  <button type="submit" className="btn btn-primary">
+                    Sign In
               </button>
+                </div>
+              </div>
+            </form>
+            <div className="text-center newAccount">
+              <Link to="/Signup">Dont have an account? Click here to sign up.</Link>
             </div>
           </div>
-        </form>
-        <div className="text-center">
-          <Link to="/Signup">Dont have an account? Click here to sign up.</Link>
         </div>
       </div>
     );

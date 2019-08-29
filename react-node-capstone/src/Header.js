@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import "./Header.css";
 
 const Header = () => (
   <div>
@@ -20,7 +21,7 @@ const Header = () => (
         <ul className="navbar-nav">
           <li className="nav-item">
             <NavLink to="/Login">
-              <a href="google.com" className="nav-link">Calender</a>
+              <a href="google.com" className="nav-link">Calendar</a>
             </NavLink>
           </li>
         </ul>
