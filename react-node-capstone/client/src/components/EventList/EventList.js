@@ -13,7 +13,7 @@ class EventList extends Component {
             .then(res => res.json())
             .then(eventDetails => this.setState({eventDetails}) )
     }
-
+    
     render(){
         return(
             <div class="p-5">

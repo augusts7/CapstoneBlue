@@ -8,7 +8,8 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "install-resources": "npm install body-parser concurrently cors express && npm install --save-dev nodemon && cd client && npm install react react-dom react-router react-router-dom react-scripts"
   },
   "author": "Nick Fontana",
   "license": "MIT",
