@@ -21,12 +21,23 @@ class Login extends Component {
   }
 
   handleSubmit(event) {
-    alert("A username was submitted: " + this.state.username);
-    alert("A password was submitted: " + this.state.password);
     
-  
+    this.callBackendAPI()
+    .then(res => this.setState( {username : res.express}))
+    .catch(err => console.log(err));
+
     event.preventDefault();
   }
+
+  callBackendAPI = async () => {
+    const response = await fetch('/express_backend');
+    const body = await response.json();
+
+    if (response.status !== 200) {
+      throw Error(body.message) 
+    }
+    return body;
+  };
 
   render() {
     return (
