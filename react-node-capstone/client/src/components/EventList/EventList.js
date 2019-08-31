@@ -2,31 +2,83 @@
 import React, { Component } from "react";
 
 //Components
-
+var inputControl = '';
 
 class EventList extends Component {
-    
-    state = { eventDetails : [] }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            eventDetails : [],
+            temp: ''
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.createEvent = this.createEvent.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
 
     componentDidMount(){
         fetch('/events')
             .then(res => res.json())
             .then(eventDetails => this.setState({eventDetails}) )
     }
-    
+
+    createEvent(){
+        fetch('/events',{
+            method: 'POST',
+            body: JSON.stringify({
+                eventDetails : this.inputControl.value
+            }),
+            headers: {"Content-Type": "application/json"}
+        })
+        .then(function(response){
+            return response.json()
+          }).then(function(body){
+            console.log(body);
+            alert('wods')
+          });
+    } 
+
     render(){
         return(
-            <div class="p-5">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="float-left h3">Events</div>
-                        <button type="button" class="btn btn-primary float-right">Create Event</button>
+            <div className="p-5">
+                <div className="card">
+                    <div className="card-header">
+                        <div className="float-left h3">Events</div>
+                        <button type="button" className="btn btn-primary float-right" data-toggle="modal" data-target="#createEventModal" >Create Event</button>
                     </div>
-                    <ul class="list-group list-group-flush">
-                        {this.state.eventDetails.map(eventDetails => <li key={eventDetails.id} class="list-group-item">{eventDetails.eventDetails}</li>)}
+                    <ul className="list-group list-group-flush">
+                        {this.state.eventDetails.map(eventDetails => <li key={eventDetails.id} className="list-group-item">{eventDetails.eventDetails}</li>)}
                     </ul>
                 </div>
-        </div>
+                <div className="modal fade" id="createEventModal" tabIndex="-1" role="dialog" aria-labelledby="createEventModalTitle" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered" role="document">
+                    <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id="createEventModalTitle">Create an Event:</h5>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div className="modal-body">
+                        <form>
+                            <div className="form-group">
+                                <label id="createEventInputID">Event Description</label>
+                                <input type="text" className="form-control" value={this.inputControl.value} placeholder="Ex. ULM Football game Aug 31 2019" required/>
+                            </div>
+                        </form>
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={this.createEvent} >Submit Event</button>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
         );
     }
 }
