@@ -5,7 +5,7 @@ import "./Header.css";
 const Header = () => (
   <div>
     <nav className="navbar navbar-expand-sm navbar-dark bg-danger">
-      <NavLink className="navbar-brand" to="/">
+      <NavLink className="navbar-brand" to="/home">
         Comm System
       </NavLink>
 
