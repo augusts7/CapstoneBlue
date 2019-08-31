@@ -1,23 +1,22 @@
 //Libs
 import React, { Component } from "react";
 
-//Components
-var inputControl = '';
-
 class EventList extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             eventDetails : [],
-            temp: ''
+            events: ''
         };
         this.handleChange = this.handleChange.bind(this);
         this.createEvent = this.createEvent.bind(this);
     }
 
     handleChange(event) {
-        this.setState({value: event.target.value});
+        this.setState({
+          [event.target.id]: [event.target.value]
+        });
     }
 
     componentDidMount(){
@@ -30,16 +29,16 @@ class EventList extends Component {
         fetch('/events',{
             method: 'POST',
             body: JSON.stringify({
-                eventDetails : inputControl.value
+                eventDetails : this.state.events
             }),
             headers: {"Content-Type": "application/json"}
         })
         .then(function(response){
             return response.json()
-          }).then(function(body){
+        })
+        .then(function(body){
             console.log(body);
-            alert('wods')
-          });
+        });
     } 
 
     render(){
@@ -67,7 +66,7 @@ class EventList extends Component {
                         <form>
                             <div className="form-group">
                                 <label id="createEventInputID">Event Description</label>
-                                <input type="text" className="form-control" value={inputControl.value} placeholder="Ex. ULM Football game Aug 31 2019" required/>
+                                <input type="text" className="form-control" id="events" value={this.state.events} onChange={this.handleChange} placeholder="Ex. ULM Football game Aug 31 2019" required/>
                             </div>
                         </form>
                     </div>
