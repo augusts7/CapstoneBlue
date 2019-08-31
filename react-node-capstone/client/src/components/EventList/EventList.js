@@ -30,7 +30,7 @@ class EventList extends Component {
         fetch('/events',{
             method: 'POST',
             body: JSON.stringify({
-                eventDetails : this.inputControl.value
+                eventDetails : inputControl.value
             }),
             headers: {"Content-Type": "application/json"}
         })
@@ -67,7 +67,7 @@ class EventList extends Component {
                         <form>
                             <div className="form-group">
                                 <label id="createEventInputID">Event Description</label>
-                                <input type="text" className="form-control" value={this.inputControl.value} placeholder="Ex. ULM Football game Aug 31 2019" required/>
+                                <input type="text" className="form-control" value={inputControl.value} placeholder="Ex. ULM Football game Aug 31 2019" required/>
                             </div>
                         </form>
                     </div>
