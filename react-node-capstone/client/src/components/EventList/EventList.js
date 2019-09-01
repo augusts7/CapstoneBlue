@@ -20,13 +20,13 @@ class EventList extends Component {
     }
 
     componentDidMount(){
-        fetch('/events')
+        fetch('/api/events')
             .then(res => res.json())
             .then(eventDetails => this.setState({eventDetails}) )
     }
 
     createEvent(){
-        fetch('/events',{
+        fetch('/api/events',{
             method: 'POST',
             body: JSON.stringify({
                 eventDetails : this.state.events
