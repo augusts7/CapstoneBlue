@@ -9,7 +9,7 @@
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "install-resources": "npm install body-parser concurrently cors express && npm install --save-dev nodemon && cd client && npm install react react-dom react-router react-router-dom react-scripts"
+    "install-resources": "npm install body-parser mysql concurrently cors express && npm install --save-dev nodemon && cd client && npm install react react-dom react-router react-router-dom react-scripts"
   },
   "author": "Nick Fontana",
   "license": "MIT",
@@ -17,7 +17,8 @@
     "body-parser": "^1.19.0",
     "concurrently": "^4.1.2",
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mysql": "^2.17.1"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"

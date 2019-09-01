@@ -1,6 +1,24 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
+var mysql = require('mysql');
+
+var connection = mysql.createConnection({
+  host: 'event-scheduler-db.cfuzjkgst1bk.us-east-2.rds.amazonaws.com',
+  user: 'admin',
+  password: 'CapstoneBlue',
+  database: 'eventschedulerdb'
+})
+
+connection.connect();
+
+connection.query('SELECT 1 + 1 AS solution', function (err, rows, fields) {
+  if (err) throw err
+
+  console.log('The solution is: ', rows[0].solution)
+})
+
+connection.end()
 
 app.use(express.json());
 
