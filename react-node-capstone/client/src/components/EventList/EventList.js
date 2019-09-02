@@ -41,6 +41,18 @@ class EventList extends Component {
         });
     } 
 
+    deleteEvent(){
+        fetch('/api/events', {
+
+        })
+        .then(function(response){
+            return response.json()
+        })
+        .then(function(body){
+            console.log(body);
+        });
+    }
+
     render(){
         return(
             <div className="p-5">
@@ -50,7 +62,10 @@ class EventList extends Component {
                         <button type="button" className="btn btn-primary float-right" data-toggle="modal" data-target="#createEventModal" >Create Event</button>
                     </div>
                     <ul className="list-group list-group-flush">
-                        {this.state.eventDetails.map(eventDetails => <li key={eventDetails.id} className="list-group-item">{eventDetails.eventDetails}</li>)}
+                        {this.state.eventDetails.map(eventDetails => 
+                        <li key={eventDetails.id} className="list-group-item">{eventDetails.eventDetails}
+                        <button type='button' className="btn btn-danger float-right" onClick={this.deleteEvent}>X</button>
+                        </li>)}
                     </ul>
                 </div>
                 <div className="modal fade" id="createEventModal" tabIndex="-1" role="dialog" aria-labelledby="createEventModalTitle" aria-hidden="true">
