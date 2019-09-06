@@ -9,12 +9,17 @@ export default function MaterialTableDemo() {
       { title: 'Start Time', field: 'startTime', type: 'date-time' },
       { title: 'End Time', field: 'endTime', type: 'date-time'},
     ],
-    data: [],
+    data: [
+      { title: 'ULM Football Game', 
+        eventDescription: 'ULM vs. Grambling', 
+        startTime: '08/31/19 7:00PM', 
+        endTime:  '08/31/19 10:00PM' },
+    ],
   });
 
   return (
     <MaterialTable
-      title="Events Manager"
+      title="Events"
       columns={state.columns}
       data={state.data}
       editable={{
