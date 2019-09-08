@@ -2,19 +2,23 @@ import React from 'react';
 import MaterialTable from 'material-table';
 
 export default function MaterialTableDemo() {
-  const [state, setState] = React.useState({
+    
+  var [state, setState] = React.useState({
     columns: [
+      { title: 'Event ID', field: 'eventID', type: 'numeric'},
       { title: 'Event Title', field: 'eventTitle' },
       { title: 'Event Description', field: 'eventDescription' },
-      { title: 'Start Time', field: 'startTime', type: 'date-time' },
-      { title: 'End Time', field: 'endTime', type: 'date-time'},
+      { title: 'Start Time', field: 'startTime', type: 'datetime'},
+      { title: 'End Time', field: 'endTime', type: 'datetime'},
     ],
     data: [
-      { title: 'ULM Football Game', 
+      { 
+        eventID: 1,
+        eventTitle: 'ULM Football Game', 
         eventDescription: 'ULM vs. Grambling', 
-        startTime: '08/31/19 7:00PM', 
-        endTime:  '08/31/19 10:00PM' },
-    ],
+        startTime: '', 
+        endTime:  '' },
+    ]
   });
 
   return (
@@ -51,6 +55,9 @@ export default function MaterialTableDemo() {
             }, 600);
           }),
       }}
+      options = {{
+            exportButton: 'true'
+        }}
     />
   );
 }
