@@ -1,6 +1,16 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\react-node-capstone",
+    "\\react-node-capstone\\client-m",
+    "\\react-node-capstone\\client-m\\src",
+    "\\react-node-capstone\\client-m\\src\\Authentication\\ForgotPassword",
+    "\\react-node-capstone\\client-m\\src\\BaseLayout",
+    "\\react-node-capstone\\client-m\\src\\Components",
+    "\\react-node-capstone\\client-m\\src\\Components\\Calendar",
+    "\\react-node-capstone\\client\\src\\components",
+    "\\react-node-capstone\\client\\src\\components\\Login"
   ],
+  "SelectedNode": "\\react-node-capstone\\client-m\\src\\Components\\Calendar\\Calendar.js",
   "PreviewInSolutionExplorer": false
 }

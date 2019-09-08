@@ -1,0 +1,31 @@
+
+h4 {
+    margin: 0px;
+}
+
+.times div {
+    display: inline-block;
+    padding-right: 8px;
+
+}
+.dayViewItem {
+    padding: 4px;
+    padding-left: 16px;
+}
+.dayViewItem .actions button {
+    margin-right: 16px;
+    margin-top: 16px;
+    margin-left: auto;
+    display: inline-block;
+}
+.dayViewItem .actions {
+    text-align: left;
+}
+.dayViewItem:hover {
+    background-color: #FAFAFA;
+    cursor: pointer;
+}
+.startTime, .endTime {
+    font-weight: bolder;
+    font-style: italic;
+}

@@ -1,0 +1,14 @@
+
+select {
+}
+
+option {
+    padding: 4px;
+}
+
+.selectWrapper {
+    display: inline-block;
+}
+label .mdl-textfield__label {
+    color: white;
+}
