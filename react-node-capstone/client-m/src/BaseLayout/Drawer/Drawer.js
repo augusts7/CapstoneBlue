@@ -40,7 +40,10 @@ class Drawer extends React.Component {
                 this.SubMenuItem("", "list", "View All"),
                 this.SubMenuItem("", "add", "Add")
             ]),
-            this.MenuItem("", "announcement", "Admin")
+            this.MenuItem("", "book", "Students", [
+                this.SubMenuItem("/studentList", "list", "View All"),
+                this.SubMenuItem("/addStudents", "add", "Add")
+            ]),
         ];
 
         return (
@@ -54,10 +57,7 @@ class Drawer extends React.Component {
                         return this.GetDrawerItem(item);
                     })}
 
-                    <div className="mdl-layout-spacer"></div>
-
-                    <DrawerItem Link="" Title="Suggestions" Icon="donut_small" SubItems="" />
-                  
+                    <div className="mdl-layout-spacer"></div>                  
 
                 </nav>
 
