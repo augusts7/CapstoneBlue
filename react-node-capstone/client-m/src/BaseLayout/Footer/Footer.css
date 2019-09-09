@@ -1,17 +1,12 @@
-
-
 .mdl-mini-footer {
-    background-color: #0D47A1;
-    color: white;
-    transition: background-color 0.5s;
+  background-color: #0d47a1;
+  color: white;
+  transition: background-color 0.5s;
 }
-    .mdl-mini-footer li:hover {
-        text-decoration: underline;
-        transition: text-decoration 1s;  
-    }
-.mdl-logo {
-    color: black;
+.mdl-mini-footer li:hover {
+  text-decoration: underline;
+  transition: text-decoration 1s;
 }
 .mdl-logo {
-    color: white;
+  color: black;
 }

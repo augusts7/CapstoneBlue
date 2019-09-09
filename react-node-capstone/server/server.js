@@ -1,12 +1,12 @@
-const express = require('express');
-const apiRouter = require('./routes/events');
+const express = require("express");
+const apiRouter = require("./routes/events");
 const app = express();
 const port = process.env.PORT || 5000;
 //var mysql = require('mysql');
 
 app.use(express.json());
 
-app.use('/api/events', apiRouter);
+app.use("/api/events", apiRouter);
 /**
 var connection = mysql.createConnection({
   host: 'event-scheduler-db.cfuzjkgst1bk.us-east-2.rds.amazonaws.com',

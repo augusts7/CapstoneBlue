@@ -1,23 +1,23 @@
-import React from 'react';
-import MaterialTable from 'material-table';
+import React from "react";
+import MaterialTable from "material-table";
 
 export default function MaterialTableDemo() {
-    
   var [state, setState] = React.useState({
     columns: [
-      { title: 'Event ID', field: 'eventID', type: 'numeric'},
-      { title: 'Event Title', field: 'eventTitle' },
-      { title: 'Event Description', field: 'eventDescription' },
-      { title: 'Start Time', field: 'startTime', type: 'datetime'},
-      { title: 'End Time', field: 'endTime', type: 'datetime'},
+      { title: "Event ID", field: "eventID", type: "numeric" },
+      { title: "Event Title", field: "eventTitle" },
+      { title: "Event Description", field: "eventDescription" },
+      { title: "Start Time", field: "startTime", type: "datetime" },
+      { title: "End Time", field: "endTime", type: "datetime" }
     ],
     data: [
-      { 
+      {
         eventID: 1,
-        eventTitle: 'ULM Football Game', 
-        eventDescription: 'ULM vs. Grambling', 
-        startTime: '', 
-        endTime:  '' },
+        eventTitle: "ULM Football Game",
+        eventDescription: "ULM vs. Grambling",
+        startTime: "",
+        endTime: ""
+      }
     ]
   });
 
@@ -25,7 +25,18 @@ export default function MaterialTableDemo() {
     <MaterialTable
       title="Events"
       columns={state.columns}
-      data={state.data}
+      data={query =>
+        new Promise((resolve, reject) => {
+          let url = "/api/events";
+          url += "per_page=" + query.pageSize;
+          url += "&page=" + (query.page + 1);
+          fetch(url)
+            .then(response => response.json())
+            .then(result => {
+              resolve(this.data);
+            });
+        })
+      }
       editable={{
         onRowAdd: newData =>
           new Promise(resolve => {
@@ -53,11 +64,11 @@ export default function MaterialTableDemo() {
               data.splice(data.indexOf(oldData), 1);
               setState({ ...state, data });
             }, 600);
-          }),
+          })
       }}
-      options = {{
-            exportButton: 'true'
-        }}
+      options={{
+        exportButton: "true"
+      }}
     />
   );
 }
