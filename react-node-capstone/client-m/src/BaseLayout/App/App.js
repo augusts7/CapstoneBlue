@@ -8,6 +8,8 @@ import Profile from "../../Authentication/Profile/Profile";
 import Calendar from "../../Components/Calendar/Calendar";
 import DayView from "../../Components/DayView/DayView";
 import Table from "../../Components/Table/Table";
+import StudentList from "../../Views/Students/StudentList/StudentList";
+import AddStudents from "../../Views/Students/AddStudents/AddStudents";
 
 import "./App.css";
 
@@ -25,8 +27,12 @@ function App() {
             <Route path="/calendar" component={Calendar} />
             <Route path="/dayView" component={DayView} />
             <Route path="/table" component={Table} />
+            <Route path="/studentList" component={StudentList} />
+            <Route path="/addStudents" component={AddStudents} />
             <Route exact path="/" component={Main} />
           </div>
+
+          <Footer />
         </main>
       </div>
     </Router>

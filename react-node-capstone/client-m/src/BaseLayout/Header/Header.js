@@ -29,7 +29,8 @@ class Header extends React.Component {
                             <li id="a_options" className="mdl-navigation__link"><div className="cursor">Appointments<span><i className="material-icons">keyboard_arrow_down</i></span></div></li>
                             <li id="t_options" className="mdl-navigation__link"><div className="cursor">Timeslots<span><i className="material-icons">keyboard_arrow_down</i></span></div></li>
                             <Link className="mdl-navigation__link" to="/">Home</Link>
-                            <Link className="mdl-navigation__link" to="/">Log Out</Link>
+                            <Link className="mdl-navigation__link" to="/studentList">Student List</Link>
+                            <Link className="mdl-navigation__link" to="/addStudents">Add Students</Link>
                         </nav>
 
                         <ul className="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="a_options">

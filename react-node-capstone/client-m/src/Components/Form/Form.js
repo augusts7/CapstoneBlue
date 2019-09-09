@@ -20,29 +20,59 @@ class Form extends React.Component {
     }
 
     render() {
+
+        let form = [];
+
+        if (this.props.includesFile) {
+            form.push(
+                <form onSubmit={this.onFormSubmit} method="post" enctype="multipart/form-data">
+
+                    {this.props.fields.map(field => {
+                        return <Input label={field.label} type={field.type} id={field.id} name={field.name} />;
+                    })}
+
+                    <Button type="submit" icon="done" name="Submit" />
+
+                </form>
+            );
+        } else {
+            form.push(
+                <form onSubmit={this.onFormSubmit} method="post">
+
+                    {this.props.fields.map(field => {
+                        return <Input label={field.label} type={field.type} id={field.id} name={field.name} />;
+                    })}
+
+                    <Button type="submit" icon="done" name="Submit" />
+
+                </form>
+            );
+        }
+
+        let actionLinks;
+
+        if (this.props.actionLinks) {
+            actionLinks = <div className="action-links-container">
+                {this.props.actionLinks.map(link => {
+                    return <ActionLink link={link.link} title={link.title} icon={link.icon} />;
+                })}
+            </div>;
+        } else {
+            actionLinks = <div />
+        }
+
         return (
             <div className="form">
-                <div class="mdl-grid">
 
-                    <div class="mdl-color--white mdl-cell mdl-cell--6-col mdl-shadow--4dp center">
+                <div className="mdl-grid">
 
-                        <h4><i class="material-icons form-title-icons">{this.props.icon}</i>{this.props.title}</h4>
+                    <div className="mdl-color--white mdl-cell mdl-cell--6-col mdl-shadow--4dp center">
 
-                        <form onSubmit={this.onFormSubmit} method="post">
+                        <h4><i className="material-icons form-title-icons">{this.props.icon}</i>{this.props.title}</h4>
 
-                            {this.props.fields.map(field => {
-                                return <Input label={field.label} type={field.type} id={field.id} name={field.name} />;
-                            })}
+                        {form}
 
-                            <Button type="submit" icon="done" name="Submit" />
-
-                        </form>
-
-                        <div className="action-links-container">
-                            {this.props.actionLinks.map(link => {
-                                return <ActionLink link={link.link} title={link.title} icon={link.icon} />;
-                            })}
-                        </div>
+                        {actionLinks}
                     </div>
 
                 </div>

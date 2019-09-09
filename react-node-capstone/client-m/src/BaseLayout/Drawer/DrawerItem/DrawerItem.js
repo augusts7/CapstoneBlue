@@ -2,7 +2,7 @@
 import React from 'react';
 import "./DrawerItem.css";
 
-
+import { Link } from 'react-router-dom'
 
 
 class DrawerItem extends React.Component {
@@ -27,9 +27,9 @@ class DrawerItem extends React.Component {
 
         return (
             <div className="drawer-item">
-                <a className="drawer-main-item" href={this.props.Link}>
+                <Link className="drawer-main-item" to={this.props.Link}>
                     <div><i className="drawer-icons material-icons">{this.props.Icon}</i><span>{this.props.Title}</span></div>
-                </a>
+                </Link> 
 
                 <div className="drawer-sub-items">
                     {this.GetSubMenu(this.props.SubItems)} 
@@ -50,7 +50,7 @@ class SubMenu extends React.Component {
         return (
             <div>
                 {this.props.Items.map(item => {
-                    return <a className="drawer-sub-item" href={item.Link}><li><i className="material-icons">{item.Icon}</i>{item.Title}</li></a>;
+                    return <Link className="drawer-sub-item" to={item.Link}><li><i className="material-icons">{item.Icon}</i>{item.Title}</li></Link>;
                 })
                 }
             </div>
