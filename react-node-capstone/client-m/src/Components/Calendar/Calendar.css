@@ -3,7 +3,7 @@
 .date-wrapper {
     display: grid;
     grid-template-columns: repeat(7, 14.3%);
-    grid-auto-rows: 5em;
+    grid-auto-rows: 7em;
     grid-column-start: 3;
 }
 .day-names-wrapper {
@@ -29,7 +29,7 @@
 }
 .calendar-header {
     justify-content: center;
-    padding: 1%;
+    padding: 16px 24px;
     color: white;
     display: grid;
     grid-template-columns: 30% 70%;
@@ -41,6 +41,7 @@ option {
 .calendar-title {
     text-align: right;
     padding-right: 16px;
+    padding-top: 16px;
 }
 .calendar-container {
     background-color: white;

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import "./DayViewItem.css";
-import TextButton from "../Button/TextButton"
+import TextButton from "../Button/Button"
 
 
 class DayViewItem extends React.Component {

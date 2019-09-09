@@ -16,18 +16,10 @@ class Main extends React.Component {
 
     render() {
         return (
-            <Router>
-                <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header full root-container">
-                    <Route path="/login" component={Login} />
-                    <Route path="/register" component={Register} />
-                    <Route path="/forgotPassword" component={ForgotPassword} />
-                    <Route exact path="/" component={App} />
-                </div>
-            </Router>
             <div>
-                <Calendar /> <DayView /> <Table /> <Profile /> 
+                <Calendar />
             </div>
-         )
+         );
     }
 }
 

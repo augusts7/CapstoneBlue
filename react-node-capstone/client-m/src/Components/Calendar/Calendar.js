@@ -2,9 +2,12 @@
 
 import React from 'react';
 import "./Calendar.css";
+
 import CalendarDate from "./CalendarDate";
 import Select from "../Select/Select";
 import DayView from '../DayView/DayView';
+import MonthView from "./MonthView/MonthView";
+import Button from "../Button/Button"
 
 
 class Calendar extends React.Component {
@@ -18,17 +21,17 @@ class Calendar extends React.Component {
         this.state = {
             "year": date.getFullYear(),
             "month": date.getMonth(),
-            "date": date.getDate()
+            "date": date.getDate(),
+            "view": "month"
         };
 
         this.getMonthOptions = this.MonthOptions.bind(this);
         this.getYearOptions = this.YearOptions.bind(this);
         this.DateData = this.DateData.bind(this);
-        this.GetDate = this.GetDate.bind(this); 
         this.onYearChange = this.onYearChange.bind(this); 
         this.onMonthChange = this.onMonthChange.bind(this); 
         this.monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
+        this.onDayClick = this.onDayClick.bind(this); 
     }
 
     MonthOptions() {
@@ -72,34 +75,46 @@ class Calendar extends React.Component {
         return { "dates": dates, "startDay": firstItemToBePlacedIn }; 
     }
 
-    GetDate(date, events, startDay) {
-        let styles = {};
-        let classes = "";
-        if (date == 1 || date == "1") {
-            var start = "" + startDay;
-            styles = { "grid-column-start": start };
-            classes += "isToday";
-        }
-        if (events != null && events.length > 0) {
-            classes += "hasEvents";
-        }
-        return <CalendarDate date={date} events={events} classes={classes} styles={styles} />;
-    }
-
     onMonthChange(newMonth) {
         this.setState({
+            "view": "month",
             "month": newMonth
         });
     }
 
     onYearChange(newYear) {
         this.setState({
+            "view": "month",
             "year": newYear
         });
     }
 
+    onDayClick(date) {
+        this.setState({
+            "view": "day"
+        });
+    }
+
+    getView(dates, events, startDay) {
+        if (this.state.view == "month") {
+            return <MonthView onDateClick={this.onDayClick} dates={dates} events={events} startDay={startDay} />;
+        } else {
+            let style = {
+                "margin-top": "16px", "margin-left": "16px"
+            }
+            const onClick = () => {
+                this.setState({ "view": "month" });
+            };
+            return ( 
+                <div>
+                    <Button onClick={onClick} styles={style} type="button" icon="arrow_back" name="Back to Month View" />
+                    <DayView isAttachedToAnother={true} />
+                </div>
+            )
+        }
+    }
+
     render() {
-        let dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
         let months = this.MonthOptions();
         let years = this.YearOptions();
@@ -114,33 +129,25 @@ class Calendar extends React.Component {
 
         return (
             <div className="calendar-wrapper mdl-shadow--4dp">
+
                 <div className="calendar-container">
 
                     <div className="calendar-header">
                         <div className="calendar-select">
                             <Select options={years} title="Year" onChange={this.onYearChange} />
                             <Select options={months} title="Month" onChange={this.onMonthChange} />
+                            
                         </div>
                         <div className="calendar-title">
                             <h4>{this.monthNames[this.state.month]}, {this.state.year}</h4> 
                         </div>
-                    </div>
-                <div className="day-names-wrapper">
-                    {dayNames.map(name => {
-                        return <div className="day-name">{name}</div> 
-                    })}
-                </div>
-                    <div className="date-wrapper">
-                        {dateData["dates"].map(date => {
-                            return this.GetDate(date, events[date], dateData["startDay"]);  
-                        })}
-                </div>
+                    </div> 
+                  
+                     
+                    {this.getView(dateData["dates"], events, dateData["startDay"])}
 
                 </div>
-                <DayView title="All Events" isAttachedToAnother={true} />
             </div>
-                
-
         );
     }
 }

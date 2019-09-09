@@ -12,21 +12,11 @@ class Application extends React.Component {
     render() {
         return (
             <Router>
-                <div>
-                    <ul>
-                        <li>
-                            <Link to="/">Home</Link>
-                        </li>
-                        <li>
-                            <Link to="/users">Users</Link>
-                        </li>
-                        <li>
-                            <Link to="/contact">Contact</Link>
-                        </li>
-                    </ul>
+                <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header full root-container">
+                    <Route path="/login" component={Login} />
+                    <Route path="/register" component={Register} />
+                    <Route path="/forgotPassword" component={ForgotPassword} />
                     <Route exact path="/" component={App} />
-                    <Route path="/users" component={Users} />
-                    <Route path="/contact" component={Contact} />
                 </div>
             </Router>
         );

@@ -5,11 +5,6 @@ import "./CalendarDate.css";
 
 class CalendarDate extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-    }
-
     render() {
 
         let events = [];
@@ -26,9 +21,11 @@ class CalendarDate extends React.Component {
      
         let className = this.props.classes + " date";
 
+        let date = this.props.date;
+
         if (eventsExist) {
             return (
-                <div className={className} id={this.props.date} style={this.props.styles}>
+                <div onClick={() => this.props.onClick(date)} className={className} id={this.props.key + "" + this.props.date} style={this.props.styles}>
                     <div className="dateHolder">
                         {this.props.date}
                     </div>
@@ -37,7 +34,7 @@ class CalendarDate extends React.Component {
                             {events}
                         </div>
                         <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
-                            for={this.props.date}>
+                            for={this.props.key + "" + this.props.date}>
                             {eventsMenu}
                         </ul>
                     </div>
@@ -45,7 +42,7 @@ class CalendarDate extends React.Component {
             );
         } else {
             return (
-                <div className={className} id={this.props.date} style={this.props.styles}>
+                <div onClick={() => this.props.onClick(date)} className={className} id={this.props.date} style={this.props.styles}>
                     <div className="dateHolder">
                         {this.props.date}
                     </div>
@@ -58,13 +55,4 @@ class CalendarDate extends React.Component {
     }
 }
 
-
 export default CalendarDate;
-
-
-
-
-
-
-
-
