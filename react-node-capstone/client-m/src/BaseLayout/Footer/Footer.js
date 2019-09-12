@@ -5,10 +5,6 @@ import "./Footer.css";
 
 class Footer extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <footer className="mdl-mini-footer">

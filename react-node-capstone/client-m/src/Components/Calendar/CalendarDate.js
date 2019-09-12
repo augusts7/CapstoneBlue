@@ -16,7 +16,7 @@ class CalendarDate extends React.Component {
                 events.push(<div className="eventListItem">{event.name} {event.startTime} {event.endTime}</div>);
                 eventsMenu.push(<li class="mdl-menu__item"><i className="material-icons">donut_large</i>{event.name} {event.startTime} {event.endTime}</li>);
             });
-            eventsMenu.push(<a class="mdl-menu__item"><i className="material-icons">event</i>View All Events</a>);
+            eventsMenu.push(<button class="mdl-menu__item"><i className="material-icons">event</i>View All Events</button>);
         } 
      
         let className = this.props.classes + " date";

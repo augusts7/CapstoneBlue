@@ -14,7 +14,7 @@ class MonthView extends React.Component {
     GetDate(date, events, startDay) {
         let styles = {};
         let classes = "";
-        if (date == 1 || date == "1") {
+        if (date === 1 || date === "1") {
             var start = "" + startDay;
             styles = { "grid-column-start": start };
             classes += "isToday";

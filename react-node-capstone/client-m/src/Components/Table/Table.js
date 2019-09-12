@@ -5,11 +5,6 @@ import "./Table.css";
 
 class Table extends React.Component {
 
-    constructor(props) {
-        super(props);
-       
-    }
-
     render() {
 
         let headers = this.props.headers;

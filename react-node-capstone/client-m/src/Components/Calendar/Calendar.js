@@ -3,7 +3,6 @@
 import React from 'react';
 import "./Calendar.css";
 
-import CalendarDate from "./CalendarDate";
 import Select from "../Select/Select";
 import DayView from '../DayView/DayView';
 import MonthView from "./MonthView/MonthView";
@@ -96,7 +95,7 @@ class Calendar extends React.Component {
     }
 
     getView(dates, events, startDay) {
-        if (this.state.view == "month") {
+        if (this.state.view === "month") {
             return <MonthView onDateClick={this.onDayClick} dates={dates} events={events} startDay={startDay} />;
         } else {
             let style = {

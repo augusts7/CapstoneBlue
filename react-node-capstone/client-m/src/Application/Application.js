@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
+import { Route, BrowserRouter as Router } from 'react-router-dom'
 import App from "../BaseLayout/App/App"
 import Login from '../Authentication/Login/Login'
 import Register from '../Authentication/Register/Register'
