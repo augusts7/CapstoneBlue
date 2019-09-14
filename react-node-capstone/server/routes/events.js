@@ -1,21 +1,9 @@
-const express = require("express");
-const mysql = require("mysql");
-const db = require("../db/events");
+var router = require("express").Router();
+var pool = require("../db/database");
 
-const router = express.Router();
-
-var connection = mysql.createConnection({
-  host: "event-scheduler-db.cfuzjkgst1bk.us-east-2.rds.amazonaws.com",
-  user: "admin",
-  password: "CapstoneBlue",
-  database: "ulmschedulerdb"
-});
-
-connection.connect();
-
-router.get("/", async (req, res, next) => {
+router.route("/").get(async (req, res, next) => {
   try {
-    let results = await db.all();
+    let results = await pool.query("SELECT * FROM events");
     res.json(results);
   } catch (e) {
     console.log(e);
@@ -24,8 +12,8 @@ router.get("/", async (req, res, next) => {
 });
 
 //Post
-router.post("/", (req, res) => {
-  var q1 = connection.query("SELECT COUNT(*) AS count FROM Events", function(
+router.route("/").post((req, res) => {
+  var q1 = pool.query("SELECT COUNT(*) AS count FROM Events", function(
     error,
     results,
     fields
@@ -37,7 +25,7 @@ router.post("/", (req, res) => {
       eventDetails: req.body.eventDetails
     };
 
-    var q2 = connection.query("INSERT INTO Events SET ?", event, function(
+    var q2 = pool.query("INSERT INTO Events SET ?", event, function(
       error,
       results,
       fields
