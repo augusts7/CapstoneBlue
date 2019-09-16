@@ -7,13 +7,11 @@ app.use(express.json());
 
 //Routes
 const eventsRouter = require("./routes/events");
-const loginRouter = require("./routes/login");
-const registerRouter = require("./routes/register");
+const usersRouter = require("./routes/users");
 
 //Connects Routes to there files.
 app.use("/events", eventsRouter);
-//app.use("/login", loginRouter);
-//app.use("/register", registerRouter);
+app.use("/users", usersRouter);
 
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
