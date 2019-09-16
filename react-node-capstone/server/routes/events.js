@@ -1,6 +1,15 @@
 var router = require("express").Router();
 var pool = require("../db/database");
 
+//Makes app accept JSON objects.
+var bodyParser = require("body-parser");
+
+// parse application/x-www-form-urlencoded
+router.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
+router.use(bodyParser.json());
+
 router.route("/").get(async (req, res, next) => {
   try {
     let results = await pool.query("SELECT * FROM events");
@@ -13,7 +22,9 @@ router.route("/").get(async (req, res, next) => {
 
 //Post
 router.route("/").post((req, res) => {
-  var q1 = pool.query("SELECT COUNT(*) AS count FROM Events", function(
+  console.log(req.body.eventStart);
+
+  var q1 = pool.query("SELECT COUNT(*) AS count FROM events", function(
     error,
     results,
     fields
@@ -22,10 +33,18 @@ router.route("/").post((req, res) => {
 
     const event = {
       eventID: results[0].count + 1,
-      eventDetails: req.body.eventDetails
+      eventStart: req.body.eventStart,
+      eventEnd: req.body.eventEnd,
+      eventTitle: req.body.eventTitle,
+      eventDescription: req.body.eventDescription,
+      eventType: req.body.eventType,
+      eventCreator: req.body.eventCreator,
+      carousel: req.body.carousel
     };
 
-    var q2 = pool.query("INSERT INTO Events SET ?", event, function(
+    console.log(event);
+
+    var q2 = pool.query("INSERT INTO events SET ?", event, function(
       error,
       results,
       fields

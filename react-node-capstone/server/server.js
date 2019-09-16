@@ -2,9 +2,6 @@ const express = require("express"); //Imports express
 const app = express(); //Intializes an express app
 const port = process.env.PORT || 5000; //Creates a port varible to be used later in app.listen()
 
-//Makes app accept JSON objects.
-app.use(express.json());
-
 //Routes
 const eventsRouter = require("./routes/events");
 const usersRouter = require("./routes/users");
