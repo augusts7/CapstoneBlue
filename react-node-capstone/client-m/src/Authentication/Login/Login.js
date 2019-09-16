@@ -34,7 +34,7 @@ class Login extends React.Component {
         let icon = "account_box";
 
         return (
-            <Form icon={icon} title={title} actionLinks={actionLinks} fields={fields} />
+            <Form icon={icon} title={title} actionLinks={actionLinks} fields={fields} onSubmit={() => { alert("Submitted"); }} />
         );
     }
 }

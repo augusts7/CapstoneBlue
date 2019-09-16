@@ -11,6 +11,8 @@ import DayView from "../../Components/DayView/DayView"
 import Table from "../../Components/Table/Table"
 import StudentList from "../../Views/Students/StudentList/StudentList"
 import AddStudents from '../../Views/Students/AddStudents/AddStudents';
+import TimeslotsList from '../../Views/Timeslots/TimeslotsList/TimeslotsList';
+import AddTimeslots from '../../Views/Timeslots/AddTimeslots/AddTimeslots';
 
 
 import "./App.css";
@@ -34,6 +36,8 @@ function App() {
                         <Route path="/table" component={Table} /> 
                         <Route path="/studentList" component={StudentList} />
                         <Route path="/addStudents" component={AddStudents} /> 
+                        <Route path="/allTimeslots" component={TimeslotsList} />
+                        <Route path="/addTimeslots" component={AddTimeslots} /> 
                         <Route exact path="/" component={Main} />  
 
                     </div>

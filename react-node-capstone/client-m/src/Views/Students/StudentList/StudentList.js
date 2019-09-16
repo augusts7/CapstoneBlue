@@ -4,6 +4,8 @@ import MaterialTable from 'material-table'
 import "./StudentList.css"
 
 class StudentList extends Component {
+
+    
     render() {
         return (
             <div className="studentListContainer" style={{ maxWidth: '100%' }}>

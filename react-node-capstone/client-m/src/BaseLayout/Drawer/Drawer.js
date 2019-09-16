@@ -33,8 +33,8 @@ class Drawer extends React.Component {
 
         let menuItems = [
             this.MenuItem("", "assessment", "TimeSlots", [
-                this.SubMenuItem("", "list", "View All", ""),
-                this.SubMenuItem("", "add", "Add")
+                this.SubMenuItem("/allTimeslots", "list", "View All", ""),
+                this.SubMenuItem("/addTimeslots", "add", "Add")
             ]),
             this.MenuItem("", "assessment", "Appointments", [
                 this.SubMenuItem("", "list", "View All"),
