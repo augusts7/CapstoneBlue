@@ -1,0 +1,39 @@
+.name {
+  margin-left: 2em;
+  margin-top: 0.5em;
+}
+
+.user-info,
+.classes-taken {
+  position: flex;
+  margin-top: 1em;
+  grid-row-start: 2;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: space-evenly;
+  position: flex;
+  grid-auto-flow: row dense;
+}
+
+.current-groups,
+.shared-with,
+.shared-with-me {
+  position: flex;
+  margin-bottom: 1em;
+}
+
+.item3 {
+  grid-column-start: 3;
+  grid-row-start: 1;
+}
+
+.item4 {
+  grid-column-start: 2;
+}
+
+.item5 {
+    grid-column-start: 1;
+}
