@@ -7,31 +7,26 @@ class Header extends React.Component {
     return (
       <header className="mdl-layout__header">
         <div className="mdl-layout__header-row">
-          <span className="mdl-layout-title white">ULM Event Scheduler</span>
+          <span className="mdl-layout-title white">
+            ULM Scheduling Application
+          </span>
 
           <div className="mdl-layout-spacer"></div>
 
           <div>
             <nav className="mdl-navigation mdl-layout--large-screen-only header-nav">
-              {/*
-              <li id="a_options" className="mdl-navigation__link">
-                <div className="cursor">
-                  Appointments
-                  <span>
-                    <i className="material-icons">keyboard_arrow_down</i>
-                  </span>
-                </div>
-              </li>
-              */}
               <Link className="mdl-navigation__link" to="/">
                 Home
               </Link>
-              <Link className="mdl-navigation__link" to="/addStudents">
-                Event Page
+              <Link className="mdl-navigation__link" to="/calendar">
+                Calendar
               </Link>
-              <li id="t_options" className="mdl-navigation__link">
+              <Link className="mdl-navigation__link" to="/addStudents">
+                Add Students
+              </Link>
+              <li id="p_options" className="mdl-navigation__link">
                 <div className="cursor">
-                  User Profile
+                  My Profile
                   <span>
                     <i className="material-icons">keyboard_arrow_down</i>
                   </span>
@@ -41,32 +36,16 @@ class Header extends React.Component {
 
             <ul
               className="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right"
-              for="t_options"
+              htmlFor="p_options"
             >
-              <Link to="/Login">
+              <Link to="/profile">
                 <li className="mdl-menu__item">
-                  <i className="material-icons">exit_to_app</i>Login
+                  <i className="material-icons">face</i>View My Profile
                 </li>
               </Link>
-              <Link to="/Register">
+              <Link to="/logout">
                 <li className="mdl-menu__item">
-                  <i className="material-icons">add</i>Register
-                </li>
-              </Link>
-            </ul>
-
-            <ul
-              className="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right"
-              for="a_options"
-            >
-              <Link to="/calendar">
-                <li className="mdl-menu__item">
-                  <i className="material-icons">done_all</i>View all timeslots
-                </li>
-              </Link>
-              <Link to="/calendar">
-                <li className="mdl-menu__item">
-                  <i className="material-icons">add</i>Add New Timeslots
+                  <i className="material-icons">remove_circle</i>Logout
                 </li>
               </Link>
             </ul>
@@ -80,44 +59,26 @@ class Header extends React.Component {
 
             <ul
               className="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right"
-              for="hdrbtn"
+              htmlFor="hdrbtn"
             >
-              <Link to="/calendar">
+              <Link to="/">
                 <li className="mdl-menu__item">
                   <i className="material-icons">home</i>Home
                 </li>
               </Link>
-              <Link to="/admin/">
-                <li className="mdl-menu__item">
-                  <i className="material-icons">assessment</i>Admin
-                </li>
-              </Link>
               <Link to="/calendar">
                 <li className="mdl-menu__item">
-                  <i className="material-icons">done_all</i>View all
-                  appointments
-                </li>
-              </Link>
-
-              <Link to="/calendar">
-                <li className="mdl-menu__item">
-                  <i className="material-icons">add</i>Set a new Appointment
+                  <i className="material-icons">calendar_today</i>Calendar
                 </li>
               </Link>
               <Link to="/profile">
                 <li className="mdl-menu__item">
-                  <i className="material-icons">done_all</i>View all timeslots
+                  <i className="material-icons">face</i>My Profile
                 </li>
               </Link>
-
-              <Link to="/dayView">
+              <Link to="/logout">
                 <li className="mdl-menu__item">
-                  <i className="material-icons">add</i>Add New Timeslots
-                </li>
-              </Link>
-              <Link to="/dayView">
-                <li className="mdl-menu__item">
-                  <i className="material-icons">remove_circle</i>Log Out
+                  <i className="material-icons">remove_circle</i>Logout
                 </li>
               </Link>
             </ul>
