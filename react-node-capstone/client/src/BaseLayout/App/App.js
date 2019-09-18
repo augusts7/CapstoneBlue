@@ -6,8 +6,6 @@ import Main from "../Main/Main";
 import Profile from "../../Authentication/Profile/Profile";
 import Calendar from "../../Components/Calendar/Calendar";
 import DayView from "../../Components/DayView/DayView";
-import Table from "../../Components/Table/Table";
-import StudentList from "../../Views/Students/StudentList/StudentList";
 import AddStudents from "../../Views/Students/AddStudents/AddStudents";
 import Register from "../../Authentication/Register/Register.js";
 import Login from "../../Authentication/Login/Login.js";
@@ -25,8 +23,6 @@ function App() {
             <Route path="/profile" component={Profile} />
             <Route path="/calendar" component={Calendar} />
             <Route path="/dayView" component={DayView} />
-            <Route path="/table" component={Table} />
-            <Route path="/studentList" component={StudentList} />
             <Route path="/addStudents" component={AddStudents} />
             <Route path="/Login" component={Login} />
             <Route path="/Register" component={Register} />
