@@ -1,6 +1,5 @@
 import React from "react";
 import Table from "../../Components/Table/Table";
-import "./Profile.css";
 
 class Profile extends React.Component {
   constructor(props) {

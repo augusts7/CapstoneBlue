@@ -1,9 +1,12 @@
-
+.header {
+  font-size: 14 !important;
+  text-align: center !important;
+}
 
 td {
-    text-align: center;
+  text-align: center;
 }
 
 .mdl-data-table {
-    margin: auto;
+  margin: auto;
 }
