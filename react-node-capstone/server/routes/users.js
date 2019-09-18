@@ -1,19 +1,16 @@
 var router = require("express").Router();
 var pool = require("../db/database");
 
-router.route("/login").get(async (req, res, next) => {
-  try {
-    let results = await pool.query(
-      "SELECT campusEmail,password FROM user_info"
-    );
-    res.json(results);
-  } catch (e) {
-    console.log(e);
-    res.sendStatus(500);
-  }
-});
+//Makes app accept JSON objects.
+var bodyParser = require("body-parser");
 
-router.route("/register").get(async (req, res, next) => {
+// parse application/x-www-form-urlencoded
+router.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
+router.use(bodyParser.json());
+
+router.route("/login").get(async (req, res, next) => {
   try {
     let results = await pool.query(
       "SELECT campusEmail,password FROM user_info"
@@ -27,54 +24,41 @@ router.route("/register").get(async (req, res, next) => {
 
 //Post
 router.route("/register").post((req, res) => {
-  const {
-    cwid,
-    password,
-    password2,
-    campusEmail,
-    personalEmail,
-    major,
-    first_name,
-    last_name,
-    classification,
-    advisor,
-    user_type
-  } = req.body;
+  const user = {
+    cwid: req.body.cwid,
+    password: req.body.password,
+    campusEmail: req.body.campusEmail,
+    personalEmail: req.body.personalEmail,
+    major: req.body.major,
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    classification: req.body.classification,
+    advisor: req.body.advisor,
+    user_type: req.body.user_type
+  };
 
-  let errors = [];
+  var getCWID =
+    "SELECT COUNT(*) AS count FROM user_info WHERE cwid = " + user.cwid;
 
-  //Check required fields
-  if (
-    !cwid ||
-    !password ||
-    !password2 ||
-    !campusEmail ||
-    !personalEmail ||
-    !major ||
-    !first_name ||
-    !last_name ||
-    !classification ||
-    !advisor ||
-    !user_type
-  ) {
-    errors.push({ msg: "Please fill in all fields" });
-  }
+  var q1 = pool.query(getCWID, function(error, results, fields) {
+    if (error) throw error;
 
-  //Check if passwords match.
-  if (password !== password2) {
-    errors.push({ msg: "Passwords do not match" });
-  }
-
-  //Check if password satisfies the minimum length.
-  if (password.length < 7) {
-    errors.push({ msg: "Password must be at least 8 characters" });
-  }
-
-  if (errors.length > 0) {
-    res.render("register");
-  } else {
-    res.send("pass");
-  }
+    if (results[0].cwid > 0) {
+      var q2 = pool.query("INSERT INTO user_info SET ?", user, function(
+        error,
+        results,
+        fields
+      ) {
+        if (error) throw error;
+      });
+      res.send(user);
+    } else {
+      console.log(
+        "User with cwid " + req.body.cwid + " already exist in database"
+      );
+    }
+    res.send(user);
+  });
 });
 
 module.exports = router;

@@ -22,8 +22,6 @@ router.route("/").get(async (req, res, next) => {
 
 //Post
 router.route("/").post((req, res) => {
-  console.log(req.body.eventStart);
-
   var q1 = pool.query("SELECT COUNT(*) AS count FROM events", function(
     error,
     results,
@@ -41,8 +39,6 @@ router.route("/").post((req, res) => {
       eventCreator: req.body.eventCreator,
       carousel: req.body.carousel
     };
-
-    console.log(event);
 
     var q2 = pool.query("INSERT INTO events SET ?", event, function(
       error,

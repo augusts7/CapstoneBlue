@@ -12,7 +12,6 @@ class Form extends React.Component {
 
   onFormSubmit(event) {
     event.preventDefault();
-    this.props.onSubmit();
   }
 
   render() {
@@ -32,6 +31,7 @@ class Form extends React.Component {
                 type={field.type}
                 id={field.id}
                 name={field.name}
+                value={field.value}
               />
             );
           })}
@@ -49,6 +49,7 @@ class Form extends React.Component {
                 type={field.type}
                 id={field.id}
                 name={field.name}
+                value={field.value}
               />
             );
           })}
