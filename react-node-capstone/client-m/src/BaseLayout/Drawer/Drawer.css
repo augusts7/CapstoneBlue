@@ -1,0 +1,16 @@
+
+
+.mdl-navigation {
+    list-style: none;
+    width: 100%;
+    color: white;
+    padding: 0px;
+    top: 0;
+}
+
+.mdl-layout__drawer {
+    height: 100%;
+    padding: 0px;
+    overflow-x: hidden;
+    color: black;
+}

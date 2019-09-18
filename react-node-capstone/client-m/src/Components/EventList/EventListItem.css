@@ -1,0 +1,31 @@
+
+h4 {
+    margin: 0px;
+}
+
+.times div {
+    display: inline-block;
+    padding-right: 8px;
+
+}
+.eventListItem {
+    padding: 4px;
+    padding-left: 16px;
+}
+.eventListItem .actions button {
+    margin-right: 16px;
+    margin-top: 16px;
+    margin-left: auto;
+    display: inline-block;
+}
+.eventListItem .actions {
+    text-align: left;
+}
+.eventListItem:hover {
+    background-color: #FAFAFA;
+    cursor: pointer;
+}
+.startTime, .endTime {
+    font-weight: bolder;
+    font-style: italic;
+}

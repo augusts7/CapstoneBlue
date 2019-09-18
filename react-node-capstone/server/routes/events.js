@@ -8,7 +8,7 @@ var connection = mysql.createConnection({
     host: 'event-scheduler-db.cfuzjkgst1bk.us-east-2.rds.amazonaws.com',
     user: 'admin',
     password: 'CapstoneBlue',
-    database: 'eventschedulerdb'
+    database: 'ulmschedulerdb'
   })
   
 connection.connect();

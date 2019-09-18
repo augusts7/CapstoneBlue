@@ -5,7 +5,7 @@ const pool = mysql.createConnection({
     host: 'event-scheduler-db.cfuzjkgst1bk.us-east-2.rds.amazonaws.com',
     user: 'admin',
     password: 'CapstoneBlue',
-    database: 'eventschedulerdb',
+    database: 'ulmschedulerdb',
     port: '3306'
 });
 
@@ -13,7 +13,7 @@ let events = {};
 
 events.all = () => {
     return new Promise((resolve, reject) => {
-        pool.query('SELECT * FROM Events', (err, results) => {
+        pool.query('SELECT * FROM events', (err, results) => {
             if (err) {
                 return reject(err);
             }

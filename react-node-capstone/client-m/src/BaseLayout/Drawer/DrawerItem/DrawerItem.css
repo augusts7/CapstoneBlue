@@ -1,0 +1,42 @@
+.drawer-item {
+    padding-left: 32px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.drawer-main-item {
+    color: white;
+}
+
+.drawer-sub-item {
+    padding: 4px;
+    display: block;
+}
+
+.drawer-sub-items {
+    margin-top: 16px;
+    margin-left: 16px;
+}
+
+.drawer-sub-item .material-icons {
+    margin-right: 8px;
+}
+
+.drawer-sub-item:hover, .drawer-main-item:hover, .drawer-title:hover {
+    text-decoration: underline;
+    color: #C51162;
+}
+.drawer-sub-item, .drawer-main-item, .drawer-title {
+    text-decoration: none;
+    color: #424242;
+}
+
+.drawer-item:hover {
+    
+}
+.drawer-item, .drawer-items, .drawer-main-item, .drawer-sub-items, .drawer-sub-item {
+    color: #424242;
+}
+.drawer-title {
+    cursor: pointer;
+}
