@@ -1,6 +1,6 @@
 const express = require("express"); //Imports express
 const app = express(); //Intializes an express app
-const port = process.env.PORT || 5001; //Creates a port varible to be used later in app.listen()
+const port = process.env.PORT || 5000; //Creates a port varible to be used later in app.listen()
 
 //Routes
 const eventsRouter = require("./routes/events");
