@@ -14,9 +14,9 @@ class CalendarDate extends React.Component {
         if (eventsExist) { 
             this.props.events.map(event => {
                 events.push(<div className="eventListItem">{event.name} {event.startTime} {event.endTime}</div>);
-                eventsMenu.push(<li class="mdl-menu__item"><i className="material-icons">donut_large</i>{event.name} {event.startTime} {event.endTime}</li>);
+                eventsMenu.push(<li className="mdl-menu__item"><i className="material-icons">donut_large</i>{event.name} {event.startTime} {event.endTime}</li>);
             });
-            eventsMenu.push(<button class="mdl-menu__item"><i className="material-icons">event</i>View All Events</button>);
+            eventsMenu.push(<button className="mdl-menu__item"><i className="material-icons">event</i>View All Events</button>);
         } 
      
         let className = this.props.classes + " date";
@@ -33,8 +33,8 @@ class CalendarDate extends React.Component {
                         <div className="eventList">
                             {events}
                         </div>
-                        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
-                            for={this.props.key + "" + this.props.date}>
+                        <ul className="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                            htmlFor={this.props.key + "" + this.props.date}>
                             {eventsMenu}
                         </ul>
                     </div>

@@ -14,10 +14,10 @@ class MonthView extends React.Component {
     GetDate(date, events, startDay) {
         let styles = {};
         let classes = "";
+        let todaysDate = new Date().getDate();
         if (date === 1 || date === "1") {
             var start = "" + startDay;
             styles = { "grid-column-start": start };
-            classes += "isToday";
         }
         if (events != null && events.length > 0) {
             classes += "hasEvents";

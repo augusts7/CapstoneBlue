@@ -10,7 +10,7 @@ import "./Profile.css";
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { student: true };
+    this.state = { student: false };
   }
 
   render() {
@@ -50,7 +50,7 @@ class Profile extends React.Component {
         ["PHYS", "2003, 2004, 2009, 2010"]
       ];
 
-      let sharedWithHeader = ["Calendar Shared With"];
+      let sharedWithHeader = ["MyCalendar Shared With"];
       let sharedWith = [
         "asdf asdf",
         "asdfdsf asdfsd",

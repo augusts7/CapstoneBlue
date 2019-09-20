@@ -19,13 +19,13 @@ class Select extends React.Component {
         return (
 
             <div className="selectWrapper">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <select onChange={this.onChange} className="mdl-textfield__input">
                         {this.props.options.map(option => {
                             return <option value={option.value}>{option.name}</option>
                         })}
                     </select>
-                    <label class="mdl-textfield__label" for="octane">{this.props.title}</label>
+                    <label className="mdl-textfield__label" htmlFor="octane">{this.props.title}</label>
                 </div>
             </div>
             );
