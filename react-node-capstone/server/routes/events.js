@@ -1,46 +1,55 @@
-const express = require('express');
-const mysql = require('mysql');
-const db = require('../db/events');
+var router = require("express").Router();
+var pool = require("../db/database");
 
-const router = express.Router();
+//Makes app accept JSON objects.
+var bodyParser = require("body-parser");
 
-var connection = mysql.createConnection({
-    host: 'event-scheduler-db.cfuzjkgst1bk.us-east-2.rds.amazonaws.com',
-    user: 'admin',
-    password: 'CapstoneBlue',
-    database: 'ulmschedulerdb'
-  })
-  
-connection.connect();
+// parse application/x-www-form-urlencoded
+router.use(bodyParser.urlencoded({ extended: false }));
 
-router.get('/', async(req, res, next) => {
-    try{
-        let results = await db.all();
-        res.json(results);
-    } catch(e) {
-        console.log(e);
-        res.sendStatus(500);
-    }
+// parse application/json
+router.use(bodyParser.json());
+
+router.route("/").get(async (req, res, next) => {
+  try {
+    let results = await pool.query("SELECT * FROM events");
+    res.json(results);
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
 });
 
 //Post
-router.post('/', (req,res) => {
+router.route("/").post((req, res) => {
+  var q1 = pool.query("SELECT COUNT(*) AS count FROM events", function(
+    error,
+    results,
+    fields
+  ) {
+    if (error) throw error;
 
-    var q1 = connection.query('SELECT COUNT(*) AS count FROM Events', function (error, results, fields){
+    const event = {
+      eventID: results[0].count + 1,
+      eventStart: req.body.eventStart,
+      eventEnd: req.body.eventEnd,
+      eventTitle: req.body.eventTitle,
+      eventDescription: req.body.eventDescription,
+      eventType: req.body.eventType,
+      eventCreator: req.body.eventCreator,
+      carousel: req.body.carousel
+    };
 
-        if (error) throw error;
-
-        const event = {
-            eventID: results[0].count + 1,
-            eventDetails: req.body.eventDetails
-        };
-    
-        var q2 = connection.query('INSERT INTO Events SET ?', event, function (error, results, fields) {
-            if (error) throw error;
-        });
-
-        res.send(event);
+    var q2 = pool.query("INSERT INTO events SET ?", event, function(
+      error,
+      results,
+      fields
+    ) {
+      if (error) throw error;
     });
-})
+
+    res.send(event);
+  });
+});
 
 module.exports = router;
