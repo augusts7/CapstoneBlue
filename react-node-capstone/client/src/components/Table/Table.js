@@ -3,7 +3,7 @@ import "./Table.css";
 
 class Table extends React.Component {
   render() {
-    let headers = this.props.headers;
+    let header = this.props.header;
     let json = this.props.data;
 
     let className = "mdl-data-table mdl-js-data-table mdl-shadow--2dp";
@@ -14,13 +14,13 @@ class Table extends React.Component {
     if (json == null) {
       json = [[1, 2], [3, 4]];
     }
-    if (headers == null) {
-      headers = ["Sunday", "Monday"];
+    if (header == null) {
+      header = ["Sunday", "Monday"];
     }
     return (
       <table className={className}>
         <thead>
-          {headers.map(h => {
+          {header.map(h => {
             return <th className="mdl-data-table__cell--non-numeric">{h}</th>;
           })}
         </thead>
