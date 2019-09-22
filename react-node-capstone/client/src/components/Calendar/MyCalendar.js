@@ -40,6 +40,7 @@ class MyCalendar extends Component {
           events={events}
           dateClick={this.handleDateClick}
           plugins={[dayGridPlugin, interactionPlugin, resourceTimelinePlugin]}
+          height={700}
         />
       </div>
     );
