@@ -13,6 +13,10 @@
   "author": "Nick Fontana",
   "license": "MIT",
   "dependencies": {
+    "@fullcalendar/core": "^4.3.1",
+    "@fullcalendar/daygrid": "^4.3.0",
+    "@fullcalendar/react": "^4.3.0",
+    "axios": "^0.19.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "concurrently": "^4.1.2",

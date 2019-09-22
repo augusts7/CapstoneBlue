@@ -21,7 +21,7 @@ class DayView extends React.Component {
         var title = [];
         var className = "";
         if (!this.props.isAttachedToAnother) {
-            title.push(<h4>{name}</h4>); 
+            title.push(<h4>{name}</h4>);
             className += "itemsContainer mdl-shadow--4dp"; 
         } else {
             className += "attachedItemsContainer";

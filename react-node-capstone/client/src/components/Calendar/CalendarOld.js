@@ -1,7 +1,7 @@
 
 
 import React from 'react';
-import "./Calendar.css";
+import "./CalendarOld.css";
 
 import Select from "../Select/Select";
 import DayView from '../DayView/DayView';
@@ -9,7 +9,7 @@ import MonthView from "./MonthView/MonthView";
 import Button from "../Button/Button"
 
 
-class Calendar extends React.Component {
+class CalendarOld extends React.Component {
 
 
     constructor(props) {
@@ -27,16 +27,16 @@ class Calendar extends React.Component {
         this.getMonthOptions = this.MonthOptions.bind(this);
         this.getYearOptions = this.YearOptions.bind(this);
         this.DateData = this.DateData.bind(this);
-        this.onYearChange = this.onYearChange.bind(this); 
-        this.onMonthChange = this.onMonthChange.bind(this); 
+        this.onYearChange = this.onYearChange.bind(this);
+        this.onMonthChange = this.onMonthChange.bind(this);
         this.monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        this.onDayClick = this.onDayClick.bind(this); 
+        this.onDayClick = this.onDayClick.bind(this);
     }
 
     MonthOptions() {
         var months = [];
         this.monthNames.forEach((name, index) => {
-            months.push({ "value": index, "name": name }); 
+            months.push({ "value": index, "name": name });
             });
         return months;
     }
@@ -44,21 +44,21 @@ class Calendar extends React.Component {
     YearOptions() {
         var years = [];
         const options = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
-        
+
         options.forEach(value => {
-            years.push({ "value": value, "name": value })  
+            years.push({ "value": value, "name": value })
         });
         return years;
-    }   
+    }
 
-  
+
     DateData() {
 
         // var month = this.state.month;
         // var year = this.state.year;
 
         var month = this.state.month;
-        var year = this.state.year;  
+        var year = this.state.year;
 
         var firstDay = new Date(year, month, 1).getDay();
         var lastDate = new Date(year, month + 1, 0).getDate();
@@ -71,7 +71,7 @@ class Calendar extends React.Component {
             dates.push(i);
         }
 
-        return { "dates": dates, "startDay": firstItemToBePlacedIn }; 
+        return { "dates": dates, "startDay": firstItemToBePlacedIn };
     }
 
     onMonthChange(newMonth) {
@@ -90,7 +90,7 @@ class Calendar extends React.Component {
 
     onDayClick(date) {
         this.setState({
-            "view": "day"
+            "view": date
         });
     }
 
@@ -104,7 +104,7 @@ class Calendar extends React.Component {
             const onClick = () => {
                 this.setState({ "view": "month" });
             };
-            return ( 
+            return (
                 <div>
                     <Button onClick={onClick} styles={style} type="button" icon="arrow_back" name="Back to Month View" />
                     <DayView isAttachedToAnother={true} />
@@ -127,7 +127,7 @@ class Calendar extends React.Component {
 
         let months = this.MonthOptions();
         let years = this.YearOptions();
-        let dateData = this.DateData(); 
+        let dateData = this.DateData();
 
         let events = {
             "10": [{ "name": "Soccer Practice", "startTime": "12pm", "endTime": "1pm" }, { "name": "Basketball Practice", "startTime": "5pm", "endTime": "6pm" }],
@@ -145,14 +145,14 @@ class Calendar extends React.Component {
                         <div className="calendar-select">
                             <Select options={years} title="Year" onChange={this.onYearChange} />
                             <Select options={months} title="Month" onChange={this.onMonthChange} />
-                            
+
                         </div>
                         <div className="calendar-title">
-                            <h4>{this.monthNames[this.state.month]}, {this.state.year}</h4> 
+                            <h4>{this.monthNames[this.state.month]}, {this.state.year}</h4>
                         </div>
-                    </div> 
-                  
-                     
+                    </div>
+
+
                     {this.getView(dateData["dates"], events, dateData["startDay"])}
 
                 </div>
@@ -162,4 +162,4 @@ class Calendar extends React.Component {
 }
 
 
-export default Calendar;
+export default CalendarOld;

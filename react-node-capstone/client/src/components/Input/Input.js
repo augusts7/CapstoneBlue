@@ -2,6 +2,7 @@ import React from "react";
 import "./Input.css";
 
 class Input extends React.Component {
+  // eslint-disable-next-line
   constructor(props) {
     super(props);
   }

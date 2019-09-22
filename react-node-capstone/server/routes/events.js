@@ -30,13 +30,15 @@ router.route("/").post((req, res) => {
     if (error) throw error;
 
     const event = {
-      eventID: results[0].count + 1,
-      eventStart: req.body.eventStart,
-      eventEnd: req.body.eventEnd,
-      eventTitle: req.body.eventTitle,
-      eventDescription: req.body.eventDescription,
-      eventType: req.body.eventType,
-      eventCreator: req.body.eventCreator,
+      id: results[0].count + 1,
+      start: req.body.start,
+      end: req.body.end,
+      startTime: req.body.startTime,
+      endTime: req.body.endTime,
+      title: req.body.title,
+      description: req.body.description,
+      type: req.body.type,
+      creator: req.body.creator,
       carousel: req.body.carousel
     };
 

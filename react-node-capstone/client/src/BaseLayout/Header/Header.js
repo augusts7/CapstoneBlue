@@ -76,7 +76,7 @@ class Header extends React.Component {
                   <i className="material-icons">face</i>My Profile
                 </li>
               </Link>
-              <Link to="/Login">
+              <Link to="/login">
                 <li className="mdl-menu__item">
                   <i className="material-icons">remove_circle</i>Logout
                 </li>
