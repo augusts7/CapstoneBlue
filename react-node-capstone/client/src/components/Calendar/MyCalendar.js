@@ -11,16 +11,11 @@ class MyCalendar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: null,
-      isLoaded: false,
       events: [
         {
           title: "event 1",
-          date: "2019-09-01",
-          timeStart: "07:30",
-          timeEnd: "09:30"
-        },
-        { title: "event 2", date: "2019-09-02" }
+          start: "2019-09-20"
+        }
       ]
     };
   }
@@ -30,18 +25,13 @@ class MyCalendar extends Component {
   };
 
   componentDidMount() {
-    fetch("/routes/events")
+    fetch("/events")
       .then(res => res.json())
-      .then(result => {
-        this.setState({
-          isLoaded: true,
-          events: result.events
-        });
-      });
+      .then(eventData => this.setState({ events: eventData }));
   }
 
   render() {
-    let events = this.state.events;
+    var { events } = this.state;
     return (
       <div className="calendar-container">
         <FullCalendar
