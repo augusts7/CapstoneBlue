@@ -31,8 +31,6 @@ router.route("/").post((req, res) => {
 
     const event = {
       id: results[0].count + 1,
-      start: req.body.start,
-      end: req.body.end,
       startTime: req.body.startTime,
       endTime: req.body.endTime,
       title: req.body.title,

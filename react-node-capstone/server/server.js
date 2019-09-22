@@ -5,10 +5,12 @@ const port = process.env.PORT || 5000; //Creates a port varible to be used later
 //Routes
 const eventsRouter = require("./routes/events");
 const usersRouter = require("./routes/users");
+const appointmentRouter = require("./routes/appointments");
 
 //Connects Routes to there files.
 app.use("/events", eventsRouter);
 app.use("/users", usersRouter);
+app.use("/appointments", appointmentRouter);
 
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
