@@ -6,6 +6,7 @@ import "@fullcalendar/daygrid/main.css";
 import interactionPlugin from "@fullcalendar/interaction";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import "./MyCalendar.css";
+import AdvisingSlots from "./AdvisingSlots";
 
 class MyCalendar extends Component {
   constructor(props) {
@@ -33,6 +34,10 @@ class MyCalendar extends Component {
   render() {
     var { events } = this.state;
     return (
+      <div className="grid-container">
+        <div className="advisingSlots">
+        <AdvisingSlots />
+        </div>
       <div className="calendar-container">
         <FullCalendar
           defaultView="dayGridMonth"
@@ -42,6 +47,7 @@ class MyCalendar extends Component {
           plugins={[dayGridPlugin, interactionPlugin, resourceTimelinePlugin]}
           height={700}
         />
+      </div>
       </div>
     );
   }

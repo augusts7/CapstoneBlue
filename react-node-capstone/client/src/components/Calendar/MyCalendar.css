@@ -1,3 +1,8 @@
 .calendar-container{
     margin: 5em;
 }
+
+.advisingSlots{
+    margin: 2em;
+    border: 3px;
+}
