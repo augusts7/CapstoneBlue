@@ -10,7 +10,7 @@ import "./Profile.css";
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { student: false };
+    this.state = { user_type: "student" };
   }
 
   render() {
@@ -76,7 +76,7 @@ class Profile extends React.Component {
     for (let sm of sharedWithMe) {
       sharedWithMeList += sm + ", ";
     }
-    if (!this.state.student) {
+    if (this.state.user_type === "student") {
       return (
         <div className="profile-page">
           <h2 className="name"> {name} </h2>
