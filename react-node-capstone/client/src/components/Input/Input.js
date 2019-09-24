@@ -2,10 +2,7 @@ import React from "react";
 import "./Input.css";
 
 class Input extends React.Component {
-  // eslint-disable-next-line
-  constructor(props) {
-    super(props);
-  }
+
 
   render() {
     return (
@@ -14,13 +11,14 @@ class Input extends React.Component {
           class="mdl-textfield__input"
           type={this.props.type}
           id={this.props.id}
+          required={this.props.required}
           name={this.props.name}
           value={this.props.value}
         />
         <label class="mdl-textfield__label" for="username">
           {this.props.label}
         </label>
-        <span class="mdl-textfield__error">Enter valid username</span>
+        <span class="mdl-textfield__error">Invalid Input</span>
       </div>
     );
   }

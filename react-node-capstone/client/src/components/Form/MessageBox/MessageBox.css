@@ -1,0 +1,12 @@
+.message-wrapper {
+    padding: 16px;
+    background-color: #F8BBD0;
+    color: #880E4F;
+    display: grid;
+    grid-template-columns: 85% 15%;
+}
+.message-box {
+    font-size: 18px;
+    padding-left: 32px;
+    padding-top: 8px;
+}

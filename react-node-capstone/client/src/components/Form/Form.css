@@ -1,18 +1,7 @@
 .action-links-container {
     margin-top: 16px;
 }
-.form-title-icons {
-    margin-right: 8px;
-    font-size: 24px;
-    margin-bottom: 16px;
-    color: deepskyblue;
-}
-.form .mdl-grid .mdl-cell {
-    padding: 16px;
-}
-.form .mdl-grid {
-    min-height: 80%;
-}
+
 .change-background:hover {
     background: #F5F5F5;
 }
@@ -27,3 +16,4 @@
 .label {
     color: #BDBDBD;
 }
+

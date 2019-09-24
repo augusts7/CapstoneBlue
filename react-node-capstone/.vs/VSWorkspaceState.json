@@ -3,14 +3,14 @@
     "",
     "\\client",
     "\\client\\src",
+    "\\client\\src\\Application",
     "\\client\\src\\Authentication",
-    "\\client\\src\\Authentication\\ForgotPassword",
-    "\\client\\src\\Authentication\\Login",
-    "\\client\\src\\Views",
-    "\\server\\auth",
-    "\\server\\db",
+    "\\client\\src\\Authentication\\Register",
+    "\\client\\src\\Components\\Form",
+    "\\client\\src\\Components\\Form\\MessageBox",
+    "\\server",
     "\\server\\routes"
   ],
-  "SelectedNode": "\\client\\src\\Authentication\\Login\\Login.js",
+  "SelectedNode": "\\client\\src\\Authentication\\Register\\Register.js",
   "PreviewInSolutionExplorer": false
 }

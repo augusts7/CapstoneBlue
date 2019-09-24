@@ -9,6 +9,10 @@ class AddStudents extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            "isLoading": false
+        }
+
         this.FieldData = this.FieldData.bind(this);
         this.ActionLinkData = this.ActionLinkData.bind(this);
     }
@@ -34,7 +38,7 @@ class AddStudents extends React.Component {
         let icon = "add";
 
         return (
-            <Form icon={icon} title={title} fields={fields} actionLinks={actionLinks} includesFile={true} />
+            <Form icon={icon} isLoading={this.state.isLoading} title={title} fields={fields} actionLinks={actionLinks} includesFile={true} />
         );
     }
 }
