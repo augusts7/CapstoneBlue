@@ -44,13 +44,13 @@ router.post("/register", async function (req, res) {
 
     var getCWID = "SELECT COUNT(*) AS count FROM user_info WHERE cwid = " + user.cwid;
 
-    await pool.query(getCWID, function (error, results, fields) {
+    pool.query(getCWID, async function (error, results, fields) {
         if (error) {
             return res.json({ "success": false, "message": "Error registering user with cwid " + req.bocy.cwid });
         }
 
         if (results.length == 0) {
-            await pool.query("INSERT INTO user_info SET ?", user, function (error, results, fields) {
+            pool.query("INSERT INTO user_info SET ?", user, function (error, results, fields) {
                 if (error) {
                     return res.json({ "success": false, "message": "Error registering user with cwid " + req.body.cwid });
                 }

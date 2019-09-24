@@ -1,6 +1,6 @@
 
 
-var nodemailer = require('nodemailer-promise');
+var nodemailer = require('nodemailer');
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
