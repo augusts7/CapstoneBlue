@@ -45,11 +45,6 @@ class AdvisingSlots extends React.Component {
   };
 
   handleSubmit(e) {
-    alert(this.state.start);
-    alert(this.state.end);
-    alert(this.state.advisor);
-    alert(this.state.interval);
-
     e.preventDefault();
     fetch("/advising", {
       method: "POST",
@@ -83,7 +78,7 @@ class AdvisingSlots extends React.Component {
     const availableSlots = this.state.slots.map(function(item, i) {
       return (
         <li key={i} className="availableSlots">
-          {item.startTime} to {item.endTime}
+          {item.start} to {item.end}
         </li>
       );
     });
@@ -93,7 +88,7 @@ class AdvisingSlots extends React.Component {
         return (
           <li key={i} className="availableSlots">
             {" "}
-            {item.startTime} to {item.endTime} with {item.advisor}
+            {item.start} to {item.end} with {item.advisor}
             <Button onClick={this.addToCalendar} style={{ color: "green" }}>
               Add To Calendar
             </Button>
