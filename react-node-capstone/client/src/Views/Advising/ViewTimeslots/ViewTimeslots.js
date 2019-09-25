@@ -4,7 +4,7 @@ import "./ViewTimeslots.css";
 import Form from "../../../Components/Form/Form"
 import Progress from "../../../Components/Progress/Progress";
 import Container from "../../../Components/Container/SingleColumnWithHeader/Container"
-
+import MaterialTable from "material-table";
 
 class ViewTimeslots extends React.Component {
 
@@ -12,22 +12,43 @@ class ViewTimeslots extends React.Component {
         super(props);
 
         this.state = {
-            "isLoading": false
+            "isLoading": false,
+            "timeslots": []
         }
 
         this.body = this.body.bind(this);
     }
 
-    body() {
+    componentDidMount() {
         
+        this.setState({ "isLoading": true });
 
+        fetch("/advising/", {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => { return res.json(); })
+            .then((res) => {
+                this.setState({
+                    "isLoading": false,
+                    "timeslots": res
+                });
+                
+            });
+    }
+
+    body() {
+
+        
     }
 
     render() {
 
-        let title = "View all timeslots";
+        let title = "View All time slots";
         let icon = "aspect_ratio";
         let body = this.body();
+
 
 
         return (

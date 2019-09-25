@@ -4,13 +4,14 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import MaterialTable from "material-table";
 
 import "./Profile.css";
 
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { student: true };
+    this.state = { student: false };
   }
 
   render() {
@@ -28,7 +29,7 @@ class Profile extends React.Component {
     let adviseeHeader = ["Advisees"];
     let advisees = ["group1", "group2", "group2", "group2"];
     let adviseeList = "";
-    // eslint-disable-next-line
+
     for (let g of advisees) {
       adviseeList += g + ", ";
     }
@@ -41,7 +42,7 @@ class Profile extends React.Component {
       groupsList += g + ", ";
     }
 
-    let classesTakenHeader = ["Classes Taken"];
+    let classesTakenHeader = ["Course name", "Course Id"];
     let classesTaken = [
       ["CSCI", "2000, 2003, 3020, 3030, 4065"],
       ["MATH", "1016, 1032, 2002, 3003"],

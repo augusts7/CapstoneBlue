@@ -16,8 +16,10 @@ class Table extends React.Component {
     }
     if (header == null) {
       header = ["Sunday", "Monday"];
-    }
-    return (
+      }
+
+      return (
+
       <table className={className}>
         <thead>
           {header.map(h => {

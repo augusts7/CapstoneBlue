@@ -4,7 +4,7 @@ const passport = require("passport");
 
 var bodyParser = require("body-parser");
 
-var emailHelper = require("../email/EmailHelper");
+var emailHelper = require("../email/emailHelper");
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());

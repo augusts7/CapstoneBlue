@@ -101,7 +101,9 @@ class Form extends React.Component {
         body.push(<div><div>{this.getForm()}</div><div>{this.getActionLinks()}</div></div>);
 
         return (
-            <Container title={this.props.title} icon={this.props.icon} isLoading={this.props.isLoading} body={body} />
+            <div>
+                <Container title={this.props.title} icon={this.props.icon} isLoading={this.props.isLoading} body={body} />
+            </div>
         );
     }
 }
