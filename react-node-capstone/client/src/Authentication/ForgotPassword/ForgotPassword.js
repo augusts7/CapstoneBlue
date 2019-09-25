@@ -34,7 +34,7 @@ class ForgotPassword extends React.Component {
             }
         }).then(res => { return res.json(); })
             .then((res) => {
-                if (res.status == 200) {
+                if (res.status === 200) {
                     this.setState({
                         "message": res.message
                     });

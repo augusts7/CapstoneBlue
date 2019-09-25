@@ -38,7 +38,7 @@ class Form extends React.Component {
         let fields = [];
 
         this.props.fields.map(field => {
-            if (field.type == "radio") {
+            if (field.type === "radio") {
                 fields.push(<RadioGroup
                     key={field.name}
                     name={field.name}
@@ -55,7 +55,7 @@ class Form extends React.Component {
                     value={field.value}
                 />)
             }
-        })
+        });
         form.push(
             <form
                 onSubmit={this.onFormSubmit}
