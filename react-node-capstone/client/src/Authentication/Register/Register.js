@@ -21,7 +21,7 @@ class Register extends React.Component {
 
     onSubmit(target) {
         
-        this.setState({"isLoading": true});
+        this.setState({ "isLoading": true });
         let data = {
             "first_name": target.first_name.value,
             "last_name": target.last_name.value,
@@ -36,26 +36,24 @@ class Register extends React.Component {
             "user_type": target.user_type.value,
         };
 
-        fetch("/auth/register", {
+        fetch("/users/register", {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(res => { return res.json();})
+        }).then(res => { return res.json(); })
             .then((res) => {
-            if (res.status === 200) {
                 this.setState({
                     "message": res.message,
                     "isLoading": false
                 });
-            } else {
-                this.setState({
-                    "message": res.message,
-                    "isLoading": false
-                });
-            }
-        });
+                if (res.success) {
+                    if (this.props.hasLoggedIn) {
+                        this.props.hasLoggedIn();
+                    }
+                } 
+            });
     }
 
     render() {
@@ -69,8 +67,8 @@ class Register extends React.Component {
             { "name": "advisor", "type": "email", "label": "Advisor Email", "required": true },
             { "name": "password", "type": "password", "label": "Password", "required": true },
             { "name": "confirmPassword", "type": "password", "label": "Confirm Password", "required": true },
-            { "name": "classification", "type": "radio", "options": [{ "name": "Freshman", "value": "freshman" }, { "name": "Sophomore", "value": "sophomore" }, { "name": "Junior", "value": "junior" }, { "name": "Senior", "value": "senior" }] },
-            { "name": "user_type", "type": "radio", "options": [{ "name": "Student", "value": "student" }, { "name": "Professor", "value": "professor" }] }
+            { "name": "classification", "label": "Classification", "type": "select", "required": true, "options": [{ "name": "Freshman", "value": "freshman" }, { "name": "Sophomore", "value": "sophomore" }, { "name": "Junior", "value": "junior" }, { "name": "Senior", "value": "senior" }] },
+            { "name": "user_type", "type": "select", "label": "User Type", "require": true, "options": [{ "name": "Student", "value": "student" }, { "name": "Professor", "value": "professor" }] }
         ];
         let actionLinks = [
             { "link": "login", "title": "Login", "icon": "person_add" },
@@ -78,11 +76,13 @@ class Register extends React.Component {
         ];
         let title = "Register";
         let icon = "account_box";
+        let id = "register";
 
         return (
             <div>
                 <MessageBox message={this.state.message} hideMessage={this.hideMessage} />
                 <Form
+                    id={id}
                     onSubmit={this.onSubmit}
                     icon={icon}
                     title={title}

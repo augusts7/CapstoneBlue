@@ -1,5 +1,6 @@
 var router = require("express").Router();
 var pool = require("../db/database");
+const passport = require("passport");
 
 var bodyParser = require("body-parser");
 
@@ -13,24 +14,25 @@ router.post('/login', function (req, res) {
 
     passport.authenticate('local', function (err, user, info) {
         if (err) {
-            return res.json({ "success": false, "message": "Authentication failed." });
+            return res.json({ "success": false, "message": "Authentication failed. Error: " + err
+            });
         }
         if (!user) {
-            return res.json({ "success": false, "message": 'Authentication failed' });
+            return res.json({ "success": false, "message": "Authentication failed. User with this email couldn't be found." });
         }
-        req.logIn(user, function (err) {
+        req.login(user, function (err) { 
             if (err) {
-                return res.json({ "success": false, "message": "Authentication faile" });
+                return res.json({ "success": false, "message": "Authentication failed. Error: " + err });
             }
             return res.send({ success: true, message: "Authentication succeeded" });
         });
-    })(req, res, next);
+    })(req, res);
 });
 
-router.post("/register", async function (req, res) {
+router.post("/register", function (req, res) {
 
     const user = {
-        cwid: req.body.cwid,
+        username: req.body.cwid,
         password: req.body.password,
         campusEmail: req.body.campusEmail,
         personalEmail: req.body.personalEmail,
@@ -42,35 +44,33 @@ router.post("/register", async function (req, res) {
         user_type: req.body.user_type
     };
 
-    var getCWID = "SELECT COUNT(*) AS count FROM user_info WHERE cwid = " + user.cwid;
-
-    pool.query(getCWID, async function (error, results, fields) {
+    pool.query("SELECT COUNT(*) AS count FROM ulmschedulerdb.user_info WHERE username = ?", user.username, function (error, results, fields) {
         if (error) {
-            return res.json({ "success": false, "message": "Error registering user with cwid " + req.bocy.cwid });
+            return res.json({ "success": false, "message": "Error registering user. Error: " + error });
         }
 
-        if (results.length == 0) {
-            pool.query("INSERT INTO user_info SET ?", user, function (error, results, fields) {
+        if (results[0].count == 0) {
+            pool.query("INSERT INTO ulmschedulerdb.user_info SET ?", user, function (error, results, fields) {
                 if (error) {
-                    return res.json({ "success": false, "message": "Error registering user with cwid " + req.body.cwid });
+                    return res.json({ "success": false, "message": "Error registering user. Error: " + error });
                 }
-                return res.json({ "success": true, "message": "User with cwid " + req.body.cwid + " has been registered" });
+                return res.json({ "success": true, "message": "User has been registered" });
             });
         } else {
-            return res.json({ "success": false, "message": "User with cwid " + req.body.cwid + " already exist in database" });
+            return res.json({ "success": false, "message": "User already exists in database" });
         }
     });
 });
 
-router.post('/forgotPassword', async function (req, res) {
+router.post('/forgotPassword', function (req, res) {
 
-    await pool.query("SELECT EMAIL FROM ulmschedulerdb.user_info WHERE EMAIL = ?", req.body.campusEmail, async function (error, results, fields) {
+    pool.query("SELECT campusEmail FROM ulmschedulerdb.user_info WHERE campusEmail = ?", req.body.campusEmail, function (error, results, fields) {
         if (error) {
             res.json({ "success": false, "message": "Failed to connect to database" });
         }
         if (data.length > 0) {
 
-            await sendPasswordResetEmail(req.body.campusEmail, res);
+            sendPasswordResetEmail(req.body.campusEmail, res);
 
         } else {
             res.json({ "success": false, "message": "Email does not exist" });
@@ -78,20 +78,19 @@ router.post('/forgotPassword', async function (req, res) {
     });
 
 });
-
-async function sendPasswordResetEmail (email, res) {
+function sendPasswordResetEmail (email, res) {
     let subject = "Password Reset Email";
     let text = "Hi, Reset password will be implemented very soon. Stay tuned.";
 
     let callback = (error, info) => {
         if (error) {
-            return res.json({ "status": 204, "message": "Password reset email couldn't be sent." })
+            return res.json({ "success": false, "message": "Password reset email couldn't be sent. Error: " + error })
         } else {
-            return res.json({ "status": 200, "message": "Password reset email sent. " + info.response })
+            return res.json({ "success": true, "message": "Password reset email sent. " + info.response })
         }
     };
 
-    await emailHelper.sendEmail(email, subject, text, callback); 
+    emailHelper.sendEmail(email, subject, text, callback); 
 }
 
 

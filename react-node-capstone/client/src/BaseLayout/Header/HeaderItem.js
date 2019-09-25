@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 
 
@@ -16,19 +17,19 @@ class HeaderItem extends React.Component {
             return "";
         }
         items.map(item => {
-            return (<a className="nav-link-2" href={item.Link}><li className="mdl-color-text--white"><i className="material-icons">{item.Icon}</i>{item.Title}</li></a>);
+            return (<Link className="nav-link-2" to={item.to}><li className="mdl-color-text--white"><i className="material-icons">{item.icon}</i>{item.title}</li></Link>);
         });
     }
 
     render() {
         return (
             <div>
-                <a className="nav-link" href={this.props.Link}>
-                    <div><i className="drawer-icons material-icons mdl-color-text--white">{this.props.Icon}</i><span className="drawer-text">{this.props.Title}</span></div>
-                </a>
+                <Link className="nav-link" to={this.props.to}>
+                    <div><i className="drawer-icons material-icons mdl-color-text--white">{this.props.icon}</i><span className="drawer-text">{this.props.title}</span></div>
+                </Link>
 
                 <div className="nav-sub-link">
-                    {this.SubMenu(this.props.SubItems)} 
+                    {this.SubMenu(this.props.subItems)} 
                 </div>
             </div>
             

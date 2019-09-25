@@ -21,12 +21,15 @@ class Login extends React.Component {
     }
 
     onSubmit(target) {
+        
+        this.setState({ "isLoading": true });
+       
         let data = {
             "campusEmail": target.campusEmail.value,
             "password": target.password.value
         };
 
-        fetch("/auth/login", {
+        fetch("/users/login", {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -34,16 +37,15 @@ class Login extends React.Component {
             }
         }).then(res => { return res.json(); })
             .then((res) => {
-            if (res.status === 200) {
                 this.setState({
+                    "isLoading": false,
                     "message": res.message
                 });
-                this.props.onLoggedIn();
-            } else {
-                this.setState({
-                    "message": res.message
-                });
-            }
+            if (res.success) {
+                if (this.props.hasLoggedIn) {
+                    this.props.hasLoggedIn();
+                }
+            } 
         });
     }
 
@@ -59,11 +61,12 @@ class Login extends React.Component {
         ];
         let title = "Login";
         let icon = "account_box";
+        let id = "login";
 
         return (
             <div>
                 <MessageBox message={this.state.message} hideMessage={this.hideMessage} />
-                <Form icon={icon} onSubmit={this.onSubmit} title={title} actionLinks={actionLinks} fields={fields} />
+                <Form id={id} icon={icon} onSubmit={this.onSubmit} title={title} actionLinks={actionLinks} fields={fields} />
             </div>  
         );
     }

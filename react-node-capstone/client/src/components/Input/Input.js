@@ -1,27 +1,27 @@
 import React from "react";
 import "./Input.css";
-
+import TextField from '@material-ui/core/TextField';
 class Input extends React.Component {
 
 
-  render() {
-    return (
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input
-          class="mdl-textfield__input"
-          type={this.props.type}
-          id={this.props.id}
-          required={this.props.required}
-          name={this.props.name}
-          value={this.props.value}
-        />
-        <label class="mdl-textfield__label" for="username">
-          {this.props.label}
-        </label>
-        <span class="mdl-textfield__error">Invalid Input</span>
-      </div>
-    );
-  }
+    render() {
+
+        let id = this.props.formId + "" + this.props.name;
+
+        return (
+
+            <TextField
+                fullWidth
+                id={id}
+                required={this.props.required}
+                value={this.props.value}
+                type={this.props.type}
+                label={this.props.label}
+                name={this.props.name}
+                margin="normal"/>
+
+        );
+    }
 }
 
 export default Input;

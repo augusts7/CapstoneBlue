@@ -19,15 +19,7 @@ if (app.get("env") === "production") {
 app.use(expressSession(session));
 
 const passportHelper = require("./auth/passport");
-// passportHelper.initPassport(app, passport);
-
-// Passport has to be added to these routes so that user is logged in 
-// For example
-//app.get('/api/users/me',
-//    passport.authenticate('basic', { session: false }),
-//    function (req, res) {
-//        res.json({ id: req.user.id, username: req.user.username });
-//    });
+passportHelper.initPassport(app);
 
 //Routes
 const eventsRouter = require("./routes/events");

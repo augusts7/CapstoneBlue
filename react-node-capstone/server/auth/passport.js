@@ -1,19 +1,20 @@
 const LocalStrategy = require("passport-local").Strategy;
-const bcrypt = require("bcryptjs");
+// const bcrypt = require("bcryptjs");
 const pool = require("../db/database");
+const passport = require("passport");
 
 
-function initPassport(app, passport) { 
+function initPassport(app) { 
 
     const strategy = new LocalStrategy(
-        { "username": "campusEmail" },
-        async function (campusEmail, password, done) {
+        { "usernameField": "campusEmail" },
+        function (campusEmail, password, done) {
 
-            await pool.query("SELECT campusEmail, password FROM ulmschedulerdb.user_info WHERE campusEmail = ?", campusEmail, function (error, results, fields) {
+            pool.query("SELECT * FROM ulmschedulerdb.user_info WHERE campusEmail = ?", campusEmail, function (error, results, fields) {
                 if (error) {
                     return done(null, false);
                 }
-                if (results.length > 0) {
+                if (results.length > 0) { 
                     const user = results[0];
                     if (user.password == password) {
                         return done(null, user); 
@@ -30,14 +31,12 @@ function initPassport(app, passport) {
 
 
     passport.serializeUser((user, done) => {
-        done(null, user.cwid);
+        done(null, user.username);
     });
 
-    passport.deserializeUser(async function(id, done) {
+    passport.deserializeUser(function(username, done) {
 
-        let sql = "SELECT * FROM ulmschedulerdb.user_info WHERE cwid=" + id;
-
-        await pool.query(sql, function (error, results, fields) {
+        pool.query("SELECT * FROM ulmschedulerdb.user_info WHERE username = ?", username,  function (error, results, fields) {
             if (error) {
                 return done(null, false);
             }

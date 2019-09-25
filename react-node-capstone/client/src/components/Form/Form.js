@@ -3,7 +3,7 @@ import "./Form.css";
 import Button from "../Button/Button";
 import ActionLink from "../Button/ActionLink";
 import Input from "../Input/Input";
-import RadioGroup from "../Input/RadioGroup/RadioGroup";
+import Select from "../Select/Select";
 import Container from "../Container/SingleColumnWithHeader/Container";
 
 class Form extends React.Component {
@@ -22,9 +22,6 @@ class Form extends React.Component {
             
             return;
         }
-        if (this.props.isLoading) {
-            return;
-        }
         this.props.onSubmit(event.target);
     }
 
@@ -38,15 +35,17 @@ class Form extends React.Component {
         let fields = [];
 
         this.props.fields.map(field => {
-            if (field.type === "radio") {
-                fields.push(<RadioGroup
+            if (field.type == "select") {
+                fields.push(<Select
                     key={field.name}
                     name={field.name}
+                    label={field.label}
                     options={field.options}
                     required={field.required}
                 />)
             } else {
                 fields.push(<Input
+                    formId={this.props.id}
                     label={field.label}
                     type={field.type}
                     key={field.id}
@@ -55,14 +54,16 @@ class Form extends React.Component {
                     value={field.value}
                 />)
             }
-        });
+        })
         form.push(
             <form
                 onSubmit={this.onFormSubmit}
                 method="post"
                 enctype={enctype} >
 
-                {fields}
+                <div>
+                    {fields}
+                </div>
 
                 <Button type="submit" icon="done" name="Submit" />
             </form>

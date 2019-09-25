@@ -5,12 +5,12 @@
     "\\client\\src",
     "\\client\\src\\Application",
     "\\client\\src\\Authentication",
-    "\\client\\src\\Authentication\\Register",
-    "\\client\\src\\Components\\Form",
-    "\\client\\src\\Components\\Form\\MessageBox",
+    "\\client\\src\\Authentication\\Login",
+    "\\client\\src\\BaseLayout",
+    "\\client\\src\\BaseLayout\\Header",
     "\\server",
-    "\\server\\routes"
+    "\\server\\email"
   ],
-  "SelectedNode": "\\client\\src\\Authentication\\Register\\Register.js",
+  "SelectedNode": "\\client\\src\\Application\\Application.js",
   "PreviewInSolutionExplorer": false
 }

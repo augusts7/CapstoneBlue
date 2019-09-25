@@ -143,8 +143,8 @@ class CalendarOld extends React.Component {
 
                     <div className="calendar-header">
                         <div className="calendar-select">
-                            <Select options={years} title="Year" onChange={this.onYearChange} />
-                            <Select options={months} title="Month" onChange={this.onMonthChange} />
+                            <Select default={this.state.year} options={years} title="Year" onChange={this.onYearChange} />
+                            <Select default={this.state.month} options={months} title="Month" onChange={this.onMonthChange} />
 
                         </div>
                         <div className="calendar-title">

@@ -11,8 +11,8 @@ var transporter = nodemailer.createTransport({
 });
 
 
-async function sendEmailThroughTransporter(mailOptions, callback) {
-    await transporter.sendMail(mailOptions, function (error, info) {
+function sendEmailThroughTransporter(mailOptions, callback) {
+    transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.log("Error while attempting to send email.\n" + error);
         } else {
@@ -22,7 +22,7 @@ async function sendEmailThroughTransporter(mailOptions, callback) {
     });
 }
 
-async function sendEmail (toEmail, subject, text, callback) {
+function sendEmail (toEmail, subject, text, callback) {
 
     var mailOptions = {
         from: 'ulm-scheduling.application@gmail.com',
@@ -31,10 +31,10 @@ async function sendEmail (toEmail, subject, text, callback) {
         text: text
     };
 
-    await sendEmailThroughTransporter(mailOptions, callback);
+    sendEmailThroughTransporter(mailOptions, callback);
 }
  
-async function sendHtmlEmail (toEmail, subject, html, callback) {
+function sendHtmlEmail (toEmail, subject, html, callback) {
 
     var mailOptions = {
         from: 'ulm-scheduling.application@gmail.com',
@@ -43,7 +43,7 @@ async function sendHtmlEmail (toEmail, subject, html, callback) {
         html: html
     };
      
-    await sendEmailThroughTransporter(mailOptions, callback);
+    sendEmailThroughTransporter(mailOptions, callback);
 }
 
 module.exports = {
