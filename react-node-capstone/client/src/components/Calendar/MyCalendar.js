@@ -17,7 +17,8 @@ class MyCalendar extends Component {
           title: "event 1",
           start: "2019-09-20"
         }
-      ]
+      ],
+      user_type: ""
     };
   }
 
@@ -36,18 +37,18 @@ class MyCalendar extends Component {
     return (
       <div className="grid-container">
         <div className="advisingSlots">
-        <AdvisingSlots />
+          <AdvisingSlots />
         </div>
-      <div className="calendar-container">
-        <FullCalendar
-          defaultView="dayGridMonth"
-          schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
-          events={events}
-          dateClick={this.handleDateClick}
-          plugins={[dayGridPlugin, interactionPlugin, resourceTimelinePlugin]}
-          height={700}
-        />
-      </div>
+        <div className="calendar-container">
+          <FullCalendar
+            defaultView="dayGridMonth"
+            schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
+            events={events}
+            dateClick={this.handleDateClick}
+            plugins={[dayGridPlugin, interactionPlugin, resourceTimelinePlugin]}
+            height={700}
+          />
+        </div>
       </div>
     );
   }
