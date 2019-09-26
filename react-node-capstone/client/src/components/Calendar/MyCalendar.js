@@ -7,6 +7,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import "./MyCalendar.css";
 import AdvisingSlots from "./AdvisingSlots";
+import ls from "local-storage";
 
 class MyCalendar extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class MyCalendar extends Component {
           start: "2019-09-20"
         }
       ],
-      user_type: ""
+      user_type: ls.get()
     };
   }
 

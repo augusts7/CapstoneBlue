@@ -4,13 +4,14 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import ls from "local-storage";
 
 import "./Profile.css";
 
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { user_type: "student" };
+    this.state = { user_type: ls.get("user_type") };
   }
 
   render() {

@@ -3,13 +3,13 @@ import React from 'react';
 import Form from "../../Components/Form/Form";
 import MessageBox from "../../Components/Form/MessageBox/MessageBox"
 
-
 class Login extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            "message": ""
+            "message": "",
+
         };
 
         this.onSubmit = this.onSubmit.bind(this);
@@ -19,16 +19,19 @@ class Login extends React.Component {
     hideMessage() {
         this.setState({"message": ""});
     }
-
+    handleOptionChange = changeEvent => {
+        this.setState({
+            user_type: changeEvent.target.value
+        });
+    };
     onSubmit(target) {
         
         this.setState({ "isLoading": true });
        
         let data = {
             "campusEmail": target.campusEmail.value,
-            "password": target.password.value
+            "password": target.password.value,
         };
-
         fetch("/users/login", {
             method: 'POST',
             body: JSON.stringify(data),
@@ -43,7 +46,7 @@ class Login extends React.Component {
                 });
             if (res.success) {
                 if (this.props.hasLoggedIn) {
-                    this.props.hasLoggedIn();
+                    this.props.hasLoggedIn(res.user);
                 }
             } 
         });
@@ -52,7 +55,7 @@ class Login extends React.Component {
     render() {
         let fields = [          
             { "name": "campusEmail", "type": "email", "label": "Campus Email", "required": true },
-            { "name": "password", "type": "password", "label": "Password", "required": true },
+            { "name": "password", "type": "password", "label": "Password", "required": true }
         ];
         
         let actionLinks = [

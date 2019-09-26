@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, BrowserRouter as Router } from 'react-router-dom'
+import {Route, Switch, BrowserRouter as Router} from 'react-router-dom'
 import App from "../BaseLayout/App/App"
 import Login from '../Authentication/Login/Login'
 import Register from '../Authentication/Register/Register'
@@ -12,42 +12,47 @@ class Application extends React.Component {
 
     constructor(props) {
         super(props);
-        
-        var isLoggedIn = true;
 
+        var isLoggedIn = false;
         if (ls.get("isLoggedIn")) {
             isLoggedIn = true;
-        } 
+        }
         this.state = {
-            "isLoggedIn": isLoggedIn
+            "isLoggedIn": isLoggedIn,
+            "user_type": "professor"
+
         };
         this.hasLoggedIn = this.hasLoggedIn.bind(this);
     }
 
-    hasLoggedIn() {
-        this.setState({ "isLoggedIn": true });
+    hasLoggedIn(user) {
+        this.setState({"isLoggedIn": true});
         ls.set("isLoggedIn", true);
+        ls.set("user_type", user.user_type);
     }
 
     componentDidMount() {
-
+        fetch("/register")
+            .then(res => res.json())
+            .then(userData => this.setState({user_info: userData}));
+        console.log(this.state.user_info);
     }
 
     getRoutes() {
-        let login = <Login hasLoggedIn={this.hasLoggedIn} />
-        let register = <Register hasLoggedIn={this.hasLoggedIn} />
-        let app = <App id={1} />
+        let login = <Login hasLoggedIn={this.hasLoggedIn}/>
+        let register = <Register hasLoggedIn={this.hasLoggedIn}/>
+        let app = <App id={1}/>
 
         let routes = [];
         if (this.state.isLoggedIn) {
-            routes.push(<Switch><Route path="/" render={()=> app} /></Switch>);
+            routes.push(<Switch><Route path="/" render={() => app}/></Switch>);
         } else {
             routes.push(
                 <Switch>
-                    <Route path="/login" render={() => login} /> 
-                    <Route path="/register" render={() => register} />
-                    <Route path="/forgotPassword" component={ForgotPassword} />
-                    <Route path="/" render={() => login} />
+                    <Route path="/login" render={() => login}/>
+                    <Route path="/register" render={() => register}/>
+                    <Route path="/forgotPassword" component={ForgotPassword}/>
+                    <Route path="/" render={() => login}/>
                 </Switch>
             );
 

@@ -4,6 +4,7 @@ import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import Button from "@material-ui/core/Button";
 import "./AdvisingSlots.css";
+import ls from "local-storage";
 
 class AdvisingSlots extends React.Component {
   constructor(props) {
@@ -21,7 +22,7 @@ class AdvisingSlots extends React.Component {
           advisor: "Lon Smith"
         }
       ],
-      user_type: "faculty"
+      user_type: ls.get("user_type")
     };
 
     this.handleStartTimeChange = this.handleStartTimeChange.bind(this);
@@ -104,7 +105,7 @@ class AdvisingSlots extends React.Component {
         );
       }.bind(this)
     );
-    if (this.state.user_type === "faculty") {
+    if (this.state.user_type === "professor") {
       return (
         <div className="advisingSlots">
           Advising Slots

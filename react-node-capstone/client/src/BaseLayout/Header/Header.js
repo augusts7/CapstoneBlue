@@ -13,6 +13,7 @@ class Header extends React.Component {
 
     logout() {
         ls.set("isLoggedIn", false);
+        ls.set("user_type", "");
         window.location = "/login";
     }
 

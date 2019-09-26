@@ -24,7 +24,7 @@ router.post('/login', function (req, res) {
             if (err) {
                 return res.json({ "success": false, "message": "Authentication failed. Error: " + err });
             }
-            return res.send({ success: true, message: "Authentication succeeded" });
+            return res.send({ success: true, message: "Authentication succeeded", "user": user });
         });
     })(req, res);
 });
