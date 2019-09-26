@@ -36,38 +36,19 @@ router.route("/").post((req, res) => {
 
   //End Time Placeholder that moves with start time
   var endP = end;
-  endP.setMinutes(startMin+interval);
+  endP.setMinutes(endMin+interval);
   var endHoursP = endHours;
   var endMinP = endMin;
 
-  console.log(start.getHours());
-  console.log(start.getMinutes());
-  console.log(end.getHours());
-  console.log(end.getMinutes());
-
-  const statement1 = (startHours <= endHours);
-  const statement2 = !(startHours == endHours && startMin == (endMin - interval));
-  const statement3 = !((startHours == (endHours - 1)) && (startMin==(60-interval) && endMin == 0));
-
   var done = false;
   while ( !done ) {
+
     const advising = {
       start: start,
       end: endP,
       advisor: req.body.advisor
     };
 
-    if(endMinP == 0){
-      startMin = 0;
-      start.setMinutes(startMin);
-      endMinP=interval;
-      endP.setMinutes(endMinP);
-      startHour++;
-      start.setHour(startHours);
-    }
-    else if(endMinP==endMin && startHours == endHours){
-      done = true;
-    }
     console.log("Query Executed");
     console.log(startMin);
     console.log(endMin);
@@ -81,6 +62,33 @@ router.route("/").post((req, res) => {
     ) {
       if (error) throw error;
     });
+
+    if(endMinP==endMin && startHours == endHours){
+      done = true;
+    }
+    else if(endMinP == 0){
+      console.log("check");
+      startMin = 0;
+      start.setMinutes(startMin);
+      endMinP=interval;
+      endP.setMinutes(endMinP);
+      startHours++;
+      start.setHours(startHours);
+    }
+    else if(startMin == (60 - interval)){
+      startMin = 0;
+      start.setMinutes(startMin);
+      endMinP=0;
+      endP.setMinutes(endMinP);
+      endHoursP++;
+      endP.setHours(endHoursP);
+    }
+    else{
+      startMin+=interval;
+      start.setMinutes(startMin);
+      endMinP+=interval;
+      endP.setMinutes(endMinP);
+    }
   }
 });
 module.exports = router;
