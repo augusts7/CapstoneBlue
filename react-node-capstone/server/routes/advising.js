@@ -39,24 +39,20 @@ router.route("/").post((req, res) => {
   endP.setSeconds(0);
   var endHoursP = Number(endP.getHours());
   var endMinP = Number(endP.getMinutes());
-  endP.setMinutes(endMinP+interval);
-  endMinP= endMinP + interval;
+  endP.setMinutes(endMinP + interval);
+  endMinP = endMinP + interval;
 
   var done = false;
   while (!done) {
-
-    console.log(startMin);
-    console.log(endMinP);
     console.log(startP.toString());
     console.log(endP.toString());
-    
+    console.log("-----");
+
     var advising = {
       start: startP,
       end: endP,
       advisor: req.body.advisor
     };
-
-    
 
     pool.query("INSERT INTO advising_slots SET ?", advising, function(
       error,
@@ -66,45 +62,35 @@ router.route("/").post((req, res) => {
       if (error) throw error;
     });
 
-    if(endMinP==endMin && startHours == endHours){
-      console.log("1");
+    if (endMinP == endMin && startHours == endHours) {
       done = true;
-    }
-    else if(endMinP == 0){
-      console.log("2");
+    } else if (endMinP == 0) {
       startMin = 0;
       startP.setMinutes(startMin);
-      endMinP=interval;
+      endMinP = interval;
       endP.setMinutes(endMinP);
       startHours++;
       startP.setHours(startHours);
-    }
-    else if(endMinP == (60 - interval)){
-      console.log("3");
-      startMin+=interval;
+    } else if (endMinP == 60 - interval) {
+      startMin += interval;
       startP.setMinutes(startMin);
-      endMinP=0;
+      endMinP = 0;
       endP.setMinutes(endMinP);
       endHoursP++;
       endP.setHours(endHoursP);
-    }
-    else if(startMin == (60 - interval)){
-      console.log("4");
+    } else if (startMin == 60 - interval) {
       startMin = 0;
       startP.setMinutes(startMin);
-      endMinP=0;
+      endMinP = 0;
       endP.setMinutes(endMinP);
       endHoursP++;
       endP.setHours(endHoursP);
-    }
-    else{
-      console.log("5");
-      startMin+=interval;
+    } else {
+      startMin += interval;
       startP.setMinutes(startMin);
-      endMinP+=interval;
+      endMinP += interval;
       endP.setMinutes(endMinP);
     }
-    console.log("----------------");
   }
 });
 module.exports = router;
