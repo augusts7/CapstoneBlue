@@ -21,7 +21,7 @@ class AdvisingSlots extends React.Component {
                     advisor: "Lon Smith"
                 }
             ],
-            user_type: localStorage.getItem("user_type")
+            user_type: "faculty"
         };
 
         this.handleStartTimeChange = this.handleStartTimeChange.bind(this);

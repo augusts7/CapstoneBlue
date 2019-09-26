@@ -21,10 +21,10 @@ router.route("/").get(async (req, res) => {
 });
 
 router.route("/").post((req, res) => {
-  var start = new Date(req.body.start);
-  start.setSeconds(0);
-  var startHours = Number(start.getHours());
-  var startMin = Number(start.getMinutes());
+  var startP = new Date(req.body.start);
+  startP.setSeconds(0);
+  var startHours = Number(startP.getHours());
+  var startMin = Number(startP.getMinutes());
 
   var end = new Date(req.body.end);
   end.setSeconds(0);
@@ -32,28 +32,31 @@ router.route("/").post((req, res) => {
   var endMin = Number(end.getMinutes());
 
   //Iterval of time slots
-  var interval = Number(req.body.interval);
+  const interval = Number(req.body.interval);
 
   //End Time Placeholder that moves with start time
   var endP = new Date(req.body.start);
+  endP.setSeconds(0);
   var endHoursP = Number(endP.getHours());
   var endMinP = Number(endP.getMinutes());
   endP.setMinutes(endMinP+interval);
   endMinP= endMinP + interval;
 
   var done = false;
-  while ( !done ) {
+  while (!done) {
 
-    const advising = {
-      start: start,
+    console.log(startMin);
+    console.log(endMinP);
+    console.log(startP.toString());
+    console.log(endP.toString());
+    
+    var advising = {
+      start: startP,
       end: endP,
       advisor: req.body.advisor
     };
 
-    console.log(startMin);
-    console.log(endMinP);
-    console.log(start.toString());
-    console.log(endP.toString());
+    
 
     pool.query("INSERT INTO advising_slots SET ?", advising, function(
       error,
@@ -70,16 +73,16 @@ router.route("/").post((req, res) => {
     else if(endMinP == 0){
       console.log("2");
       startMin = 0;
-      start.setMinutes(startMin);
+      startP.setMinutes(startMin);
       endMinP=interval;
       endP.setMinutes(endMinP);
       startHours++;
-      start.setHours(startHours);
+      startP.setHours(startHours);
     }
     else if(endMinP == (60 - interval)){
       console.log("3");
       startMin+=interval;
-      start.setMinutes(startMin);
+      startP.setMinutes(startMin);
       endMinP=0;
       endP.setMinutes(endMinP);
       endHoursP++;
@@ -88,7 +91,7 @@ router.route("/").post((req, res) => {
     else if(startMin == (60 - interval)){
       console.log("4");
       startMin = 0;
-      start.setMinutes(startMin);
+      startP.setMinutes(startMin);
       endMinP=0;
       endP.setMinutes(endMinP);
       endHoursP++;
@@ -97,7 +100,7 @@ router.route("/").post((req, res) => {
     else{
       console.log("5");
       startMin+=interval;
-      start.setMinutes(startMin);
+      startP.setMinutes(startMin);
       endMinP+=interval;
       endP.setMinutes(endMinP);
     }
