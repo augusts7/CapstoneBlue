@@ -77,7 +77,7 @@ class Profile extends React.Component {
     for (let sm of sharedWithMe) {
       sharedWithMeList += sm + ", ";
     }
-    if (this.state.user_type === "faculty") {
+    if (this.state.user_type === "student") {
       return (
         <div className="profile-page">
           <h2 className="name"> {name} </h2>
