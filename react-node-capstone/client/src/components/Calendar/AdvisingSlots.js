@@ -117,8 +117,8 @@ class AdvisingSlots extends React.Component {
               margin="normal"
               label="Start Time"
               value={this.state.start}
-              onChange={this.handleStartTimeChange}
-            ></DateTimePicker>
+              onChange={this.handleStartTimeChange}>
+            </DateTimePicker>
             <Divider />
             <DateTimePicker
               autoOk
@@ -151,7 +151,7 @@ class AdvisingSlots extends React.Component {
           </div>
           <Divider />
           <br />
-          <Button variant="contained" onClick={this.handleSubmit}>
+          <Button variant="contained" onClick={this.handleSubmit} href="">
             Submit
           </Button>
           <div className="slotList">
