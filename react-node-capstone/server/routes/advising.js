@@ -35,10 +35,11 @@ router.route("/").post((req, res) => {
   var interval = Number(req.body.interval);
 
   //End Time Placeholder that moves with start time
-  var endP = end;
-  endP.setMinutes(endMin+interval);
-  var endHoursP = endHours;
-  var endMinP = endMin;
+  var endP = new Date(req.body.start);
+  var endHoursP = Number(endP.getHours());
+  var endMinP = Number(endP.getMinutes());
+  endP.setMinutes(endMinP+interval);
+  endMinP= endMinP + interval;
 
   var done = false;
   while ( !done ) {
@@ -49,11 +50,10 @@ router.route("/").post((req, res) => {
       advisor: req.body.advisor
     };
 
-    console.log("Query Executed");
     console.log(startMin);
-    console.log(endMin);
+    console.log(endMinP);
     console.log(start.toString());
-    console.log(end.toString());
+    console.log(endP.toString());
 
     pool.query("INSERT INTO advising_slots SET ?", advising, function(
       error,
@@ -64,10 +64,11 @@ router.route("/").post((req, res) => {
     });
 
     if(endMinP==endMin && startHours == endHours){
+      console.log("1");
       done = true;
     }
     else if(endMinP == 0){
-      console.log("check");
+      console.log("2");
       startMin = 0;
       start.setMinutes(startMin);
       endMinP=interval;
@@ -75,7 +76,17 @@ router.route("/").post((req, res) => {
       startHours++;
       start.setHours(startHours);
     }
+    else if(endMinP == (60 - interval)){
+      console.log("3");
+      startMin+=interval;
+      start.setMinutes(startMin);
+      endMinP=0;
+      endP.setMinutes(endMinP);
+      endHoursP++;
+      endP.setHours(endHoursP);
+    }
     else if(startMin == (60 - interval)){
+      console.log("4");
       startMin = 0;
       start.setMinutes(startMin);
       endMinP=0;
@@ -84,11 +95,13 @@ router.route("/").post((req, res) => {
       endP.setHours(endHoursP);
     }
     else{
+      console.log("5");
       startMin+=interval;
       start.setMinutes(startMin);
       endMinP+=interval;
       endP.setMinutes(endMinP);
     }
+    console.log("----------------");
   }
 });
 module.exports = router;
