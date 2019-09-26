@@ -1,5 +1,5 @@
 import React from "react";
-import Table from "../../Components/Table/Table";
+import Table from "../../components/Table/Table";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";

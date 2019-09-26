@@ -1,9 +1,9 @@
 
 import React from 'react';
 import "./ViewTimeslots.css";
-import Form from "../../../Components/Form/Form"
-import Progress from "../../../Components/Progress/Progress";
-import Container from "../../../Components/Container/SingleColumnWithHeader/Container"
+import Form from "../../../components/Form/Form"
+import Progress from "../../../components/Progress/Progress";
+import Container from "../../../components/Container/SingleColumnWithHeader/Container"
 import MaterialTable from "material-table";
 
 class ViewTimeslots extends React.Component {

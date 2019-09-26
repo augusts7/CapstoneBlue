@@ -4,7 +4,7 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import Main from "../Main/Main";
 import Profile from "../../Authentication/Profile/Profile";
-import MyCalendar from "../../Components/Calendar/MyCalendar";
+import MyCalendar from "../../components/Calendar/MyCalendar";
 
 import "./App.css";
 

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import "./AddTimeslots.css";
-import Form from "../../../Components/Form/Form"
+import Form from "../../../components/Form/Form"
 
 
 class AddTimeslots extends React.Component {

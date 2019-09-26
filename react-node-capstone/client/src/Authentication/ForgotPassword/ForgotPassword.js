@@ -1,7 +1,7 @@
 
 import React from 'react';
-import Form from "../../Components/Form/Form";
-import MessageBox from "../../Components/Form/MessageBox/MessageBox";
+import Form from "../../components/Form/Form";
+import MessageBox from "../../components/Form/MessageBox/MessageBox";
 
 
 
