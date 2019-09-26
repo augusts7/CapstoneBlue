@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import "./Header.css";
 import ls from "local-storage";
 
@@ -18,8 +18,6 @@ class Header extends React.Component {
 
     render() {
 
-        var id = this.props.id || "";
-       
         return (
             <header className="mdl-layout__header">
                 <div className="mdl-layout__header-row">
@@ -30,43 +28,21 @@ class Header extends React.Component {
                     <div className="mdl-layout-spacer"></div>
 
 
-
                     <div>
                         <nav className="mdl-navigation mdl-layout--large-screen-only header-nav">
                             <Link className="mdl-navigation__link" to="/">
                                 Home
-              </Link>
+                            </Link>
                             <Link className="mdl-navigation__link" to="/calendar">
                                 Calendar
-              </Link>
-                            <Link className="mdl-navigation__link" to="/addStudents">
-                                Add Students
-              </Link>
-                            <li id={"p_options" + id} className="mdl-navigation__link">
-                                <div className="cursor">
-                                    My Profile
-                  <span>
-                                        <i className="material-icons">keyboard_arrow_down</i>
-                                    </span>
-                                </div>
-                            </li>
+                            </Link>
+                            <Link className="mdl-navigation__link" to="/profile">
+                                My Profile
+                            </Link>
+                            <Link className="mdl-navigation__link" to="/login" onClick={this.logout}>
+                                Logout
+                            </Link>
                         </nav>
-
-                        <ul
-                            className="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right"
-                            htmlFor={"p_options" + id}>
-
-                            <Link to="/profile">
-                                <li className="mdl-menu__item">
-                                    <i className="material-icons">face</i>View My Profile
-                </li>
-                            </Link>
-                            <Link onClick={this.logout}>
-                                <li className="mdl-menu__item">
-                                    <i className="material-icons">remove_circle</i>Logout
-                </li>
-                            </Link>
-                        </ul>
 
                         <button
                             className="mdl-layout--small-screen-only mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon large-icon-button"
@@ -83,25 +59,25 @@ class Header extends React.Component {
                                 <li className="mdl-menu__item">
                                     <i className="material-icons">home</i>Home
 
-                                    </li>
+                                </li>
                             </Link>
                             <Link to="/calendar">
                                 <li className="mdl-menu__item">
                                     <i className="material-icons">calendar_today</i>Calendar
 
-                                    </li>
+                                </li>
                             </Link>
                             <Link to="/profile">
                                 <li className="mdl-menu__item">
                                     <i className="material-icons">face</i>My Profile
 
-                                    </li>
+                                </li>
                             </Link>
-                            <Link onClick={this.logout}>
+                            <Link to="login" onClick={this.logout}>
                                 <li className="mdl-menu__item">
                                     <i className="material-icons">remove_circle</i>Logout
 
-                                    </li>
+                                </li>
                             </Link>
                         </ul>
                     </div>

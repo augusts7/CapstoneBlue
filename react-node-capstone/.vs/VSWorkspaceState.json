@@ -1,16 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\client",
-    "\\client\\src",
-    "\\client\\src\\Application",
-    "\\client\\src\\Authentication",
-    "\\client\\src\\Authentication\\Login",
-    "\\client\\src\\BaseLayout",
-    "\\client\\src\\BaseLayout\\Header",
-    "\\server",
-    "\\server\\email"
+    "\\client\\src\\Components",
+    "\\client\\src\\Components\\Calendar"
   ],
-  "SelectedNode": "\\client\\src\\Application\\Application.js",
+  "SelectedNode": "\\client",
   "PreviewInSolutionExplorer": false
 }

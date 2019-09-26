@@ -5,19 +5,10 @@ import Footer from "../Footer/Footer";
 import Main from "../Main/Main";
 import Profile from "../../Authentication/Profile/Profile";
 import MyCalendar from "../../Components/Calendar/MyCalendar";
-import DayView from "../../Components/DayView/DayView";
-import AddStudents from "../../Views/Students/AddStudents/AddStudents";
-import Register from "../../Authentication/Register/Register.js";
-import Login from "../../Authentication/Login/Login.js";
 
 import "./App.css";
 
-class App extends React.Component { 
-
-    constructor(props) {
-        super(props);
-        
-    }
+class App extends React.Component {
 
     render() {
 
@@ -32,8 +23,6 @@ class App extends React.Component {
                         <div id="content-div">
                             <Route path="/profile" component={Profile} />
                             <Route path="/calendar" component={MyCalendar} />
-                            <Route path="/dayView" component={DayView} />
-                            <Route path="/addStudents" component={AddStudents} />
                             <Route exact path="/" component={Main} />
                         </div>
 

@@ -16,12 +16,14 @@ class Table extends React.Component {
     }
     if (header == null) {
       header = ["Sunday", "Monday"];
-    }
-    return (
+      }
+
+      return (
+
       <table className={className}>
         <thead>
           {header.map(h => {
-            return <th className="mdl-data-table__cell--non-numeric">{h}</th>;
+            return <tr><th className="mdl-data-table__cell--non-numeric">{h}</th></tr>;
           })}
         </thead>
         <tbody>

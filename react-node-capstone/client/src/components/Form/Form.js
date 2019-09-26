@@ -28,22 +28,24 @@ class Form extends React.Component {
 
     getForm() {
         let form = [];
-        let enctype = "";
+        let encType = "";
         if (this.props.includesFile) {
-            enctype = "multipart/form-data";
+            encType = "multipart/form-data";
         }
         let fields = [];
 
         this.props.fields.map(field => {
-            if (field.type == "select") {
+            if (field.type === "select") {
+                return(
                 fields.push(<Select
                     key={field.name}
                     name={field.name}
                     label={field.label}
                     options={field.options}
                     required={field.required}
-                />)
+                />));
             } else {
+                return(
                 fields.push(<Input
                     formId={this.props.id}
                     label={field.label}
@@ -52,14 +54,14 @@ class Form extends React.Component {
                     name={field.name}
                     required={field.required}
                     value={field.value}
-                />)
+                />));
             }
         })
         form.push(
             <form
                 onSubmit={this.onFormSubmit}
                 method="post"
-                enctype={enctype} >
+                encType={encType} >
 
                 <div>
                     {fields}
@@ -101,7 +103,9 @@ class Form extends React.Component {
         body.push(<div><div>{this.getForm()}</div><div>{this.getActionLinks()}</div></div>);
 
         return (
-            <Container title={this.props.title} icon={this.props.icon} isLoading={this.props.isLoading} body={body} />
+            <div>
+                <Container title={this.props.title} icon={this.props.icon} isLoading={this.props.isLoading} body={body} />
+            </div>
         );
     }
 }
