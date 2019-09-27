@@ -31,13 +31,6 @@ class Application extends React.Component {
         ls.set("user_type", user.user_type);
     }
 
-    componentDidMount() {
-        fetch("/register")
-            .then(res => res.json())
-            .then(userData => this.setState({user_info: userData}));
-        console.log(this.state.user_info);
-    }
-
     getRoutes() {
         let login = <Login hasLoggedIn={this.hasLoggedIn}/>
         let register = <Register hasLoggedIn={this.hasLoggedIn}/>
