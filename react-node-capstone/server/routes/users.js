@@ -54,10 +54,10 @@ router.post("/register", function (req, res) {
                 if (error) {
                     return res.json({ "success": false, "message": "Error registering user. Error: " + error });
                 }
-                return res.json({ "success": true, "message": "User has been registered" });
+                return res.json({ "success": true, "message": "User has been registered", "user": user  });
             });
         } else {
-            return res.json({ "success": false, "message": "User already exists in database" });
+            return res.json({ "success": false, "message": "User already exists in database"});
         }
     });
 });
