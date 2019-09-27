@@ -19,7 +19,7 @@ class Application extends React.Component {
         }
         this.state = {
             "isLoggedIn": isLoggedIn,
-            "user_type": "professor"
+            "user_type": "faculty"
 
         };
         this.hasLoggedIn = this.hasLoggedIn.bind(this);
