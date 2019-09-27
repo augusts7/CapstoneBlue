@@ -68,7 +68,7 @@ class Register extends React.Component {
             { "name": "password", "type": "password", "label": "Password", "required": true },
             { "name": "confirmPassword", "type": "password", "label": "Confirm Password", "required": true },
             { "name": "classification", "label": "Classification", "type": "select", "required": true, "options": [{ "name": "Freshman", "value": "freshman" }, { "name": "Sophomore", "value": "sophomore" }, { "name": "Junior", "value": "junior" }, { "name": "Senior", "value": "senior" }] },
-            { "name": "user_type", "type": "select", "label": "User Type", "require": true, "options": [{ "name": "Student", "value": "student" }, { "name": "Professor", "value": "professor" }] }
+            { "name": "user_type", "type": "select", "label": "User Type", "require": true, "options": [{ "name": "Student", "value": "student" }, { "name": "Faculty", "value": "faculty" }] }
         ];
         let actionLinks = [
             { "link": "login", "title": "Login", "icon": "person_add" },

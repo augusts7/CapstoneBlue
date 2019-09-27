@@ -105,7 +105,7 @@ class AdvisingSlots extends React.Component {
         );
       }.bind(this)
     );
-    if (this.state.user_type === "professor") {
+    if (this.state.user_type === "faculty") {
       return (
         <div className="advisingSlots">
           Advising Slots
