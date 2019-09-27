@@ -4,36 +4,32 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import Main from "../Main/Main";
 import Profile from "../../Authentication/Profile/Profile";
-import MyCalendar from "../../components/Calendar/MyCalendar";
+import CalenderView from "../CalenderView/CalenderView";
 
 import "./App.css";
 
 class App extends React.Component {
+  render() {
+    let id = this.props.id || "";
 
-    render() {
+    return (
+      <Router>
+        <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header full">
+          <Header id={id} />
 
-        let id = this.props.id || "";
+          <main className="mdl-layout__content mdl-color--grey-200">
+            <div id="content-div">
+              <Route path="/profile" component={Profile} />
+              <Route path="/calenderView" component={CalenderView} />
+              <Route exact path="/" component={Main} />
+            </div>
 
-        return (
-            <Router>
-                <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header full">
-                    <Header id={id} />
-
-                    <main className="mdl-layout__content mdl-color--grey-200">
-                        <div id="content-div">
-                            <Route path="/profile" component={Profile} />
-                            <Route path="/calendar" component={MyCalendar} />
-                            <Route exact path="/" component={Main} />
-                        </div>
-
-                        <Footer />
-                    </main>
-                </div>
-            </Router>
-        );
-    }
-
-    
+            <Footer />
+          </main>
+        </div>
+      </Router>
+    );
+  }
 }
 
 export default App;

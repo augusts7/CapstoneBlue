@@ -33,6 +33,7 @@
     "nodemailer-promise": "^2.0.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "react-swipeable-views": "^0.13.3",
     "util.promisify": "^1.0.0"
   },
   "devDependencies": {

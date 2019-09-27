@@ -1,16 +1,16 @@
 import React from "react";
-import Carosel from "../../components/Carosel/Carosel.js";
 import Calender from "../../components/Calendar/MyCalendar";
+import AdvisingSlots from "../../components/AdvisingSlots/AdvisingSlots";
 
-class Main extends React.Component {
+class CalenderView extends React.Component {
   render() {
     return (
       <div>
-        <Carosel />
         <Calender />
+        <AdvisingSlots />
       </div>
     );
   }
 }
 
-export default Main;
+export default CalenderView;

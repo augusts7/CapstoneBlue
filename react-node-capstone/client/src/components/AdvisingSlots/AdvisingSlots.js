@@ -118,8 +118,8 @@ class AdvisingSlots extends React.Component {
               margin="normal"
               label="Start Time"
               value={this.state.start}
-              onChange={this.handleStartTimeChange}>
-            </DateTimePicker>
+              onChange={this.handleStartTimeChange}
+            ></DateTimePicker>
             <Divider />
             <DateTimePicker
               autoOk

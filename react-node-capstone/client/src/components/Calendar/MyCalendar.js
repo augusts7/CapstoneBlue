@@ -6,7 +6,6 @@ import "@fullcalendar/daygrid/main.css";
 import interactionPlugin from "@fullcalendar/interaction";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import "./MyCalendar.css";
-import AdvisingSlots from "./AdvisingSlots";
 import ls from "local-storage";
 
 class MyCalendar extends Component {
@@ -37,9 +36,7 @@ class MyCalendar extends Component {
     var { events } = this.state;
     return (
       <div className="grid-container">
-        <div className="advisingSlots">
-          <AdvisingSlots />
-        </div>
+        <div className="advisingSlots"></div>
         <div className="calendar-container">
           <FullCalendar
             defaultView="dayGridMonth"
