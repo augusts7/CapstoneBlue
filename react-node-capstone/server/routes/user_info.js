@@ -48,15 +48,19 @@ router.route("/").get(async (req, res) => {
 router.post('/login', function (req, res, next) {
 
     passport.authenticate('local', function (err, user, info) {
-        if (err || !user) return next("Authentication failed.")
-        req.login(user, function (err) { 
-            if (err) return next("Authentication failed.");
-            
-            return res.send({ success: true, message: "Authentication succeeded", "user": user });
-        });
+        if (err) {
+            return res.json({ "success": false, "message": "Authentication failed. " + err
+            });
+        }
+        if (!user) {
+            return res.json({ "success": false, "message": "Authentication failed. User with this email couldn't be found." });
+        }
+        return res.json({ "success": true, "message": "User has been logged in", "user": user });
 
-})
-})
+    })(req, res);
+});
+
+
 router.post("/register", function (req, res) {
 
     const user = {
@@ -74,15 +78,21 @@ router.post("/register", function (req, res) {
 
     pool.query("SELECT COUNT(*) AS count FROM ulmschedulerdb.user_info WHERE username = ?", user.username, function (error, results, fields) {
         if (error) {
-            return res.json({ "success": false, "message": "Error registering user. Error: " + error });
+            return res.json({ "success": false, "message": "Error registering user. " + error });
         }
 
         if (results[0].count == 0) {
             pool.query("INSERT INTO ulmschedulerdb.user_info SET ?", user, function (error, results, fields) {
                 if (error) {
-                    return res.json({ "success": false, "message": "Error registering user. Error: " + error });
+                    return res.json({ "success": false, "message": "Error registering user. " + error });
                 }
-                return res.json({ "success": true, "message": "User has been registered", "user": user  });
+                req.login(user, function (err) {
+                    if (err) {
+                        return res.json({ "success": false, "message": "User has been registered, but couldn't be logged in."  });
+                    }
+                    return res.json({ "success": true, "message": "User has been registered and logged in as " + user.campusEmail, "user": user  });
+                });
+
             });
         } else {
             return res.json({ "success": false, "message": "User already exists in database"});
@@ -112,13 +122,13 @@ function sendPasswordResetEmail (email, res) {
 
     let callback = (error, info) => {
         if (error) {
-            return res.json({ "success": false, "message": "Password reset email couldn't be sent. Error: " + error })
+            return res.json({ "success": false, "message": "Password reset email couldn't be sent. " + error })
         } else {
             return res.json({ "success": true, "message": "Password reset email sent. " + info.response })
         }
     };
 
-    emailHelper.sendEmail(email, subject, text, callback); 
+    emailHelper.sendEmail(email, subject, text, callback);
 }
 
 
