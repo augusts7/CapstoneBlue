@@ -1,10 +1,18 @@
 import React from "react";
 import Divider from "@material-ui/core/Divider";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import Paper from "@material-ui/core/Paper";
+import AddIcon from "@material-ui/icons/Add";
+import Fab from "@material-ui/core/Fab";
 import DateFnsUtils from "@date-io/date-fns";
 import Button from "@material-ui/core/Button";
 import "./AdvisingSlots.css";
-import ls from "local-storage";
+//import ls from "local-storage";
+import { ListSubheader } from "@material-ui/core";
 
 class AdvisingSlots extends React.Component {
   constructor(props) {
@@ -22,7 +30,7 @@ class AdvisingSlots extends React.Component {
           advisor: "Lon Smith"
         }
       ],
-      user_type: ls.get("user_type")
+      user_type: "student"
     };
 
     this.handleStartTimeChange = this.handleStartTimeChange.bind(this);
@@ -77,34 +85,51 @@ class AdvisingSlots extends React.Component {
 
   render() {
     const availableSlots = this.state.slots.map(function(item, i) {
+      var s = new Date(item.start);
+      var e = new Date(item.end);
       return (
-        <li key={i} className="availableSlots">
-          {item.start.substring(6, 8)}
-          {item.start.substring(8, 10)}-{item.start.substring(0, 4)}{" "}
-          {item.start.substring(11, 16)} to {item.end.substring(6, 8)}
-          {item.end.substring(8, 10)}-{item.end.substring(0, 4)}{" "}
-          {item.end.substring(11, 16)}
-        </li>
+        <ListItem key={i} className="availableSlots">
+          <ListItemIcon>
+            <ListItemText
+              id={i}
+              primary={
+                s.toLocaleString("en-US", { timeZone: "America/Chicago" }) +
+                " - " +
+                e.toLocaleString("en-US", { timeZone: "America/Chicago" })
+              }
+            />
+          </ListItemIcon>
+        </ListItem>
       );
     });
 
-    const availableStudentSlots = this.state.slots.map(
-      function(item, i) {
-        return (
-          <li key={i} className="availableSlots">
-            {" "}
-            {item.start.substring(6, 8)}
-            {item.start.substring(8, 10)}-{item.start.substring(0, 4)}{" "}
-            {item.start.substring(11, 16)} to {item.end.substring(6, 8)}
-            {item.end.substring(8, 10)}-{item.end.substring(0, 4)}{" "}
-            {item.end.substring(11, 16)} with {item.advisor}
-            <Button onClick={this.addToCalendar} style={{ color: "green" }}>
-              Add To Calendar
-            </Button>
-          </li>
-        );
-      }.bind(this)
-    );
+    const availableStudentSlots = this.state.slots.map(function(item, i) {
+      var s = new Date(item.start);
+      var e = new Date(item.end);
+      return (
+        <ListItem key={i} className="availableSlots">
+          <ListItemText
+            id={i}
+            primary={
+              s.toLocaleString("en-US", { timeZone: "America/Chicago" }) +
+              " - " +
+              e.toLocaleString("en-US", { timeZone: "America/Chicago" })
+            }
+          />
+          <Fab
+            variant="extended"
+            color="default"
+            size="small"
+            aria-label="Add to Calender"
+            id="addButton"
+            padding-right="50px"
+          >
+            <AddIcon />
+            Add to Calender
+          </Fab>
+        </ListItem>
+      );
+    });
     if (this.state.user_type === "faculty") {
       return (
         <div className="advisingSlots">
@@ -156,22 +181,24 @@ class AdvisingSlots extends React.Component {
             Submit
           </Button>
           <div className="slotList">
-            <ol>
-              Available Times
-              <br />
+            <List
+              component="nav"
+              class="list"
+              subheader={<ListSubheader>Available Slots</ListSubheader>}
+            >
               {availableSlots}
-            </ol>
+            </List>
           </div>
         </div>
       );
     } else {
       return (
         <div className="slotList">
-          <ol>
+          <Paper class="studentViewSlotList">
             <h4>Available Advising Slots</h4>
             <br />
             {availableStudentSlots}
-          </ol>
+          </Paper>
         </div>
       );
     }
