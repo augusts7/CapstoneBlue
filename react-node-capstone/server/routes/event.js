@@ -12,7 +12,7 @@ router.use(bodyParser.json());
 
 router.route("/").get(async (req, res, next) => {
   try {
-    let results = await pool.query("SELECT * FROM events");
+    let results = await pool.query("SELECT * FROM event");
     res.json(results);
   } catch (e) {
     console.log(e);
@@ -22,7 +22,7 @@ router.route("/").get(async (req, res, next) => {
 
 //Post
 router.route("/").post((req, res) => {
-  var q1 = pool.query("SELECT COUNT(*) AS count FROM events", function(
+  var q1 = pool.query("SELECT COUNT(*) AS count FROM event", function(
     error,
     results,
     fields
@@ -30,17 +30,16 @@ router.route("/").post((req, res) => {
     if (error) throw error;
 
     const event = {
-      id: results[0].count + 1,
-      startTime: req.body.startTime,
-      endTime: req.body.endTime,
       title: req.body.title,
       description: req.body.description,
-      type: req.body.type,
-      creator: req.body.creator,
+      start: req.body.start,
+      end: req.body.end,
+      event_type: req.body.event_type,
+      creator_id: req.body.creator_id,
       carousel: req.body.carousel
     };
 
-    var q2 = pool.query("INSERT INTO events SET ?", event, function(
+    var q2 = pool.query("INSERT INTO event SET ?", event, function(
       error,
       results,
       fields
@@ -48,7 +47,7 @@ router.route("/").post((req, res) => {
       if (error) throw error;
     });
 
-    res.send(event);
+    res.send(results);
   });
 });
 

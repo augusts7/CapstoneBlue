@@ -12,8 +12,8 @@ router.use(bodyParser.json());
 
 router.route("/").get(async (req, res) => {
   try{
-  let appointments = await pool.query("SELECT * FROM event WHERE event_type = 'appointment'");
-  res.json(appointments);
+  let attending = await pool.query("SELECT * FROM attending");
+  res.json(attending);
   }catch(e){
     console.log(e);
     res.sendStatus(500);
@@ -21,24 +21,20 @@ router.route("/").get(async (req, res) => {
 })
 
 router.route("/").post((req,res) => {
-  pool.query("SELECT COUNT(*) AS count FROM event", function(
+  pool.query("SELECT COUNT(*) AS count FROM attending", function(
     error,
     results,
     fields
   ){
     if (error) throw error;
 
-    const appointments = {
+    const attending = {
       //auto increment in database needed 
-      title: req.body.title,
-      description : req.body.description,
-      start: req.body.start,
-      end: req.body.end,
-      event_type: req.body.end,
-      creator_id: req.body.creator_id,
-      carousel: req.body.carousel
+      event_id = req.body.event_id,
+      attendee_id = req.body.attendee_id,
+      group_id = req.body.group_id
     };
-    pool.query("INSERT INTO event SET ?", appointments, function(
+    pool.query("INSERT INTO attending SET ?", attending, function(
       error,
       results,
       fields

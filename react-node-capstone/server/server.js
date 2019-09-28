@@ -22,16 +22,24 @@ const passportHelper = require("./auth/passport");
 passportHelper.initPassport(app);
 
 //Routes
-const eventsRouter = require("./routes/events");
-const usersRouter = require("./routes/users");
+const eventRouter = require("./routes/event");
+const usersRouter = require("./routes/user_info");
 const appointmentRouter = require("./routes/appointments");
 const advisingRouter = require("./routes/advising");
+const attendingRouter = require("./routes/attending")
 
 //Connects Routes to there files.
-app.use("/events", eventsRouter);
-app.use("/users", usersRouter);
+app.use("/event", eventRouter);
+app.use("/user_info", usersRouter);
 app.use("/appointments", appointmentRouter);
 app.use("/advising", advisingRouter);
+app.use("/attending", attendingRouter);
+
+//Error Handler
+app.use((err, req, res, next) => {
+    res.status(400)
+        .json({success: false, messsage: err || err.messsage})
+})
 
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));

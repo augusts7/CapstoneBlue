@@ -9,26 +9,54 @@ var emailHelper = require("../email/emailHelper");
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
-
-router.post('/login', function (req, res) {
+router.route("/").get(async (req, res) => {
+    try{
+    let user_info = await pool.query("SELECT * FROM user_info");
+    res.json(user_info);
+    }catch(e){
+      console.log(e);
+      res.sendStatus(500);
+    }
+  })
+  
+  router.route("/").post((req,res) => {
+    pool.query("SELECT COUNT(*) AS count FROM user_info", function(
+      error,
+      results,
+      fields
+    ){
+      if (error) throw error;
+  
+      const user_info = {
+        //auto increment in database needed 
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        campusEmail: req.body.campusEmail,
+        password: req.body.password,
+        user_type: req.body.user_type
+      };
+      pool.query("INSERT INTO user_info SET ?", user_info, function(
+        error,
+        results,
+        fields
+      ){
+        if (error) throw error;
+      });
+      res.send(results);
+    })
+  });
+router.post('/login', function (req, res, next) {
 
     passport.authenticate('local', function (err, user, info) {
-        if (err) {
-            return res.json({ "success": false, "message": "Authentication failed. Error: " + err
-            });
-        }
-        if (!user) {
-            return res.json({ "success": false, "message": "Authentication failed. User with this email couldn't be found." });
-        }
+        if (err || !user) return next("Authentication failed.")
         req.login(user, function (err) { 
-            if (err) {
-                return res.json({ "success": false, "message": "Authentication failed. Error: " + err });
-            }
+            if (err) return next("Authentication failed.");
+            
             return res.send({ success: true, message: "Authentication succeeded", "user": user });
         });
-    })(req, res);
-});
 
+})
+})
 router.post("/register", function (req, res) {
 
     const user = {

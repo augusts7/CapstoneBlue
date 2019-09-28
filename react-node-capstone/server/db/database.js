@@ -6,7 +6,7 @@ var pool = mysql.createPool({
   host: "event-scheduler-db.cfuzjkgst1bk.us-east-2.rds.amazonaws.com",
   user: "admin",
   password: "CapstoneBlue",
-  database: "ulmschedulerdb",
+  database: "schedulerdb",
   port: "3306"
 });
 
