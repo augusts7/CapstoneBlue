@@ -4,7 +4,7 @@ const pool = require("../db/database");
 const passport = require("passport");
 
 
-function initPassport(app) { 
+function initPassport(app) {
 
     const strategy = new LocalStrategy(
         { "usernameField": "campusEmail" },
@@ -12,15 +12,17 @@ function initPassport(app) {
 
             pool.query("SELECT * FROM ulmschedulerdb.user_info WHERE campusEmail = ?", campusEmail, function (error, results, fields) {
                 if (error) {
-                    return done(null, false);
+                    return done("Error while connecting to the database. " + error, false);
                 }
-                if (results.length > 0) { 
+                if (results.length > 0) {
                     const user = results[0];
                     if (user.password == password) {
-                        return done(null, user); 
+                        return done(null, user);
+                    } else {
+                      return done("Passwords don't match.", false);
                     }
                 } else {
-                    return done(null, false);
+                    return done("Can't find any user with that email. Are you sure that the email is correct?", false);
                 }
             });
         });
@@ -38,12 +40,12 @@ function initPassport(app) {
 
         pool.query("SELECT * FROM ulmschedulerdb.user_info WHERE username = ?", username,  function (error, results, fields) {
             if (error) {
-                return done(null, false);
+                return done("Couldn't connect to the database. " + error, false);
             }
             if (results.length > 0) {
                 return done(null, results[0]);
             } else {
-                return done(null, false);
+                return done("Couldn't find any user with given username.", false);
             }
         });
     });

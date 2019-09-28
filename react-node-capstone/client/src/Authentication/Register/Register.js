@@ -20,7 +20,7 @@ class Register extends React.Component {
     }
 
     onSubmit(target) {
-        
+
         this.setState({ "isLoading": true });
         let data = {
             "first_name": target.first_name.value,
@@ -50,9 +50,9 @@ class Register extends React.Component {
                 });
                 if (res.success) {
                     if (this.props.hasLoggedIn) {
-                        this.props.hasLoggedIn();
+                        this.props.hasLoggedIn(res.user);
                     }
-                } 
+                }
             });
     }
 
