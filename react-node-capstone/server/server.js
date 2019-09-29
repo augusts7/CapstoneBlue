@@ -6,14 +6,14 @@ const expressSession = require("express-session");
 const passport = require("passport");
 
 const session = {
-    secret: "LoxodontaElephasMammuthusPalaeoloxodonPrimelephas",
-    cookie: {},
-    resave: false,
-    saveUninitialized: false
+  secret: "LoxodontaElephasMammuthusPalaeoloxodonPrimelephas",
+  cookie: {},
+  resave: false,
+  saveUninitialized: false
 };
 
 if (app.get("env") === "production") {
-    session.cookie.secure = true; // Serve secure cookies, requires HTTPS
+  session.cookie.secure = true; // Serve secure cookies, requires HTTPS
 }
 
 app.use(expressSession(session));
@@ -45,9 +45,8 @@ app.use("./classes_taken", classestakesRouter);
 
 //Error Handler
 app.use((err, req, res, next) => {
-    res.status(400)
-        .json({success: false, messsage: err || err.messsage})
-})
+  res.status(400).json({ success: false, messsage: err || err.messsage });
+});
 
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));

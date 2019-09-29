@@ -1,40 +1,39 @@
+import React, { Component } from "react";
 
-import React from 'react';
-import "./EventList.css"; 
-import EventList from "./EventList"
+import "./EventList.css";
 
+class EventList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      events: [
+        {
+          title: "Event Title",
+          description: "This is a description for the event",
+          start: new Date(),
+          end: new Date()
+        }
+      ]
+    };
+  }
 
-class EventList extends React.Component {
-    
-    render() {
+  componentDidMount() {
+    fetch("/events")
+      .then(res => res.json())
+      .then(eventData => this.setState({ events: eventData }));
+  }
 
-        let data = [
-            { "title": "Bryan Cranston", "description": "Bryan Cranston played the role of Walter in Breaking Bad. He is also known for playing Hal in Malcom in the Middle."},
-            { "title": "Aaron Paul", "description": "Aaron Paul played the role of Jesse in Breaking Bad. He also featured in the 'Need For Speed' Movie."},
-            { "title": "Bob Odenkirk", "description": "Bob Odinkrik played the role of Saul in Breaking Bad. Due to public fondness for the  character, Bob stars in his own show now, called 'Better Call Saul'."}
-
-        ];
-
-        return (
-            <div className="mdl-shadow--4dp itemsContainer">
-                <h4>September 9, 2019</h4>
-                <div className="itemsWrapper">
-                    {data.map(listItem => {
-                        return <DayViewItem title={listItem.title} description={listItem.description} />
-                    })}
-                </div>
-            </div> 
-        );
-    } 
+  render() {
+    return (
+      <div class="eventList">
+        <h2 class="date">Aug 21</h2>
+        <h6 class="description">
+          Blah Blah Blah BlahBlah Blah Blah BlahBlah Blah Blah BlahBlah Blah
+          Blah BlahBlah Blah Blah Blah
+        </h6>
+      </div>
+    );
+  }
 }
 
-
 export default EventList;
-
-
-
-
-
-
-
-

@@ -1,0 +1,26 @@
+.group-view {
+  display: grid;
+  grid-template-columns: 1fr [group] 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas: "group-name group-name" "group-picture group-picture" "group-picture group-picture" "group-events group-info" "group-events group-info";
+}
+
+.group-picture {
+  grid-area: group-picture;
+  border: solid maroon;
+}
+
+.group-events {
+  grid-area: group-events;
+  border: solid yellow;
+}
+
+.group-info {
+  grid-area: group-info;
+  border: solid blue;
+}
+
+.group-name {
+  border: solid green;
+  grid-area: group-name;
+}

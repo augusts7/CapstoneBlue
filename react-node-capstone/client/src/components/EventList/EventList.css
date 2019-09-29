@@ -1,18 +1,24 @@
-
-
-.itemsContainer {
-   width: 70%;
-   margin: 24px auto;
-   background-color: white;
-   padding-bottom: 16px;
+.eventList {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "date description description description";
+  overflow: auto;
+  padding: 10px;
 }
-.itemsWrapper {
-    display: grid;
-    grid-template-columns: 50% 50%;
+
+.description {
+  grid-area: description;
+  justify-content: center;
+  margin: 10px;
 }
-.itemsContainer h4 {
-    text-align: center;
-    padding: 32px 16px;
-    background-color: #64B5F6;
-    color: white;
+
+.date {
+  grid-area: date;
+  padding: 10px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  border-right: groove;
+  justify-content: center;
+  text-align: center;
 }
