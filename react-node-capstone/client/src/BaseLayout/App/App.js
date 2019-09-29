@@ -5,6 +5,7 @@ import Footer from "../Footer/Footer";
 import Main from "../Main/Main";
 import Profile from "../../Authentication/Profile/Profile";
 import CalenderView from "../CalenderView/CalenderView";
+import GroupView from "../GroupView/GroupView";
 
 import "./App.css";
 
@@ -21,6 +22,7 @@ class App extends React.Component {
             <div id="content-div">
               <Route path="/profile" component={Profile} />
               <Route path="/calenderView" component={CalenderView} />
+              <Route path="/groupView" component={GroupView} />
               <Route exact path="/" component={Main} />
             </div>
 

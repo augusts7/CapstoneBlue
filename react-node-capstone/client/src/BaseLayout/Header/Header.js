@@ -34,6 +34,9 @@ class Header extends React.Component {
               <Link className="mdl-navigation__link" to="/calenderView">
                 Calendar
               </Link>
+              <Link className="mdl-navigation__link" to="/groupView">
+                Groups
+              </Link>
               <Link className="mdl-navigation__link" to="/profile">
                 My Profile
               </Link>
@@ -60,6 +63,11 @@ class Header extends React.Component {
               <Link to="/">
                 <li className="mdl-menu__item">
                   <i className="material-icons">home</i>Home
+                </li>
+              </Link>
+              <Link to="/groupView">
+                <li className="mdl-menu__item">
+                  <i className="material-icons">group</i>Groups
                 </li>
               </Link>
               <Link to="/calenderView">
