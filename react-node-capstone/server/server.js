@@ -27,6 +27,10 @@ const usersRouter = require("./routes/user_info");
 const appointmentRouter = require("./routes/appointments");
 const advisingRouter = require("./routes/advising");
 const attendingRouter = require("./routes/attending")
+const groupsRouter = require("./routes/groups")
+const mygroupsRouter = require("./routes/my_groups")
+const classinfoRouter = require("./routes/class_info")
+const classestakesRouter = require("./routes/classes_taken")
 
 //Connects Routes to there files.
 app.use("/event", eventRouter);
@@ -34,6 +38,10 @@ app.use("/user_info", usersRouter);
 app.use("/appointments", appointmentRouter);
 app.use("/advising", advisingRouter);
 app.use("/attending", attendingRouter);
+app.use("/groups", groupsRouter);
+app.use("./my_groups", mygroupsRouter);
+app.use("./class_info", classinfoRouter);
+app.use("./classes_taken", classestakesRouter);
 
 //Error Handler
 app.use((err, req, res, next) => {

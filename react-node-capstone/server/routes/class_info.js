@@ -12,7 +12,7 @@ router.use(bodyParser.json());
 
 router.route("/").get(async (req, res, next) => {
   try {
-    let results = await pool.query("SELECT * FROM event");
+    let results = await pool.query("SELECT * FROM class_info");
     res.json(results);
   } catch (e) {
     console.log(e);
@@ -20,19 +20,15 @@ router.route("/").get(async (req, res, next) => {
   }
 });
 
-//Post
 router.route("/").post((req, res) => {
-    const event = {
-      title: req.body.title,
-      description: req.body.description,
-      start: req.body.start,
-      end: req.body.end,
-      event_type: req.body.event_type,
-      creator_id: req.body.creator_id,
-      carousel: req.body.carousel
+    const class_info = {
+      CRN: req.body.CRN,
+      course_title: req.body.course_title,
+      course_subject: req.body.course_subject,
+      course_number: req.body.course_number
     };
 
-    pool.query("INSERT INTO event SET ?", event, function(
+    pool.query("INSERT INTO class_info SET ?", class_info, function(
       error,
       results,
       fields

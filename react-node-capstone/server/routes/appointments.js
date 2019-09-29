@@ -21,15 +21,7 @@ router.route("/").get(async (req, res) => {
 })
 
 router.route("/").post((req,res) => {
-  pool.query("SELECT COUNT(*) AS count FROM event", function(
-    error,
-    results,
-    fields
-  ){
-    if (error) throw error;
-
     const appointments = {
-      //auto increment in database needed 
       title: req.body.title,
       description : req.body.description,
       start: req.body.start,
@@ -44,9 +36,10 @@ router.route("/").post((req,res) => {
       fields
     ){
       if (error) throw error;
+      res.send(results);
     });
-    res.send(results);
+    
   })
-});
+
 
 module.exports = router;

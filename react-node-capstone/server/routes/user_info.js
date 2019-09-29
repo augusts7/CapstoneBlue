@@ -20,31 +20,42 @@ router.route("/").get(async (req, res) => {
   })
   
   router.route("/").post((req,res) => {
-    pool.query("SELECT COUNT(*) AS count FROM user_info", function(
-      error,
-      results,
-      fields
-    ){
-      if (error) throw error;
   
       const user_info = {
-        //auto increment in database needed 
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         campusEmail: req.body.campusEmail,
         password: req.body.password,
         user_type: req.body.user_type
       };
+      
       pool.query("INSERT INTO user_info SET ?", user_info, function(
         error,
         results,
         fields
       ){
         if (error) throw error;
+        if (user_info.user_type == "student"){
+            const student_info ={
+                user_id: results.insertId,
+                classification: req.body.classification,
+                major: req.body.major,
+                advisor_id: req.body.advisor_id
+            }
+            pool.query("INSERT INTO student_info SET ?", student_info, function(
+                error,
+                results,
+                fields
+            ){
+                if (error) throw error
+                res.send(results);
+            })
+        }
+        else{
+        res.send(results);}
       });
-      res.send(results);
+      
     })
-  });
 router.post('/login', function (req, res, next) {
 
     passport.authenticate('local', function (err, user, info) {
@@ -64,25 +75,20 @@ router.post('/login', function (req, res, next) {
 router.post("/register", function (req, res) {
 
     const user = {
-        username: req.body.cwid,
-        password: req.body.password,
-        campusEmail: req.body.campusEmail,
-        personalEmail: req.body.personalEmail,
-        major: req.body.major,
         first_name: req.body.first_name,
         last_name: req.body.last_name,
-        classification: req.body.classification,
-        advisor: req.body.advisor,
+        campusEmail: req.body.campusEmail,
+        password: req.body.password,
         user_type: req.body.user_type
     };
 
-    pool.query("SELECT COUNT(*) AS count FROM ulmschedulerdb.user_info WHERE username = ?", user.username, function (error, results, fields) {
+    pool.query("SELECT COUNT(*) AS count FROM schedulerdb.user_info WHERE campusEmail = ?", user.campusEmail, function (error, results, fields) {
         if (error) {
             return res.json({ "success": false, "message": "Error registering user. " + error });
         }
 
         if (results[0].count == 0) {
-            pool.query("INSERT INTO ulmschedulerdb.user_info SET ?", user, function (error, results, fields) {
+            pool.query("INSERT INTO schedulerdb.user_info SET ?", user, function (error, results, fields) {
                 if (error) {
                     return res.json({ "success": false, "message": "Error registering user. " + error });
                 }
@@ -102,7 +108,7 @@ router.post("/register", function (req, res) {
 
 router.post('/forgotPassword', function (req, res) {
 
-    pool.query("SELECT campusEmail FROM ulmschedulerdb.user_info WHERE campusEmail = ?", req.body.campusEmail, function (error, results, fields) {
+    pool.query("SELECT campusEmail FROM schedulerdb.user_info WHERE campusEmail = ?", req.body.campusEmail, function (error, results, fields) {
         if (error) {
             res.json({ "success": false, "message": "Failed to connect to database" });
         }

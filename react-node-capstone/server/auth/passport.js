@@ -10,7 +10,7 @@ function initPassport(app) {
         { "usernameField": "campusEmail" },
         function (campusEmail, password, done) {
 
-            pool.query("SELECT * FROM ulmschedulerdb.user_info WHERE campusEmail = ?", campusEmail, function (error, results, fields) {
+            pool.query("SELECT * FROM schedulerdb.user_info WHERE campusEmail = ?", campusEmail, function (error, results, fields) {
                 if (error) {
                     return done("Error while connecting to the database. " + error, false);
                 }
@@ -38,7 +38,7 @@ function initPassport(app) {
 
     passport.deserializeUser(function(username, done) {
 
-        pool.query("SELECT * FROM ulmschedulerdb.user_info WHERE username = ?", username,  function (error, results, fields) {
+        pool.query("SELECT * FROM schedulerdb.user_info WHERE username = ?", username,  function (error, results, fields) {
             if (error) {
                 return done("Couldn't connect to the database. " + error, false);
             }
