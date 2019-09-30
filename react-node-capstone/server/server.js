@@ -23,7 +23,7 @@ passportHelper.initPassport(app);
 
 //Routes
 const eventRouter = require("./routes/event");
-const usersRouter = require("./routes/user_info");
+const usersRouter = require("./routes/users");
 const appointmentRouter = require("./routes/appointments");
 const advisingRouter = require("./routes/advising");
 const attendingRouter = require("./routes/attending")
@@ -34,7 +34,7 @@ const classestakesRouter = require("./routes/classes_taken")
 
 //Connects Routes to there files.
 app.use("/event", eventRouter);
-app.use("/user_info", usersRouter);
+app.use("/users", usersRouter);
 app.use("/appointments", appointmentRouter);
 app.use("/advising", advisingRouter);
 app.use("/attending", attendingRouter);

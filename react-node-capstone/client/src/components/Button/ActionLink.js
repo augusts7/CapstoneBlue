@@ -1,13 +1,16 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Button from '../Button/Button';
+import { makeStyles} from "@material-ui/styles"
 
 
 class ActionLink extends React.Component {
 
     render() {
+
         return (
-            <p><Link className="mdl-color-text--blue" to={this.props.link}><i className="material-icons">{this.props.icon}</i>{this.props.title}</Link></p>
+          <Link to={this.props.link}><Button role="secondary"><i className="material-icons">{this.props.icon}</i>{this.props.title}</Button></Link>
         );
     }
 }

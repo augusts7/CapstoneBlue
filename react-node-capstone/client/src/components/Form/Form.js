@@ -4,7 +4,7 @@ import Button from "../Button/Button";
 import ActionLink from "../Button/ActionLink";
 import Input from "../Input/Input";
 import Select from "../Select/Select";
-import Container from "../Container/SingleColumnWithHeader/Container";
+import Container from "../Container/Container/Container";
 
 class Form extends React.Component {
 
@@ -12,7 +12,7 @@ class Form extends React.Component {
         super(props);
         this.onFormSubmit = this.onFormSubmit.bind(this);
 
-        this.getForm = this.getForm.bind(this);
+        this.getFields = this.getFields.bind(this);
         this.getActionLinks = this.getActionLinks.bind(this);
     }
 
@@ -26,12 +26,7 @@ class Form extends React.Component {
     }
 
 
-    getForm() {
-        let form = [];
-        let encType = "";
-        if (this.props.includesFile) {
-            encType = "multipart/form-data";
-        }
+    getFields() {
         let fields = [];
 
         this.props.fields.map(field => {
@@ -41,15 +36,17 @@ class Form extends React.Component {
                     key={field.name}
                     name={field.name}
                     label={field.label}
+                    onChange={field.onChange}
                     options={field.options}
                     required={field.required}
                 />));
             } else {
                 return(
-                fields.push(<Input
+                    fields.push(<Input
                     formId={this.props.id}
                     label={field.label}
                     type={field.type}
+                    onChange={field.onChange}
                     key={field.id}
                     name={field.name}
                     required={field.required}
@@ -57,21 +54,9 @@ class Form extends React.Component {
                 />));
             }
         })
-        form.push(
-            <form
-                onSubmit={this.onFormSubmit}
-                method="post"
-                encType={encType} >
+       
 
-                <div>
-                    {fields}
-                </div>
-
-                <Button type="submit" icon="done" name="Submit" />
-            </form>
-        );
-
-        return form;
+        return fields;
     }
 
     getActionLinks() {
@@ -99,12 +84,40 @@ class Form extends React.Component {
     }
 
     render() {
-        let body = [];
-        body.push(<div><div>{this.getForm()}</div><div>{this.getActionLinks()}</div></div>);
 
+        let styles = {
+            header: { "background": 'linear-gradient(45deg, #3949AB 30%, #1E88E5 90%)' },
+        };
+        let encType = "";
+        if (this.props.includesFile) {
+            encType = "multipart/form-data";
+        }
+        let submitButton = <Button type="submit"><i className="material-icons">done</i>Submit</Button>;
+        if (this.props.customSubmitButton) {
+            submitButton = "";
+        }
         return (
             <div>
-                <Container title={this.props.title} icon={this.props.icon} isLoading={this.props.isLoading} body={body} />
+                <Container styles={styles} title={this.props.title} icon={this.props.icon} isLoading={this.props.isLoading}>
+                    <div>
+                        <div>
+                            <form
+                                onSubmit={this.onFormSubmit}
+                                method="post"
+                                encType={encType} >
+                                <div>
+                                    {this.getFields()}
+                                </div>
+                                {submitButton}
+                                {this.props.children}
+                                
+                            </form> 
+                        </div>
+                        <div>
+                            {this.getActionLinks()}
+                        </div>
+                    </div>
+                </Container>
             </div>
         );
     }

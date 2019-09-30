@@ -1,7 +1,7 @@
 .message-wrapper {
     padding: 16px;
-    background-color: #F8BBD0;
-    color: #880E4F;
+    background-color: #B3E5FC;
+    color: black;
     display: grid;
     grid-template-columns: 85% 15%;
 }

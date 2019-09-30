@@ -28,7 +28,7 @@ class MessageBox extends React.Component {
                         {this.props.message}
                     </div>
                     <div>
-                        <Button type="button" icon="visibility_off" name="Hide" onClick={this.hideMessage} />
+                        <Button type="button" onClick={this.hideMessage}><i className="material-icons">visibility_off</i>Hide</Button>
                     </div>
                 </div>
             );

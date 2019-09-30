@@ -1,3 +1,9 @@
 .root-container {
-    background-color: #BBDEFB;
+    background: url("./background.jpg");
+}
+a {
+    color: darkslateblue;
+}
+a:hover {
+    font-weight: bold;
 }

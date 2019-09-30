@@ -2,6 +2,8 @@
 import React from 'react';
 import Form from "../../components/Form/Form";
 import MessageBox from "../../components/Form/MessageBox/MessageBox"
+import Button from "../../components/Button/Button"
+import { Link } from "react-router-dom"
 
 class Login extends React.Component {
 
@@ -62,14 +64,31 @@ class Login extends React.Component {
             { "link": "register", "title": "Register", "icon": "person_add" },
             { "link": "forgotPassword", "title": "Forgot Password", "icon": "help_outline" },
         ];
-        let title = "Login";
-        let icon = "account_box";
+        let title = "Sign In";
+        let icon = "accessibility";
         let id = "login";
 
         return (
-            <div>
+            <div className="mdl-grid" style={{ "width": "100%" }}>
+                <div className="mdl-cell--6-col mdl-cell--10-col-phone mdl-cell--10-col-tablet mdl-color--white mdl-shadow--4dp center">
                 <MessageBox message={this.state.message} hideMessage={this.hideMessage} />
-                <Form id={id} icon={icon} onSubmit={this.onSubmit} title={title} actionLinks={actionLinks} fields={fields} />
+                <Form customSubmitButton={true} id={id} icon={icon} onSubmit={this.onSubmit} title={title} fields={fields}>
+                    <div><Link to="/forgotPassword">Forgot password?</Link></div>
+                    <div>
+                            <Button role="main" type="submit" style={{ "margin-top": "16px", "padding-left": "16px", "padding-right": "32px" }}><i className="material-icons">accessibility</i>Sign in with Email</Button>
+                    </div>
+
+                    </Form>
+                    <div className="mdl-shadow--4dp" style={{ "border": "0.5px solid #1976D2", "background-color": "#1565C0", "color": "white", "padding": "24px 8px 8px 8px", "margin": "24px 0px 0px 0px"}}>
+                    <div style={{ "display": "flex", "justify-content": "center", "margin-bottom": "16px" }}>New User? Create a new Account?</div>
+                        <div style={{ "display": "flex", "justify-content": "center" }}>
+                            <Link to="/register">
+                                <Button role="primary" style={{ "padding-left": "816x", "padding-right": "32px" }}><i className="material-icons">accessibility</i>Register</Button>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+                
             </div>  
         );
     }

@@ -1,0 +1,25 @@
+.action-links-container {
+    margin-top: 16px;
+}
+
+.container-title-icons {
+    margin-right: 8px;
+    font-size: 24px;
+    margin-bottom: 16px;
+    color: white;
+}
+
+.container-body {
+    padding: 16px;
+}
+
+.container-header h4 {
+    padding: 16px;
+    background-color: #880E4F;
+    color: white;
+    margin: 0px;
+}
+
+.container-card-header {
+    background-color: white;
+}
