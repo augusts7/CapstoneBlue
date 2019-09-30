@@ -23,4 +23,5 @@
 .group-name {
   border: solid green;
   grid-area: group-name;
+  text-align: center;
 }

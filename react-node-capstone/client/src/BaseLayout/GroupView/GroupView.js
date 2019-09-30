@@ -6,14 +6,26 @@ import "./GroupView.css";
 //Mockup: https://www.figma.com/file/r5yEpMlG5SzIAkONOOAWc0/Groups-faculty-%26-student?node-id=0%3A1
 
 class GroupView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      groupName: "Group Name",
+      groupPicture:
+        "https://www.nationalgeographic.com/content/dam/expeditions/destinations/north-america/private/Yosemite/Hero-Yosemite.jpg",
+
+      eventListItems: [],
+      groupMembers: [],
+      groupOwner: ""
+    };
+  }
   render() {
     return (
       <div class="group-view">
         <div class="group-name">
-          <h2>Group Name</h2>
+          <h2>{this.state.groupName}</h2>
         </div>
         <div class="group-picture">
-          <p>A picture that the group owner selected.</p>
+          <img src={this.state.groupPicture} alt="Group Picture" />
         </div>
         <div class="group-events">
           <EventList />
