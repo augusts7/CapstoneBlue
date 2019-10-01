@@ -95,7 +95,7 @@ router.post("/register", function (req, res) {
 
 router.get("/advisors", function (req, res) {
 
-    pool.query("SELECT first_name, last_name, user_id FROM schedulerdb.user_info WHERE user_type = ?", "professor", function (error, results, fields) {
+    pool.query("SELECT first_name, last_name, user_id FROM schedulerdb.user_info WHERE user_type = ?", "faculty", function (error, results, fields) {
 
         if (error) {
             res.json({ "success": false, "message": "Failed to connect to database" });

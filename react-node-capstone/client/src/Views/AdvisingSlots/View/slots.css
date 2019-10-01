@@ -1,0 +1,13 @@
+
+.slotsTitle {
+    text-align: center;
+    width: 100%;
+    padding-top: 8px;
+    padding-bottom: 16px;
+    background-color: white;
+    margin-bottom: 8px;
+}
+.slotsTitleButton {
+    margin-top: 16px;
+}
+

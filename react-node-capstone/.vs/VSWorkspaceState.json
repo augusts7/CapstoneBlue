@@ -1,9 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\client\\src\\Components",
-    "\\client\\src\\Components\\Calendar"
+    "\\client",
+    "\\client\\src",
+    "\\client\\src\\Authentication",
+    "\\client\\src\\Views",
+    "\\client\\src\\Views\\CalenderView",
+    "\\server",
+    "\\server\\auth",
+    "\\server\\db",
+    "\\server\\routes"
   ],
-  "SelectedNode": "\\client",
+  "SelectedNode": "\\server\\routes\\users.js",
   "PreviewInSolutionExplorer": false
 }

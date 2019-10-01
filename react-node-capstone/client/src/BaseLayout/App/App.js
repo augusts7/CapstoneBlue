@@ -4,7 +4,7 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import Main from "../Main/Main";
 import Profile from "../../Authentication/Profile/Profile";
-import CalenderView from "../CalenderView/CalenderView";
+import CalenderView from "../../Views/CalenderView/CalenderView";
 import GroupView from "../GroupView/GroupView";
 
 import "./App.css";
