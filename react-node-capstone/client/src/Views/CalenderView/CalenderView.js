@@ -1,7 +1,5 @@
 import React from "react";
-import Calender from "../../components/Calendar/Calendar";
-import AdvisingSlots from "../../Views/AdvisingSlots/View/AdvisingSlots";
-import Calendar from "../../components/Calendar/Calendar"
+import Calendar from "../../components/Calendar/Calendar";
 
 class CalenderView extends React.Component {
 
@@ -20,7 +18,9 @@ class CalenderView extends React.Component {
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(res => { return res.json(); })
+        }).then(res => {
+            return res.json();
+        })
             .then((res) => {
                 try {
                     if (res.success) {
@@ -28,22 +28,27 @@ class CalenderView extends React.Component {
                         let data = [];
                         res.results.forEach(d => {
                             console.log(d);
-                            data.push({ "start": d.start, "end": d.end, "title": d.title, "color": "white", "backgroundColor": "#880E4F" });
+                            data.push({
+                                "start": d.start,
+                                "end": d.end,
+                                "title": d.title,
+                                "color": "white",
+                                "backgroundColor": "#880E4F"
+                            });
                         });
-                        this.setState({ "attendingEvents": data });
+                        this.setState({"attendingEvents": data});
 
                     }
                 } catch (e) {
                     console.log(e);
                 }
-                
+
                 alert(res);
                 console.log(res);
                 console.log(res.message);
             });
-     
-    }
 
+    }
 
 
     render() {
@@ -52,7 +57,7 @@ class CalenderView extends React.Component {
 
         return (
             <div className="mdl-grid">
-                <Calendar events={data} />
+                <Calendar events={data}/>
 
             </div>
         );

@@ -14,11 +14,11 @@ function getStyles(role) {
         "height": "48",
     };
 
-    if (role == "primary") {
+    if (role === "primary") {
         style["background"] = 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)';
-    } else if (role == "secondary") {
+    } else if (role === "secondary") {
         style["background"] = 'linear-gradient(45deg, #4A148C 30%, #7B1FA2 90%)';
-    } else if (role = "main") {
+    } else if (role === "main") {
         style["background"] = 'linear-gradient(45deg, #880E4F 30%, #AD1457 90%)';
     } else {
         style["background"] = 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)';

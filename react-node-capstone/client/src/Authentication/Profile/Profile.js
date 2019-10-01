@@ -43,7 +43,7 @@ class Profile extends React.Component {
       groupsList += g + ", ";
     }
 
-    let classesTakenHeader = ["Course name", "Course Id"];
+    let classesTakenHeader = ["Courses Taken"];
     let classesTaken = [
       ["CSCI", "2000, 2003, 3020, 3030, 4065"],
       ["MATH", "1016, 1032, 2002, 3003"],

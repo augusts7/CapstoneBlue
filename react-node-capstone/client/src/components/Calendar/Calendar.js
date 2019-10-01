@@ -7,7 +7,6 @@ import Button from "@material-ui/core/Button";
 import "@fullcalendar/core/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
-import Select from "../Select/Select";
 
 import "./main.css";
 
@@ -22,22 +21,22 @@ export default class Calendar extends React.Component {
 
         let years = [];
         for (var i = 2017; i < 2025; i++) {
-            years.push({ "value": i, "name": i });
+            years.push({"value": i, "name": i});
         }
-
+        // eslint-disable-next-line
         let months = [
-            { "value": 0, "name": "January" },
-            { "value": 1, "name": "February" },
-            { "value": 2, "name": "March" },
-            { "value": 3, "name": "April" },
-            { "value": 4, "name": "May" },
-            { "value": 5, "name": "June" },
-            { "value": 6, "name": "July" },
-            { "value": 7, "name": "August" },
-            { "value": 8, "name": "September" },
-            { "value": 9, "name": "October" },
-            { "value": 10, "name": "November" },
-            { "value": 11, "name": "December" },
+            {"value": 0, "name": "January"},
+            {"value": 1, "name": "February"},
+            {"value": 2, "name": "March"},
+            {"value": 3, "name": "April"},
+            {"value": 4, "name": "May"},
+            {"value": 5, "name": "June"},
+            {"value": 6, "name": "July"},
+            {"value": 7, "name": "August"},
+            {"value": 8, "name": "September"},
+            {"value": 9, "name": "October"},
+            {"value": 10, "name": "November"},
+            {"value": 11, "name": "December"},
         ];
 
         return (
