@@ -1,7 +1,6 @@
 const express = require("express"); //Imports express
 const app = express(); //Intializes an express app
 const port = process.env.PORT || 5000; //Creates a port varible to be used later in app.listen()
-const cookieParser = require("cookie-parser");
 
 const expressSession = require("express-session");
 const passport = require("passport");
@@ -19,11 +18,6 @@ if (app.get("env") === "production") {
 }
 
 
-app.use(cookieParser());
-app.use(cookieSession({
-    name: 'session',
-    keys: ['key1', 'key2']
-}))
 app.use(expressSession(session));
 
 
