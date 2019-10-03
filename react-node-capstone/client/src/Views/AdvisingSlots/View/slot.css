@@ -20,7 +20,7 @@ h6 {
     color: #455A64;
 }
 
-.slotRoot .mdl-cell--1-col {
+.slotRoot .mdl-cell--1-col, .slotRoot .mdl-cell--2-col {
     display: flex;
     align-items: center;
 }

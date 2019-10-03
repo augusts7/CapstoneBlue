@@ -1,15 +1,15 @@
 const express = require("express"); //Imports express
 const app = express(); //Intializes an express app
 const port = process.env.PORT || 5000; //Creates a port varible to be used later in app.listen()
-
+const cookieParser = require("cookie-parser");
 const expressSession = require("express-session");
-const passport = require("passport");
+
 
 const session = {
   secret: "LoxodontaElephasMammuthusPalaeoloxodonPrimelephas",
   cookie: {},
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false 
 };
 
 
@@ -17,8 +17,10 @@ if (app.get("env") === "production") {
   session.cookie.secure = true; // Serve secure cookies, requires HTTPS
 }
 
-
+app.use(cookieParser());
+app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(expressSession(session));
+
 
 
 const passportHelper = require("./auth/passport");

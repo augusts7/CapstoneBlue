@@ -44,6 +44,7 @@ router.get("/created", function (req, res) {
     console.log("created");
 
     console.log(req.user);
+    console.log(req.user.user_id);
 
     pool.query("SELECT * FROM schedulerdb.event WHERE creator_id = ? ", req.user.user_id, function (error, results, fields) {
 

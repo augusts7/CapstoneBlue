@@ -31,6 +31,7 @@ class ForgotPassword extends React.Component {
         fetch("/users/forgotPassword", {
             method: 'POST',
             body: JSON.stringify(data),
+            credentials: "include",
             headers: {
                 'Content-Type': 'application/json'
             }

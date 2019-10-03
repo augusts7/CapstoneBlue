@@ -46,8 +46,9 @@ class Register extends React.Component {
         fetch("/users/register", {
             method: 'POST',
             body: JSON.stringify(data),
+            credentials: "include",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             }
         }).then(res => {
             return res.json();

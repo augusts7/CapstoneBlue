@@ -6,7 +6,27 @@ class Slot extends React.Component {
     constructor(props) {
         super(props);
 
+        this.onAddToCalendar = this.onAddToCalendar.bind(this);
+    }
 
+    onAddToCalendar(id) {
+
+        let data = { "eventID": id };
+
+        fetch("/advising/attend", {
+            method: 'POST',
+            body: JSON.stringify(data),
+            credentials: "include",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => { return res.json(); })
+            .then((res) => {
+                this.setState({
+                    "isLoading": false,
+                    "message": res.message
+                });
+            });
     }
 
     render() {
@@ -41,8 +61,26 @@ class Slot extends React.Component {
 
         const dateString = date + " from " + startTime + " to " + endTime;
 
+        let className = "slotRoot";
+        if (this.props.className) {
+            className += " " + this.props.className;
+        }
+
+        let buttons = [];
+        if (this.props.userType == "student") {
+            buttons.push(
+                <button onClick={() => this.onAddToCalendar(this.props.data.eventID)} className="mdl-button mdl-js-button mdl-button--colored"><i className="material-icons slotButtonIcon">done</i>Add to Calendar</button>
+
+            );
+        } else if (this.props.userType == "faculty") {
+            buttons.push(
+                <button onClick={this.props.onAddToCalendar} className="mdl-button mdl-js-button mdl-button--colored"><i className="material-icons slotButtonIcon">delete</i>Delete</button>
+
+            );
+        }
+
         return (
-            <div className="slotRoot">
+            <div className={className}>
 
                 <div className="mdl-grid">
                     <div className="mdl-cell--1-col">
@@ -71,7 +109,7 @@ class Slot extends React.Component {
                             </div>
                         </div>
                         <div className="slotButtons">
-                            <button onClick={this.props.onAddToCalendar} className="mdl-button mdl-js-button mdl-button--colored"><i className="material-icons slotButtonIcon">done</i>Add to Calendar</button>
+                            {buttons}
                         </div>
                     </div>
                 </div>

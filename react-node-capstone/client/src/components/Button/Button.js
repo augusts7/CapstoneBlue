@@ -7,8 +7,8 @@ function getStyles(role) {
 
     let style = {
         "border": "0",
-        "border-radius": "3",
-        "box-shadow": '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        "borderRadius": "3",
+        "boxShadow": '0 3px 5px 2px rgba(255, 105, 135, .3)',
         "color": 'white',
         "padding": "8px 16px",
         "height": "48",

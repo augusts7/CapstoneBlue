@@ -20,7 +20,13 @@ router.post('/login', function (req, res, next) {
         if (!user) {
             return res.json({ "success": false, "message": "Authentication failed. User with this email couldn't be found." });
         }
-        return res.json({ "success": true, "message": "User has been logged in", "user": user });
+        req.login(user, function (err) {
+            if (err) {
+                return res.json({ "success": false, "message": "Authentication failed. Error logging in user. " + err });
+            }
+            return res.json({ "success": true, "message": "User has been logged in", "user": user });
+        });
+        
 
     })(req, res);
 });

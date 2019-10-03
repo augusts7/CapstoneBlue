@@ -58,7 +58,7 @@ export default class Calendar extends React.Component {
                         displayEventEnd={true}
                         eventOrder="start"
                         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                        contentHeight={window.innerHeight * 0.9}
+                        contentHeight={window.innerHeight * 0.7}
                         ref={this.calendarComponentRef}
                         weekends={this.state.showWeekends}
                         events={this.props.events}

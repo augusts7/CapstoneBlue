@@ -5,6 +5,7 @@ import Button from "../../../components/Button/Button"
 import {Link} from "react-router-dom"
 import Select from "../../../components/Select/Select";
 import Input from "../../../components/Input/Input"
+import ls from "local-storage";
 
 class Slots extends React.Component {
     constructor(props) {
@@ -16,7 +17,7 @@ class Slots extends React.Component {
             advisor: "smith",
             interval: "15",
             slots: [],
-            user_type: "student"
+            user_type: ls.get("user_type")
         };
     }
 
@@ -25,21 +26,31 @@ class Slots extends React.Component {
     }
 
     componentDidMount() {
-        fetch("/advising")
-            .then(res => res.json())
-            .then(res => this.setState({slots: res.results}));
+        fetch("/advising/all", {
+            method: 'GET',
+            credentials: "include",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res.json())
+            .then(res => {
+                console.log(res.results)
+                this.setState({ slots: res.results })
+            }).catch((err) => {
+                console.log("Advising view. " + err);
+        });
     }
 
     render() {
 
         let slots = [];
 
-        let slotsStyle = {"overflow-y": "scroll", "height": window.innerHeight * 0.9};
+        let slotsStyle = { "overflowY": "scroll", "height": window.innerHeight * 0.8 };
 
-        if (this.state.slots.length > 0) {
-            this.state.slots.map(slot => {
-                return (
-                    slots.push(<SingleSlot key={slot.eventID} data={slot}/>));
+        if (this.state.slots && this.state.slots.length > 0) {
+            this.state.slots.forEach(slot => {
+                console.log(slot);
+                slots.push(<SingleSlot userType={this.state.user_type} className="mdl-cell--6-col" key={slot.eventID} data={slot} />);
             });
         }
 
@@ -54,15 +65,25 @@ class Slots extends React.Component {
 
         ];
 
+        let slotTitleButton = [];
+        let title = "All Available Timeslots";
+
+        if (this.state.user_type == "faculty") {
+            title = "Created timeslots";
+            slotTitleButton.push(
+                <div className="slotsTitleButton">
+                    <Link to="/advisingSlots/add"><Button role="primary"><i className="material-icons">add</i>Create
+                                New Slots</Button></Link>
+                </div>
+            );
+        }
+
         return (
-            <div className="mdl-grid">
-                <div className="mdl-cell--4-col">
+            <div className="advisingSlotsRoot mdl-grid">
+                <div className="mdl-cell--3-col">
                     <div className="slotsTitle">
                         <div><h4>Filter Timeslots</h4></div>
-                        <div className="slotsTitleButton">
-                            <Link to="/addAdvisingSlots"><Button role="primary"><i className="material-icons">add</i>Create
-                                New Slots</Button></Link>
-                        </div>
+                        {slotTitleButton}
                     </div>
 
                     <div className="styleScroll" style={slotsStyle}>
@@ -94,13 +115,10 @@ class Slots extends React.Component {
                     </div>
 
                 </div>
-                <div className="mdl-cell--8-col">
+                <div className="mdl-cell--9-col">
                     <div className="slotsTitle">
-                        <div><h4>All Available Timeslots</h4></div>
-                        <div className="slotsTitleButton">
-                            <Link to="/addAdvisingSlots"><Button role="primary"><i className="material-icons">add</i>Create
-                                New Slots</Button></Link>
-                        </div>
+                        <div><h4>{title}</h4></div>
+                        {slotTitleButton}
                     </div>
 
                     <div className="styleScroll" style={slotsStyle}>

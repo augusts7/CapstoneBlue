@@ -1,31 +1,22 @@
 import React from "react";
 import "./AddSlots.css"
-import Form from "../../../components/Form/Form"
 import MessageBox from "../../../components/Form/MessageBox/MessageBox"
 import 'date-fns';
-import Container from "../../../components/Container/Container"
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import {
     MuiPickersUtilsProvider,
     DateTimePicker,
 } from '@material-ui/pickers';
-import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
-import Slots from "../View/AdvisingSlots"
-import MaterialTable from "material-table"
+import { Link } from "react-router-dom";
+import Button from "../../../components/Button/Button"
+import MaterialButton from "@material-ui/core/Button"
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import "../../CalenderView/main.css";
 
-const columns = [
-    { title: 'Slot Number', field: 'index' },
-    { title: 'Date', field: 'date', type: "date" },
-    {
-        title: 'Start Time', field: 'start', type: 'time', 
-        headerStyle: {
-            backgroundColor: '#039be5',
-        } },
-    { title: 'End Time', field: 'end', type: 'time' },
-    { title: 'Interval', field: 'interval' },
-];
 
 class AddSlots extends React.Component {
 
@@ -33,10 +24,13 @@ class AddSlots extends React.Component {
         super(props);
         this.state = {
             "message": "",
+            "description": "",
+            "title": "",
             "start": new Date().getTime(),
             "end": new Date().getTime(),
             "interval": 15,
-            "demoData": []
+            "slots": [],
+            "count": 0
         };
 
         this.onSubmit = this.onSubmit.bind(this);
@@ -47,26 +41,30 @@ class AddSlots extends React.Component {
 
     handleChange(name, value) {
         this.setState({ [name]: value });
-
     }
 
     showSlots() {
+
         var slots = [];
         const start = this.state.start;
         const end = new Date(this.state.end);
         const interval = parseInt(this.state.interval);
 
         var current = new Date(start);
-        current.setSeconds(0);
 
-        var index = 1;
+        current.setUTCSeconds(0, 0);
 
-        while (this.testAddTime(current, interval) < end) {
+        end.setUTCSeconds(0, 0);
+
+        var index = 0;
+
+        while (this.testAddTime(current, interval) <= end) {
 
             var slot = {};
-            slot.date = new Date(current);
             slot.interval = interval;
             slot.index = index;
+            slot.title = this.state.title;
+            slot.description = this.state.description;
             slot.start = new Date(current);
             slot.end = this.addTime(new Date(current), interval);
 
@@ -81,12 +79,18 @@ class AddSlots extends React.Component {
         console.log(current);
         console.log(end);
 
-        this.setState({ "demoData": slots });
+        if (index == 0) {
+            this.setState({ "message": "No slot could be created for the specified time.", "count": index });
+        } else {
+            this.setState({ "slots": slots, "count": index });
+        }
+
+        
 
     }
 
     addTime(time, interval) {
-        
+
         var newMins = time.getMinutes() + interval;
 
         if (newMins >= 60) {
@@ -97,7 +101,7 @@ class AddSlots extends React.Component {
         } else {
             time.setMinutes(newMins);
         }
-
+        time.setSeconds(0);
         return time;
     }
 
@@ -115,7 +119,8 @@ class AddSlots extends React.Component {
         } else {
             time.setMinutes(newMins);
         }
-        console.log("Test = " + testTime);
+        time.setSeconds(0);
+        console.log("Test = " + time);
         return time;
     }
 
@@ -129,23 +134,28 @@ class AddSlots extends React.Component {
         });
     };
 
-    onSubmit(target) {
-
-        this.showSlots();
-
-        return;
+    onSubmit() {
 
         this.setState({ "isLoading": true });
 
         let data = {
-            "campusEmail": target.campusEmail.value,
-            "password": target.password.value,
+            "title": this.state.title,
+            "description": this.state.description,
+            "start": this.state.start,
+            "end": this.state.end,
+            "interval": this.state.interval,
+            "carousel": 1
         };
+        if (data.title.length == 0 || data.description.length == 0 || data.start == null || data.start.length == 0 || data.end == null || data.end.length == 0 || data.interval <= 0) {
+            this.setState({ "message": "Enter all fields" });
+            return;
+        }
         fetch("/advising", {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'credentials': "include"
             }
         }).then(res => { return res.json(); })
             .then((res) => {
@@ -159,78 +169,200 @@ class AddSlots extends React.Component {
             });
     }
 
-    render() {
+    singleEventHtml(data) {
 
-        let body = <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <Grid container justify="center">
+        var dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const timeOptions = { minute: '2-digit', hour: "2-digit" }
 
-                <DateTimePicker
-                    fullWidth
-                    autoOk
-                    disablePast
-                    inputVariant="outlined"
-                    margin="normal"
-                    label="Start Time"
-                    value={this.state.start}
-                    onChange={(value) => this.handleChange("start", value)}
-                />
-                <DateTimePicker
-                    fullWidth
-                    autoOk
-                    disablePast
-                    inputVariant="outlined"
-                    margin="normal"
-                    label="End Time"
-                    value={this.state.end}
-                    onChange={(value) => this.handleChange("end", value)}
-                />
-                
-                <TextField
-                    fullWidth
-                    type="number"
-                    onChange={(event) => this.handleChange("interval", event.target.value)}
-                    value={this.state.interval}
-                    label="Enter each slot's interval"
-                    margin="normal" />
+        const start = new Date(data.start);
+        const end = new Date(data.end);
 
-                <Button color="primary" onClick={this.onSubmit}><i className="material-icons">done</i>Create Slots</Button>
-            </Grid>
-        </MuiPickersUtilsProvider>;
+        const date = start.toLocaleDateString("en-US", dateOptions);
+        const startTime = start.toLocaleTimeString("en-US", timeOptions);
+        const endTime = end.toLocaleTimeString("en-US", timeOptions);
 
-        let title = "Add Advising slots";
-        let icon = "add";
+        let buttons = [];
 
-        return (
+        buttons.push(<div style={{}}><MaterialButton key="1" style={{ "padding": "2px", "backgroundColor": "#455A64", "color": "white" }} onClick={this.props.onAddToCalendar}>Delete</MaterialButton></div>);
+
+        if (data.created) {
+            buttons.push(<div style={{}}><MaterialButton key="2" style={{ "padding": "2px", "backgroundColor": "#455A64", "color": "white" }} onClick={this.props.onAddToCalendar}>Modify</MaterialButton></div>);
+        }
+
+        return (<div className="slotRoot" key={data.key}>
+
             <div className="mdl-grid">
-                <div className="mdl-cell--4-col">
-                    <div className="mdl-color--white mdl-shadow--4dp addSlotsContainer">
-                        <div className="addSlotsHeader">
-                            <h4>Add Advising Slots</h4>
+                <div className="mdl-cell--2-col">
+                    <i className="material-icons mdl-color-text--blue-900">today</i>
+                </div>
+                <div className="mdl-cell--10-col">
+                    <div className="mdl-color-text--grey-700">
+                        {date}
+                    </div>
+                    <div>
+                        {data.title}
+                    </div>
+
+                    <div className="cols-2">
+                        <div style={{ "fontWeight": "600" }}>
+                            {startTime}
                         </div>
-                        <div>
-                            <MessageBox message={this.state.message} hideMessage={this.hideMessage} />
-                            {body}
+                        <div style={{ "fontWeight": "600" }}>
+                            {endTime}
                         </div>
                     </div>
-                </div>
-                <div className="mdl-cell--8-col">
-                    <MaterialTable
-                        classes={{ "root": { "width": "100%" }}}
-                        title="All time slots"
-                        columns={columns}
-                        data={this.state.demoData}
-                        options={{
-                            headerStyle: {
-                                backgroundColor: '#01579b',
-                                color: '#FFF'
-                            }
-                        }}
+                    <div>
+                        {data.description}
+                    </div>
 
-                    />
                 </div>
-                
+            </div>
+
+        </div>);
+
+    }
+
+    render() {
+
+
+        let largeCardStyle = { "overflowY": "scroll", "height": window.innerHeight * 0.8 };
+        let smallCardStyle = { "overflowY": "scroll", "height": window.innerHeight * 0.35 };
+
+        let listItemStyle = { "background": "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)" };
+
+        let links = [];
+
+        links.push({ "name": "View all Advising slots", "link": "/advisingSlots/view" });
+        links.push({ "name": "View calendar", "link": "/calenderView" });
+        links.push({ "name": "Add Appointment", "link": "/appointment/add" });
+        links.push({ "name": "Modify Appointment", "link": "/appointment/modify" });
+        links.push({ "name": "Share Calendar", "link": "/calendar/share" });
+
+        return (
+            <div className="calendarViewRoot">
+
+                <div className="calendarViewContainer">
+
+                    <div>
+
+                        <div className="calendarView_side_wrapper">
+
+                            <div className="calendarView_side_card">
+                                <div>
+                                    <h4>Created Advising Slots</h4>
+                                    <h4>{this.state.count} Slots created</h4>
+                                </div>
+                                <div style={largeCardStyle} className="styleScroll">
+                                    {this.state.slots.map(data => {
+                                        return this.singleEventHtml(data);
+                                    })}
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div className="mdl-grid">
+                        <div className="mdl-color--white mdl-shadow--4dp addSlotsContainer">
+                            <div className="addSlotsHeader">
+                                <h4>Add Advising Slots</h4>
+                            </div>
+                            <div>
+                                <MessageBox message={this.state.message} hideMessage={this.hideMessage} />
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <Grid container justify="center">
+
+                                        <DateTimePicker
+                                            fullWidth
+                                            autoOk
+                                            disablePast
+                                            inputVariant="outlined"
+                                            margin="normal"
+                                            label="Start Time"
+                                            value={this.state.start}
+                                            onChange={(value) => this.handleChange("start", value)}
+                                        />
+                                        <DateTimePicker
+                                            fullWidth
+                                            autoOk
+                                            disablePast
+                                            inputVariant="outlined"
+                                            margin="normal"
+                                            label="End Time"
+                                            value={this.state.end}
+                                            onChange={(value) => this.handleChange("end", value)}
+                                        />
+
+                                        <TextField
+                                            fullWidth
+                                            type="number"
+                                            onChange={(event) => this.handleChange("interval", event.target.value)}
+                                            value={this.state.interval}
+                                            label="Enter each slot's interval"
+                                            margin="normal" />
+
+                                        <TextField
+                                            fullWidth
+                                            type="text"
+                                            onChange={(event) => this.handleChange("title", event.target.value)}
+                                            value={this.state.title}
+                                            label="Enter Title of each slot"
+                                            margin="normal" />
+
+                                        <TextField
+                                            fullWidth
+                                            type="text"
+                                            onChange={(event) => this.handleChange("description", event.target.value)}
+                                            value={this.state.description}
+                                            label="Enter description for each slot"
+                                            margin="normal" />
+
+
+                                    </Grid>
+
+                                    <div style={{ "marginTop": "16px" }}><MaterialButton color="primary" onClick={this.showSlots}><i className="material-icons">list</i>View Created Slots</MaterialButton></div>
+                                    <div style={{"marginTop": "16px"}}><Button color="primary" onClick={this.onSubmit}><i className="material-icons">done</i>Submit Slots</Button></div>
+                                </MuiPickersUtilsProvider>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <div className="calendarView_side_card">
+                            <div>
+                                <h4>Advising Slots Options</h4>
+                            </div>
+
+                            <div style={smallCardStyle} className="styleScroll">
+
+
+                            </div>
+                        </div>
+
+                        <div className="calendarView_side_card">
+                            <div>
+                                <h4>Actions</h4>
+                            </div>
+
+
+                            <List component="nav">
+                                {links.map(link => {
+                                    return (
+                                        <ListItem style={listItemStyle} button>
+                                            <Link to={link.link}><ListItemText primary={link.name} /></Link>
+                                        </ListItem>);
+                                })}
+                            </List>
+
+                        </div>
+                    </div>
+
+                </div>
 
             </div>
+
         );
     }
 }

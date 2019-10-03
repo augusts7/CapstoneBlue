@@ -6,6 +6,8 @@ import Main from "../Main/Main";
 import Profile from "../../Authentication/Profile/Profile";
 import CalenderView from "../../Views/CalenderView/CalenderView";
 import GroupView from "../GroupView/GroupView";
+import AddAdvisingSlots from "../../Views/AdvisingSlots/Add/AddSlots";
+import ViewAdvisingSlots from "../../Views/AdvisingSlots/View/AdvisingSlots";
 
 import "./App.css";
 
@@ -21,7 +23,9 @@ class App extends React.Component {
                     <main className="mdl-layout__content mdl-color--grey-200">
                         <div id="content-div">
                             <Route path="/profile" component={Profile}/>
-                            <Route path="/calenderView" component={CalenderView}/>
+                            <Route path="/calenderView" component={CalenderView} />
+                            <Route path="/advisingSlots/view" component={ViewAdvisingSlots} />
+                            <Route path="/advisingSlots/add" component={AddAdvisingSlots} />
                             <Route path="/groupView" component={GroupView}/>
                             <Route exact path="/" component={Main}/>
                         </div>

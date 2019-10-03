@@ -18,7 +18,14 @@
 a {
     text-decoration: none;
 }
+.styleScroll {
 
+}
+
+.cols-2 {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
 
 .material-icons {
     margin-right: 8px;

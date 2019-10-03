@@ -1,0 +1,45 @@
+.calendarViewHeaderOptions {
+    display: grid;
+    grid-template-columns: 22.5% 22.5% 22.5% 22.5%;
+    padding: 8px 16px;
+    grid-gap: 16px;
+    overflow-x: hidden;
+}
+.calendarViewHeaderOptionsRows div {
+    margin-top: 8px;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+.calendarView_side_card h4 {
+    text-align: center;
+    background-color: white;
+    margin: 0px;
+    margin-bottom: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+.calendarView_side_card {
+    margin-bottom: 32px;
+}
+.calendarView_side_wrapper {
+    display: grid;
+    grid-template-rows: 50% 50%;
+}
+
+.calendarViewEventRoot .mdl-cell--2-col i {
+    background-color: blue;
+    display: inline-block;
+}
+.calendarViewContainer{ 
+    display: grid;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    grid-template-columns: 25% 50% 25%;
+}
+.calendarViewContainer > div {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+.calendarView_side_card a {
+    color: white;
+}

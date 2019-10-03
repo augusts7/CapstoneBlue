@@ -1,0 +1,19 @@
+.calendarView_side_card {
+    background-color: white;
+    margin: 8px;
+}
+
+.calendarView_side_card h4 {
+    margin: 0px;
+}
+
+.calendarView_side_card {
+    grid-template-rows: 50% 50%;
+}
+.calendarView_side_card > div {
+    padding: 8px;
+}
+.calendarView_side_wrapper {
+    display: grid;
+    height: 100%;
+}

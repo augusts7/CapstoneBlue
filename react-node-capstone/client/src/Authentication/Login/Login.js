@@ -37,6 +37,7 @@ class Login extends React.Component {
         fetch("/users/login", {
             method: 'POST',
             body: JSON.stringify(data),
+            credentials: "include",
             headers: {
                 'Content-Type': 'application/json'
             }
