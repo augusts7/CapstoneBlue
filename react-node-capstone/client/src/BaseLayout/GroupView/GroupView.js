@@ -11,13 +11,14 @@ class GroupView extends React.Component {
     this.state = {
       groupName: "Group Name",
       groupPicture:
-        "https://www.nationalgeographic.com/content/dam/expeditions/destinations/north-america/private/Yosemite/Hero-Yosemite.jpg",
+        "https://www.visittheusa.com/sites/default/files/styles/hero_m_1300x700/public/images/hero_media_image/2016-10/Yosemite_CROPPED_Web72DPI.jpg?itok=uvDdtCkC",
 
       eventListItems: [],
       groupMembers: [],
       groupOwner: ""
     };
   }
+
   render() {
     return (
       <div class="group-view">
@@ -28,13 +29,24 @@ class GroupView extends React.Component {
           <img src={this.state.groupPicture} alt="Group Picture" />
         </div>
         <div class="group-events">
+          <h4 class="list-header">Group Events</h4>
           <EventList />
           <EventList />
           <EventList />
           <EventList />
         </div>
-        <div class="group-info">
-          <p>A list of members. Something scrollable.</p>
+        <div class="group-members">
+          <h4 class="list-header">Group Members</h4>
+        </div>
+        <div class="group-selector">
+          Put a search box here to search for groups. Need to have the first
+          item that pops up in search be a button to create new group.
+        </div>
+        <div class="group-actions">
+          Put a drop down here with options to edit the current group.
+        </div>
+        <div class="group-description">
+          <h4 class="list-header">Group News</h4>
         </div>
       </div>
     );

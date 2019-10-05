@@ -1,27 +1,71 @@
-.group-view {
-  display: grid;
-  grid-template-columns: 1fr [group] 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-  grid-template-areas: "group-name group-name" "group-picture group-picture" "group-picture group-picture" "group-events group-info" "group-events group-info";
-}
-
 .group-picture {
   grid-area: group-picture;
-  border: solid maroon;
+  border: solid;
+  overflow: auto;
+  height: 100%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.group-picture > img {
+  width: 100%;
+  height: 100%;
 }
 
 .group-events {
   grid-area: group-events;
-  border: solid yellow;
+  border: solid;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.group-info {
-  grid-area: group-info;
-  border: solid blue;
+.list-header {
+  text-align: center;
+  background-color: maroon;
+  border-bottom: solid black;
+  margin-top: 0px;
+  padding: 10px;
+  color: white;
 }
 
 .group-name {
-  border: solid green;
   grid-area: group-name;
   text-align: center;
+}
+
+.group-name > h2 {
+  margin-top: 40px;
+}
+
+.group-members {
+  border: solid;
+  grid-area: group-members;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.group-selector {
+  border: solid teal;
+  grid-area: group-selector;
+}
+
+.group-actions {
+  border: solid sienna;
+  grid-area: group-actions;
+}
+
+.group-description {
+  border: solid;
+  grid-area: group-description;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.group-view {
+  display: grid;
+  grid-template-columns: 0.8fr 1.4fr 0.8fr;
+  grid-template-rows: 0.5fr 2.4fr 1.1fr;
+  grid-template-areas:
+    "group-selector group-name group-actions"
+    "group-events group-picture group-members"
+    "group-events group-description group-members";
+  column-gap: 15px;
+  row-gap: 15px;
+  grid-auto-flow: dense;
+  padding: 15px;
 }
