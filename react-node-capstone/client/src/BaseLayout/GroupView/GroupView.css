@@ -50,9 +50,9 @@
   grid-area: group-actions;
 }
 
-.group-description {
+.group-news {
   border: solid;
-  grid-area: group-description;
+  grid-area: group-news;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -63,7 +63,7 @@
   grid-template-areas:
     "group-selector group-name group-actions"
     "group-events group-picture group-members"
-    "group-events group-description group-members";
+    "group-events group-news group-members";
   column-gap: 15px;
   row-gap: 15px;
   grid-auto-flow: dense;

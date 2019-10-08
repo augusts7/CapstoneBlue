@@ -17,19 +17,14 @@ class EventList extends Component {
     };
   }
 
-  componentDidMount() {
-    fetch("/events")
-      .then(res => res.json())
-      .then(eventData => this.setState({ events: eventData }));
-  }
-
   render() {
     return (
       <div class="eventList">
         <h2 class="date">Aug 21</h2>
         <h6 class="description">
-          Blah Blah Blah BlahBlah Blah Blah BlahBlah Blah Blah BlahBlah Blah
-          Blah BlahBlah Blah Blah Blah
+          Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah
+          Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah
+          Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah
         </h6>
       </div>
     );

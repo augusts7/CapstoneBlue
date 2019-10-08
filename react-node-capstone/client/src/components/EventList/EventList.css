@@ -10,7 +10,9 @@
 .description {
   grid-area: description;
   justify-content: center;
-  margin: 10px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 10px;
 }
 
 .date {
@@ -19,6 +21,6 @@
   margin-top: 0px;
   margin-bottom: 0px;
   border-right: groove;
-  justify-content: center;
-  text-align: center;
+  display: flex;
+  align-items: center;
 }

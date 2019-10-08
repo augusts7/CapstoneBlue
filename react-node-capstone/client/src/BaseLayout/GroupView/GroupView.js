@@ -18,8 +18,8 @@ class GroupView extends React.Component {
     };
   }
 
-  componentDidMount(){
-    fetch("/events/")
+  componentDidMount() {
+    fetch("/events/");
   }
 
   render() {
@@ -33,7 +33,9 @@ class GroupView extends React.Component {
         </div>
         <div class="group-events">
           <h4 class="list-header">Group Events</h4>
-          <EventList events={this.state.eventListItems}/>
+          <EventList events={this.state.eventListItems} />
+          <EventList events={this.state.eventListItems} />
+          <EventList events={this.state.eventListItems} />
         </div>
         <div class="group-members">
           <h4 class="list-header">Group Members</h4>
@@ -45,7 +47,7 @@ class GroupView extends React.Component {
         <div class="group-actions">
           Put a drop down here with options to edit the current group.
         </div>
-        <div class="group-description">
+        <div class="group-news">
           <h4 class="list-header">Group News</h4>
         </div>
       </div>
