@@ -12,11 +12,14 @@ class GroupView extends React.Component {
       groupName: "Group Name",
       groupPicture:
         "https://www.visittheusa.com/sites/default/files/styles/hero_m_1300x700/public/images/hero_media_image/2016-10/Yosemite_CROPPED_Web72DPI.jpg?itok=uvDdtCkC",
-
       eventListItems: [],
       groupMembers: [],
       groupOwner: ""
     };
+  }
+
+  componentDidMount(){
+    fetch("/events/")
   }
 
   render() {
@@ -30,10 +33,7 @@ class GroupView extends React.Component {
         </div>
         <div class="group-events">
           <h4 class="list-header">Group Events</h4>
-          <EventList />
-          <EventList />
-          <EventList />
-          <EventList />
+          <EventList events={this.state.eventListItems}/>
         </div>
         <div class="group-members">
           <h4 class="list-header">Group Members</h4>
