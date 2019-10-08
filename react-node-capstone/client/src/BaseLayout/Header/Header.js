@@ -35,7 +35,10 @@ class Header extends React.Component {
                 Calendar
               </Link>
               <Link className="mdl-navigation__link" to="/groupView">
-                Groups
+              Groups
+              </Link>
+              <Link className="mdl-navigation__link" to="/eventsView">
+                Events
               </Link>
               <Link className="mdl-navigation__link" to="/profile">
                 My Profile
@@ -65,14 +68,20 @@ class Header extends React.Component {
                   <i className="material-icons">home</i>Home
                 </li>
               </Link>
+
+              <Link to="/calenderView">
+                <li className="mdl-menu__item">
+                  <i className="material-icons">calendar_today</i>Calendar
+                </li>
+              </Link>
               <Link to="/groupView">
                 <li className="mdl-menu__item">
                   <i className="material-icons">group</i>Groups
                 </li>
               </Link>
-              <Link to="/calenderView">
+              <Link to="/eventsView">
                 <li className="mdl-menu__item">
-                  <i className="material-icons">calendar_today</i>Calendar
+                  <i className="material-icons">group</i>Events
                 </li>
               </Link>
               <Link to="/profile">

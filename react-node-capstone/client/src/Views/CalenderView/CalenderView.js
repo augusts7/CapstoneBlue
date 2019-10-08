@@ -197,7 +197,7 @@ class CalenderView extends React.Component {
 
         let links = [];
 
-        if (this.state.userType == "faculty") {
+        if (this.state.userType === "faculty") {
             links.push({ "name": "Create Advising Slots", "link": "/advisingSlots/add" });
 
         } else {

@@ -13,7 +13,7 @@ class HeaderItem extends React.Component {
     }
 
     SubMenu(items) {
-        if (items == null || items.length == 0) {
+        if (items == null || items.length === 0) {
             return "";
         }
         items.map(item => {

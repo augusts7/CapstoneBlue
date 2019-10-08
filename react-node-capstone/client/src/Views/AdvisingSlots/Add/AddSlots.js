@@ -79,7 +79,7 @@ class AddSlots extends React.Component {
         console.log(current);
         console.log(end);
 
-        if (index == 0) {
+        if (index === 0) {
             this.setState({ "message": "No slot could be created for the specified time.", "count": index });
         } else {
             this.setState({ "slots": slots, "count": index });
@@ -146,7 +146,7 @@ class AddSlots extends React.Component {
             "interval": this.state.interval,
             "carousel": 1
         };
-        if (data.title.length == 0 || data.description.length == 0 || data.start == null || data.start.length == 0 || data.end == null || data.end.length == 0 || data.interval <= 0) {
+        if (data.title.length === 0 || data.description.length === 0 || data.start == null || data.start.length === 0 || data.end == null || data.end.length === 0 || data.interval <= 0) {
             this.setState({ "message": "Enter all fields" });
             return;
         }
