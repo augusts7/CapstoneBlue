@@ -17,6 +17,7 @@
     "@fullcalendar/core": "^4.3.1",
     "@fullcalendar/daygrid": "^4.3.0",
     "@fullcalendar/react": "^4.3.0",
+    "@material-ui/core": "^4.5.0",
     "@material-ui/icons": "^4.4.3",
     "@material-ui/pickers": "^3.2.6",
     "axios": "^0.19.0",
@@ -35,6 +36,7 @@
     "nodemailer-promise": "^2.0.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "react-alice-carousel": "^1.15.3",
     "react-swipeable-views": "^0.13.3",
     "util.promisify": "^1.0.0"
   },

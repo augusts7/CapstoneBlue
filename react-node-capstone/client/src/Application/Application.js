@@ -12,7 +12,7 @@ class Application extends React.Component {
     constructor(props) {
         super(props);
 
-        var isLoggedIn = false;
+        var isLoggedIn = true;
         if (ls.get("isLoggedIn")) {
             isLoggedIn = true;
         }
