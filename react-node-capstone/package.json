@@ -37,6 +37,7 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "react-alice-carousel": "^1.15.3",
+    "react-responsive-carousel": "^3.1.50",
     "react-swipeable-views": "^0.13.3",
     "util.promisify": "^1.0.0"
   },

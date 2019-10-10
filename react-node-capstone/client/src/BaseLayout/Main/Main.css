@@ -1,8 +1,11 @@
 .main {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-    grid-template-areas: "main-carousel main-carousel" "main-carousel main-carousel" "main-calendar main-events" "main-calendar main-events";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: 
+        "main-carousel main-carousel main-carousel" 
+        "main-calendar main-events main-events" 
+        "main-calendar main-events main-events";
 }
 
 .main-carousel {

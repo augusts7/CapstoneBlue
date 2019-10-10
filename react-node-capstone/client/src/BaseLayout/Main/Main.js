@@ -1,5 +1,5 @@
 import React from "react";
-import Carosel from "../../components/Carousel/Carousel.js";
+import Carosel from "../../components/Carousel/HomeCarousel";
 import Calender from "../../components/Calendar/MyCalendar";
 import EventList from "../../components/EventList/EventList";
 
@@ -16,9 +16,7 @@ class Main extends React.Component {
           <Calender />
         </div>
         <div class = "main-events">
-          <h2>
-            <EventList />
-          </h2>
+          <EventList />
         </div>
       </div>
     );
