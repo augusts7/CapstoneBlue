@@ -1,0 +1,25 @@
+.main {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 0.6fr 0.8fr;
+    grid-template-areas: 
+        "main-carousel main-carousel main-carousel" 
+        /* "main-calendar main-events main-events"  */
+        "main-calendar main-events main-events";
+}
+
+.main-carousel {
+    padding-left: 400px;
+    border: solid gold;
+    grid-area: main-carousel;
+}
+
+.main-events {
+    grid-area: main-events;
+    border: solid red;
+}
+
+.main-calendar{
+    grid-area: main-calendar;
+    border: solid pink;
+}

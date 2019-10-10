@@ -19,6 +19,7 @@
     "mobiscroll": "^3.0.0-beta6",
     "moment": "^2.24.0",
     "react": "^16.9.0",
+    "react-alice-carousel": "^1.15.3",
     "react-big-calendar": "^0.22.1",
     "react-dom": "^16.9.0",
     "react-router": "^5.0.1",
