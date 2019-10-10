@@ -9,35 +9,35 @@ class HomeCarousel extends React.Component{
   render() {
 
     return (
-      <Carousel infiniteLoop autoPlay interval={6500} swipeable={false} width="700px" showThumbs={false}>
+      <Carousel infiniteLoop autoPlay interval={6500} swipeable={false} width="1100px" showThumbs={false}>
         <div>
-          <img src="https://www.visittheusa.com/sites/default/files/styles/hero_m_1300x700/public/images/hero_media_image/2016-10/Yosemite_CROPPED_Web72DPI.jpg?itok=uvDdtCkC" />
+          <img src="https://live.staticflickr.com/5652/23595625072_12db0d751d_b.jpg" />
           <p className="legend">
             Legend 
           </p>
         </div>
         <div>
-          <img src="http://lorempixel.com/output/cats-q-c-640-480-2.jpg" />
+          <img src="https://live.staticflickr.com/5652/23595625072_12db0d751d_b.jpg" />
           <p className="legend">
             Legend 
           </p>
         </div>
         <div>
-        <img src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg" />
+        <img src="https://live.staticflickr.com/5652/23595625072_12db0d751d_b.jpg" />
         <p className="legend">
         Legend 
 
         </p>
         </div>
         <div>
-        <img src="http://lorempixel.com/output/cats-q-c-640-480-2.jpg" />
+        <img src="https://live.staticflickr.com/5652/23595625072_12db0d751d_b.jpg" />
         <p className="legend">
         Legend 
 
         </p>
         </div>
         <div>
-        <img src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg" />
+        <img src="https://live.staticflickr.com/5652/23595625072_12db0d751d_b.jpg" />
         <p className="legend">
         Legend 
 
