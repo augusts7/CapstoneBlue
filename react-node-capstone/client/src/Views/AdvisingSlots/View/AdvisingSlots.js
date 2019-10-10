@@ -68,7 +68,7 @@ class Slots extends React.Component {
         let slotTitleButton = [];
         let title = "All Available Timeslots";
 
-        if (this.state.user_type == "faculty") {
+        if (this.state.user_type === "faculty") {
             title = "Created timeslots";
             slotTitleButton.push(
                 <div className="slotsTitleButton">

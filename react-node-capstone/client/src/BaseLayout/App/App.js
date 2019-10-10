@@ -8,7 +8,7 @@ import CalenderView from "../../Views/CalenderView/CalenderView";
 import GroupView from "../GroupView/GroupView";
 import AddAdvisingSlots from "../../Views/AdvisingSlots/Add/AddSlots";
 import ViewAdvisingSlots from "../../Views/AdvisingSlots/View/AdvisingSlots";
-
+import EventsView from "../EventsView/EventsView";
 import "./App.css";
 
 class App extends React.Component {
@@ -27,6 +27,7 @@ class App extends React.Component {
               <Route path="/advisingSlots/view" component={ViewAdvisingSlots} />
               <Route path="/advisingSlots/add" component={AddAdvisingSlots} />
               <Route path="/groupView" component={GroupView} />
+              <Route path="/eventsView" component={EventsView}/>
               <Route exact path="/" component={Main} />
             </div>
 

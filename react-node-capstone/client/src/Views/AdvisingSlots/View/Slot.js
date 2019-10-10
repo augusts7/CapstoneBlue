@@ -67,12 +67,12 @@ class Slot extends React.Component {
         }
 
         let buttons = [];
-        if (this.props.userType == "student") {
+        if (this.props.userType === "student") {
             buttons.push(
                 <button onClick={() => this.onAddToCalendar(this.props.data.eventID)} className="mdl-button mdl-js-button mdl-button--colored"><i className="material-icons slotButtonIcon">done</i>Add to Calendar</button>
 
             );
-        } else if (this.props.userType == "faculty") {
+        } else if (this.props.userType === "faculty") {
             buttons.push(
                 <button onClick={this.props.onAddToCalendar} className="mdl-button mdl-js-button mdl-button--colored"><i className="material-icons slotButtonIcon">delete</i>Delete</button>
 

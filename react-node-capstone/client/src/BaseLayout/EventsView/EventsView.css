@@ -1,0 +1,9 @@
+.inner {
+    display: inline-block;
+    float: right;
+    margin-right: 2em;
+}
+
+.title{
+    margin-left: 2em;
+}
