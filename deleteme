@@ -1,0 +1,33 @@
+//server
+router.get('/a', function() {
+    res.send({a: 1})
+})
+
+router.get('/b', function() {
+    res.send({b: 1})
+})
+
+router.get('/c', function() {
+    res.send({c: 1})
+})
+
+//react
+profileService.js
+getProfileData() {
+    fetch('/a').then(resulta => {
+        fetch('/b').then(resultb => {
+            fetch('/c').then(resultc => {
+                return {a: resulta, b: resultb, c: resultc}
+            })
+  
+      })
+    })
+}
+
+profilecomponent.js
+componentDidMount() {
+    profileService.getProfileData()
+        .then(result => {
+            this.setState({result});
+        })
+}

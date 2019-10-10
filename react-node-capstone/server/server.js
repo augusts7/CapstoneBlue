@@ -17,6 +17,7 @@ if (app.get("env") === "production") {
 
 app.use(cookieParser());
 app.use(require("body-parser").urlencoded({ extended: true }));
+
 app.use(expressSession(session));
 
 const passportHelper = require("./auth/passport");
@@ -32,6 +33,7 @@ const groupsRouter = require("./routes/groups");
 const mygroupsRouter = require("./routes/my_groups");
 const classinfoRouter = require("./routes/class_info");
 const classestakesRouter = require("./routes/classes_taken");
+const profileRouter = require("./routes/profile")
 
 //Connects Routes to there files.
 app.use("/events", eventRouter);
@@ -40,9 +42,10 @@ app.use("/appointments", appointmentRouter);
 app.use("/advising", advisingRouter);
 app.use("/attending", attendingRouter);
 app.use("/groups", groupsRouter);
-app.use("./my_groups", mygroupsRouter);
-app.use("./class_info", classinfoRouter);
-app.use("./classes_taken", classestakesRouter);
+app.use("/my_groups", mygroupsRouter);
+app.use("/class_info", classinfoRouter);
+app.use("/classes_taken", classestakesRouter);
+app.use("/profile", profileRouter);
 
 //Error Handler
 app.use((err, req, res, next) => {

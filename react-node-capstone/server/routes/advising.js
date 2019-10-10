@@ -142,7 +142,6 @@ router.post("/", async function (req, res) {
         };
 
         let slots = getSlots(data.start, data.end, data.interval, data.creator_id, data.title, data.description, data.event_type, data.carousel);
-
         await slots.forEach(async function(slot) {
             await pool.query("INSERT INTO schedulerdb.event SET ?", slot);
         });

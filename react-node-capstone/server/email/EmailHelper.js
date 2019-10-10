@@ -47,6 +47,6 @@ function sendHtmlEmail (toEmail, subject, html, callback) {
 }
 
 module.exports = {
-    "sendEmail": sendEmail,
-    "sendHtmlEmail": sendHtmlEmail
+    sendEmail,
+    sendHtmlEmail
 }
