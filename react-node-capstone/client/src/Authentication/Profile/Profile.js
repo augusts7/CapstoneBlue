@@ -20,11 +20,10 @@ class Profile extends React.Component {
     let userInfo = [
       ["Email", "jdoe@warhawks.ulm.edu"],
       ["Classification", "Sophomore"],
-      ["CWID", "12345678"],
       ["Advisor", "Lon Smith"]
     ];
 
-    let facultyInfo = [["Email", "lsmith@ulm.edu"], ["CWID", "98765432"]];
+    let facultyInfo = [["Email", "lsmith@ulm.edu"]];
 
     let adviseeHeader = ["Advisees"];
     let advisees = ["group1", "group2", "group2", "group2"];

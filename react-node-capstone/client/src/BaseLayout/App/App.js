@@ -9,6 +9,11 @@ import GroupView from "../GroupView/GroupView";
 import AddAdvisingSlots from "../../Views/AdvisingSlots/Add/AddSlots";
 import ViewAdvisingSlots from "../../Views/AdvisingSlots/View/AdvisingSlots";
 import EventsView from "../EventsView/EventsView";
+import RequestEvent from "../../components/EventsPage/RequestEvent";
+import ViewAllEvents from "../../components/EventsPage/ViewAllEvents";
+import CreateEvent from "../../components/EventsPage/CreateEvent";
+import ApproveEvent from "../../components/EventsPage/ApproveEvent";
+
 import "./App.css";
 
 class App extends React.Component {
@@ -28,6 +33,10 @@ class App extends React.Component {
               <Route path="/advisingSlots/add" component={AddAdvisingSlots} />
               <Route path="/groupView" component={GroupView} />
               <Route path="/eventsView" component={EventsView}/>
+              <Route path="/requestEvent" component={RequestEvent} />
+              <Route path="/viewAllEvents" component={ViewAllEvents} />
+              <Route path="/createEvent" component={CreateEvent} />
+              <Route path="/approveEvent" component={ApproveEvent} />
               <Route exact path="/" component={Main} />
             </div>
 

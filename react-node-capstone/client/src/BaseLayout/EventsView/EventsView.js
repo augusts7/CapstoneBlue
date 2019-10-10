@@ -19,10 +19,10 @@ class EventsView extends React.Component {
                 <div>
 
                     <div className="inner">
-                        <Button type="submit" variant="contained" size="large" className="msgBtn2" href=""><i className="material-icons">schedule</i>Request Event</Button>
+                        <Button type="submit" variant="contained" size="large" className="msgBtn2" href="/requestEvent"><i className="material-icons">schedule</i>Request Event</Button>
                     </div>
                     <div className="inner">
-                        <Button type="submit" variant="contained" size="large" className="msgBtn" href=""><i className="material-icons">event</i> View All Events</Button>
+                        <Button type="submit" variant="contained" size="large" className="msgBtn" href="/viewAllEvents"><i className="material-icons">event</i> View All Events</Button>
                     </div>
                     <h4 className="title">My Events</h4>
                     <hr/>
@@ -34,13 +34,13 @@ class EventsView extends React.Component {
                 <div>
 
                     <div className="inner">
-                        <Button type="submit" variant="contained" size="large" className="msgBtn" href=""><i className="material-icons">create</i>Create Events</Button>
+                        <Button type="submit" variant="contained" size="large" className="msgBtn" href="/createEvent"><i className="material-icons">create</i>Create Events</Button>
                     </div>
                     <div className="inner">
-                        <Button type="submit" variant="contained" size="large" className="msgBtn" href=""><i className="material-icons">check_circle_outline</i>Approve Events</Button>
+                        <Button type="submit" variant="contained" size="large" className="msgBtn" href="/approveEvent"><i className="material-icons">check_circle_outline</i>Approve Events</Button>
                     </div>
                     <div className="inner">
-                        <Button type="submit" variant="contained" size="large" className="msgBtn" href=""><i className="material-icons">event</i> View All Events</Button>
+                        <Button type="submit" variant="contained" size="large" className="msgBtn" href="/viewAllEvents"><i className="material-icons">event</i>View All Events</Button>
                     </div>
                     <h4 className="title">My Events</h4>
                     <hr/>
