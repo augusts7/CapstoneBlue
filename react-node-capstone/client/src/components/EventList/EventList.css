@@ -1,26 +1,24 @@
-.eventList {
+.eventListItem {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
-  grid-template-areas: "date description description description";
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: "date-number description" "date-name description";
+  border: solid;
   overflow: auto;
-  padding: 10px;
 }
 
-.description {
+.description { 
   grid-area: description;
-  justify-content: center;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  margin-left: 10px;
+  max-height: 50%;
+  border: solid;
 }
 
-.date {
-  grid-area: date;
-  padding: 10px;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  border-right: groove;
-  display: flex;
-  align-items: center;
+.date-number { 
+  grid-area: date-number;
+  border: solid; 
+}
+
+.date-name { 
+  grid-area: date-name;
+  border: solid; 
 }

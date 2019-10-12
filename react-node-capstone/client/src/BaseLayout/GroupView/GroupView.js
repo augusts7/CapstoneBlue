@@ -10,7 +10,17 @@ class GroupView extends React.Component {
     super(props);
     this.state = {
       groupName: "Group Name",
-      eventListItems: [],
+      eventListItems: [{
+        title: "Event Title",
+        description: "This is a description for the event",
+        start: new Date(),
+        end: new Date()
+      },{
+        title: "Event Title",
+        description: "This is a description for the event",
+        start: new Date(),
+        end: new Date()
+      }],
       groupMembers: [],
       groupOwner: ""
     };
@@ -29,14 +39,9 @@ class GroupView extends React.Component {
         <div class="group-events">
           <h4 class="list-header">Group Events</h4>
           <EventList events={this.state.eventListItems} />
-          <EventList events={this.state.eventListItems} />
-          <EventList events={this.state.eventListItems} />
         </div>
         <div class="group-members">
           <h4 class="list-header">Group Members</h4>
-        </div>
-        <div class="group-news">
-          <h4 class="list-header">Group News</h4>
         </div>
       </div>
     );
