@@ -15,7 +15,7 @@ class EventList extends Component {
           end: new Date()
         },
         {
-          eventID:2,
+          eventID: 2,
           title: "Event Title",
           description: "This is a description for the event",
           start: new Date(),
@@ -28,12 +28,12 @@ class EventList extends Component {
   getMonth(month, type) {
     var monthName = "";
     var monthAbrv = "";
-    switch(month){
-      case 1: 
+    switch (month) {
+      case 1:
         monthName = "January";
         monthAbrv = "Jan";
         break;
-      case 2: 
+      case 2:
         monthName = "Febuary";
         monthAbrv = "Feb";
         break;
@@ -41,11 +41,11 @@ class EventList extends Component {
         monthName = "March";
         monthAbrv = "Mar";
         break;
-      case 4: 
+      case 4:
         monthName = "April";
         monthAbrv = "Apr";
         break;
-      case 5: 
+      case 5:
         monthName = "May";
         monthAbrv = "May";
         break;
@@ -53,57 +53,54 @@ class EventList extends Component {
         monthName = "June";
         monthAbrv = "Jun";
         break;
-      case 7: 
+      case 7:
         monthName = "July";
         monthAbrv = "Jul";
         break;
-      case 8: 
+      case 8:
         monthName = "August";
         monthAbrv = "Aug";
         break;
-      case 9: 
+      case 9:
         monthName = "September";
         monthAbrv = "Sept";
         break;
-      case 10: 
+      case 10:
         monthName = "October";
         monthAbrv = "Oct";
         break;
       case 11:
         monthName = "November";
-        monthAbrv = "Nov"
+        monthAbrv = "Nov";
         break;
       case 12:
         monthName = "December";
         monthAbrv = "Dec";
         break;
     }
-    if(type==="name"){
+    if (type === "name") {
       return monthName;
-    }
-    else if(type==="abrv"){
+    } else if (type === "abrv") {
       return monthAbrv;
     }
-
   }
 
   render() {
-
     var eventsList = this.state.events.map(event => {
-      return(
-        <div class="eventListItem">
-          <div class="date">
-            <h2 class="date-number">{event.start.getDay()}</h2>
-            <h4 class="date-name">{this.getMonth(event.start.getMonth(),"abrv")} </h4>
+      return (
+        <div className="eventListItem">
+          <div className="date">
+            <div className="date-number">{event.start.getDay()}</div>
+            <div className="date-name">
+              {this.getMonth(event.start.getMonth(), "abrv")}{" "}
+            </div>
           </div>
-          <h6 class="description">{event.description}</h6>
+          <div className="description">{event.description}</div>
         </div>
       );
     });
 
-    return (
-      <div class="eventList">{eventsList}</div>
-    );
+    return <div className="eventList">{eventsList}</div>;
   }
 }
 
