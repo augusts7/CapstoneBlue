@@ -20,7 +20,7 @@ router.route("/").get(async (req, res) => {
   }
 })
 
-router.route("/").post((req,res) => {
+router.route("/create").post((req,res) => {
     const appointments = {
       title: req.body.title,
       description : req.body.description,
@@ -28,7 +28,8 @@ router.route("/").post((req,res) => {
       end: req.body.end,
       event_type: req.body.end,
       creator_id: req.body.creator_id,
-      carousel: req.body.carousel
+      carousel: req.body.carousel,
+      creator_calendar_id: req.body.creator_calendar_id
     };
     pool.query("INSERT INTO event SET ?", appointments, function(
       error,

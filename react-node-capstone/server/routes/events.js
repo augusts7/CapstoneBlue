@@ -8,7 +8,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 
-router.get("/attending", function (req, res) {
+router.get("/attending", function (req, res, next) {
 
     let select = "SELECT * FROM schedulerdb.attending INNER JOIN schedulerdb.event ON " +
         "schedulerdb.event.eventID = schedulerdb.attending.event_id WHERE attendee_id = ? ";
@@ -17,9 +17,7 @@ router.get("/attending", function (req, res) {
 
     pool.query(select, req.user.user_id, function (error, results, fields) {
 
-        if (error) {
-            return res.json({ "success": false, "message": "Failed to connect to database" });
-        }
+        if (error) return next("Failed to connect to the database")
         try {
             if (results.length > 0) {
 

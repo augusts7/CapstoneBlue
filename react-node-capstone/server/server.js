@@ -34,7 +34,9 @@ const mygroupsRouter = require("./routes/my_groups");
 const classinfoRouter = require("./routes/class_info");
 const classestakesRouter = require("./routes/classes_taken");
 const profileRouter = require("./routes/profile")
-
+const swagger = require('swagger-ui-express');
+const swag = require('./swagger.json');
+app.use('/docs', swagger.serve, swagger.setup(swag));
 //Connects Routes to there files.
 app.use("/events", eventRouter);
 app.use("/users", usersRouter);
@@ -49,13 +51,10 @@ app.use("/profile", profileRouter);
 
 //Error Handler
 app.use((err, req, res, next) => {
-  console.error(err);
-
-  res
-    .status(400)
+  res.status(400)
     .json({
       success: false,
-      messsage: err || err.messsage || "Application error"
+      messsage: err || err.messsage
     });
 });
 
