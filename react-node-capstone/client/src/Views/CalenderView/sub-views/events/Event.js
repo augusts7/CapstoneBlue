@@ -16,8 +16,6 @@ export default function Event(props) {
     const startTime = start.toLocaleTimeString("en-US", timeOptions);
     const endTime = end.toLocaleTimeString("en-US", timeOptions);
 
-    const dateString = date + " from " + startTime + " to " + endTime;
-
     let buttons = [];
 
     buttons.push(<div style={{ "display": "inline-block" }}><MaterialButton key="1" style={{ "padding": "2px", "backgroundColor": "#455A64", "color": "white" }} onClick={props.onAddToCalendar}>Delete</MaterialButton></div>);

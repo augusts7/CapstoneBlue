@@ -8,7 +8,8 @@
     "start": "node server/server.js",
     "server": "nodemon server/server.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "install-all": "npm install && cd client && npm install && cd .."
   },
   "author": "Nick Fontana",
   "license": "MIT",
@@ -39,6 +40,7 @@
     "react-alice-carousel": "^1.15.3",
     "react-responsive-carousel": "^3.1.50",
     "react-swipeable-views": "^0.13.3",
+    "swagger-ui-express": "^4.1.2",
     "util.promisify": "^1.0.0"
   },
   "devDependencies": {

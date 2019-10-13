@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, Redirect, Switch, BrowserRouter as Router} from "react-router-dom";
+import {Route, Switch, BrowserRouter as Router} from "react-router-dom";
 import App from "../BaseLayout/App/App";
 import Login from "../Authentication/Login/Login";
 import Register from "../Authentication/Register/Register";
@@ -68,7 +68,7 @@ class Application extends React.Component {
 
         return (
             <Router>
-                <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header full root-container">
+                <div key="root" className="mdl-layout mdl-js-layout mdl-layout--fixed-header full root-container">
                     {this.getRoutes()}
                 </div>
             </Router>

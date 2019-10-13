@@ -3,12 +3,14 @@
     "",
     "\\client",
     "\\client\\src",
+    "\\client\\src\\components\\EventsList",
     "\\client\\src\\Views",
     "\\client\\src\\Views\\CalenderView",
-    "\\client\\src\\Views\\CalenderView\\SideView",
-    "\\server",
-    "\\server\\routes"
+    "\\client\\src\\Views\\CalenderView\\sub-views\\eventDetails",
+    "\\client\\src\\Views\\CalenderView\\sub-views\\filter-and-actions",
+    "\\client\\src\\Views\\CalenderView\\sub-views\\forms",
+    "\\client\\src\\Views\\CalenderView\\sub-views\\parts"
   ],
-  "SelectedNode": "\\client\\src\\Views\\CalenderView\\SideView\\sub-views",
+  "SelectedNode": "\\client\\src\\Views\\CalenderView\\CalenderView.js",
   "PreviewInSolutionExplorer": false
 }

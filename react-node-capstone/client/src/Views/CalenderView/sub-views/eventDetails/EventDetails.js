@@ -51,7 +51,7 @@ export default class EventForm extends React.Component {
 
             let key = requiredKeys[i];
 
-            if (!this.state[key] || ("" + this.state[key]).length == 0) {
+            if (!this.state[key] || ("" + this.state[key]).length === 0) {
                 this.setState({ progress: false, "message": "Please enter all fields. Don't forget to add " + key });
                 return false;
             } else {
@@ -117,11 +117,11 @@ export default class EventForm extends React.Component {
         const startTime = start.toLocaleTimeString("en-US", timeOptions);
         const endTime = end.toLocaleTimeString("en-US", timeOptions);
 
-        const dateString = date + " from " + startTime + " to " + endTime;
+        // const dateString = date + " from " + startTime + " to " + endTime;
 
-        const creator = this.state.creator;
+        // const creator = this.state.creator;
 
-        const attendees = this.state.attendees;
+        // const attendees = this.state.attendees;
 
         let buttons = [];
 

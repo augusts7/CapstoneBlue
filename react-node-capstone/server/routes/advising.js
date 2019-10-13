@@ -98,9 +98,7 @@ router.post("/attend/:calendarId", async function (req, res) {
 
         await pool.query("SELECT advisor_id FROM schedulerdb.student_info WHERE user_id = ?", req.user.user_id, async function (error, result, fields) {
 
-            if (error) {
-                return res.json({ "success": false, "message": "Failed to connect to database" });
-            }
+            if (error) return next("Failed to connect to database")
             try {
                 if (result.length > 0) {
 
@@ -128,10 +126,8 @@ router.post("/attend/:calendarId", async function (req, res) {
 
                     return res.json({ "success": true });
 
-                } else {
-                    return res.json({ "success": false, "message": "Couldn't add the advising slot to your database." });
-                }
-            } catch (err) {
+                } else return next("Couldn't add avising slot to the database")
+            } catch (err){
                 return res.json({ "success": false, "message": "Error while adding advising slots to your database. " + err });
             }
 
@@ -157,7 +153,7 @@ router.post("/:calendarId", async function (req, res) {
             creator_id: req.user.user_id,
             event_type: "advising",
             carousel: req.body.carousel,
-            calendar_id: req.body.calendar_id
+            creator_calendar_id: req.body.creator_calendar_id
         };
 
         let slots = getSlots(data.start, data.end, data.interval, data.creator_id, data.title, data.description, data.event_type, data.carousel);

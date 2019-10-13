@@ -47,7 +47,7 @@ export default function ContainerHeader(props) {
 
     return (
         <div className={classes.root}>
-            <AppBar style={style} position="static" style={{backgroundColor: ""}}>
+            <AppBar style={style} position="static">
                 <Toolbar>
                     <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
 

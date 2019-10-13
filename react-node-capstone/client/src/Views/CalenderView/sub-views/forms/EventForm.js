@@ -12,9 +12,7 @@ import MaterialButton from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Header from "../parts/Header";
 import Progress from "../parts/progress";
 import { get, post } from "../../../../ApiHelper/ApiHelper";
 import Select from "../../../../components/Select/Select";
@@ -90,7 +88,7 @@ export default class EventForm extends React.Component {
 
             let key = requiredKeys[i];
 
-            if (!this.state[key] || ("" + this.state[key]).length == 0) {
+            if (!this.state[key] || ("" + this.state[key]).length === 0) {
                 this.setState({ progress: false, "message": "Please enter all fields. Don't forget to add " + key });
                 return false;
             } else {
@@ -119,12 +117,6 @@ export default class EventForm extends React.Component {
     render() {
 
         const type = this.props.type || "event";
-
-        const headerActions = { "name": "Close", "onClick": this.props.onCancel };
-        const menuOptions = [];
-        const onMenuOptionClick = (selectedMenuOptionKey) => {
-
-        };
 
         return (
             <div>

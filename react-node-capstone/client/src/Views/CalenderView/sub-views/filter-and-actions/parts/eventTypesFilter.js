@@ -47,7 +47,7 @@ export default class EventTypesFilter extends React.Component {
 
         newState[name] = event.target.checked;
 
-        this.setState(newState, () => this.onDisplayEventTypesChange(newState));
+        this.setState(newState, () => this.onDisplayEventTypesChange(this.state));
 
        
         console.log(newState);
@@ -85,7 +85,7 @@ export default class EventTypesFilter extends React.Component {
 
 
                         {CALENDAR_EVENT_TYPES.map(option => {
-                            return (<div><Checkbox
+                            return (<div key={option.value}><Checkbox
                                 onChange={(event) => this.handleEventTypesChange(option.value, event)}
                                 color="primary"
                                 checked={this.state[option.value]}

@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
-import ls from "local-storage";
 
 class Header extends React.Component {
   constructor(props) {

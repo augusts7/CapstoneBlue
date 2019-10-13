@@ -20,7 +20,7 @@ export default function Events(props) {
     ];
 
     const onMenuOptionClick = (mode) => {
-        if (mode == "advisingSlot") {
+        if (mode === "advisingSlot") {
             props.openPopup("advisingSlotForm");
         } else {
             props.openPopup("eventForm", { "mode": mode });

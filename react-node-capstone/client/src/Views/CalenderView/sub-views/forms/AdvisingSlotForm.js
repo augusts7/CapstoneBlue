@@ -51,7 +51,7 @@ export default class AdvisingSlotForm extends React.Component {
 
         var result = getSlots(data);
 
-        if (result.count == 0) {
+        if (result.count === 0) {
             this.setState({ "message": "No slot could be created for the specified time.", "count": result.count });
         } else {
             this.setState({ "slots": result.slots, "count": result.count });
@@ -99,7 +99,7 @@ export default class AdvisingSlotForm extends React.Component {
 
             let key = requiredKeys[i];
 
-            if (!this.state[key] || ("" + this.state[key]).length == 0) {
+            if (!this.state[key] || ("" + this.state[key]).length === 0) {
                 this.setState({ progress: false, "message": "Please enter all fields. Don't forget to add " + key });
                 return false;
             } else {

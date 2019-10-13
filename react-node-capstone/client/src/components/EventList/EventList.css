@@ -1,26 +1,34 @@
-.eventList {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr;
-    grid-template-areas: "date description description description";
-    overflow: auto;
-    padding: 10px;
-}
 
-.description {
-    grid-area: description;
-    justify-content: center;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    margin-left: 10px;
+.eventListItem {
+  display: grid;
+  grid-template-columns: 0.2fr 1.8fr;
+  grid-template-areas: "date description";
+  border: solid orange;
+  background-color: rgba(203, 203, 204, 0.822);
 }
 
 .date {
-    grid-area: date;
-    padding: 10px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    border-right: groove;
-    display: flex;
-    align-items: center;
+  grid-area: date;
+  text-align: center;
+  padding: 5px;
+}
+
+.date-number {
+  font-size: 26pt;
+  font-weight: bold;
+  border: solid blue;
+  margin: 5px;
+}
+
+.date-name {
+  margin: 5px;
+  font-weight: bold;
+  font-size: 20pt;
+  border: solid violet;
+}
+
+.description {
+  grid-area: description;
+  border: solid red;
+  margin: 5px !important;
 }

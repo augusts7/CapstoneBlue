@@ -13,10 +13,10 @@ import AdvisingSlotForm from "./sub-views/forms/AdvisingSlotForm";
 
 const dataMapping = {
     "advisingSlots": { url: "advising/all/main", title: "Adivising Slots" },
-    "attendingEvents": { url: "events/attending/main", title: "Attending Events"},
-    "createdEvents": { url : "events/created/main", title: "Created Events"},
-    "requestedAppointments": { url: "advising/all/main", title: "Requested Appointments"},
-    "approvedAppointments": { url: "advising/all/main", title: "Approved Appointments"}
+    "attendingEvents": { url: "events/attending/main", title: "Attending Events" },
+    "createdEvents": { url: "events/created/main", title: "Created Events" },
+    "requestedAppointments": { url: "advising/all/main", title: "Requested Appointments" },
+    "approvedAppointments": { url: "advising/all/main", title: "Approved Appointments" }
 };
 
 const ALL_EVENT_TYPES = ["advisingSlots", "attendingEvents", "createdEvents", "requestedAppointments", "approvedAppointments"];
@@ -24,19 +24,19 @@ const ALL_EVENT_TYPES = ["advisingSlots", "attendingEvents", "createdEvents", "r
 
 class CalenderView extends React.Component {
 
+    state = {
+        "userType": ls.get("user_type"),
+        "isLoading": false,
+        "eventForm": false,
+        "eventDetails": false,
+        "formMode": "event",
+        "advisingSlotForm": false,
+        "cals": ["main"],
+        "eventTypes": ["attendingEvents"],
+    };
+
     constructor(props) {
         super(props);
-
-        this.state = {
-            "userType": ls.get("user_type"),
-            "isLoading": false,
-            "eventForm": false,
-            "eventDetails": false,
-            "formMode": "event",
-            "advisingSlotForm": false,
-            "cals": ["main"],
-            "eventTypes": ["attendingEvents"],
-        };
 
         this.onDisplayEventTypesChange = this.onDisplayEventTypesChange.bind(this);
         this.loadData = this.loadData.bind(this);
@@ -63,13 +63,13 @@ class CalenderView extends React.Component {
 
     onChangeCalendarData(action, values) {
 
-        if (action == "eventTypes") {
+        if (action === "eventTypes") {
             this.onDisplayEventTypesChange(values);
-        } else if (action == "clear") {
+        } else if (action === "clear") {
             this.setState({ "data": [] });
-        } else if (action == "cal") {
+        } else if (action === "cal") {
             this.onChangeCalendarOptions(values);
-        } 
+        }
 
     }
 
@@ -84,13 +84,13 @@ class CalenderView extends React.Component {
 
                 const allEvents = this.state[name];
 
-                if (allEvents == null || allEvents.length == 0) {
+                if (allEvents == null || allEvents.length === 0) {
                     this.loadData(type, calId);
                 }
-            }); 
+            });
 
             this.setState({ "cals": [...this.state.cals, calId] })
-            
+
         } else {
 
             var nState = {};
@@ -100,7 +100,7 @@ class CalenderView extends React.Component {
                 nState[name] = [];
             });
 
-            nState["cals"] = this.state.cals.filter((id) => { return id != calId ? true: false });
+            nState["cals"] = this.state.cals.filter((id) => { return id !== calId ? true : false });
             this.setState(nState);
         }
         console.log(values);
@@ -110,28 +110,35 @@ class CalenderView extends React.Component {
 
         //this.setState({ "displayDataType": displayDataType });
 
-        if (showEventTypes == null || showEventTypes.length == 0) {
+        if (showEventTypes == null || showEventTypes.length === 0) {
             return;
         }
 
         let eventTypes = [];
-        for (var key in showEventTypes) {
-            if (showEventTypes[key]) {
+        for (var eventType in showEventTypes) {
 
+            const eType = eventType;
+
+            if (showEventTypes[eType]) {
+                const type = eType;
                 this.state.cals.forEach((id) => {
-                    const name = key + id;
+                    const name = type + id;
+
+                    console.log(this.state);
+                    console.log(this.state[name]);
+
                     var currentData = this.state[name];
-                    if (currentData == null || currentData.length == 0) {
-                        this.loadData(key, id);
+                    if (currentData == null || currentData.length === 0) {
+                        this.loadData(eType, id);
                     }
                 });
 
-                eventTypes.push(key);
-                
+                eventTypes.push(eType);
+
             } else {
-                var newState = {};
-                this.state.cals.forEach((id) => {
-                    const name = key + id;
+                let newState = {};
+                this.state.cals.forEach(function (id) {
+                    const name = eType + id;
                     newState[name] = [];
                 });
                 this.setState(newState);
@@ -145,7 +152,7 @@ class CalenderView extends React.Component {
 
     openPopup(name, data) {
 
-        if (name == "eventForm") {
+        if (name === "eventForm") {
 
             let mode = "";
 
@@ -157,18 +164,18 @@ class CalenderView extends React.Component {
 
             this.setState({ "eventForm": true, "formMode": mode });
 
-        } else if (name == "eventDetails") {
+        } else if (name === "eventDetails") {
 
-            this.setState({ "eventDetails": true});
+            this.setState({ "eventDetails": true });
 
-        } else  if (name == "advisingSlotForm") {
-            
+        } else if (name === "advisingSlotForm") {
+
             this.setState({ "advisingSlotForm": true });
 
         }
 
 
-        
+
     }
 
     handlePopupCancel(popupName) {
@@ -184,13 +191,13 @@ class CalenderView extends React.Component {
 
     handlePopupClose(popupName) {
 
-        this.setState({[popupName]: false})
+        this.setState({ [popupName]: false })
     }
 
 
     loadData(displayDataType, calId) {
 
-        if (calId == null || calId.length == 0) {
+        if (calId == null || calId.length === 0) {
             calId = "main";
         }
 
@@ -199,12 +206,12 @@ class CalenderView extends React.Component {
         }
 
         if (!this.state.isLoading) {
-            this.setState({ isLoading: true }); 
+            this.setState({ isLoading: true });
         }
 
         let url = dataMapping[displayDataType].url;
 
-        if (calId != null && (calId.length > 0) && calId != "main") {
+        if (calId != null && (calId.length > 0) && calId !== "main") {
             url += "/" + calId;
         }
         get(url, (res) => {
@@ -234,10 +241,10 @@ class CalenderView extends React.Component {
             console.log(newState);
             this.setState(newState);
         });
-        
+
     }
 
-  
+
 
     componentDidMount() {
 
@@ -256,10 +263,10 @@ class CalenderView extends React.Component {
                 console.log(name);
                 console.log(currentEvents);
                 if (currentEvents != null && currentEvents.length > 0) {
-                    
+
                     events = events.concat(currentEvents);
                 }
-                
+
             });
         });
         console.log(events);
@@ -277,7 +284,7 @@ class CalenderView extends React.Component {
         if (this.state.isLoading) {
             title = "Loading .....";
         }
-        
+
         return (
             <div className="calendarViewRoot">
 
@@ -297,8 +304,6 @@ class CalenderView extends React.Component {
 
 
                 </div>
-
-
             </div>
         );
     }

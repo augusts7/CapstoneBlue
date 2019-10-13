@@ -20,9 +20,7 @@ router.get("/attending/:calendarId", function (req, res) {
 
     pool.query(select, function (error, results, fields) {
 
-        if (error) {
-            return res.json({ "success": false, "message": "Failed to connect to database" });
-        }
+        if (error) return next("Failed to connect to the database")
         try {
             if (results.length > 0) {
 

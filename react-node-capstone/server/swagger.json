@@ -1,0 +1,547 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is the API documentation for the web application for Capstone Blue",
+    "version": "1.0.0",
+    "title": "API DOC CAPBLUE"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/users/login": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Login",
+        "description": "This endpoint login a user",
+        "parameters": [
+          {
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UserLogin"
+            },
+            "name": "Content-Type",
+            "description": "User campusEmail and password"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/users/register": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Register a new user",
+        "description": "This endpoint registers a new user",
+        "parameters": [
+          {
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UserRegister"
+            },
+            "name": "Content-Type",
+            "description": "Registering a new user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/users/advisors": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Getting all the advisors",
+        "description": "This endpoint retrieves data for all the advisors",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "connect.sid",
+            "description": "Token for the authentication",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "schema": {
+              "$ref": "#/definitions/Advisors"
+            }
+          }
+        }
+      }
+    },
+    "/users/forgotPassword": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Reset Password",
+        "description": "This endpoint sends email to rest the password",
+        "parameters": [
+          {
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/PasswordReset"
+            },
+            "name": "Content-Type",
+            "description": "Use campus email to send instructions"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/advising/all": {
+      "get": {
+        "tags": [
+          "advising"
+        ],
+        "summary": "Show all the advising slots",
+        "description": "This endpoint shows advising slots created as events for the user",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "connect.sid",
+            "description": "Token for the authentication",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "schema": {
+              "$ref": "#/definitions/AdvisingEvents"
+            }
+          }
+        }
+      }
+    },
+    "/advising/attend": {
+      "post": {
+        "tags": [
+          "advising"
+        ],
+        "summary": "Register for an advising session",
+        "description": "This endpoint registers a student to an advising session",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "connect.sid",
+            "description": "Token for the authentication"
+          },
+          {
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/AdvisingAttend"
+            },
+            "name": "content-type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/advising": {
+      "post": {
+        "tags": [
+          "advising"
+        ],
+        "summary": "Add an advising slot",
+        "description": "This endpoint creates advising slots for the faculty",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "connect.sid",
+            "description": "Token for the authentication",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "content-type",
+            "schema": {
+              "$ref": "#/definitions/AdvisingSlots"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/appointments": {
+      "get": {
+        "tags": [
+          "appointments"
+        ],
+        "summary": "Get all the appointments for a user",
+        "description": "This endpoint dislays all the appointments of a user",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "connect.sid",
+            "description": "Token for the authentication",
+            "required": true
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "Content-Type",
+            "description": "content type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "schema": {
+              "$ref": "#/definitions/Appointments"
+            }
+          }
+        }
+      }
+    },
+    "/appointments/create": {
+      "post": {
+        "tags": [
+          "appointments"
+        ],
+        "summay": "Create an appointment",
+        "description": "This endpoint creates an appointment for a user",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "connect.sid",
+            "description": "Token for authentication",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "Content-Type",
+            "schema": {
+              "$ref": "#/definitions/Appointments"
+            }
+          }
+        ]
+      }
+    },
+    "/events/attending": {
+      "get": {
+        "tags": [
+          "events"
+        ],
+        "summary": "Get all the users that are attending an event",
+        "description": "This endpoint dislays all the information about a certain event",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "connect.sid",
+            "description": "Token for the authentication",
+            "required": true
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "Content-Type",
+            "description": "content type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "userStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "User Status"
+        }
+      }
+    },
+    "UserLogin": {
+      "type": "object",
+      "properties": {
+        "campusEmail": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "UserRegister": {
+      "type": "object",
+      "required": [
+        "first_name",
+        "last_name",
+        "campusEmail",
+        "password",
+        "user_type"
+      ],
+      "properties": {
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "campusEmail": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "user_type": {
+          "type": "string"
+        },
+        "major": {
+          "type": "string"
+        },
+        "classification": {
+          "type": "string"
+        },
+        "advisor_id": {
+          "type": "integer"
+        }
+      }
+    },
+    "Advisors": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "first_name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "user_id": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "PasswordReset": {
+      "type": "object",
+      "required": [
+        "campusEmail"
+      ],
+      "properties": {
+        "capmusEmail": {
+          "type": "string"
+        }
+      }
+    },
+    "AdvisingSlots": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "start": {
+          "type": "string"
+        },
+        "end": {
+          "type": "string"
+        },
+        "interval": {
+          "type": "string"
+        },
+        "event_type": {
+          "type": "string"
+        },
+        "creator_id": {
+          "type": "integer"
+        },
+        "carousel": {
+          "type": "boolean"
+        },
+        "creator_calendar_id": {
+          "type": "integer"
+        }
+      }
+    },
+    "AdvisingEvents": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "start": {
+                "type": "string"
+              },
+              "end": {
+                "type": "string"
+              },
+              "event_type": {
+                "type": "string"
+              },
+              "creator_id": {
+                "type": "integer"
+              },
+              "carousel": {
+                "type": "boolean"
+              },
+              "creator_calendar_id": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "AdvisingAttend": {
+      "type": "object",
+      "required": [
+        "first_name",
+        "last_name",
+        "campusEmail",
+        "password",
+        "user_type"
+      ],
+      "properties": {
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "campusEmail": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "user_type": {
+          "type": "string"
+        },
+        "major": {
+          "type": "string"
+        },
+        "classification": {
+          "type": "string"
+        },
+        "advisor_id": {
+          "type": "integer"
+        }
+      }
+    },
+    "Appointments": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "start": {
+          "type": "string"
+        },
+        "end": {
+          "type": "string"
+        },
+        "event_type": {
+          "type": "string"
+        },
+        "creator_id": {
+          "type": "integer"
+        },
+        "carousel": {
+          "type": "boolean"
+        },
+        "creator_calendar_id": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

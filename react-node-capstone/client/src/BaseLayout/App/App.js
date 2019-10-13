@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Redirect, BrowserRouter as Router } from "react-router-dom";
+import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import Main from "../Main/Main";
@@ -36,15 +36,17 @@ class App extends React.Component {
 
                     <main className="mdl-layout__content mdl-color--grey-200">
                         <div id="content-div">
-                            <Route path="/profile" component={Profile} />
-                            <Route path="/calenderView" component={CalenderView} />
-                            <Route path="/groupView" component={GroupView} />
-                            <Route path="/eventsView" component={EventsView} />
-                            <Route path="/requestEvent" component={RequestEvent} />
-                            <Route path="/viewAllEvents" component={ViewAllEvents} />
-                            <Route path="/createEvent" component={CreateEvent} />
-                            <Route path="/approveEvent" component={ApproveEvent} />
-                            <Route exact path="/" component={Main} />
+                            <Switch>
+                                <Route path="/profile" component={Profile} />
+                                <Route path="/calenderView" component={CalenderView} />
+                                <Route path="/groupView" component={GroupView} />
+                                <Route path="/eventsView" component={EventsView} />
+                                <Route path="/requestEvent" component={RequestEvent} />
+                                <Route path="/viewAllEvents" component={ViewAllEvents} />
+                                <Route path="/createEvent" component={CreateEvent} />
+                                <Route path="/approveEvent" component={ApproveEvent} />
+                                <Route path="/" component={Main} />
+                            </Switch>
                         </div>
 
                         <Footer />

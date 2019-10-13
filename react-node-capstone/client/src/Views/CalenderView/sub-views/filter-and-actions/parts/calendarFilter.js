@@ -52,7 +52,7 @@ export default class CalendarFilter extends React.Component {
             }
             var cState = { "cals": cals };
             cals.forEach(cal => {
-                if (cal.calendarId == "main") {
+                if (cal.calendarId === "main") {
                     cState[("id-" + cal.calendarId)] = true;
                 } else {
                     cState[("id-" + cal.calendarId)] = false;
