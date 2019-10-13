@@ -1,24 +1,33 @@
 .eventListItem {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  grid-template-areas: "date-number description" "date-name description";
-  border: solid;
-  overflow: auto;
+  grid-template-columns: 0.2fr 1.8fr;
+  grid-template-areas: "date description";
+  border: solid orange;
+  background-color: rgba(203, 203, 204, 0.822);
 }
 
-.description { 
+.date {
+  grid-area: date;
+  text-align: center;
+  padding: 5px;
+}
+
+.date-number {
+  font-size: 26pt;
+  font-weight: bold;
+  border: solid blue;
+  margin: 5px;
+}
+
+.date-name {
+  margin: 5px;
+  font-weight: bold;
+  font-size: 20pt;
+  border: solid violet;
+}
+
+.description {
   grid-area: description;
-  max-height: 50%;
-  border: solid;
-}
-
-.date-number { 
-  grid-area: date-number;
-  border: solid; 
-}
-
-.date-name { 
-  grid-area: date-name;
-  border: solid; 
+  border: solid red;
+  margin: 5px !important;
 }
