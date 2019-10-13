@@ -3,10 +3,9 @@
     background-color: #B3E5FC;
     color: black;
     display: grid;
-    grid-template-columns: 85% 15%;
+    grid-template-columns: 80% 20%;
 }
 .message-box {
     font-size: 18px;
-    padding-left: 32px;
     padding-top: 8px;
 }

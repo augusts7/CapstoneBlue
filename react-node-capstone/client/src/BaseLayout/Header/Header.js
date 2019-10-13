@@ -11,9 +11,7 @@ class Header extends React.Component {
   }
 
   logout() {
-    ls.set("isLoggedIn", false);
-    ls.set("user_type", "");
-    window.location = "/";
+      this.props.onLogout();
   }
 
   render() {
@@ -45,7 +43,6 @@ class Header extends React.Component {
               </Link>
               <Link
                 className="mdl-navigation__link"
-                to="/login"
                 onClick={this.logout}
               >
                 Logout
@@ -89,7 +86,7 @@ class Header extends React.Component {
                   <i className="material-icons">face</i>My Profile
                 </li>
               </Link>
-              <Link to="login" onClick={this.logout}>
+              <Link onClick={this.logout}>
                 <li className="mdl-menu__item">
                   <i className="material-icons">remove_circle</i>Logout
                 </li>

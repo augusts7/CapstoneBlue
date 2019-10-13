@@ -7,7 +7,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 
-router.get("/all", function (req, res) {
+router.get("/all/:calendarId", function (req, res) {
 
     try {
 
@@ -25,7 +25,12 @@ router.get("/all", function (req, res) {
 
                 if (results.length > 0) {
 
-                    pool.query("SELECT * FROM schedulerdb.event WHERE event_type = 'advising' AND creator_id = ?", results[0].advisor_id, function (error, results, fields) {
+                    let sql = "SELECT * FROM schedulerdb.event WHERE event_type = 'advising' AND creator_id = " + results[0].advisor_id;
+                    if (req.params.calendarId != "main") {
+                        sql = "SELECT * FROM schedulerdb.event WHERE event_type = 'advising' AND creator_id = " + results[0].advisor_id + " AND creator_calendar_id = " + req.params.calendarId;
+                    }
+
+                    pool.query(sql, function (error, results, fields) {
 
                         if (error) {
                             return res.json({ "success": false, "message": "Failed to connect to database" });
@@ -54,7 +59,14 @@ router.get("/all", function (req, res) {
             });
         } else {
             console.log("Select faculty data. ");
-            pool.query("SELECT * FROM schedulerdb.event WHERE event_type = 'advising' AND creator_id = ?", req.user.user_id, function (error, results, fields) {
+
+            let sql = "SELECT * FROM schedulerdb.event WHERE event_type = 'advising' AND creator_id = " + req.user.user_id;
+
+            if (req.params.calendarId != "main") {
+                sql = "SELECT * FROM schedulerdb.event WHERE event_type = 'advising' AND creator_id = " + req.user.user_id + " AND creator_calendar_id = " + req.params.calendarId;
+            }
+
+            pool.query(sql, function (error, results, fields) {
 
                 if (error) {
                     return res.json({ "success": false, "message": "Failed to connect to database" });
@@ -80,7 +92,7 @@ router.get("/all", function (req, res) {
 })
 
 
-router.post("/attend", async function (req, res) {
+router.post("/attend/:calendarId", async function (req, res) {
 
     try {
 
@@ -102,11 +114,17 @@ router.post("/attend", async function (req, res) {
                         attendee_id: result[0].advisor_id
                     };
 
+                    if (req.params.calendarId != "main") {
+                        studentData.calendar_id = req.params.calendarId;
+                    }
+
                     let values = [studentData, facultyData];
 
                     await values.forEach(async function (value) {
                         await pool.query("INSERT INTO schedulerdb.attending SET ?", value);
                     });
+
+                    
 
                     return res.json({ "success": true });
 
@@ -127,7 +145,7 @@ router.post("/attend", async function (req, res) {
 })
 
 
-router.post("/", async function (req, res) {
+router.post("/:calendarId", async function (req, res) {
     
     try {
         let data = {
@@ -138,11 +156,18 @@ router.post("/", async function (req, res) {
             interval: req.body.interval,
             creator_id: req.user.user_id,
             event_type: "advising",
-            carousel: req.body.carousel
+            carousel: req.body.carousel,
+            calendar_id: req.body.calendar_id
         };
 
         let slots = getSlots(data.start, data.end, data.interval, data.creator_id, data.title, data.description, data.event_type, data.carousel);
-        await slots.forEach(async function(slot) {
+
+        await slots.forEach(async function (slot) {
+
+            if (req.params.calendarId != "main") {
+                slot.creator_calendar_id = req.params.calendarId;
+            }
+
             await pool.query("INSERT INTO schedulerdb.event SET ?", slot);
         });
 

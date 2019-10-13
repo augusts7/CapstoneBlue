@@ -22,6 +22,7 @@
     "react-alice-carousel": "^1.15.3",
     "react-big-calendar": "^0.22.1",
     "react-dom": "^16.9.0",
+    "react-responsive-carousel": "^3.1.50",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",

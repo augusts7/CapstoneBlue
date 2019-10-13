@@ -27,7 +27,6 @@ class Select extends React.Component {
 
     render() {
 
-        let hypertext = "Select your " + this.props.label;
 
         return (
             <TextField
@@ -38,7 +37,7 @@ class Select extends React.Component {
                 label={this.props.label}
                 value={this.state.value}
                 onChange={this.onChange}
-                helperText={hypertext}
+                helperText={this.props.helperText || this.props.label}
                 margin="normal">
                 {this.props.options.map(option => {
                     return <MenuItem key={option.value} value={option.value}>

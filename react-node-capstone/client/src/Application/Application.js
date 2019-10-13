@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, Switch, BrowserRouter as Router} from "react-router-dom";
+import {Route, Redirect, Switch, BrowserRouter as Router} from "react-router-dom";
 import App from "../BaseLayout/App/App";
 import Login from "../Authentication/Login/Login";
 import Register from "../Authentication/Register/Register";
@@ -12,7 +12,7 @@ class Application extends React.Component {
     constructor(props) {
         super(props);
 
-        var isLoggedIn = true;
+        var isLoggedIn = false;
         if (ls.get("isLoggedIn")) {
             isLoggedIn = true;
         }
@@ -21,6 +21,7 @@ class Application extends React.Component {
             user_type: "faculty"
         };
         this.hasLoggedIn = this.hasLoggedIn.bind(this);
+        this.onLogout = this.onLogout.bind(this);
     }
 
     hasLoggedIn(user) {
@@ -29,10 +30,18 @@ class Application extends React.Component {
         ls.set("user_type", user.user_type);
     }
 
+    onLogout() {
+        this.setState({ isLoggedIn: false });
+        ls.set("isLoggedIn", false);
+        ls.set("user_type", "");
+    }
+
     getRoutes() {
-        let login = <Login hasLoggedIn={this.hasLoggedIn}/>;
-        let register = <Register hasLoggedIn={this.hasLoggedIn}/>;
-        let app = <App id={1}/>;
+
+        let app = <App onLogout={this.onLogout} />;
+        let login = <Login hasLoggedIn={this.hasLoggedIn} />;
+        let register = <Register hasLoggedIn={this.hasLoggedIn} />;
+        let forgotPassword = <ForgotPassword hasLoggedIn={this.hasLoggedIn} />;
 
         let routes = [];
         if (this.state.isLoggedIn) {
@@ -44,9 +53,9 @@ class Application extends React.Component {
         } else {
             routes.push(
                 <Switch>
-                    <Route path="/login" render={() => login}/>
-                    <Route path="/register" render={() => register}/>
-                    <Route path="/forgotPassword" component={ForgotPassword}/>
+                    <Route path="/login" render={() => login} />
+                    <Route path="/register" render={() => register} />
+                    <Route path="/forgotPassword" render={() => forgotPassword} />
                     <Route path="/" render={() => login}/>
                 </Switch>
             );
@@ -55,6 +64,8 @@ class Application extends React.Component {
     }
 
     render() {
+       
+
         return (
             <Router>
                 <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header full root-container">

@@ -27,23 +27,15 @@ function getSlots(start, endStr, intervalStr, creator_id, title, description, ev
 
     var current = new Date(start);
 
-    current.setSeconds(0);
+    current.setUTCSeconds(0, 0);
     end.setSeconds(0);
 
     while (testAddTime(current, interval) <= end) {
 
-        var slot = {};
-        slot.start = new Date(current);
-        slot.creator_id = creator_id;
-        slot.title = title;
-        slot.description = description;
-        slot.event_type = event_type;
-        slot.carousel = carousel;
-        slot.end = addTime(new Date(current), interval);
+        let end = addTime(new Date(current), interval);
+        slots.push({"start": new Date(current), "creator_id": creator_id, "title": title, "description": description, "event_type": event_type, "carousel": carousel, "end": end});
 
-        slots.push(slot);
-
-        current = new Date(slot.end);
+        current = new Date(end);
         current.setSeconds(0);
     }
 
@@ -56,10 +48,8 @@ function addTime(time, interval) {
     var newMins = time.getMinutes() + interval;
 
     if (newMins >= 60) {
-        var newHours = time.getHours() + Math.floor(newMins / 60);
-        var mins = newMins - Math.floor(newMins / 60) * 60;
-        time.setHours(newHours);
-        time.setMinutes(mins);
+        time.setHours(time.getHours() + Math.floor(newMins / 60));
+        time.setMinutes(newMins - Math.floor(newMins / 60) * 60);
     } else {
         time.setMinutes(newMins);
     }
@@ -68,21 +58,18 @@ function addTime(time, interval) {
 }
 
 function testAddTime(testTime, interval) {
-    console.log("Test = " + testTime);
     var time = new Date(testTime);
 
     var newMins = time.getMinutes() + interval;
 
     if (newMins >= 60) {
-        var newHours = time.getHours() + Math.floor(newMins / 60);
-        var mins = newMins - Math.floor(newMins / 60) * 60;
-        time.setHours(newHours);
-        time.setMinutes(mins);
+        time.setHours(time.getHours() + Math.floor(newMins / 60));
+        time.setMinutes(newMins - Math.floor(newMins / 60) * 60);
     } else {
         time.setMinutes(newMins);
     }
     time.setSeconds(0);
-    console.log("Test = " + testTime);
+
     return time;
 }
 

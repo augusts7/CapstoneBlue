@@ -2,9 +2,9 @@ import React from "react";
 import "./Form.css";
 import Button from "../Button/Button";
 import ActionLink from "../Button/ActionLink";
-import Input from "../Input/Input";
 import Select from "../Select/Select";
 import Container from "../Container/Container/Container";
+import TextField from "@material-ui/core/TextField"
 
 class Form extends React.Component {
 
@@ -42,16 +42,15 @@ class Form extends React.Component {
                 />));
             } else {
                 return(
-                    fields.push(<Input
-                    formId={this.props.id}
-                    label={field.label}
-                    type={field.type}
-                    onChange={field.onChange}
-                    key={field.id}
-                    name={field.name}
-                    required={field.required}
-                    value={field.value}
-                />));
+                    fields.push(<TextField
+                            fullWidth
+                            id={field.id}
+                            required={field.required}
+                            value={field.value}
+                            type={field.type}
+                            label={field.label}
+                            name={field.name}
+                            margin="normal" />));
             }
         })
        

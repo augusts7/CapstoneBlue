@@ -3,14 +3,12 @@
     "",
     "\\client",
     "\\client\\src",
-    "\\client\\src\\Authentication",
     "\\client\\src\\Views",
     "\\client\\src\\Views\\CalenderView",
+    "\\client\\src\\Views\\CalenderView\\SideView",
     "\\server",
-    "\\server\\auth",
-    "\\server\\db",
     "\\server\\routes"
   ],
-  "SelectedNode": "\\server\\routes\\users.js",
+  "SelectedNode": "\\client\\src\\Views\\CalenderView\\SideView\\sub-views",
   "PreviewInSolutionExplorer": false
 }

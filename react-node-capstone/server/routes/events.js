@@ -8,14 +8,17 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 
-router.get("/attending", function (req, res) {
+router.get("/attending/:calendarId", function (req, res) {
 
-    let select = "SELECT * FROM schedulerdb.attending INNER JOIN schedulerdb.event ON " +
-        "schedulerdb.event.eventID = schedulerdb.attending.event_id WHERE attendee_id = ? ";
+    let select = "SELECT * FROM schedulerdb.attending INNER JOIN schedulerdb.event ON schedulerdb.event.eventID = schedulerdb.attending.event_id WHERE attendee_id = " + req.user.user_id;
+
+    if (req.params.calendarId != "main") {
+        select = "SELECT * FROM schedulerdb.attending INNER JOIN schedulerdb.event ON schedulerdb.event.eventID = schedulerdb.attending.event_id WHERE attendee_id = " + req.user.user_id + " AND calendar_id = " + req.params.calendarId;
+    }
 
     console.log(req.user.user_id);
 
-    pool.query(select, req.user.user_id, function (error, results, fields) {
+    pool.query(select, function (error, results, fields) {
 
         if (error) {
             return res.json({ "success": false, "message": "Failed to connect to database" });
@@ -39,14 +42,20 @@ router.get("/attending", function (req, res) {
 })
 
 
-router.get("/created", function (req, res) {
+router.get("/created/:calendarId", function (req, res) {
 
     console.log("created");
 
     console.log(req.user);
     console.log(req.user.user_id);
 
-    pool.query("SELECT * FROM schedulerdb.event WHERE creator_id = ? ", req.user.user_id, function (error, results, fields) {
+    let select = "SELECT * FROM schedulerdb.event WHERE creator_id = " + req.user.user_id;
+
+    if (req.params.calendarId != "main") {
+        select = "SELECT * FROM schedulerdb.event WHERE creator_id = " + req.user.user_id + " AND creator_calendar_id = " + req.params.calendarId;
+    }
+
+    pool.query(select, function (error, results, fields) {
 
         if (error) {
             return res.json({ "success": false, "message": "Failed to connect to database" });
@@ -68,6 +77,7 @@ router.get("/created", function (req, res) {
     });
 
 })
+
 
 
 module.exports = router;

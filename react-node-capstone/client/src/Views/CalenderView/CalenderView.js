@@ -1,13 +1,26 @@
 import React from "react";
 import Calendar from "../../components/Calendar/Calendar";
-import "./main.css";
-import { Link } from "react-router-dom";
-import Button from "../../components/Button/Button"
-import MaterialButton from "@material-ui/core/Button"
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import Events from "./sub-views/events/Events"
+import CalendarOptions from "./sub-views/filter-and-actions/FilterAndActions"
 import ls from "local-storage"
+import { get } from "../../ApiHelper/ApiHelper"
+import "./main.css";
+import "./scroll.css"
+import EventForm from "./sub-views/forms/EventForm";
+import EventDetails from "./sub-views/eventDetails/EventDetails"
+import AdvisingSlotForm from "./sub-views/forms/AdvisingSlotForm";
+
+
+const dataMapping = {
+    "advisingSlots": { url: "advising/all/main", title: "Adivising Slots" },
+    "attendingEvents": { url: "events/attending/main", title: "Attending Events"},
+    "createdEvents": { url : "events/created/main", title: "Created Events"},
+    "requestedAppointments": { url: "advising/all/main", title: "Requested Appointments"},
+    "approvedAppointments": { url: "advising/all/main", title: "Approved Appointments"}
+};
+
+const ALL_EVENT_TYPES = ["advisingSlots", "attendingEvents", "createdEvents", "requestedAppointments", "approvedAppointments"];
+
 
 class CalenderView extends React.Component {
 
@@ -15,259 +28,277 @@ class CalenderView extends React.Component {
         super(props);
 
         this.state = {
-            "created": [],
-            "attending": [],
-            "userType": ls.get("user_type")
+            "userType": ls.get("user_type"),
+            "isLoading": false,
+            "eventForm": false,
+            "eventDetails": false,
+            "formMode": "event",
+            "advisingSlotForm": false,
+            "cals": ["main"],
+            "eventTypes": ["attendingEvents"],
         };
+
+        this.onDisplayEventTypesChange = this.onDisplayEventTypesChange.bind(this);
+        this.loadData = this.loadData.bind(this);
+        this.onChangeCalendarData = this.onChangeCalendarData.bind(this);
+        this.getProcessedEventsToDisplay = this.getProcessedEventsToDisplay.bind(this);
+        this.handlePopupSave = this.handlePopupSave.bind(this);
+        this.handlePopupCancel = this.handlePopupCancel.bind(this);
+        this.handlePopupClose = this.handlePopupClose.bind(this);
+        this.openPopup = this.openPopup.bind(this);
+        this.onCalendarDateClick = this.onCalendarDateClick.bind(this);
+        this.onChangeCalendarOptions = this.onChangeCalendarOptions.bind(this);
+        this.onCalendarEventClick = this.onCalendarEventClick.bind(this);
     }
 
-    componentDidMount() {
-        fetch("/events/created", {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                "credentials": "include",
-            }
-        }).then(res => {
-            return res.json();
-        })
-            .then((res) => {
-
-                if (res.success) {
-
-                    let data = [];
-
-                    res.results.forEach(d => {
-                        console.log(d);
-                        data.push({
-                            "key": d.eventID,
-                            "start": d.start,
-                            "end": d.end,
-                            "title": d.title,
-                            "description": d.description,
-                            "color": "white",
-                            "backgroundColor": "#880E4F"
-                        });
-                    });
-                    this.setState({ "created": data });
-                }
-            });
-
-        fetch("/events/attending", {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                "credentials": "include",
-            }
-        }).then(res => {
-            return res.json();
-            })
-            .then((res) => {
-
-                if (res.success) {
-
-                    let calData = [];
-                    let data = [];
-
-                    res.results.forEach(d => {
-                        console.log(d);
-                        data.push({
-                            "key": d.eventID,
-                            "start": d.start,
-                            "end": d.end,
-                            "title": d.title,
-                            "description": d.description,
-                            "color": "white",
-                            "backgroundColor": "#E65100"
-                        });
-                    });
-                    this.setState({ "attending": data });
-
-                }
-
-            });
+    onCalendarDateClick(date) {
+        console.log(date);
 
     }
 
-    singleEventHtml(data) {
+    onCalendarEventClick(event) {
+        console.log(event);
 
-        var dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        const timeOptions = { minute: '2-digit', hour: "2-digit" }
+    }
 
-        const start = new Date(data.start);
-        const end = new Date(data.end);
+    onChangeCalendarData(action, values) {
 
-        const date = start.toLocaleDateString("en-US", dateOptions);
-        const startTime = start.toLocaleTimeString("en-US", timeOptions);
-        const endTime = end.toLocaleTimeString("en-US", timeOptions);
+        if (action == "eventTypes") {
+            this.onDisplayEventTypesChange(values);
+        } else if (action == "clear") {
+            this.setState({ "data": [] });
+        } else if (action == "cal") {
+            this.onChangeCalendarOptions(values);
+        } 
 
-        const dateString = date + " from " + startTime + " to " + endTime;
+    }
 
-        let buttons = [];
+    onChangeCalendarOptions(values) {
 
-        buttons.push(<div style={{ "display": "inline-block" }}><MaterialButton key="1" style={{ "padding": "2px", "backgroundColor": "#455A64", "color": "white" }} onClick={this.props.onAddToCalendar}>Delete</MaterialButton></div>);
+        const calId = values.id;
 
-        if (data.created) {
-            buttons.push(<div style={{ "display": "inline-block", "marginLeft": "4px" }}><MaterialButton key="2" style={{ "padding": "2px", "backgroundColor": "#455A64", "color": "white" }} onClick={this.props.onAddToCalendar}>Modify</MaterialButton></div>);
+        if (values.show) {
+
+            this.state.eventTypes.forEach((type) => {
+                const name = type + calId;
+
+                const allEvents = this.state[name];
+
+                if (allEvents == null || allEvents.length == 0) {
+                    this.loadData(type, calId);
+                }
+            }); 
+
+            this.setState({ "cals": [...this.state.cals, calId] })
+            
+        } else {
+
+            var nState = {};
+
+            this.state.eventTypes.forEach((type) => {
+                const name = type + calId;
+                nState[name] = [];
+            });
+
+            nState["cals"] = this.state.cals.filter((id) => { return id != calId ? true: false });
+            this.setState(nState);
+        }
+        console.log(values);
+    }
+
+    onDisplayEventTypesChange(showEventTypes) {
+
+        //this.setState({ "displayDataType": displayDataType });
+
+        if (showEventTypes == null || showEventTypes.length == 0) {
+            return;
         }
 
-        return (<div className="slotRoot" key={data.key}>
+        let eventTypes = [];
+        for (var key in showEventTypes) {
+            if (showEventTypes[key]) {
 
-            <div className="mdl-grid">
-                <div className="mdl-cell--2-col">
-                    <i className="material-icons mdl-color-text--blue-900">today</i>
-                </div>
-                <div className="mdl-cell--10-col">
-                    <div className="mdl-color-text--blue-900">
-                        {date}
-                    </div>
-                    <div style={{ "fontWeight": "600" }}>
-                        {data.title}
-                    </div>
+                this.state.cals.forEach((id) => {
+                    const name = key + id;
+                    var currentData = this.state[name];
+                    if (currentData == null || currentData.length == 0) {
+                        this.loadData(key, id);
+                    }
+                });
 
-                    <div className="cols-2">
-                        <div>
-                            {startTime}
-                        </div>
-                        <div>
-                            {endTime}
-                        </div>
-                    </div>
-                    <div>
-                        {data.description}
-                    </div>
-                    <div style={{"paddingTop": "8px"}}>
-                        {buttons}
-                    </div>
-                </div>
-            </div>
-
-        </div>);
-
-    }
-
-    singleActionHtml(data) {
-
-        return (<div className="slotRoot">
-
-            <div className="mdl-grid">
-                <div className="mdl-cell--2-col">
-                    <i className="material-icons">today</i>
-                </div>
-                <div className="mdl-cell--10-col">
-                    <div>
-                        {data.title}
-                    </div>
-                    <div>
-                        {data.description}
-
-                    </div>
-                    <div>
-                        <Button style={{ "padding": "2px" }} onClick={this.props.onAddToCalendar}>{data.button}</Button>
-                    </div>
-                </div>
-            </div>
-
-        </div>);
-
+                eventTypes.push(key);
+                
+            } else {
+                var newState = {};
+                this.state.cals.forEach((id) => {
+                    const name = key + id;
+                    newState[name] = [];
+                });
+                this.setState(newState);
+            }
+        }
+        this.setState({ "eventTypes": eventTypes });
+        console.log(showEventTypes);
     }
 
 
+
+    openPopup(name, data) {
+
+        if (name == "eventForm") {
+
+            let mode = "";
+
+            if (!data || !data.mode) {
+                mode = "event";
+            } else {
+                mode = data.mode;
+            }
+
+            this.setState({ "eventForm": true, "formMode": mode });
+
+        } else if (name == "eventDetails") {
+
+            this.setState({ "eventDetails": true});
+
+        } else  if (name == "advisingSlotForm") {
+            
+            this.setState({ "advisingSlotForm": true });
+
+        }
+
+
+        
+    }
+
+    handlePopupCancel(popupName) {
+
+
+
+        this.handlePopupClose(popupName);
+    }
+
+    handlePopupSave(popupName, data) {
+        this.handlePopupClose(popupName);
+    }
+
+    handlePopupClose(popupName) {
+
+        this.setState({[popupName]: false})
+    }
+
+
+    loadData(displayDataType, calId) {
+
+        if (calId == null || calId.length == 0) {
+            calId = "main";
+        }
+
+        if (this.state.isLoading) {
+            return;
+        }
+
+        if (!this.state.isLoading) {
+            this.setState({ isLoading: true }); 
+        }
+
+        let url = dataMapping[displayDataType].url;
+
+        if (calId != null && (calId.length > 0) && calId != "main") {
+            url += "/" + calId;
+        }
+        get(url, (res) => {
+
+            let data = [];
+
+            if (res.success) {
+
+                res.results.forEach(d => {
+                    console.log(d);
+                    data.push({
+                        "key": d.eventID,
+                        "start": d.start,
+                        "end": d.end,
+                        "title": d.title,
+                        "description": d.description,
+                        "color": "white",
+                        "backgroundColor": "#880E4F"
+                    });
+                });
+
+            }
+            const name = displayDataType + calId;
+            var newState = {};
+            newState[name] = data;
+            newState["isLoading"] = false;
+            console.log(newState);
+            this.setState(newState);
+        });
+        
+    }
+
+  
+
+    componentDidMount() {
+
+        this.loadData("attendingEvents", "main");
+
+    }
+
+    getProcessedEventsToDisplay() {
+        let events = [];
+
+        ALL_EVENT_TYPES.forEach((type) => {
+
+            this.state.cals.forEach(id => {
+                const name = type + id;
+                const currentEvents = this.state[name];
+                console.log(name);
+                console.log(currentEvents);
+                if (currentEvents != null && currentEvents.length > 0) {
+                    
+                    events = events.concat(currentEvents);
+                }
+                
+            });
+        });
+        console.log(events);
+        return events;
+    }
 
     render() {
 
-        let largeCardStyle = { "overflowY": "scroll", "height": window.innerHeight * 0.8 };
-        let smallCardStyle = { "overflowY": "scroll", "height": window.innerHeight * 0.35 };
+        console.log(this.state);
 
-        let events = this.state.attending.concat(this.state.created);
+        let events = this.getProcessedEventsToDisplay();
 
-        let showEvents = [];
+        let title = "Selected Events";
 
-        this.state.attending.forEach(data => {
-            data.created = false;
-            showEvents.push(data);
-        });
-
-        this.state.created.forEach(data => {
-            data.created = true;
-            showEvents.push(data);
-        });
-
-        let listItemStyle = { "background": "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)" };
-
-        let links = [];
-
-        if (this.state.userType === "faculty") {
-            links.push({ "name": "Create Advising Slots", "link": "/advisingSlots/add" });
-
-        } else {
-            links.push({ "name": "Sign up for Advising", "link": "/advisingSlots/view" });
-
+        if (this.state.isLoading) {
+            title = "Loading .....";
         }
-        links.push({ "name": "Add Appointment", "link": "/appointment/add" });
-        links.push({ "name": "Modify Appointment", "link": "/appointment/modify" });
-        links.push({ "name": "Share Calendar", "link": "/calendar/share" });
-        links.push({ "name": "Export Calendar", "link": "/calendar/export" });
-
+        
         return (
             <div className="calendarViewRoot">
 
+                <AdvisingSlotForm onCancel={() => this.handlePopupCancel("advisingSlotForm")} onClose={() => this.handlePopupClose("advisingSlotForm")} onSave={(data) => this.handlePopupSave("advisingSlotForm", data)} open={this.state.advisingSlotForm} />
+
+                <EventForm mode={this.state.mode} onCancel={() => this.handlePopupCancel("eventForm")} onClose={() => this.handlePopupClose("eventForm")} onSave={(data) => this.handlePopupSave("eventForm", data)} open={this.state.eventForm} />
+
+                <EventDetails mode={this.state.mode} onCancel={() => this.handlePopupCancel("eventDetails")} onClose={() => this.handlePopupClose("eventDetails")} onSave={(data) => this.handlePopupSave("eventDetails", data)} open={this.state.eventDetails} />
+
                 <div className="calendarViewContainer">
 
-                    <div>
+                    <CalendarOptions openPopup={this.openPopup} isLoading={this.state.isLoading} onChangeCalendarData={this.onChangeCalendarData} events={events} userType={this.state.userType} />
 
-                        <div className="calendarView_side_wrapper">
+                    <Calendar onEventClick={this.onCalendarEventClick} onDateClick={this.onCalendarDateClick} events={events} />
 
-                            <div className="calendarView_side_card">
-                                <div>
-                                    <h4>All Events</h4>
-                                </div>
-                                <div style={largeCardStyle} className="styleScroll">
-                                    {showEvents.map(data => {
-                                        return this.singleEventHtml(data);
-                                    })}
+                    <Events openPopup={this.openPopup} title={title} isLoading={this.state.isLoading} events={events} />
 
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div>
-                        <Calendar events={this.state.attending} />
-                    </div>
-
-                    <div>
-                        <div className="calendarView_side_card">
-                            <div>
-                                <h4>Calendar Options</h4>
-                            </div>
-
-                            <div style={smallCardStyle} className="styleScroll">
-
-
-                            </div>
-                        </div>
-
-                        <div className="calendarView_side_card">
-                            <div>
-                                <h4>Actions</h4>
-                            </div>
-
-
-                            <List component="nav">
-                                {links.map(link => {
-                                    return(
-                                    <ListItem style={listItemStyle} button>
-                                        <Link to={link.link}><ListItemText primary={link.name} /></Link>
-                                    </ListItem>);
-                                })}
-                            </List>
-
-                        </div>
-                    </div>
 
                 </div>
+
+
             </div>
         );
     }

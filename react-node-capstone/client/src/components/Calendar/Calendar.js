@@ -12,9 +12,16 @@ import "./main.css";
 
 export default class Calendar extends React.Component {
 
-    calendarComponentRef = React.createRef()
-    state = {
-        showWeekends: true,
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            "showWeekends": true,
+        }
+
+        this.handleDateClick = this.handleDateClick.bind(this);
+        this.handleEventClick = this.handleEventClick.bind(this);
     }
 
     render() {
@@ -59,10 +66,10 @@ export default class Calendar extends React.Component {
                         eventOrder="start"
                         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                         contentHeight={window.innerHeight * 0.7}
-                        ref={this.calendarComponentRef}
                         weekends={this.state.showWeekends}
                         events={this.props.events}
                         dateClick={this.handleDateClick}
+                        eventClick={this.handleEventClick}
                     />
                 </div>
             </div>
@@ -80,8 +87,18 @@ export default class Calendar extends React.Component {
         calendarApi.gotoDate('2000-01-01') // call a method on the Calendar object
     }
 
-    handleDateClick = (arg) => {
+    handleDateClick = (args) => {
+        console.log(args);
+        if (this.props.onDateClick) {
+            this.props.onDateClick(args.date);
+        }   
+    }
 
+    handleEventClick(args) {
+        console.log(args);
+        if (this.props.onEventClick) {
+            this.props.onEventClick(args.event);
+        }
     }
 
 }
