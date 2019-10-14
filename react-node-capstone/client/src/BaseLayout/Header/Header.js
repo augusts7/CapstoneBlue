@@ -1,101 +1,109 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import "./Header.css";
 
 class Header extends React.Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.logout = this.logout.bind(this);
-  }
+        this.state = { "isLoggedIn": true };
 
-  logout() {
-      this.props.onLogout();
-  }
+        this.logout = this.logout.bind(this);
+    }
 
-  render() {
-    return (
-      <header className="mdl-layout__header">
-        <div className="mdl-layout__header-row">
-          <span className="mdl-layout-title white">
-            ULM Scheduling Application
-          </span>
+    logout() {
+        this.props.onLogout();
+        this.setState({ "isLoggedIn": false });
+    }
 
-          <div className="mdl-layout-spacer"></div>
+    render() {
 
-          <div>
-            <nav className="mdl-navigation mdl-layout--large-screen-only header-nav">
-              <Link className="mdl-navigation__link" to="/">
-                Home
-              </Link>
-              <Link className="mdl-navigation__link" to="/calenderView">
-                Calendar
-              </Link>
-              <Link className="mdl-navigation__link" to="/groupView">
-              Groups
-              </Link>
-              <Link className="mdl-navigation__link" to="/eventsView">
-                Events
-              </Link>
-              <Link className="mdl-navigation__link" to="/profile">
-                My Profile
-              </Link>
-              <Link
-                className="mdl-navigation__link"
-                onClick={this.logout}
-              >
-                Logout
-              </Link>
-            </nav>
+        if (!this.state.isLoggedIn) {
 
-            <button
-              className="mdl-layout--small-screen-only mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon large-icon-button"
-              id="hdrbtn"
-            >
-              <i className="material-icons large-icon">more_vert</i>
-            </button>
+            return (<Redirect to="/login" />);
 
-            <ul
-              className="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right"
-              htmlFor="hdrbtn"
-            >
-              <Link to="/">
-                <li className="mdl-menu__item">
-                  <i className="material-icons">home</i>Home
-                </li>
-              </Link>
+        } else {
 
-              <Link to="/calenderView">
-                <li className="mdl-menu__item">
-                  <i className="material-icons">calendar_today</i>Calendar
-                </li>
-              </Link>
-              <Link to="/groupView">
-                <li className="mdl-menu__item">
-                  <i className="material-icons">group</i>Groups
-                </li>
-              </Link>
-              <Link to="/eventsView">
-                <li className="mdl-menu__item">
-                  <i className="material-icons">group</i>Events
-                </li>
-              </Link>
-              <Link to="/profile">
-                <li className="mdl-menu__item">
-                  <i className="material-icons">face</i>My Profile
-                </li>
-              </Link>
-              <Link onClick={this.logout}>
-                <li className="mdl-menu__item">
-                  <i className="material-icons">remove_circle</i>Logout
-                </li>
-              </Link>
-            </ul>
-          </div>
-        </div>
-      </header>
-    );
-  }
+            return (
+                <header className="mdl-layout__header">
+                    <div className="mdl-layout__header-row">
+                        <span className="mdl-layout-title white">
+                            ULM Scheduling Application
+                        </span>
+
+                        <div className="mdl-layout-spacer"></div>
+
+                        <div>
+                            <nav className="mdl-navigation mdl-layout--large-screen-only header-nav">
+                                <Link className="mdl-navigation__link" to="/">
+                                    Home
+                                </Link>
+                                <Link className="mdl-navigation__link" to="/calenderView">
+                                    Calendar
+                                </Link>
+                                <Link className="mdl-navigation__link" to="/groupView">
+                                    Groups
+                                </Link>
+                                <Link className="mdl-navigation__link" to="/eventsView">
+                                    Events
+                                </Link>
+                                <Link className="mdl-navigation__link" to="/profile">
+                                    My Profile
+                                </Link>
+                                <Link
+                                    className="mdl-navigation__link"
+                                    onClick={this.logout}>
+                                    Logout
+                                </Link>
+                            </nav>
+
+                            <button
+                                className="mdl-layout--small-screen-only mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon large-icon-button"
+                                id="hdrbtn">
+                                <i className="material-icons large-icon">more_vert</i>
+                            </button>
+
+                            <ul className="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" htmlFor="hdrbtn" >
+                                <Link to="/">
+                                    <li className="mdl-menu__item">
+                                        <i className="material-icons">home</i>Home
+                                    </li>
+                                </Link>
+
+                                <Link to="/calenderView">
+                                    <li className="mdl-menu__item">
+                                        <i className="material-icons">calendar_today</i>Calendar
+                                    </li>
+                                </Link>
+                                <Link to="/groupView">
+                                    <li className="mdl-menu__item">
+                                        <i className="material-icons">group</i>Groups
+                                    </li>
+                                </Link>
+                                <Link to="/eventsView">
+                                    <li className="mdl-menu__item">
+                                        <i className="material-icons">group</i>Events
+                                    </li>
+                                </Link>
+                                <Link to="/profile">
+                                    <li className="mdl-menu__item">
+                                        <i className="material-icons">face</i>My Profile
+                                    </li>
+                                </Link>
+                                <Link onClick={this.logout}>
+                                    <li className="mdl-menu__item">
+                                        <i className="material-icons">remove_circle</i>Logout
+                                    </li>
+                                </Link>
+                            </ul>
+                        </div>
+                    </div>
+                </header>
+            );
+        }
+
+
+    }
 }
 
 export default Header;

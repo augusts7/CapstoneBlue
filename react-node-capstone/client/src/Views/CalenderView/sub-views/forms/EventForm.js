@@ -18,6 +18,15 @@ import { get, post } from "../../../../ApiHelper/ApiHelper";
 import Select from "../../../../components/Select/Select";
 
 
+// const headerStyle = { "color": "white", "background": 'linear-gradient(45deg, #1565C0 30%, #0D47A1 90%)' };
+const headerStyle = { "padding": "16px", "backgroundColor": "#01579B", "color": "white"};
+const dialogTitleStyle = { "padding": "0px", "margin": "0px" };
+const buttonIconStyle = { "marginRight": "8px" };
+const buttonStyle = { "padding": "4px 16px 4px 16px" };
+
+
+
+
 
 export default class EventForm extends React.Component {
 
@@ -118,11 +127,15 @@ export default class EventForm extends React.Component {
 
         const type = this.props.type || "event";
 
+        
+
         return (
             <div>
                 <Dialog open={this.props.open} onClose={this.props.onClose} aria-labelledby="form-dialog-title">
-                    <DialogTitle style={{ backgroundColor: "#01579B", "color": "#fff" }} id="form-dialog-title">
-                        <h4>{this.props.title || "Add Event"}</h4>
+                    <DialogTitle style={dialogTitleStyle} id="form-dialog-title">
+                        <div style={headerStyle}>
+                        <div><h4>{this.props.title || "Add Event"}</h4></div>
+                        </div>
                     </DialogTitle>
 
                     <Progress show={this.state.progress} />
@@ -134,7 +147,7 @@ export default class EventForm extends React.Component {
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                     <Grid container justify="center">
 
-                                        <DateTimePicker
+                                    <DateTimePicker
                                             fullWidth
                                             autoOk
                                             disablePast
@@ -144,7 +157,7 @@ export default class EventForm extends React.Component {
                                             value={this.state.start}
                                             onChange={(value) => this.handleChange("start", value)}
                                         />
-                                        <DateTimePicker
+                                    <DateTimePicker
                                             fullWidth
                                             autoOk
                                             disablePast
@@ -155,7 +168,7 @@ export default class EventForm extends React.Component {
                                             onChange={(value) => this.handleChange("end", value)}
                                         />
 
-                                        <TextField
+                                    <TextField
                                             fullWidth
                                             type="text"
                                             onChange={(event) => this.handleChange("title", event.target.value)}
@@ -163,7 +176,7 @@ export default class EventForm extends React.Component {
                                             label={"Enter title for " + type}
                                             margin="normal" />
 
-                                        <TextField
+                                    <TextField
                                             fullWidth
                                             type="text"
                                             onChange={(event) => this.handleChange("description", event.target.value)}
@@ -171,7 +184,7 @@ export default class EventForm extends React.Component {
                                             label={"Enter description for " + type}
                                             margin="normal" />
 
-                                        <TextField
+                                    <TextField
                                             fullWidth
                                             type="text"
                                             onChange={(event) => this.handleChange("event_type", event.target.value)}
@@ -179,7 +192,7 @@ export default class EventForm extends React.Component {
                                             label={"Enter type of " + type}
                                             margin="normal" />
 
-                                        <TextField
+                                    <TextField
                                             fullWidth
                                             type="text"
                                             onChange={(event) => this.handleChange("attendeeEmails", event.target.value)}
@@ -200,11 +213,11 @@ export default class EventForm extends React.Component {
 
                     </DialogContent>
                     <DialogActions>
-                        <MaterialButton onClick={this.props.onCancel} color="primary">
-                            Cancel
+                        <MaterialButton style={buttonStyle} color="primary" onClick={this.props.onCancel}>
+                            <i className="material-icons" style={buttonIconStyle}>delete</i>Cancel
                     </MaterialButton>
-                        <MaterialButton onClick={this.handleSave} color="primary">
-                            Save
+                        <MaterialButton style={buttonStyle} color="primary" role="main" onClick={this.handleSave}>
+                            <i className="material-icons" style={buttonIconStyle}>done_all</i>Save
                     </MaterialButton>
                     </DialogActions>
                 </Dialog>

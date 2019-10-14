@@ -14,25 +14,13 @@ import ApproveEvent from "../../components/EventsPage/ApproveEvent";
 
 import "./App.css";
 
-class App extends React.Component {
+export default function App(props) {
 
-    constructor(props) {
-        super(props);
-
-        this.handleLogout = this.handleLogout.bind(this);
-    }
-
-    handleLogout() {
-        this.props.onLogout();  
-    }
-
-    render() {
-
-       
+    if (props.isLoggedIn) {
         return (
             <Router>
-                <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header full">
-                    <Header onLogout={this.handleLogout} />
+                <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header full root-container">
+                    <Header onLogout={props.onLogout} />
 
                     <main className="mdl-layout__content mdl-color--grey-200">
                         <div id="content-div">
@@ -54,7 +42,10 @@ class App extends React.Component {
                 </div>
             </Router>
         );
+    } else {
+        return (<div></div>)
     }
-}
 
-export default App;
+    
+
+}

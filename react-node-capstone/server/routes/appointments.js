@@ -1,14 +1,13 @@
 var router = require("express").Router();
-var pool = require("../db/database");
 
-//Makes app accept JSON objects.
+var sqlHandler = require("../handler/queryHandler");
+
+
 var bodyParser = require("body-parser");
 
-// parse application/x-www-form-urlencoded
 router.use(bodyParser.urlencoded({ extended: false }));
-
-// parse application/json
 router.use(bodyParser.json());
+
 
 router.post("create", (req, res) => {
 
@@ -134,28 +133,7 @@ router.get("/all/:calendarId", function (req, res) {
         select = "SELECT * FROM schedulerdb.event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id + " AND creator_calendar_id = " + req.params.calendarId + " UNION DISTINCT SELECT * FROM schedulerdb.event INNER JOIN schedulerdb.attending ON event_id = eventID WHERE attendee_id = " + req.user.user_id + " AND calendar_id = " + req.params.calendarId;
     }
 
-    console.log(req.user.user_id);
-
-    pool.query(select, function (error, results, fields) {
-
-        if (error) {
-            return res.json({ "success": false, "message": "Failed to connect to database" });
-        }
-        try {
-            if (results.length > 0) {
-
-                console.log("Appointments all = " + results);
-
-                return res.json({ "success": true, "message": "Appointment data has been retrieved.", "results": results });
-
-            } else {
-                return res.json({ "success": false, "message": "Couldn't find any appointment events." });
-            }
-        } catch (err) {
-            return res.json({ "success": false, "message": "Error while getting appointment data. " + err });
-        }
-
-    });
+    sqlHandler.getAndSendResponseToClient(select, req, res);
 
 })
 
@@ -167,28 +145,7 @@ router.get("/created/:calendarId", function (req, res) {
         select = "SELECT * FROM schedulerdb.event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id + " AND creator_calendar_id = " + req.params.calendarId;
     }
 
-    console.log(req.user.user_id);
-
-    pool.query(select, function (error, results, fields) {
-
-        if (error) {
-            return res.json({ "success": false, "message": "Failed to connect to database" });
-        }
-        try {
-            if (results.length > 0) {
-
-                console.log("Appointment created = " + results);
-
-                return res.json({ "success": true, "message": "Appointment data has been retrieved.", "results": results });
-
-            } else {
-                return res.json({ "success": false, "message": "Couldn't find any appointment events." });
-            }
-        } catch (err) {
-            return res.json({ "success": false, "message": "Error while getting appointment data. " + err });
-        }
-
-    });
+    sqlHandler.getAndSendResponseToClient(select, req, res);
 
 })
 
@@ -200,28 +157,7 @@ router.get("/attending/:calendarId", function (req, res) {
         select = "SELECT * FROM schedulerdb.event INNER JOIN schedulerdb.attending ON event_id = eventID WHERE attendee_id = " + req.user.user_id + " AND calendar_id = " + req.params.calendarId;
     }
 
-    console.log(req.user.user_id);
-
-    pool.query(select, function (error, results, fields) {
-
-        if (error) {
-            return res.json({ "success": false, "message": "Failed to connect to database" });
-        }
-        try {
-            if (results.length > 0) {
-
-                console.log("Appointment attending = " + results);
-
-                return res.json({ "success": true, "message": "Attending data has been retrieved.", "results": results });
-
-            } else {
-                return res.json({ "success": false, "message": "Couldn't find any attending events." });
-            }
-        } catch (err) {
-            return res.json({ "success": false, "message": "Error while getting attending data. " + err });
-        }
-
-    });
+    sqlHandler.getAndSendResponseToClient(select, req, res);
 
 })
 
@@ -235,28 +171,7 @@ router.get("/receivedInvite/:calendarId", function (req, res) {
             select = "SELECT * FROM schedulerdb.event INNER JOIN schedulerdb.event_invite ON event_id = eventID WHERE attendee_id = " + req.user.user_id + " AND calendar_id = " + req.params.calendarId;
         }
 
-        console.log(req.user.user_id);
-
-        pool.query(select, function (error, results, fields) {
-
-            if (error) {
-                return res.json({ "success": false, "message": "Failed to connect to database" });
-            }
-            try {
-                if (results.length > 0) {
-
-                    console.log("Advising attending = " + results);
-
-                    return res.json({ "success": true, "message": "Attending data has been retrieved.", "results": results });
-
-                } else {
-                    return res.json({ "success": false, "message": "Couldn't find any attending events." });
-                }
-            } catch (err) {
-                return res.json({ "success": false, "message": "Error while getting attending data. " + err });
-            }
-
-        });
+        sqlHandler.getAndSendResponseToClient(select, req, res);
 
     } catch (err) {
 
@@ -275,28 +190,7 @@ router.get("/sentInvite/:calendarId", function (req, res) {
             select = "SELECT * FROM schedulerdb.event WHERE event_type='appointment' creator_id = " + req.user.user_id + " AND creator_calendar_id = " + req.params.calendarId;
         }
 
-        console.log(req.user.user_id);
-
-        pool.query(select, function (error, results, fields) {
-
-            if (error) {
-                return res.json({ "success": false, "message": "Failed to connect to database" });
-            }
-            try {
-                if (results.length > 0) {
-
-                    console.log("Advising attending = " + results);
-
-                    return res.json({ "success": true, "message": "Attending data has been retrieved.", "results": results });
-
-                } else {
-                    return res.json({ "success": false, "message": "Couldn't find any attending events." });
-                }
-            } catch (err) {
-                return res.json({ "success": false, "message": "Error while getting attending data. " + err });
-            }
-
-        });
+        sqlHandler.getAndSendResponseToClient(select, req, res);
 
     } catch (err) {
         return res.json({ "success": false, "message": "Server error. " + err });

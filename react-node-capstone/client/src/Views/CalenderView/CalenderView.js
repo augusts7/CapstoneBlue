@@ -1,5 +1,5 @@
 import React from "react";
-import Calendar from "../../components/Calendar/Calendar";
+import Calendar from "./Calendar/Calendar";
 import Events from "./sub-views/events/Events"
 import CalendarOptions from "./sub-views/filter-and-actions/FilterAndActions"
 import ls from "local-storage"
@@ -12,11 +12,11 @@ import AdvisingSlotForm from "./sub-views/forms/AdvisingSlotForm";
 
 
 const dataMapping = {
-    "advisingSlots": { url: "advising/all/main", title: "Adivising Slots" },
-    "attendingEvents": { url: "events/attending/main", title: "Attending Events" },
-    "createdEvents": { url: "events/created/main", title: "Created Events" },
-    "requestedAppointments": { url: "advising/all/main", title: "Requested Appointments" },
-    "approvedAppointments": { url: "advising/all/main", title: "Approved Appointments" }
+    "advisingSlots": { url: "advising/all", title: "Adivising Slots" },
+    "attendingEvents": { url: "events/attending", title: "Attending Events" },
+    "createdEvents": { url: "events/created", title: "Created Events" },
+    "requestedAppointments": { url: "advising/all", title: "Requested Appointments" },
+    "approvedAppointments": { url: "advising/all", title: "Approved Appointments" }
 };
 
 const ALL_EVENT_TYPES = ["advisingSlots", "attendingEvents", "createdEvents", "requestedAppointments", "approvedAppointments"];
@@ -46,17 +46,15 @@ class CalenderView extends React.Component {
         this.handlePopupCancel = this.handlePopupCancel.bind(this);
         this.handlePopupClose = this.handlePopupClose.bind(this);
         this.openPopup = this.openPopup.bind(this);
-        this.onCalendarDateClick = this.onCalendarDateClick.bind(this);
         this.onChangeCalendarOptions = this.onChangeCalendarOptions.bind(this);
-        this.onCalendarEventClick = this.onCalendarEventClick.bind(this);
     }
 
-    onCalendarDateClick(date) {
+    onCalendarDateClick = (date) => {
         console.log(date);
 
     }
 
-    onCalendarEventClick(event) {
+    onCalendarEventClick = (event)  =>{
         console.log(event);
 
     }
@@ -211,7 +209,7 @@ class CalenderView extends React.Component {
 
         let url = dataMapping[displayDataType].url;
 
-        if (calId != null && (calId.length > 0) && calId !== "main") {
+        if (calId != null && (calId.length > 0)) {
             url += "/" + calId;
         }
         get(url, (res) => {
@@ -255,7 +253,7 @@ class CalenderView extends React.Component {
     getProcessedEventsToDisplay() {
         let events = [];
 
-        ALL_EVENT_TYPES.forEach((type) => {
+        this.state.eventTypes.forEach((type) => {
 
             this.state.cals.forEach(id => {
                 const name = type + id;

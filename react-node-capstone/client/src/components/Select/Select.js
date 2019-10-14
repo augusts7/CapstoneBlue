@@ -27,13 +27,19 @@ class Select extends React.Component {
 
     render() {
 
+        let fullWidth = true;
+        if (this.props.fullWidth == false) {
+            fullWidth = false;
+        }
+
 
         return (
             <TextField
                 required={this.props.required}
                 select
+                style={this.props.style}
                 name={this.props.name}
-                fullWidth
+                fullWidth={fullWidth}
                 label={this.props.label}
                 value={this.state.value}
                 onChange={this.onChange}
