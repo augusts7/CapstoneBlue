@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
+import { Route, Redirect, Switch, BrowserRouter as Router } from "react-router-dom";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
 import ForgotPassword from "../ForgotPassword/ForgotPassword";
@@ -21,6 +21,7 @@ export default function LoggedOutApp (props) {
                     <Route path="/" render={() => login} />
                 </Switch>
             </div>
+            <Redirect to="/login" />
         </Router>
     );
 

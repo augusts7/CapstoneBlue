@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
+import { Route, Redirect, Switch, BrowserRouter as Router } from "react-router-dom";
 import App from "../BaseLayout/App/App";
 import LoggedOutApp from "../Authentication/LoggedOutApp/LoggedOutApp";
 import ls from "local-storage";
@@ -42,7 +42,7 @@ class Application extends React.Component {
 
         if (this.state.isLoggedIn) {
 
-            html.push(<App onLogout={this.onLogout} isLoggedIn={this.state.isLoggedIn} />);
+            html.push(<App onLogout={this.onLogout} />);
 
         } else {
             html.push(<LoggedOutApp hasLoggedIn={this.hasLoggedIn} />);

@@ -16,36 +16,29 @@ import "./App.css";
 
 export default function App(props) {
 
-    if (props.isLoggedIn) {
-        return (
-            <Router>
-                <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header full root-container">
-                    <Header onLogout={props.onLogout} />
+    return (
+        <Router>
+            <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header full root-container">
+                <Header onLogout={props.onLogout} />
 
-                    <main className="mdl-layout__content mdl-color--grey-200">
-                        <div id="content-div">
-                            <Switch>
-                                <Route path="/profile" component={Profile} />
-                                <Route path="/calenderView" component={CalenderView} />
-                                <Route path="/groupView" component={GroupView} />
-                                <Route path="/eventsView" component={EventsView} />
-                                <Route path="/requestEvent" component={RequestEvent} />
-                                <Route path="/viewAllEvents" component={ViewAllEvents} />
-                                <Route path="/createEvent" component={CreateEvent} />
-                                <Route path="/approveEvent" component={ApproveEvent} />
-                                <Route path="/" component={Main} />
-                            </Switch>
-                        </div>
+                <main className="mdl-layout__content mdl-color--grey-200">
+                    <div id="content-div">
+                        <Switch>
+                            <Route path="/profile" component={Profile} />
+                            <Route path="/calenderView" component={CalenderView} />
+                            <Route path="/groupView" component={GroupView} />
+                            <Route path="/eventsView" component={EventsView} />
+                            <Route path="/requestEvent" component={RequestEvent} />
+                            <Route path="/viewAllEvents" component={ViewAllEvents} />
+                            <Route path="/createEvent" component={CreateEvent} />
+                            <Route path="/approveEvent" component={ApproveEvent} />
+                            <Route path="/" component={Main} />
+                        </Switch>
+                    </div>
 
-                        <Footer />
-                    </main>
-                </div>
-            </Router>
-        );
-    } else {
-        return (<div></div>)
-    }
-
-    
+                    <Footer />
+                </main>
+            </div>
+        </Router>); 
 
 }

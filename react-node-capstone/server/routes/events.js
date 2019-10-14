@@ -17,6 +17,7 @@ router.get("/attending/:calendarId", function (req, res) {
         select = "SELECT * FROM schedulerdb.attending INNER JOIN schedulerdb.event ON schedulerdb.event.eventID = schedulerdb.attending.event_id WHERE attendee_id = " + req.user.user_id + " AND calendar_id = " + req.params.calendarId;
     }
 
+    console.log("Attending request");
     sqlHandler.getAndSendResponseToClient(select, req, res);
 
 })

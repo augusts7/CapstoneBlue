@@ -8,14 +8,17 @@ var pool = require("../db/database");
 
 function getAndSendDataToClient (sql, req, res) {
 
-	console.log(req.user.user_id);
+	console.log("getAndSendDataToClient called by : " + req.user.user_id);
 
-	pool.query(sql, function (error, results, fields) {
+    pool.query(sql, function (error, results, fields) {
+
+        console.log("getAndSendDataToClient query callback by : " + req.user.user_id);
 
 		if (error) return next("Failed to connect to the database")
 		try {
 			if (results.length > 0) {
 
+                console.log(results);
 				return res.json({ "success": true, "message": "Data has been retrieved.", "results": results });
 
 			} else {
