@@ -132,7 +132,7 @@
           "200": {
             "description": "Successful",
             "schema": {
-              "$ref": "#/definitions/AdvisingEvents"
+              "$ref": "#/definitions/Events"
             }
           }
         }
@@ -234,7 +234,7 @@
         "tags": [
           "appointments"
         ],
-        "summay": "Create an appointment",
+        "summary": "Create an appointment",
         "description": "This endpoint creates an appointment for a user",
         "parameters": [
           {
@@ -251,7 +251,12 @@
               "$ref": "#/definitions/Appointments"
             }
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful"
+          }
+        }
       }
     },
     "/events/attending": {
@@ -260,7 +265,7 @@
           "events"
         ],
         "summary": "Get all the users that are attending an event",
-        "description": "This endpoint dislays all the information about a certain event",
+        "description": "This endpoint dislays all the information about the event the user is attending",
         "parameters": [
           {
             "in": "header",
@@ -278,7 +283,74 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful"
+            "description": "Successful",
+            "schema": {
+              "$ref": "#/definitions/Events"
+            }
+          }
+        }
+      }
+    },
+    "/events/created": {
+      "get": {
+        "tags": [
+          "events"
+        ],
+        "summary": "Get all the events created by the user",
+        "description": "This endpoint dislays all the information about a certain event created by the certain user",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "connect.sid",
+            "description": "Token for the authentication",
+            "required": true
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "Content-Type",
+            "description": "content type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "schema": {
+              "$ref": "#/definitions/Events"
+            }
+          }
+        }
+      }
+    },
+    "/profile": {
+      "get": {
+        "tags": [
+          "profile"
+        ],
+        "summary": "Shows all the information of the user for the profile page",
+        "description": "This endpoint displays user information, groups and classes the user is associated with and various calendars shared with and shared among different users",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "connect.sid",
+            "description": "Token for authentication",
+            "required": true
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "Content-Type",
+            "description": "content type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "schema": {
+              "$ref": "#/definitions/Profile"
+            }
           }
         }
       }
@@ -435,7 +507,7 @@
         }
       }
     },
-    "AdvisingEvents": {
+    "Events": {
       "type": "object",
       "properties": {
         "success": {
@@ -540,6 +612,65 @@
         },
         "creator_calendar_id": {
           "type": "integer"
+        }
+      }
+    },
+    "Profile": {
+      "type": "object",
+      "properties": {
+        "user_info": {
+          "type": "object",
+          "properties": {
+            "first_name": {
+              "type": "string"
+            },
+            "last_name": {
+              "type": "string"
+            },
+            "campusEmail": {
+              "type": "string"
+            },
+            "major": {
+              "type": "string"
+            },
+            "classification": {
+              "type": "string"
+            },
+            "advisor_first_name": {
+              "type": "string"
+            },
+            "advisor_last_name": {
+              "type": "string"
+            },
+            "advisor_campusEmail": {
+              "type": "string"
+            }
+          }
+        },
+        "course_info": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "course_title": {
+                "type": "string"
+              },
+              "course_number": {
+                "type": "integer"
+              },
+              "course_numnber": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "group_info": {
+          "type": "object",
+          "properties": {
+            "Super_group": {
+              "type": "string"
+            }
+          }
         }
       }
     }
