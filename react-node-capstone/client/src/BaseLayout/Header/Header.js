@@ -1,13 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
+import { AuthContext } from "../../Context/AuthContext";
 
 
 export default function Header(props) {
 
-    const logout = () => {
-        props.onLogout();
-    };
+    return (
+        <AuthContext.Consumer>
+            {(authCtx) => handleCtx(authCtx, props)}
+        </AuthContext.Consumer>
+    );
+
+}
+
+function handleCtx (ctx, props) {
+
+    return getLayout(props, ctx);
+}
+
+
+function getLayout(props, authCtx) {
 
     return (
         <header className="mdl-layout__header">
@@ -35,9 +48,7 @@ export default function Header(props) {
                         <Link className="mdl-navigation__link" to="/profile">
                             My Profile
                                 </Link>
-                        <Link
-                            onClick={logout}
-                            className="mdl-navigation__link">
+                        <Link onClick={authCtx.logout}                           className="mdl-navigation__link">
                             Logout
                                 </Link>
                     </nav>
@@ -75,7 +86,7 @@ export default function Header(props) {
                                 <i className="material-icons">face</i>My Profile
                                     </li>
                         </Link>
-                        <Link onClick={logout}>
+                        <Link onClick={authCtx.logout}>
                             <li className="mdl-menu__item">
                                 <i className="material-icons">remove_circle</i>Logout
                                     </li>
@@ -85,7 +96,4 @@ export default function Header(props) {
             </div>
         </header>
     );
-
-
-
-}
+}       

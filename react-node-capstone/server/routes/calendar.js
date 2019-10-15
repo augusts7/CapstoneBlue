@@ -12,7 +12,7 @@ router.use(bodyParser.json());
 
 router.get("/", (req, res, next) => {
 
-    let sql = "SELECT * FROM schedulerdb.calendar WHERE user_id = ?" + req.user.user_id;
+    let sql = "SELECT * FROM schedulerdb.calendar WHERE user_id = " + req.user.user_id;
 
     sqlHandler.getAndSendResToClient(sql, req, res);
 });

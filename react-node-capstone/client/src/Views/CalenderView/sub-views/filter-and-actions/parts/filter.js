@@ -29,7 +29,7 @@ export default class Filter extends React.Component {
     }
 
     handleAddEvent(mode) {
-        this.props.openPopup("eventForm", { "mode": "event" });
+        this.props.openPopup("eventForm", { "formMode": "event" });
     }
 
     render() {

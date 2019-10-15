@@ -1,6 +1,6 @@
 import React from "react";
 import Calendar from "./Calendar/Calendar";
-import Events from "./sub-views/events/Events"
+import EventsList from "./sub-views/events/EventsList";
 import CalendarOptions from "./sub-views/filter-and-actions/FilterAndActions"
 import ls from "local-storage"
 import { get } from "../../ApiHelper/ApiHelper"
@@ -15,7 +15,8 @@ const dataMapping = {
     "advisingSlots": { url: "advising/all", title: "Adivising Slots" },
     "attendingEvents": { url: "events/attending", title: "Attending Events" },
     "createdEvents": { url: "events/created", title: "Created Events" },
-    "requestedAppointments": { url: "advising/all", title: "Requested Appointments" },
+    "createdAppointments": { url: "appointments/created", title: "Created Appointments" },
+    "requestedAppointments": { url: "appointments/receivedInvite", title: "Requested Appointments" },
     "approvedAppointments": { url: "advising/all", title: "Approved Appointments" }
 };
 
@@ -288,7 +289,7 @@ class CalenderView extends React.Component {
 
                 <AdvisingSlotForm onCancel={() => this.handlePopupCancel("advisingSlotForm")} onClose={() => this.handlePopupClose("advisingSlotForm")} onSave={(data) => this.handlePopupSave("advisingSlotForm", data)} open={this.state.advisingSlotForm} />
 
-                <EventForm mode={this.state.mode} onCancel={() => this.handlePopupCancel("eventForm")} onClose={() => this.handlePopupClose("eventForm")} onSave={(data) => this.handlePopupSave("eventForm", data)} open={this.state.eventForm} />
+                <EventForm formMode={this.state.formMode} onCancel={() => this.handlePopupCancel("eventForm")} onClose={() => this.handlePopupClose("eventForm")} onSave={(data) => this.handlePopupSave("eventForm", data)} open={this.state.eventForm} />
 
                 <EventDetails mode={this.state.mode} onCancel={() => this.handlePopupCancel("eventDetails")} onClose={() => this.handlePopupClose("eventDetails")} onSave={(data) => this.handlePopupSave("eventDetails", data)} open={this.state.eventDetails} />
 
@@ -298,7 +299,7 @@ class CalenderView extends React.Component {
 
                     <Calendar onEventClick={this.onCalendarEventClick} onDateClick={this.onCalendarDateClick} events={events} />
 
-                    <Events openPopup={this.openPopup} title={title} isLoading={this.state.isLoading} events={events} />
+                    <EventsList openPopup={this.openPopup} title={title} isLoading={this.state.isLoading} events={events} />
 
 
                 </div>

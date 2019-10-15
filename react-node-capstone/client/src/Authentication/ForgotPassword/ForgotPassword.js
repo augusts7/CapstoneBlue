@@ -28,7 +28,7 @@ class ForgotPassword extends React.Component {
             "user_id": target.username.value
         };
 
-        fetch("/users/forgotPassword", {
+        fetch("/auth/forgotPassword", {
             method: 'POST',
             body: JSON.stringify(data),
             credentials: "include",

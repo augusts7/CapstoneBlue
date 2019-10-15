@@ -19,8 +19,6 @@ const calendarAppStyle = {"paddingLeft": "8px", "paddingRight": "8px"};
 
 export default class Calendar extends React.Component {
 
-    calendarComponentRef = React.createRef()
-
     selectedMonth = new Date().getMonth();
     selectedYear = new Date().getFullYear();
 
@@ -92,24 +90,24 @@ export default class Calendar extends React.Component {
         )
     }
 
-    changeDate = (mode, value) => {
-        let calendarApi = this.calendarComponentRef.current.getApi();
+    //changeDate = (mode, value) => {
+    //    let calendarApi = this.calendarComponentRef.current.getApi();
 
-        let date = new Date();
+    //    let date = new Date();
 
-        if (mode == "year") {
+    //    if (mode == "year") {
 
-            this.selectedYear = value;
+    //        this.selectedYear = value;
             
-        } else if (mode == "month") {
+    //    } else if (mode == "month") {
 
-            this.selectedMonth = value;
-        }
-        date.setMonth(this.selectedMonth);
-        date.setFullYear(this.selectedYear);
+    //        this.selectedMonth = value;
+    //    }
+    //    date.setMonth(this.selectedMonth);
+    //    date.setFullYear(this.selectedYear);
 
-        calendarApi.gotoDate(date);
-    }
+    //    calendarApi.gotoDate(date);
+    //}
 
     toggleWeekends = () => {
         this.setState({

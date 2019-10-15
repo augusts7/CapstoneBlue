@@ -12,6 +12,7 @@ const CALENDAR_EVENT_TYPES = [
     { "name": "Advising Slots", "value": "advisingSlots" },
     { "name": "Attending Events", "value": "attendingEvents" },
     { "name": "Created Events", "value": "createdEvents" },
+    { "name": "Created Appointments", "value": "createdAppointments"},
     { "name": "Requested Appointments", "value": "requestedAppointments" },
     { "name": "Approved Appointments", "value": "approvedAppointments" },
 ];

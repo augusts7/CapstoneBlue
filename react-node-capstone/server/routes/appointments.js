@@ -1,7 +1,7 @@
 var router = require("express").Router();
 
 var sqlHandler = require("../handler/queryHandler");
-
+var pool = require("../db/database");
 
 var bodyParser = require("body-parser");
 
@@ -9,41 +9,108 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 
-router.post("create", (req, res) => {
+router.post("/create", (req, res) => {
 
-    const appointments = {
+    const appointment = {
+        title: req.body.title,
+        description: req.body.description,
+        start: req.body.start,
+        end: req.body.end,
         event_type: "appointment",
         creator_id: req.user.user_id,
-        carousel: req.body.carousel,
-        creator_calendar_id: req.body.calendarId
+        carousel: req.body.carousel || "1",
     };
 
-    pool.query("INSERT INTO schedulerdb.event SET ?", appointments, async function (error, results, fields) {
+    console.log("appointment ");
+
+
+    pool.query("INSERT INTO event SET ?", appointment, function (error, results, fields) {
 
         if (error) {
-            console.log(erorr);
-            return;
+            return res.json({ success: false, "message": error });
         }
-        if (results.length > 0) {
 
-            let eventId = results.insertId;
+        var eventId = results.insertId;
 
-            if (req.body.attendeeEmails) {
+        if (req.body.attendeeEmails) {
 
-                await req.body.attendeeEmails.forEach(async (email) => {
+            getEmailList(req.body.attendeeEmails).forEach((email) => {
 
-                    await pool.query("SELECT user_id FROM schedulerdb.user_info WHERE campusEmail = ?", email, async function (error, results, fields) {
+                pool.query("SELECT user_id FROM user_info WHERE campusEmail = ?", email, function (error, results, fields) {
 
+                    if (error) {
+                        return res.json({ "success": false, "message": error });
+                    }
+                    if (results.length > 0) {
+
+                        const inviteData = {
+                            event_id: eventId,
+                            invited_user_id: results[0].user_id
+                        };
+
+                        console.log(inviteData);
+
+                        pool.query("INSERT INTO event_invite SET ?", inviteData, (err, results, fields) => {
+                            if (err) {
+                                return res.json({ "success": false, "message": err });
+                            }
+                            return res.json({ success: true });
+                        });
+                    } else {
+                        return res.json({ "success": false, "message": err });
+                    }
+                });
+
+            });
+        }
+    });
+});
+
+function getEmailList(emailString) {
+    if (emailString == null || emailString.length == 0) {
+        return [];
+    }
+    var emails = emailString.split(",");
+    return emails;
+}
+
+
+router.post("/attend/:calId", function (req, res) {
+
+    const attendeeData = {
+        event_id: req.body.eventId,
+        attendee_id: req.user.user_id,
+        calendar_id: req.params.calId
+    };
+
+    pool.query("INSERT INTO attending SET ?", attendeeData, function (error, results, fields) {
+
+        if (error) {
+            return res.json({ "success": false, "message": "Failed to connect to database" });
+        }
+        pool.query("SELECT creator_id, creator_calendar_id FROM event WHERE eventID = ?", attendeeData.event_id, function (error, results, fields) {
+
+            if (error) {
+                return res.json({ "success": false, "message": error });
+            }
+            try {
+                if (results.length > 0) {
+
+                    const creatorData = {
+                        event_id: req.body.eventId,
+                        attendee_id: results[0].creator_id,
+                        calendar_id: result[0].creator_calendar_id
+                    };
+
+                    pool.query("INSERT INTO attending SET ?", creatorData, function (error, results, fields) {
+
+                        if (error) {
+                            return res.json({ "success": false, "message": "Failed to connect to database" });
+                        }
                         try {
-                            if (!error && results.length > 0) {
+                            if (results.length > 0) {
 
-                                let inviteData = {
-                                    event_id: eventId,
-                                    invited_user_id: results[0]
-                                };
-
-                                await pool.query("INSERT INTO schedulerdb.event_invite SET ?", inviteData);
-
+                                return res.json({ "success": true, "message": "Success" });
                             }
                         } catch (err) {
                             return res.json({ "success": false, "message": err });
@@ -51,86 +118,26 @@ router.post("create", (req, res) => {
 
                     });
 
-                });
+                }
+            } catch (err) {
+                return res.json({ "success": false, "message": err });
             }
-        }
 
-        res.send(results);
-    });
-})
-
-
-router.post("/attend/:calendarId", function (req, res) {
-
-    const attendeeData = {
-        event_id: req.body.eventId,
-        attendee_id: req.user.user_id,
-        calendar_id: req.params.calendarId
-    };
-
-    console.log(req.user.user_id);
-
-    pool.query("INSERT INTO schedulerdb.attending SET ?", attendeeData, function (error, results, fields) {
-
-        if (error) {
-            return res.json({ "success": false, "message": "Failed to connect to database" });
-        }
-        try {
-            if (results.length > 0) {
-
-                pool.query("SELECT creator_id, creator_calendar_id FROM schedulerdb.event WHERE eventID = ?", attendeeData.event_id, function (error, results, fields) {
-
-                    if (error) {
-                        return res.json({ "success": false, "message": "Failed to connect to database" });
-                    }
-                    try {
-                        if (results.length > 0) {
-
-                            const creatorData = {
-                                event_id: req.body.eventId,
-                                attendee_id: results[0].creator_id,
-                                calendar_id: result[0].creator_calendar_id
-                            };
-
-                            pool.query("INSERT INTO schedulerdb.attending SET ?", creatorData, function (error, results, fields) {
-
-                                if (error) {
-                                    return res.json({ "success": false, "message": "Failed to connect to database" });
-                                }
-                                try {
-                                    if (results.length > 0) {
-
-                                        return res.json({ "success": true, "message": "Success" });
-                                    }
-                                } catch (err) {
-                                    return res.json({ "success": false, "message": err });
-                                }
-
-                            });
-
-                        }
-                    } catch (err) {
-                        return res.json({ "success": false, "message": err });
-                    }
-
-                });
-
-            }
-        } catch (err) {
-            return res.json({ "success": false, "message": err });
-        }
+        });
 
     });
 
-})
+});
 
 
 router.get("/all/:calendarId", function (req, res) {
 
-    let select = "SELECT * FROM schedulerdb.event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id + " UNION DISTINCT SELECT * FROM schedulerdb.event INNER JOIN schedulerdb.attending ON event_id = eventID WHERE event_type = 'appointment' AND attendee_id = " + req.user.user_id;
+    console.log("Get appointment data");
+
+    let select = "SELECT * FROM event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id + " UNION SELECT * FROM event INNER JOIN attending ON event_id = eventID WHERE event_type = 'appointment' AND attendee_id = " + req.user.user_id;
 
     if (req.params.calendarId != "main") {
-        select = "SELECT * FROM schedulerdb.event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id + " AND creator_calendar_id = " + req.params.calendarId + " UNION DISTINCT SELECT * FROM schedulerdb.event INNER JOIN schedulerdb.attending ON event_id = eventID WHERE attendee_id = " + req.user.user_id + " AND calendar_id = " + req.params.calendarId;
+        select = "SELECT * FROM event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id + " AND creator_calendar_id = " + req.params.calendarId + " UNION SELECT * FROM event INNER JOIN attending ON event_id = eventID WHERE attendee_id = " + req.user.user_id + " AND calendar_id = " + req.params.calendarId;
     }
 
     sqlHandler.getAndSendResponseToClient(select, req, res);
@@ -139,10 +146,10 @@ router.get("/all/:calendarId", function (req, res) {
 
 router.get("/created/:calendarId", function (req, res) {
 
-    let select = "SELECT * FROM schedulerdb.event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id;
+    let select = "SELECT * FROM event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id;
 
     if (req.params.calendarId != "main") {
-        select = "SELECT * FROM schedulerdb.event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id + " AND creator_calendar_id = " + req.params.calendarId;
+        select = "SELECT * FROM event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id + " AND creator_calendar_id = " + req.params.calendarId;
     }
 
     sqlHandler.getAndSendResponseToClient(select, req, res);
@@ -151,10 +158,10 @@ router.get("/created/:calendarId", function (req, res) {
 
 router.get("/attending/:calendarId", function (req, res) {
 
-    let select = "SELECT * FROM schedulerdb.event INNER JOIN schedulerdb.attending ON event_id = eventID WHERE event_type = 'appointment' AND attendee_id = " + req.user.user_id;
+    let select = "SELECT * FROM event INNER JOIN attending ON event_id = eventID WHERE event_type = 'appointment' AND attendee_id = " + req.user.user_id;
 
     if (req.params.calendarId != "main") {
-        select = "SELECT * FROM schedulerdb.event INNER JOIN schedulerdb.attending ON event_id = eventID WHERE attendee_id = " + req.user.user_id + " AND calendar_id = " + req.params.calendarId;
+        select = "SELECT * FROM event INNER JOIN attending ON event_id = eventID WHERE attendee_id = " + req.user.user_id + " AND calendar_id = " + req.params.calendarId;
     }
 
     sqlHandler.getAndSendResponseToClient(select, req, res);
@@ -163,38 +170,28 @@ router.get("/attending/:calendarId", function (req, res) {
 
 router.get("/receivedInvite/:calendarId", function (req, res) {
 
-    try {
 
-        let select = "SELECT * FROM schedulerdb.event INNER JOIN schedulerdb.event_invite ON event_id = eventID WHERE attendee_id = " + req.user.user_id;
+    let select = "SELECT * FROM event INNER JOIN event_invite ON event_id = eventID WHERE invited_user_id = " + req.user.user_id;
 
-        if (req.params.calendarId != "main") {
-            select = "SELECT * FROM schedulerdb.event INNER JOIN schedulerdb.event_invite ON event_id = eventID WHERE attendee_id = " + req.user.user_id + " AND calendar_id = " + req.params.calendarId;
-        }
-
-        sqlHandler.getAndSendResponseToClient(select, req, res);
-
-    } catch (err) {
-
-        return res.json({ "success": false, "message": "Server error. " + err });
+    if (req.params.calendarId != "main") {
+        select = "SELECT * FROM event INNER JOIN event_invite ON event_id = eventID WHERE invited_user_id = " + req.user.user_id + " AND calendar_id = " + req.params.calendarId;
     }
+
+    sqlHandler.getAndSendResponseToClient(select, req, res);
+    
 })
 
 
 router.get("/sentInvite/:calendarId", function (req, res) {
 
-    try {
+    let select = "SELECT * FROM event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id;
 
-        let select = "SELECT * FROM schedulerdb.event WHERE event_type = 'appointment' creator_id = " + req.user.user_id;
-
-        if (req.params.calendarId != "main") {
-            select = "SELECT * FROM schedulerdb.event WHERE event_type='appointment' creator_id = " + req.user.user_id + " AND creator_calendar_id = " + req.params.calendarId;
-        }
-
-        sqlHandler.getAndSendResponseToClient(select, req, res);
-
-    } catch (err) {
-        return res.json({ "success": false, "message": "Server error. " + err });
+    if (req.params.calendarId != "main") {
+        select = "SELECT * FROM event WHERE event_type='appointment' AND creator_id = " + req.user.user_id + " AND creator_calendar_id = " + req.params.calendarId;
     }
+
+    sqlHandler.getAndSendResponseToClient(select, req, res);
+
 })
 
 

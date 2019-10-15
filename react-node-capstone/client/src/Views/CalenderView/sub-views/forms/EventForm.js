@@ -40,9 +40,9 @@ export default class EventForm extends React.Component {
             "title": "",
             "description": "",
             "event_type": "",
-            "attendee_emails": "",
+            "attendeeEmails": "",
             "progress": false,
-            "calendarId": "",
+            "calendarId": "main",
             "calendarOptions": [],
         };
 
@@ -65,24 +65,25 @@ export default class EventForm extends React.Component {
 
     componentDidMount() {
 
-        this.setState({ "isLoading": true });
+        this.setState({ "progress": true });
 
-        get("calendar/all", (res) => {
+        get("calendar/", (res) => {
+
+            let calendarOptions = [{ name: "Default", "value": "main" }];
+
             if (res.success) {
 
-                let calendarOptions = [];
-
-                if (res.data) {
-                    res.data(d => {
+                if (res.results) {
+                    res.results(d => {
                         calendarOptions.push({ "name": d.name, "value": d.id });
                     });
                 }
 
-                this.setState({ "isLoading": false, "calendarOptions": calendarOptions });
-
             } else {
-                this.setState({ "isLoading": false, message: res.message });
+                this.setState({ message: res.message });
             }
+
+            this.setState({ "progress": false, "calendarOptions": calendarOptions });
         });
     }
 
@@ -90,7 +91,14 @@ export default class EventForm extends React.Component {
 
         this.setState({ progress: true });
 
-        let requiredKeys = ["start", "end", "message", "title", "description", "event_type"];
+        let requiredKeys = ["start", "end", "title", "description"];
+
+        if (this.props.formMode == "event") {
+
+            requiredKeys.push("event_type");
+
+        }
+
         let data = {};
 
         for (var i = 0; i < requiredKeys.length; i++) {
@@ -105,36 +113,56 @@ export default class EventForm extends React.Component {
             }
         }
 
-        data["attendee_emails"] = this.state.attendee_emails || "";
+        let postUrl = "/events";
 
-        if (this.props.mode) {
-
-        } else {
-            post("events", data, (res) => {
-
-                if (res.success) {
-                    this.setState({ "progress": false })
-                    this.props.onClose();
-                } else {
-                    this.setState({ "progress": false, "message": res.message })
-                }
-            }); 
+        if (this.props.formMode == "appointment") {
+            data["event_type"] = "appointment";
+            postUrl = "/appointments/create";
         }
+
+        data["calendarId"] = this.state.calendarId == "main" ? "" : this.state.calendarId;
+        data["attendeeEmails"] = this.state.attendeeEmails;
         
+        post(postUrl, data, (res) => {
+
+            if (res.success) {
+                this.setState({ "progress": false })
+                this.props.onClose();
+            } else {
+                this.setState({ "progress": false, "message": res.message })
+            }
+        }); 
     }
 
     render() {
 
-        const type = this.props.type || "event";
+        const type = this.props.formMode;
 
-        
+        let eventTypeHtml = null;
+        let title = "Add Event";
+
+        if (this.props.formMode == "appointment") {
+
+            title = "Add Appointment";
+
+        } else {
+
+            eventTypeHtml = <TextField
+                fullWidth
+                type="text"
+                onChange={(event) => this.handleChange("event_type", event.target.value)}
+                value={this.state.event_type}
+                label={"Enter type of " + type}
+                margin="normal" />;
+
+        }
 
         return (
             <div>
                 <Dialog open={this.props.open} onClose={this.props.onClose} aria-labelledby="form-dialog-title">
                     <DialogTitle style={dialogTitleStyle} id="form-dialog-title">
                         <div style={headerStyle}>
-                        <div><h4>{this.props.title || "Add Event"}</h4></div>
+                        <div><h4>{title}</h4></div>
                         </div>
                     </DialogTitle>
 
@@ -184,13 +212,7 @@ export default class EventForm extends React.Component {
                                             label={"Enter description for " + type}
                                             margin="normal" />
 
-                                    <TextField
-                                            fullWidth
-                                            type="text"
-                                            onChange={(event) => this.handleChange("event_type", event.target.value)}
-                                            value={this.state.event_type}
-                                            label={"Enter type of " + type}
-                                            margin="normal" />
+                                    {eventTypeHtml}
 
                                     <TextField
                                             fullWidth

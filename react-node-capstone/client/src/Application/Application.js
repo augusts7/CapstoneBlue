@@ -1,12 +1,13 @@
 import React from "react";
-import { Route, Redirect, Switch, BrowserRouter as Router } from "react-router-dom";
-import App from "../BaseLayout/App/App";
-import LoggedOutApp from "../Authentication/LoggedOutApp/LoggedOutApp";
 import ls from "local-storage";
+import { UserContext } from "../Context/UserContext";
+import { AuthContext } from "../Context/AuthContext";
+import ApplicationRouter from "./ApplicationRouter";
 
-import "./Application.css";
+
 
 class Application extends React.Component {
+
     constructor(props) {
         super(props);
 
@@ -15,44 +16,43 @@ class Application extends React.Component {
             isLoggedIn = true;
         }
         this.state = {
-            isLoggedIn: isLoggedIn,
-            user_type: "faculty"
+            "isLoggedIn": isLoggedIn,
+            "user": null,
+            "user_type": "faculty"
         };
 
-
-        this.hasLoggedIn = this.hasLoggedIn.bind(this);
-        this.onLogout = this.onLogout.bind(this);
     }
 
-    hasLoggedIn(user) {
-        this.setState({ isLoggedIn: true });
-        ls.set("isLoggedIn", true);
-        ls.set("user_type", user.user_type);
+
+    authCtx = {
+
+        "login": (user) => {
+            this.setState({ "user": user, "isLoggedIn": true, "user_type": user.user_type });
+            ls.set("isLoggedIn", true);
+            ls.set("user_type", user.user_type);
+        },
+        "logout": () => {
+            this.setState({ "user": null, "isLoggedIn": false, "user_type": null });
+            ls.set("isLoggedIn", false);
+            ls.set("user_type", "");
+        }
+
     }
 
-    onLogout() {
-        this.setState({ isLoggedIn: false });
-        ls.set("isLoggedIn", false);
-        ls.set("user_type", "");
-    }
 
     render() {
 
-        let html = [];
+        let userCtx = { "user": this.state.user, "user_type": this.state.user_type, "isLoggedIn": this.state.isLoggedIn };       
 
-        if (this.state.isLoggedIn) {
-
-            html.push(<App onLogout={this.onLogout} />);
-
-        } else {
-            html.push(<LoggedOutApp hasLoggedIn={this.hasLoggedIn} />);
-        }
         return (
-            <div key="root" className="mdl-layout mdl-js-layout mdl-layout--fixed-header full root-container">
-                {html}
-            </div>
+            <AuthContext.Provider value={this.authCtx}>
+                <UserContext.Provider value={userCtx}>
+                    <ApplicationRouter auth={this.state.isLoggedIn} />
+                </UserContext.Provider>
+            </AuthContext.Provider>
         );
     }
 }
+
 
 export default Application;

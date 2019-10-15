@@ -33,12 +33,10 @@ function initPassport(app) {
 
 
     passport.serializeUser((user, done) => {
-        console.log("Serialize " + user.user_id);
         done(null, user.user_id);
     });
 
     passport.deserializeUser(function(id, done) {
-        console.log("De Serialize " + id);
         pool.query("SELECT * FROM schedulerdb.user_info WHERE user_id = ?", id,  function (error, results, fields) {
             if (error) {
                 return done("Couldn't connect to the database. " + error, false);

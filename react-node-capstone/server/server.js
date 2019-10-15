@@ -25,32 +25,39 @@ passportHelper.initPassport(app);
 
 //Routes
 const eventRouter = require("./routes/events");
-const usersRouter = require("./routes/users");
+const authRouter = require("./routes/auth");
+const userInfoRouter = require("./routes/user_info");
 const appointmentRouter = require("./routes/appointments");
 const advisingRouter = require("./routes/advising");
-const attendingRouter = require("./routes/attending");
 const groupsRouter = require("./routes/groups");
 const mygroupsRouter = require("./routes/my_groups");
 const classinfoRouter = require("./routes/class_info");
 const classestakesRouter = require("./routes/classes_taken");
-const profileRouter = require("./routes/profile")
+const profileRouter = require("./routes/profile");
+const calRouter = require("./routes/calendar");
+
 const swagger = require('swagger-ui-express');
 const swag = require('./swagger.json');
 app.use('/docs', swagger.serve, swagger.setup(swag));
 //Connects Routes to there files.
 app.use("/events", eventRouter);
-app.use("/users", usersRouter);
+app.use("/user_info", userInfoRouter);
+app.use("/auth", authRouter);
 app.use("/appointments", appointmentRouter);
 app.use("/advising", advisingRouter);
-app.use("/attending", attendingRouter);
 app.use("/groups", groupsRouter);
 app.use("/my_groups", mygroupsRouter);
 app.use("/class_info", classinfoRouter);
 app.use("/classes_taken", classestakesRouter);
 app.use("/profile", profileRouter);
+app.use("/calendar", calRouter);
+
 
 //Error Handler
 app.use((err, req, res, next) => {
+
+    console.log(err);
+
   res.status(400)
     .json({
       success: false,

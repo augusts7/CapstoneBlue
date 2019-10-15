@@ -11,11 +11,7 @@ router.get("/all/:calendarId", function (req, res) {
 
     try {
 
-        console.log("Advising All. User is " + req.user.user_id);
-
         if (req.user.user_type == "student") {
-
-            console.log("Select student data. ");
 
             pool.query("SELECT advisor_id FROM schedulerdb.student_info WHERE user_id = ?", req.user.user_id, function (error, results, fields) {
 
@@ -38,8 +34,6 @@ router.get("/all/:calendarId", function (req, res) {
                         try {
                             if (results.length > 0) {
 
-                                console.log("advising/all=> results => " + results);
-
                                 return res.json({ "success": true, "message": "Advising slots have been retrived.", "results": results });
 
                             } else {
@@ -58,8 +52,6 @@ router.get("/all/:calendarId", function (req, res) {
 
             });
         } else {
-            console.log("Select faculty data. ");
-
             let sql = "SELECT * FROM schedulerdb.event WHERE event_type = 'advising' AND creator_id = " + req.user.user_id;
 
             if (req.params.calendarId != "main") {
@@ -87,7 +79,6 @@ router.get("/all/:calendarId", function (req, res) {
         }
     } catch (err) {
         return res.json({ "success": false, "message": "Error while getting advising slots. " + err });
-        console.log("Router => advising . " + err);
     }
 })
 
@@ -98,7 +89,9 @@ router.post("/attend/:calendarId", async function (req, res) {
 
         await pool.query("SELECT advisor_id FROM schedulerdb.student_info WHERE user_id = ?", req.user.user_id, async function (error, result, fields) {
 
-            if (error) return next("Failed to connect to database")
+            if (error) {
+                return res.json({ success: false, message: "Failed to connect to database" });
+            }
             try {
                 if (result.length > 0) {
 
@@ -122,11 +115,13 @@ router.post("/attend/:calendarId", async function (req, res) {
                         await pool.query("INSERT INTO schedulerdb.attending SET ?", value);
                     });
 
-                    
+
 
                     return res.json({ "success": true });
 
-                } else return next("Couldn't add avising slot to the database")
+                } else {
+                    return res.json({ success: false, message: "Couldn't add avising slot to the database" });
+                }
             } catch (err){
                 return res.json({ "success": false, "message": "Error while adding advising slots to your database. " + err });
             }
@@ -136,7 +131,6 @@ router.post("/attend/:calendarId", async function (req, res) {
 
     } catch (err) {
         return res.json({ "success": false, "message": "Error while getting advising slots. " + err });
-        console.log("Router => advising . " + err);
     }
 })
 
