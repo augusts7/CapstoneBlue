@@ -9,9 +9,9 @@
 }
 
 .main-carousel {
-    padding-left: 400px;
     border: solid gold;
     grid-area: main-carousel;
+    margin: 0 auto;
 }
 
 .main-events {
