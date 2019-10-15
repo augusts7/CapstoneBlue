@@ -35,13 +35,14 @@ class GroupView extends React.Component {
       <div class="group-view">
         <div class="group-name">
           <h2>{this.state.groupName}</h2>
+          <hr/>
         </div>
         <div class="group-events">
-          <h4 class="list-header">Group Events</h4>
+          <h3 class="list-header">Group Events</h3>
           <EventList events={this.state.eventListItems} />
         </div>
         <div class="group-members">
-          <h4 class="list-header">Group Members</h4>
+          <h3 class="list-header">Group Members</h3>
         </div>
       </div>
     );

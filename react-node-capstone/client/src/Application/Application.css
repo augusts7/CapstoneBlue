@@ -1,5 +1,7 @@
 .login-container {
     background: url("./background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 a {
     color: darkslateblue;

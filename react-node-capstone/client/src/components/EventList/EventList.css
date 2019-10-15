@@ -3,8 +3,9 @@
   display: grid;
   grid-template-columns: 0.2fr 1.8fr;
   grid-template-areas: "date description";
-  border: solid orange;
   background-color: rgba(203, 203, 204, 0.822);
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 15px;
 }
 
 .date {
@@ -15,20 +16,16 @@
 
 .date-number {
   font-size: 26pt;
-  font-weight: bold;
-  border: solid blue;
   margin: 5px;
 }
 
 .date-name {
-  margin: 5px;
-  font-weight: bold;
+  margin: 5px !important;
   font-size: 20pt;
-  border: solid violet;
 }
 
-.description {
+.eventListItem > .description {
   grid-area: description;
-  border: solid red;
   margin: 5px !important;
+  overflow: visible;
 }
