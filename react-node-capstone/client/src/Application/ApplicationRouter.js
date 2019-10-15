@@ -49,9 +49,9 @@ export default function ApplicationRouter(props) {
         routesHtml.push(<Route auth={props.auth} path="/calenderView" component={CalenderView} />);
         routesHtml.push(<Route auth={props.auth} path="/groupView" component={GroupView} />);
         routesHtml.push(<Route auth={props.auth} path="/eventsView" component={EventsView} />);
-        routesHtml.push(<Route auth={props.auth} path="requestEvent" component={RequestEvent} />);
+        routesHtml.push(<Route auth={props.auth} path="/requestEvent" component={RequestEvent} />);
         routesHtml.push(<Route auth={props.auth} path="/viewAllEvents" component={ViewAllEvents} />);
-        routesHtml.push(<Route auth={props.auth} path="/createEvents" component={CreateEvent} />);
+        routesHtml.push(<Route auth={props.auth} path="/createEvent" component={CreateEvent} />);
         routesHtml.push(<Route auth={props.auth} path="/approveEvent" component={ApproveEvent} />);
         routesHtml.push(<Route auth={props.auth} path="/" component={Main} />);
 

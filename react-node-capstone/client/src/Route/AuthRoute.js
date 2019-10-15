@@ -13,7 +13,7 @@ function AuthRoute(props) {
 
 function getLayout(props) {
 
-    if (props.auth == false) {
+    if (props.auth === false) {
         console.log("auth route return comp ");
         return (<props.component {...props} />);
     } else {
@@ -26,7 +26,7 @@ function getLayout(props) {
 
 const authRoute = ({ component: Component, auth, ...rest }) => (
     <Route {...rest} render={(props) => (
-        auth == false
+        auth === false
             ? <Component {...props} />
             : <Redirect to="/" />
     )} />

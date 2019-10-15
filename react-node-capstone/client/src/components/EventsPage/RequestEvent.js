@@ -31,7 +31,7 @@ class RequestEvent extends React.Component {
     render() {
         return (
             <div>
-                <h4 className="title">Request New Event</h4>
+                <h4 className="title">Request New Event</h4><hr/>
                 <div className="requestForm">
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <div className="datePicker">
