@@ -3,12 +3,12 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction' // needed for dayClick
-import Button from "@material-ui/core/Button";
 import "@fullcalendar/core/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
 import Select from "../../../components/Select/Select";
 import Menu from "../SubViews/parts/Menu";
+
 
 
 const selectStyle = { "margin": "8px", "padding": "4px", "width": "47%" };

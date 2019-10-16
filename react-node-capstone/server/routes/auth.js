@@ -45,7 +45,7 @@ router.post("/register", function (req, res, next) {
 
     let student = {};
 
-    if (user.user_type == "student") {
+    if (user.user_type === "student") {
         student = {
             user_id: req.body.user_id,
             classification: req.body.classification,
@@ -59,13 +59,13 @@ router.post("/register", function (req, res, next) {
             return res.json({ "success": false, "message": "Couldn't connect to the database. " + error });
         }
         try {
-            if (results[0].count == 0) {
+            if (results[0].count === 0) {
                 pool.query("INSERT INTO schedulerdb.user_info SET ?", user, function (error, results, fields) {
                     if (error) {
                         return res.json({ "success": false, "message": "Couldn't connect to the database. " + error })
                     }
 
-                    if (user.user_type == "student") {
+                    if (user.user_type === "student") {
 
                         pool.query("INSERT INTO schedulerdb.student_info SET ?", student, function (error, results, fields) {
                             if (error) {

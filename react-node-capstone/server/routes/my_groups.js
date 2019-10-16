@@ -10,7 +10,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 router.use(bodyParser.json());
 
-router.route("/").get(async (req, res) => {
+router.route("/all").get(async (req, res) => {
   try {
     let  my_groups = await pool.query("SELECT * FROM my_groups");
     res.json(my_groups);

@@ -28,7 +28,7 @@ class Select extends React.Component {
     render() {
 
         let fullWidth = true;
-        if (this.props.fullWidth == false) {
+        if (this.props.fullWidth === false) {
             fullWidth = false;
         }
 

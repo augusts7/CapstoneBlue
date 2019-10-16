@@ -106,7 +106,7 @@ export default class EventForm extends React.Component {
 
         let requiredKeys = ["start", "end", "title", "description"];
 
-        if (this.props.formMode == "event") {
+        if (this.props.formMode === "event") {
 
             requiredKeys.push("event_type");
 
@@ -128,7 +128,7 @@ export default class EventForm extends React.Component {
 
         let postUrl = "/events";
 
-        if (this.props.formMode == "appointment") {
+        if (this.props.formMode === "appointment") {
             data["event_type"] = "appointment";
             postUrl = "/appointments/create";
         } else if (this.props.formMode == "editAppointment") {
@@ -137,7 +137,7 @@ export default class EventForm extends React.Component {
             data["eventId"] = this.props.eventFormData.event.id;
         }
 
-        data["calendarId"] = this.state.calendarId == "main" ? "" : this.state.calendarId;
+        data["calendarId"] = this.state.calendarId === "main" ? "" : this.state.calendarId;
         data["attendeeEmails"] = this.state.attendeeEmails;
         
         post(postUrl, data, (res) => {
@@ -159,6 +159,7 @@ export default class EventForm extends React.Component {
         let title = "Add Event";
 
         if (this.props.formMode == "appointment" || this.props.formMode == "editAppointment") {
+
 
             title = "Add Appointment";
 

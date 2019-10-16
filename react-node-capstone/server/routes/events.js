@@ -1,4 +1,5 @@
 var router = require("express").Router();
+var pool = require("../db/database");
 
 var sqlHandler = require("../handler/queryHandler");
 
@@ -20,9 +21,15 @@ router.get("/attending/:calendarId", function (req, res) {
     sqlHandler.getAndSendResponseToClient(select, req, res);
 
 })
-
-
-
+router.route("/all").get(async (req, res) => {
+    try {
+      let  events = await pool.query("SELECT * FROM event");
+      res.json(events);
+    } catch (e) {
+      console.log(e);
+      res.sendStatus(500);
+    }
+  })
 
 router.get("/created/:calendarId", function (req, res) {
 
@@ -77,6 +84,7 @@ router.post("/delete", (req, res) => {
     }
     
 });
+
 
 
 module.exports = router;
