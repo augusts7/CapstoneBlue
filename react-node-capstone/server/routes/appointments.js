@@ -75,20 +75,36 @@ function getEmailList(emailString) {
 }
 
 
+router.post("/delete", (req, res) => {
+
+    console.log("Delete appointment ");
+
+    pool.query("DELETE FROM attending WHERE event_id = ?", req.body.eventId, function (error, results, fields) {
+
+        if (error) {
+            return res.json({ success: false, "message": error });
+        }
+
+        return res.json({"success": true});
+        
+    });
+});
+
+
 router.post("/attend/:calId", function (req, res) {
 
     const attendeeData = {
         event_id: req.body.eventId,
         attendee_id: req.user.user_id,
-        calendar_id: req.params.calId
+        calendar_id: req.params.calId == "main" ? null : req.params.calId
     };
 
     pool.query("INSERT INTO attending SET ?", attendeeData, function (error, results, fields) {
 
         if (error) {
-            return res.json({ "success": false, "message": "Failed to connect to database" });
+            return res.json({ "success": false, "message": error});
         }
-        pool.query("SELECT creator_id, creator_calendar_id FROM event WHERE eventID = ?", attendeeData.event_id, function (error, results, fields) {
+        pool.query("SELECT creator_id FROM event WHERE eventID = ?", attendeeData.event_id, function (error, results, fields) {
 
             if (error) {
                 return res.json({ "success": false, "message": error });
@@ -99,13 +115,12 @@ router.post("/attend/:calId", function (req, res) {
                     const creatorData = {
                         event_id: req.body.eventId,
                         attendee_id: results[0].creator_id,
-                        calendar_id: result[0].creator_calendar_id
                     };
 
                     pool.query("INSERT INTO attending SET ?", creatorData, function (error, results, fields) {
 
                         if (error) {
-                            return res.json({ "success": false, "message": "Failed to connect to database" });
+                            return res.json({ "success": false, "message": error });
                         }
                         try {
                             if (results.length > 0) {

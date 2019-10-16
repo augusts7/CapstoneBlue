@@ -51,5 +51,32 @@ router.post("/", (req, res) => {
     sqlHandler.setObjectAndSendResToClient("INSERT INTO event SET ?", event, req, res);
 });
 
+router.post("/edit", (req, res) => {
+    const event = {
+        title: req.body.title,
+        description: req.body.description,
+        start: req.body.start,
+        end: req.body.end,
+        event_type: req.body.event_type,
+        creator_id: req.user.user_id,
+        carousel: req.body.carousel || "1",
+        eventID: req.body.eventId
+    };
+
+    sqlHandler.setObjectAndSendResToClient("UPDATE event SET ? WHERE eventID = " + event.eventID, event, req, res);
+});
+
+
+router.post("/delete", (req, res) => {
+
+    if (req.user != null) {
+
+        const id = req.body.eventId;
+
+        sqlHandler.setObjectAndSendResToClient("DELETE FROM event WHERE eventID = " + id, req, res);
+    }
+    
+});
+
 
 module.exports = router;
