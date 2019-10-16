@@ -6,6 +6,7 @@ class ApproveEvent extends React.Component{
         return(
             <div>
                 <h4>Approve Events</h4><hr/>
+                add list of pending student events
             </div>
         );
     }
