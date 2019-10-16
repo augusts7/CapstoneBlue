@@ -95,7 +95,14 @@ class EventList extends Component {
               {this.getMonth(event.start.getMonth(), "abrv")}{" "}
             </div>
           </div>
-          <div className="description">{event.description}</div>
+          <div className="description">
+            <div className="event-title">{event.title}</div>
+            <div className="time">
+              {event.start.toLocaleTimeString("en-US")} -{" "}
+              {event.end.toLocaleTimeString("en-US")}
+            </div>
+            {event.description}
+          </div>
         </div>
       );
     });

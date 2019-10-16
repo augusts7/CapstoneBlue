@@ -12,11 +12,13 @@
   height: 40em;
 }
 
-.group-events > h3{
+.group-events > h3 {
   margin-left: 15px;
 }
 
 .group-members {
+  border: solid;
+  border-radius: 7px;
   flex-basis: 33%;
 }
 
@@ -25,4 +27,3 @@
   flex-wrap: wrap;
   justify-content: center;
 }
- 
