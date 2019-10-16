@@ -10,15 +10,15 @@ router.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 router.use(bodyParser.json());
 
-router.route("/").get(async (req, res, next) => {
+router.route("/all").get(async (req, res) => {
   try {
-    let results = await pool.query("SELECT * FROM class_info");
-    res.json(results);
+    let  class_info = await pool.query("SELECT * FROM class_info");
+    res.json(class_info);
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
   }
-});
+})
 
 router.route("/").post((req, res) => {
     const class_info = {
