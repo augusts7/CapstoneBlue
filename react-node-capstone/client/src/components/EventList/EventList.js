@@ -95,7 +95,7 @@ class EventList extends Component {
               {this.getMonth(event.start.getMonth(), "abrv")}{" "}
             </div>
           </div>
-          <div className="description">{event.description}</div>
+          <div className="description" style={{"margin": "5px !important;"}}>{event.description}</div>
         </div>
       );
     });

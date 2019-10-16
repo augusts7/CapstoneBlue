@@ -30,5 +30,4 @@
 .description {
   grid-area: description;
   border: solid red;
-  margin: 5px !important;
 }

@@ -11,27 +11,50 @@ class RequestEvent extends React.Component {
 
         this.state = {
             start: new Date(),
-            end: new Date()
+            end: new Date(),
+            title: "",
+            description: "",
+            event_type: "global"
         };
         this.handleStartTimeChange = this.handleStartTimeChange.bind(this);
         this.handleEndTimeChange = this.handleEndTimeChange.bind(this);
     }
+
     handleStartTimeChange(datetime) {
-        this.setState({ start: datetime });
+        this.setState({start: datetime});
     }
 
     handleEndTimeChange(datetime) {
-        this.setState({ end: datetime });
+        this.setState({end: datetime});
     }
 
-    onClickSubmit(){
-    window.alert("Form Submitted");
+    onClickSubmit() {
+        //Wait to implement until API is done
+        // e.preventDefault();
+        // fetch("/requestEvents", {
+        //     method: "POST",
+        //     body: JSON.stringify({
+        //         start: this.state.start,
+        //         end: this.state.end,
+        //         title: this.state.title,
+        //         description: this.state.description
+        //     }),
+        //     headers: {"Content-Type": "application/json"}
+        // })
+        //     .then(function (response) {
+        //         return response.json();
+        //     })
+        //     .then(function (body) {
+        //         console.log(body);
+        //     });
+        window.alert("submitted");
     }
 
     render() {
         return (
             <div>
                 <h4 className="title">Request New Event</h4>
+                <hr/>
                 <div className="requestForm">
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <div className="datePicker">
@@ -53,15 +76,19 @@ class RequestEvent extends React.Component {
                                 label="End Time"
                                 value={this.state.end}
                                 onChange={this.handleEndTimeChange}
-                            />
+                            >
+                            </DateTimePicker>
                         </div>
                     </MuiPickersUtilsProvider><br/>
-                    <TextField className="title" placeholder="Title of Event" variant="outlined"/>
-                    <TextField className="description" multiline placeholder="Description of Event" variant="outlined"/><br/>
+                    <TextField className="title" placeholder="Title of Event" variant="outlined"
+                               value={this.state.title}/>
+                    <TextField className="description" multiline placeholder="Description of Event" variant="outlined"
+                               value={this.state.description}/><br/>
                     <div className="requestForm">
-                    <Button type="submit" variant="contained" size="large" className="submit" onClick={this.onClickSubmit}>Submit</Button>
+                        <Button type="submit" variant="contained" size="large" className="submit"
+                                onClick={this.onClickSubmit}>Submit</Button>
                     </div>
-                    </div>
+                </div>
             </div>
         );
     }

@@ -26,7 +26,7 @@ class EventsView extends React.Component {
                     </div>
                     <h4 className="title">My Events</h4>
                     <hr/>
-                    <div><EventList/><EventList/></div>
+                    <div><EventList/></div>
                 </div>
             );
         } else {
@@ -44,7 +44,7 @@ class EventsView extends React.Component {
                     </div>
                     <h4 className="title">My Events</h4>
                     <hr/>
-                    <div><EventList/><EventList/></div>
+                    <div><EventList/></div>
                 </div>
             );
         }
