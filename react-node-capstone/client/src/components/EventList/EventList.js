@@ -77,6 +77,9 @@ class EventList extends Component {
         monthName = "December";
         monthAbrv = "Dec";
         break;
+      default:
+        monthName = "Error: Not a valid month.";
+        monthAbrv = "Error: Not a valid month.";
     }
     if (type === "name") {
       return monthName;
@@ -88,14 +91,14 @@ class EventList extends Component {
   render() {
     var eventsList = this.state.events.map(event => {
       return (
-        <div className="eventListItem">
+        <div className="eventListItem" key={event.eventID}>
           <div className="date">
             <div className="date-number">{event.start.getDay()}</div>
             <div className="date-name">
               {this.getMonth(event.start.getMonth(), "abrv")}{" "}
             </div>
           </div>
-          <div className="description" style={{"margin": "5px !important;"}}>
+          <div className="description">
             <div className="event-title">{event.title}</div>
             <div className="time">
               {event.start.toLocaleTimeString("en-US")} -{" "}

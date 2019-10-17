@@ -1,5 +1,7 @@
 import React from "react";
 import EventList from "../../components/EventList/EventList";
+import Button from "@material-ui/core/Button";
+import GroupMemberList from "./GroupMemberList";
 
 import "./GroupView.css";
 
@@ -10,39 +12,50 @@ class GroupView extends React.Component {
     super(props);
     this.state = {
       groupName: "Group Name",
-      eventListItems: [{
-        title: "Event Title",
-        description: "This is a description for the event",
-        start: new Date(),
-        end: new Date()
-      },{
-        title: "Event Title",
-        description: "This is a description for the event",
-        start: new Date(),
-        end: new Date()
-      }],
-      groupMembers: [],
+      eventListItems: [
+        {
+          title: "Event Title",
+          description: "This is a description for the event",
+          start: new Date(),
+          end: new Date()
+        },
+        {
+          title: "Event Title",
+          description: "This is a description for the event",
+          start: new Date(),
+          end: new Date()
+        }
+      ],
+      groupMembers: [
+        {
+          user_id: 1,
+          name: "Nick Fontana"
+        },
+        {
+          user_id: 2,
+          name: "Bob Builder"
+        }
+      ],
       groupOwner: ""
     };
   }
 
-  componentDidMount() {
-    fetch("/events/");
-  }
-
   render() {
     return (
-      <div class="group-view">
-        <div class="group-name">
+      <div className="group-view">
+        <div className="group-name">
           <h2>{this.state.groupName}</h2>
-          <hr/>
+          <hr />
         </div>
-        <div class="group-events">
-          <h3 class="list-header">Group Events</h3>
+        <div className="group-events">
+          <h3 className="list-header">Group Events</h3>
+          <hr />
           <EventList events={this.state.eventListItems} />
         </div>
-        <div class="group-members">
-          <h3 class="list-header">Group Members</h3>
+        <div className="group-members">
+          <h3 className="list-header">Group Members</h3>
+          <hr />
+          <GroupMemberList groupMembers={this.state.groupMembers} />
         </div>
       </div>
     );

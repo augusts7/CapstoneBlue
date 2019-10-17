@@ -1,25 +1,42 @@
 .main {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 0.6fr 0.8fr;
-    grid-template-areas: 
-        "main-carousel main-carousel main-carousel" 
-        /* "main-calendar main-events main-events"  */
-        "main-calendar main-events main-events";
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 0.4fr 1.6fr;
+  grid-template-areas:
+    "main-carousel main-carousel"
+    /* "main-calendar main-events main-events"  */
+    "main-calendar main-events";
+  background-color: rgb(170, 134, 35);
 }
 
 .main-carousel {
-    border: solid gold;
-    grid-area: main-carousel;
-    margin: 0 auto;
+  grid-area: main-carousel;
+  margin: 0 auto;
 }
 
 .main-events {
-    grid-area: main-events;
-    border: solid red;
+  background-color: white;
+
+  grid-area: main-events;
+  border-top: groove;
+  border-left: groove;
 }
 
-.main-calendar{
-    grid-area: main-calendar;
-    border: solid pink;
+.events > h3 {
+  margin: 15px;
+}
+
+.events {
+  margin: 15px;
+}
+
+.main-calendar {
+  background-color: white;
+
+  border-top: groove;
+  grid-area: main-calendar;
+}
+
+.calender {
+  margin: 15px;
 }

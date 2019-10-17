@@ -1,0 +1,16 @@
+.member-list-container {
+  background-color: rgba(203, 203, 204, 0.822);
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  margin: 15px;
+  border-radius: 5px;
+}
+
+.member-list-container > .member-name {
+  font-size: 20pt;
+  padding: 15px;
+}
+
+.member-list-container > .member-status {
+  font-size: 15pt;
+  padding: 15px;
+}

@@ -10,7 +10,7 @@ class HomeCarousel extends React.Component {
         autoPlay
         interval={6500}
         swipeable={false}
-        width="1100px"
+        width="850px"
         showThumbs={false}
       >
         <div>

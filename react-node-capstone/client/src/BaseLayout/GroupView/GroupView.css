@@ -1,29 +1,38 @@
 .group-name {
   text-align: center;
-  flex-basis: 100%;
 }
 
 .group-name > h2 {
   margin-top: 40px;
+  color: maroon;
+  font-weight: bold;
 }
 
 .group-events {
-  flex-basis: 66%;
-  height: 40em;
+  margin: 15px;
+  overflow: auto;
+  background-color: rgb(170, 134, 35);
+  border-radius: 7px;
 }
 
-.group-events > h3 {
-  margin-left: 15px;
+.list-header {
+  margin-left: 30px;
+  width: 80%;
+  font-weight: bold;
 }
 
 .group-members {
-  border: solid;
+  margin: 15px;
+  overflow: auto;
+  background-color: rgb(170, 134, 35);
   border-radius: 7px;
-  flex-basis: 33%;
 }
 
 .group-view {
-  display: flex;
-  flex-wrap: wrap;
   justify-content: center;
+}
+
+.create-group-event {
+  width: 20%;
+  margin-right: 30px;
 }
