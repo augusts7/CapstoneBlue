@@ -4,7 +4,7 @@ import "./Footer.css";
 class Footer extends React.Component {
   render() {
     return (
-      <footer class="footer" className="mdl-mini-footer">
+      <footer className="mdl-mini-footer">
         <div className="mdl-mini-footer__left-section">
           <ul className="mdl-mini-footer__link-list">
             <li>
