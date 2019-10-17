@@ -7,6 +7,8 @@ import "@fullcalendar/core/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
 import Select from "../../../components/Select/Select";
+import Menu from "../SubViews/parts/Menu";
+
 
 
 const selectStyle = { "margin": "8px", "padding": "4px", "width": "47%" };

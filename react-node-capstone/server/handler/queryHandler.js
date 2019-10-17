@@ -26,14 +26,15 @@ function getAndSendDataToClient (sql, req, res) {
 		}
 
 	});
-
 }
+
 
 function setObjectAndSendResToClient(insertSql, dataObject, req, res) {
     
 	pool.query(insertSql, dataObject, function (error, results, fields) {
 
-		if (error) {
+        if (error) {
+            console.log(error);
 			return res.json({ "success": false, "message": "Failed to connect to database. " + error });
         }
 

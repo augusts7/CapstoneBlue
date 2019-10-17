@@ -1,26 +1,16 @@
 import React from "react";
 import Calendar from "./Calendar/Calendar";
-import EventsList from "./sub-views/events/EventsList";
-import CalendarOptions from "./sub-views/filter-and-actions/FilterAndActions"
+import EventsList from "./SubViews/events/EventsList";
+import CalendarOptions from "./SubViews/filter-and-actions/FilterAndActions"
 import ls from "local-storage"
 import { get } from "../../ApiHelper/ApiHelper"
 import "./main.css";
 import "./scroll.css"
-import EventForm from "./sub-views/forms/EventForm";
-import EventDetails from "./sub-views/eventDetails/EventDetails"
-import AdvisingSlotForm from "./sub-views/forms/AdvisingSlotForm";
+import EventForm from "./SubViews/forms/EventForm";
+import EventDetails from "./SubViews/eventDetails/EventDetails"
+import AdvisingSlotForm from "./SubViews/forms/AdvisingSlotForm";
+import EventTypesData from "./Data/EventTypesData";
 
-
-const dataMapping = {
-    "advisingSlots": { url: "advising/all", title: "Adivising Slots" },
-    "attendingEvents": { url: "events/attending", title: "Attending Events" },
-    "createdEvents": { url: "events/created", title: "Created Events" },
-    "createdAppointments": { url: "appointments/created", title: "Created Appointments" },
-    "requestedAppointments": { url: "appointments/receivedInvite", title: "Requested Appointments" },
-    "approvedAppointments": { url: "advising/all", title: "Approved Appointments" }
-};
-
-const ALL_EVENT_TYPES = ["advisingSlots", "attendingEvents", "createdEvents", "requestedAppointments", "approvedAppointments"];
 
 
 class CalenderView extends React.Component {
@@ -34,6 +24,7 @@ class CalenderView extends React.Component {
         "advisingSlotForm": false,
         "cals": ["main"],
         "eventTypes": ["attendingEvents"],
+        "eventFormData": {},
     };
 
     constructor(props) {
@@ -171,6 +162,10 @@ class CalenderView extends React.Component {
 
             this.setState({ "advisingSlotForm": true });
 
+        } else if (name === "editAppointment") {
+
+            this.setState({ "eventForm": true, "formMode": "editAppointment", "eventFormData": data });
+
         }
 
 
@@ -208,7 +203,7 @@ class CalenderView extends React.Component {
             this.setState({ isLoading: true });
         }
 
-        let url = dataMapping[displayDataType].url;
+        let url = EventTypesData.dataMapping[displayDataType].url;
 
         if (calId != null && (calId.length > 0)) {
             url += "/" + calId;
@@ -225,11 +220,14 @@ class CalenderView extends React.Component {
                         "key": d.eventID,
                         "start": d.start,
                         "end": d.end,
+                        "id": d.eventID,
                         "title": d.title,
                         "description": d.description,
                         "color": "white",
-                        "backgroundColor": "#880E4F"
+                        "backgroundColor": "#880E4F",
+                        "eventType": d.event_type,
                     });
+                    data = EventTypesData.addEventSpecificData(displayDataType, data);
                 });
 
             }
@@ -242,7 +240,6 @@ class CalenderView extends React.Component {
         });
 
     }
-
 
 
     componentDidMount() {
@@ -289,7 +286,7 @@ class CalenderView extends React.Component {
 
                 <AdvisingSlotForm onCancel={() => this.handlePopupCancel("advisingSlotForm")} onClose={() => this.handlePopupClose("advisingSlotForm")} onSave={(data) => this.handlePopupSave("advisingSlotForm", data)} open={this.state.advisingSlotForm} />
 
-                <EventForm formMode={this.state.formMode} onCancel={() => this.handlePopupCancel("eventForm")} onClose={() => this.handlePopupClose("eventForm")} onSave={(data) => this.handlePopupSave("eventForm", data)} open={this.state.eventForm} />
+                <EventForm eventFormData={this.state.eventFormData} formMode={this.state.formMode} onCancel={() => this.handlePopupCancel("eventForm")} onClose={() => this.handlePopupClose("eventForm")} onSave={(data) => this.handlePopupSave("eventForm", data)} open={this.state.eventForm} />
 
                 <EventDetails mode={this.state.mode} onCancel={() => this.handlePopupCancel("eventDetails")} onClose={() => this.handlePopupClose("eventDetails")} onSave={(data) => this.handlePopupSave("eventDetails", data)} open={this.state.eventDetails} />
 
@@ -307,5 +304,6 @@ class CalenderView extends React.Component {
         );
     }
 }
+
 
 export default CalenderView;
