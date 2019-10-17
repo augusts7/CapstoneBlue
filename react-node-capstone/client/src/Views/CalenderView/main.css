@@ -43,3 +43,15 @@
 .calendarView_side_card a {
     color: white;
 }
+.calendarFilterOption > div {
+     display: inline-block;
+}
+.calendarFilterOption {
+    display: flex;
+}
+.calendarFilterOption > .mainItem {
+    flex-grow: 5;
+}
+.calendarFilterOption > .actionItem {
+     flex-grow: 0;
+}

@@ -7,8 +7,14 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Checkbox from '@material-ui/core/Checkbox';
 import { get, post } from "../../../../../ApiHelper/ApiHelper"
-import Button from "@material-ui/core/Button";
-import Input from "@material-ui/core/TextField";
+import IconButton from '@material-ui/core/IconButton';
+import Icon from '@material-ui/core/Icon';
+import Menu from "../../parts/Menu";
+import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
+import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
+import AddNewCalendarForm from "../forms/AddNewCalendarForm";
+import ShareCalendarForm from "../forms/ShareCalendarForm";
 
 export default class CalendarFilter extends React.Component {
 
@@ -16,22 +22,23 @@ export default class CalendarFilter extends React.Component {
         super(props);
 
         this.state = {
-            "cals": [],
+            "cals": [{ "calendarName": "Default", "calendarId": "main" }, { "calendarName": "Another one", "calendarId": "2" }],
+            "menuAnchor": null,
+            "openShare": false,
+            "openAdd": false,
+            "sharedCalId": null,
         };
-
-        this.onDisplayCalsChange = this.onDisplayCalsChange.bind(this);
-        this.handleCalsChange = this.handleCalsChange.bind(this);
     }
 
 
-    onDisplayCalsChange(calId, show) {
+    onDisplayCalsChange = (calId, show) => {
 
         this.props.onChangeCalendarData("cal", { "id": calId, "show": show });
 
     }
       
 
-    handleCalsChange(id, event) {
+    handleCalsChange = (id, event) => {
 
         const checked = event.target.checked;
 
@@ -42,10 +49,17 @@ export default class CalendarFilter extends React.Component {
 
     componentDidMount() {
 
+        this.loadCalendars();
+
+    }
+
+    loadCalendars = () => {
         get("calendar/", (res) => {
 
             var cals = [];
             cals.push({ "calendarName": "Default", "calendarId": "main" });
+            cals.push({ "calendarName": "Another one", "calendarId": "2" });
+
             console.log(cals);
             if (res.success) {
                 console.log(res.results);
@@ -61,50 +75,65 @@ export default class CalendarFilter extends React.Component {
             });
             this.setState(cState);
         });
-
     }
 
     handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });
     }
 
-    addNewCalendar = () => {
+    handleMenuClick = (event) => {
+        if (!this.state.menuAnchor) {
+            this.setState({ "menuAnchor": event.currentTarget });
+        } else {
+            this.setState({ "menuAnchor": null });
+        }
+    };
 
-        if (!this.state.newCalName) {
+    handleMenuClose = () => {
+        this.setState({ "menuAnchor": null });
+    };
+
+    handleMenuOptionClick = (key, calId) => {
+
+        if (calId === null) {
+            alert("Error in the front end");
             return;
         }
+        if (key == "share") {
+            this.setState({ "openShare": true, "sharedCalId": calId });
+        } else if (key == "delete") {
 
-        let data = { "calendarName": this.state.newCalName };
-
-        post("/calendar", data, (res) => {
-
-            if (res.success) {
-                alert("added");
-            } else {
-                alert("Couldn't add");
-            }
-        });
-    }
-
-    shareCalendar = () => {
-
-        if (!this.state.shareCalId || !this.state.shareCalName || !this.state.sharedToEmail) {
-            return;
         }
+    };
 
-
-        let data = { "sharedCalendarName": this.state.shareCalName, "sharedCalendarId": this.state.shareCalId, "sharedToEmail": this.state.sharedToEmail };
-
-        post("/calendar/share", data, (res) => {
-
-            if (res.success) {
-                alert("shared");
-            } else {
-                alert("Couldn't share");
-            }
-        });
+ 
+    closePopup = (name) => {
+        this.handlePopup(name, false);
     }
 
+    openPopup = (name) => {
+        this.handlePopup(name, true);
+    }
+
+    handlePopup = (popupName, show) => {
+        switch (popupName) {
+            case "addForm":
+                if (show === true) {
+                    this.setState({ "openAdd": true });
+                } else {
+                    this.setState({ "openAdd": false });
+                }
+                
+                break;
+            case "shareForm":
+                if (show === true) {
+                    this.setState({ "openShare": true });
+                } else {
+                    this.setState({ "openShare": false });
+                }
+                break;
+        }
+    }
 
     render() {
 
@@ -120,36 +149,50 @@ export default class CalendarFilter extends React.Component {
             }
         }));
 
+        const menuOptions = [
+            { "name": "Share Calendar", "key": "share" },
+            { "name": "Delete Calendar", "key": "delete" }
+        ];
+
         var calHtml = [];
 
         if (this.state.cals != null && this.state.cals.length > 0) {
             this.state.cals.forEach((cal) => {
                 const name = "id-" + cal.calendarId;
                 calHtml.push(
-                    <div key={cal.calendarId}><Checkbox
+                    <div className="calendarFilterOption" key={cal.calendarId}>
+                        <div className="mainItem"><Checkbox
                         onChange={(event) => this.handleCalsChange(cal.calendarId, event)}
                         color="primary"
                         checked={this.state[name]}
                         inputProps={{
                             'aria-label': 'secondary checkbox',
-                        }} />
-                        {cal.calendarName + "  " + cal.calendarId}
+                            }} />
+                            {cal.calendarName + "  " + cal.calendarId}
+                        </div>
+                        <div className="actionItem">
+                            <IconButton onClick={this.handleMenuClick} color="inherit" aria-label="menu">
+                                <Icon>more_vert</Icon>
+                                <Menu onClose={this.handleMenuClose} onClick={(clickedKey) => this.handleMenuOptionClick(clickedKey, cal.calendarId)} anchor={this.state.menuAnchor} menuOptions={menuOptions} />
+
+                            </IconButton>
+                        </div>
                     </div>
                 );
             });
         }
 
         console.log(this.state);
-         
-        return (
 
+        return (
             <ExpansionPanel>
+
                 <ExpansionPanelSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
                     id="panel1a-header">
 
-                    <Typography className={classes.heading}>Select Calendars to display</Typography>
+                    <Typography className={classes.heading}>Calendars</Typography>
 
                 </ExpansionPanelSummary>
 
@@ -160,11 +203,20 @@ export default class CalendarFilter extends React.Component {
                         {calHtml}
 
                     </div>
+                    <AddNewCalendarForm open={this.state.openAdd} handlePopupClose={this.closePopup} />
+                    <ShareCalendarForm open={this.state.openShare} sharedCalId={this.state.sharedCalId} handlePopupClose={this.closePopup} />
+
 
                 </ExpansionPanelDetails>
+                <Divider />
+                <ExpansionPanelActions>
+                    <Button size="small">Close</Button>
+                    <Button size="small" onClick={() => this.loadCalendars()}>Refresh</Button>
+                    <Button onClick={() => this.openPopup("addForm")} size="small" color="primary">
+                        Add New
+                    </Button>
+                </ExpansionPanelActions>
             </ExpansionPanel>
-
         );
     }
-
 }

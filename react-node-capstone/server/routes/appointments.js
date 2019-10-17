@@ -79,15 +79,30 @@ router.post("/delete", (req, res) => {
 
     console.log("Delete appointment ");
 
-    pool.query("DELETE FROM attending WHERE event_id = ?", req.body.eventId, function (error, results, fields) {
+    pool.query("SELECT creator_id FROM event WHERE eventID = ?", req.body.eventId, function (error, results, fields) {
 
         if (error) {
             return res.json({ success: false, "message": error });
         }
 
-        return res.json({"success": true});
-        
+        let sql = "DELETE FROM attending WHERE event_id = ?";
+        if (results[0].creator_id === req.user.user_id) {
+            sql = "DELETE FROM event WHERE eventID = ?";
+        }  
+
+        pool.query(sql, req.body.eventId, function (error, results, fields) {
+
+            if (error) {
+                return res.json({ success: false, "message": error });
+            }
+
+            return res.json({ "success": true });
+
+        });
+
     });
+
+    
 });
 
 
@@ -96,7 +111,7 @@ router.post("/attend/:calId", function (req, res) {
     const attendeeData = {
         event_id: req.body.eventId,
         attendee_id: req.user.user_id,
-        calendar_id: req.params.calId == "main" ? null : req.params.calId
+        calendar_id: req.params.calId === "main" ? null : req.params.calId
     };
 
     pool.query("INSERT INTO attending SET ?", attendeeData, function (error, results, fields) {
@@ -109,34 +124,27 @@ router.post("/attend/:calId", function (req, res) {
             if (error) {
                 return res.json({ "success": false, "message": error });
             }
-            try {
-                if (results.length > 0) {
 
-                    const creatorData = {
-                        event_id: req.body.eventId,
-                        attendee_id: results[0].creator_id,
-                    };
+            const creatorData = {
+                event_id: req.body.eventId,
+                attendee_id: results[0].creator_id,
+            };
 
-                    pool.query("INSERT INTO attending SET ?", creatorData, function (error, results, fields) {
+            pool.query("INSERT INTO attending SET ?", creatorData, function (error, results, fields) {
 
-                        if (error) {
-                            return res.json({ "success": false, "message": error });
-                        }
-                        try {
-                            if (results.length > 0) {
-
-                                return res.json({ "success": true, "message": "Success" });
-                            }
-                        } catch (err) {
-                            return res.json({ "success": false, "message": err });
-                        }
-
-                    });
-
+                if (error) {
+                    return res.json({ "success": false, "message": error });
                 }
-            } catch (err) {
-                return res.json({ "success": false, "message": err });
-            }
+                try {
+                    if (results.length > 0) {
+
+                        return res.json({ "success": true, "message": "Success" });
+                    }
+                } catch (err) {
+                    return res.json({ "success": false, "message": err });
+                }
+
+            });
 
         });
 

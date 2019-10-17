@@ -3,14 +3,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import Header from "../../parts/Header";
 import EventTypesFilter from "./eventTypesFilter";
 import CalendarFilter from "./calendarFilter";
-import ShareCalendar from "./ShareCalendar";
-import AddNewCalendar from "./AddNewCalendar";
 import SharedCalendars from "./SharedCalendars";
 
 
 
 const commonData = {
-    style: { overflowY: "scroll", "maxHeight": window.innerHeight * 0.8, padding: "8px" },
+    fixedHeight: { overflowY: "scroll", "maxHeight": window.innerHeight * 0.8, padding: "8px" },
+    none: {}
 };
 
 
@@ -64,7 +63,7 @@ export default class Filter extends React.Component {
 
                 <Header title="Calendar Options" menuOptions={menuOptions} onMenuOptionClick={onMenuOptionClick} action={{ name: "Add Event", onClick: this.handleAddEvent }} />
 
-                <div style={commonData.style} className="styleScroll">
+                <div style={commonData.none} className="styleScroll">
 
                     <div className={classes.root}>
 
@@ -72,11 +71,7 @@ export default class Filter extends React.Component {
 
                         <CalendarFilter onChangeCalendarData={this.props.onChangeCalendarData} />
 
-                        <ShareCalendar />
-
-                        <AddNewCalendar />
-
-                        <SharedCalendars />
+                        <SharedCalendars onChangeCalendarData={this.props.onChangeCalendarData} />
                     </div>
 
                 </div>

@@ -25,6 +25,7 @@ class CalenderView extends React.Component {
         "cals": ["main"],
         "eventTypes": ["attendingEvents"],
         "eventFormData": {},
+        "sharedCals": []
     };
 
     constructor(props) {
@@ -59,6 +60,8 @@ class CalenderView extends React.Component {
             this.setState({ "data": [] });
         } else if (action === "cal") {
             this.onChangeCalendarOptions(values);
+        } else if (action === "sharedCal") {
+            this.onChangeSharedCalendarOptions(values);
         }
 
     }
@@ -91,6 +94,28 @@ class CalenderView extends React.Component {
             });
 
             nState["cals"] = this.state.cals.filter((id) => { return id !== calId ? true : false });
+            this.setState(nState);
+        }
+        console.log(values);
+    }
+
+    onChangeSharedCalendarOptions(values) {
+
+        const calId = values.id;
+        const name = "sharedCalData-" + calId;
+        if (values.show) {
+
+            if (this.state[name] == null || this.state[name].length === 0) {
+                this.loadSharedCalendarData(calId);
+                this.setState({ "sharedCals": [...this.state.sharedCals, calId] })
+            }
+
+        } else {
+           
+            var nState = {};
+
+            nState[name] = [];
+            nState["sharedCals"] = this.state.sharedCals.filter((id) => { return id !== calId ? true : false });
             this.setState(nState);
         }
         console.log(values);
@@ -241,6 +266,59 @@ class CalenderView extends React.Component {
 
     }
 
+    loadSharedCalendarData(calId) {
+
+        if (calId == null || calId.length === 0) {
+            calId = "main";
+        }
+
+        if (this.state.isLoading) {
+            return;
+        }
+
+        if (!this.state.isLoading) {
+            this.setState({ isLoading: true });
+        }
+
+        let url = "/events/sharedCalendar/" + calId;
+
+        get(url, (res) => {
+
+            let data = [];
+
+            if (res.success) {
+
+                res.results.forEach(d => {
+                    console.log(d);
+                    data.push({
+                        "key": d.eventID,
+                        "start": d.start,
+                        "end": d.end,
+                        "id": d.eventID,
+                        "title": d.title,
+                        "description": d.description,
+                        "color": "white",
+                        "backgroundColor": "#E65100",
+                        "eventType": d.event_type,
+                    });
+                });
+
+            } else {
+                console.log("ERROR");
+                console.log(res.message);
+                console.log("ERROR");
+
+            }
+            const name = "sharedCalData-" + calId;
+            var newState = {};
+            newState[name] = data;
+            newState["isLoading"] = false;
+            console.log(newState);
+            this.setState(newState);
+        });
+
+    }
+
 
     componentDidMount() {
 
@@ -265,6 +343,17 @@ class CalenderView extends React.Component {
 
             });
         });
+
+        this.state.sharedCals.forEach((sCal) => {
+
+            const name = "sharedCalData-" + sCal;
+            const list = this.state[name];
+            if (list != null && list.length > 0) {
+                events = events.concat(list);
+            }
+            
+        });
+
         console.log(events);
         return events;
     }

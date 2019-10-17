@@ -14,10 +14,10 @@ export default function AppointmentItem(props) {
             eventId: props.event.id
         };
 
-        post("/events/delete/main", data, (res) => {
+        post("/appointments/attend/main", data, (res) => {
 
             if (res.success) {
-                alert("deleted");
+                alert("attended");
             } else {
                 console.log(res.message);
             }
@@ -34,7 +34,7 @@ export default function AppointmentItem(props) {
         post("/appointments/delete", data, (res) => {
 
             if (res.success) {
-                alert("accept");
+                alert("deleted");
             } else {
                 console.log(res.message);
             }

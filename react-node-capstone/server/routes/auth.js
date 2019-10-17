@@ -14,7 +14,7 @@ router.post('/login', function (req, res, next) {
   
     passport.authenticate('local', function (err, user, info) {
         if (err) {
-            return res.json({ "success": false, "message": "Couldn't connect to the database. " + error })
+            return res.json({ "success": false, "message": "Couldn't connect to the database. " + err })
         }
         if (!user) {
             return res.json({ "success": false, "message": "Authentication failed. User with this email could not be found." })

@@ -8,7 +8,7 @@ import { post } from "../../../../../ApiHelper/ApiHelper"
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/TextField";
 
-export default class ShareCalendar extends React.Component {
+export default class ShareCalendarForm extends React.Component {
 
     constructor(props) {
         super(props);

@@ -49,9 +49,9 @@ export default function ContainerHeader(props) {
         <div className={classes.root}>
             <AppBar style={style} position="static">
                 <Toolbar>
-                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                    <IconButton onClick={handleClick} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
 
-                        <MenuIcon onClick={handleClick} />
+                        <MenuIcon />
 
                         <Menu onClose={handleClose} onClick={handleOptionClick} anchor={anchor} menuOptions={props.menuOptions} />
 
