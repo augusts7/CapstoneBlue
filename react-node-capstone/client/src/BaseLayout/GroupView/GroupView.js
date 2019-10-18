@@ -49,8 +49,7 @@ class GroupView extends React.Component {
     this.getGroupMembers();
     //this.getGroupInfo();
   }
-  /**
-   * @todo Doesnt work properly. Data comes in correctly.
+
   getGroupInfo() {
     var groupInfoURL = "/groups/groupInfo/" + this.state.group_id;
     fetch(groupInfoURL)
@@ -62,7 +61,7 @@ class GroupView extends React.Component {
         })
       );
   }
-  */
+
   getGroupMembers() {
     var groupMembersURL = "/groups/groupMembers/" + this.state.group_id;
     fetch(groupMembersURL)
