@@ -1,6 +1,5 @@
 import React from "react";
 import EventList from "../../components/EventList/EventList";
-import Button from "@material-ui/core/Button";
 import GroupMemberList from "./GroupMemberList";
 
 import "./GroupView.css";
@@ -11,16 +10,17 @@ class GroupView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      group_id: 2,
       groupName: "Group Name",
       eventListItems: [
         {
-          title: "Event Title",
+          title: "Event Title 1",
           description: "This is a description for the event",
           start: new Date(),
           end: new Date()
         },
         {
-          title: "Event Title",
+          title: "Event Title 2",
           description: "This is a description for the event",
           start: new Date(),
           end: new Date()
@@ -29,15 +29,52 @@ class GroupView extends React.Component {
       groupMembers: [
         {
           user_id: 1,
-          name: "Nick Fontana"
+          first_name: "Nick",
+          last_name: "Fontana",
+          status: "Owner"
         },
         {
           user_id: 2,
-          name: "Bob Builder"
+          first_name: "Bob",
+          last_name: "Builder",
+          status: "Member"
         }
       ],
-      groupOwner: ""
+      groupOwner: 1
     };
+  }
+
+  componentDidMount() {
+    this.getGroupEvents();
+    this.getGroupMembers();
+    //this.getGroupInfo();
+  }
+  /**
+   * @todo Doesnt work properly. Data comes in correctly.
+  getGroupInfo() {
+    var groupInfoURL = "/groups/groupInfo/" + this.state.group_id;
+    fetch(groupInfoURL)
+      .then(res => res.json())
+      .then(groupInfo =>
+        this.setState({
+          groupName: groupInfo.group_name,
+          groupOwner: groupInfo.creator_id
+        })
+      );
+  }
+  */
+  getGroupMembers() {
+    var groupMembersURL = "/groups/groupMembers/" + this.state.group_id;
+    fetch(groupMembersURL)
+      .then(res => res.json())
+      .then(group_members => this.setState({ groupMembers: group_members }));
+  }
+
+  getGroupEvents() {
+    var groupEventsURL = "/groups/groupEvents/" + this.state.group_id;
+    fetch(groupEventsURL)
+      .then(res => res.json())
+      .then(group_events => this.setState({ eventListItems: group_events }));
   }
 
   render() {
