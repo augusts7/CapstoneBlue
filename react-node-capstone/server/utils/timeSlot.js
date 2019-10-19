@@ -21,11 +21,11 @@ const addInterval = (time, interval)=>{
 
 function getSlots(start, endStr, intervalStr, creator_id, title, description, event_type, carousel) {
 
-    var slots = [];
+    let slots = [];
     const end = new Date(endStr);
     const interval = parseInt(intervalStr);
 
-    var current = new Date(start);
+    let current = new Date(start);
 
     current.setUTCSeconds(0, 0);
     end.setSeconds(0);
@@ -38,14 +38,13 @@ function getSlots(start, endStr, intervalStr, creator_id, title, description, ev
         current = new Date(end);
         current.setSeconds(0);
     }
-
     return slots;
 
 }
 
 function addTime(time, interval) {
 
-    var newMins = time.getMinutes() + interval;
+    let newMins = time.getMinutes() + interval;
 
     if (newMins >= 60) {
         time.setHours(time.getHours() + Math.floor(newMins / 60));
@@ -58,19 +57,9 @@ function addTime(time, interval) {
 }
 
 function testAddTime(testTime, interval) {
-    var time = new Date(testTime);
+    let time = new Date(testTime);
 
-    var newMins = time.getMinutes() + interval;
-
-    if (newMins >= 60) {
-        time.setHours(time.getHours() + Math.floor(newMins / 60));
-        time.setMinutes(newMins - Math.floor(newMins / 60) * 60);
-    } else {
-        time.setMinutes(newMins);
-    }
-    time.setSeconds(0);
-
-    return time;
+    return addTime(time, interval);
 }
 
 module.exports = {

@@ -1,0 +1,23 @@
+
+
+.slotRoot {
+    display: flex;
+}
+.slotRoot .mainItem {
+    flex-grow: 5;
+}
+.slotRoot .icon {
+    flex-grow: 0;
+}
+.slotRoot > div {
+    padding: 8px 16px 8px 4px;
+}
+.slotRoot .mainItem > div {
+    padding: 2px 4px 2px 4px;
+}
+.slotRoot .mainItem .buttons > div {
+    margin-right: 8px;
+}
+.slotRoot .mainItem:hover {
+    background-color: #EEEEEE;
+}

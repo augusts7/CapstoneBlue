@@ -3,15 +3,10 @@
     "",
     "\\client",
     "\\client\\src",
-    "\\client\\src\\Authentication",
-    "\\client\\src\\Authentication\\Login",
-    "\\client\\src\\Views\\CalenderView",
-    "\\client\\src\\Views\\CalenderView\\Data",
-    "\\client\\src\\Views\\CalenderView\\SubViews\\events",
-    "\\client\\src\\Views\\CalenderView\\SubViews\\filter-and-actions",
-    "\\server",
-    "\\server\\routes"
+    "\\client\\src\\Views\\CalenderView\\generic-components",
+    "\\client\\src\\Views\\CalenderView\\side-drawer",
+    "\\client\\src\\Views\\CalenderView\\SubViews"
   ],
-  "SelectedNode": "\\client\\src\\Authentication\\Login\\Login.js",
+  "SelectedNode": "\\client\\src\\Views",
   "PreviewInSolutionExplorer": false
 }

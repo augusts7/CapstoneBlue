@@ -3,7 +3,7 @@ var pool = require("../db/database");
 
 //Makes app accept JSON objects.
 var bodyParser = require("body-parser");
-var sqlHandler = require("../handler/queryHandler");
+var sqlHandler = require("../utils/sql-helper/sql-helper");
 // parse application/x-www-form-urlencoded
 router.use(bodyParser.urlencoded({ extended: false }));
 

@@ -1,6 +1,6 @@
 var router = require("express").Router();
 
-var sqlHandler = require("../handler/queryHandler");
+var sqlHandler = require("../utils/sql-helper/sql-helper");
 var pool = require("../db/database");
 
 var bodyParser = require("body-parser");
@@ -30,7 +30,7 @@ router.post("/create", (req, res) => {
             return res.json({ success: false, "message": error });
         }
 
-        var eventId = results.insertId;
+        let eventId = results.insertId;
 
         if (req.body.attendeeEmails) {
 
@@ -67,10 +67,11 @@ router.post("/create", (req, res) => {
 });
 
 function getEmailList(emailString) {
-    if (emailString == null || emailString.length == 0) {
+    if (emailString == null || emailString.length === 0) {
         return [];
     }
     var emails = emailString.split(",");
+
     return emails;
 }
 
@@ -86,7 +87,7 @@ router.post("/delete", (req, res) => {
         }
 
         let sql = "DELETE FROM attending WHERE event_id = ?";
-        if (results[0].creator_id === req.user.user_id) {
+        if (("" + results[0].creator_id) === ("" + req.user.user_id)) {
             sql = "DELETE FROM event WHERE eventID = ?";
         }  
 
@@ -157,9 +158,11 @@ router.get("/all/:calendarId", function (req, res) {
 
     console.log("Get appointment data");
 
+    let calId = "" + req.params.calendarId;
+
     let select = "SELECT * FROM event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id + " UNION SELECT * FROM event INNER JOIN attending ON event_id = eventID WHERE event_type = 'appointment' AND attendee_id = " + req.user.user_id;
 
-    if (req.params.calendarId != "main") {
+    if (calId !== "main") {
         select = "SELECT * FROM event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id + " AND creator_calendar_id = " + req.params.calendarId + " UNION SELECT * FROM event INNER JOIN attending ON event_id = eventID WHERE attendee_id = " + req.user.user_id + " AND calendar_id = " + req.params.calendarId;
     }
 

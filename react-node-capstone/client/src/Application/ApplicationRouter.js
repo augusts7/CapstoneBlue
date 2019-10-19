@@ -30,7 +30,7 @@ export default function ApplicationRouter(props) {
     if (props.auth) {
 
         header = <Header />;
-        footer = <Footer />;
+        footer = null;
 
         wrapperClassName += " login-container";
         contentClassName += " mdl-layout__content mdl-color--grey-200";

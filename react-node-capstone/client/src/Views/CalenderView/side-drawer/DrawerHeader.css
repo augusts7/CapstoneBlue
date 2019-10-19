@@ -1,0 +1,13 @@
+
+
+.calendar-view-drawer-header {
+    height: 100px;
+    display: flex;
+    align-items: center;
+}
+.calendar-view-drawer-header .mainItem {
+    flex-grow: 5;
+}
+.calendar-view-drawer-header .secondaryItem {
+    flex-grow: 0;
+}

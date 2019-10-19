@@ -2,7 +2,7 @@
 
 var router = require("express").Router();
 var pool = require("../db/database");
-var sqlHandler = require("../handler/queryHandler");
+var sqlHelper = require("../utils/sql-helper/sql-helper");
 
 var bodyParser = require("body-parser");
 
@@ -14,21 +14,21 @@ router.get("/", (req, res, next) => {
 
     let sql = "SELECT * FROM calendar WHERE user_id = " + req.user.user_id;
 
-    sqlHandler.getAndSendResToClient(sql, req, res);
+    sqlHelper.handleSelectAndRespond(sql, res);
 });
 
 router.get("/sharedToUser", (req, res, next) => {
 
     let sql = "SELECT * FROM shared_calendars WHERE sharedToUserId = " + req.user.user_id;
 
-    sqlHandler.getAndSendResToClient(sql, req, res);
+    sqlHelper.handleSelectAndRespond(sql, res);
 });
 
 router.get("/sharedByUser", (req, res, next) => {
 
     let sql = "SELECT * FROM shared_calendars WHERE sharedByUserId = " + req.user.user_id;
 
-    sqlHandler.getAndSendResToClient(sql, req, res);
+    sqlHelper.handleSelectAndRespond(sql, res);
 });
 
 router.post("/", (req, res) => {
@@ -38,7 +38,7 @@ router.post("/", (req, res) => {
         calendarName: req.body.calendarName
     };
 
-    sqlHandler.setObjectAndSendResToClient("INSERT INTO calendar SET ?", calendar, req, res);
+    sqlHelper.handleSetObjectAndRespond("INSERT INTO calendar SET ?", calendar, res);
 
 });
 
@@ -60,7 +60,7 @@ router.post("/share", (req, res) => {
 
         console.log(calendar);
 
-        sqlHandler.setObjectAndSendResToClient("INSERT INTO shared_calendars SET ?", calendar, req, res);
+        sqlHelper.handleSetObjectAndRespond("INSERT INTO shared_calendars SET ?", calendar, res);
 
     });
 

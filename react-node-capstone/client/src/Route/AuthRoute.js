@@ -6,7 +6,7 @@ import { Route, Redirect } from "react-router-dom";
 function AuthRoute(props) {
 
 
-    console.log("Auth route. auth = " + props.auth);
+    console.log("Auth Route. auth = " + props.auth);
 
     return <Route {...props} render={(props) => getLayout(props)} />
 }
@@ -14,10 +14,10 @@ function AuthRoute(props) {
 function getLayout(props) {
 
     if (props.auth === false) {
-        console.log("auth route return comp ");
+        console.log("auth Route return comp ");
         return (<props.component {...props} />);
     } else {
-        console.log("auth route return redirect ");
+        console.log("auth Route return redirect ");
 
         return (<Redirect to={{pathname: "/"}} />);
     }

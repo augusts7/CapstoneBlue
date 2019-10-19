@@ -32,6 +32,12 @@ router.post('/login', function (req, res, next) {
     })(req, res);
 });
 
+router.get('/logout', function (req, res, next) {
+
+    req.logout();
+    res.json({"success": true, "message": "User has been logged out"});
+});
+
 router.post("/register", function (req, res, next) {
 
     const user = {
@@ -54,20 +60,20 @@ router.post("/register", function (req, res, next) {
         };
     }
 
-    pool.query("SELECT COUNT(*) AS count FROM schedulerdb.user_info WHERE campusEmail = ?", user.campusEmail, function (error, results, fields) {
+    pool.query("SELECT COUNT(*) AS count FROM ser_info WHERE campusEmail = ?", user.campusEmail, function (error, results, fields) {
         if (error) {
             return res.json({ "success": false, "message": "Couldn't connect to the database. " + error });
         }
         try {
             if (results[0].count === 0) {
-                pool.query("INSERT INTO schedulerdb.user_info SET ?", user, function (error, results, fields) {
+                pool.query("INSERT INTO user_info SET ?", user, function (error, results, fields) {
                     if (error) {
                         return res.json({ "success": false, "message": "Couldn't connect to the database. " + error })
                     }
 
                     if (user.user_type === "student") {
 
-                        pool.query("INSERT INTO schedulerdb.student_info SET ?", student, function (error, results, fields) {
+                        pool.query("INSERT INTO student_info SET ?", student, function (error, results, fields) {
                             if (error) {
                                 return res.json({ "success": false, "message": "Couldn't connect to the database. " + error })
                             }
@@ -105,14 +111,16 @@ router.post("/register", function (req, res, next) {
 
 router.post('/forgotPassword', function (req, res, next) {
 
-    pool.query("SELECT campusEmail, user_id FROM schedulerdb.user_info WHERE campusEmail = ?", req.body.campusEmail, function (error, results, fields) {
+    pool.query("SELECT campusEmail, user_id FROM user_info WHERE campusEmail = ?", req.body.campusEmail, function (error, results, fields) {
         if (error) {
             return res.json({ "success": false, "message": "Couldn't connect to the database. " + error });
         }
         try {
             if (results.length > 0) {
 
-                if (req.body.user_id == results[0].user_id) {
+                const idsAreEqual = ("" + req.body.user_id) === ("" + results[0].user_id);
+
+                if (idsAreEqual) {
                     sendPasswordResetEmail(req.body.campusEmail, res);
                 } else {
                     return res.json({ "success": false, "message": "Your campus Id was incorrect" });
