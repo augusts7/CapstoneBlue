@@ -1,0 +1,85 @@
+
+
+.filterItemTitle {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    height: 32px;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+.filterItemTitleText {
+    font-family: 'Google Sans',Roboto,Arial,sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .25px;
+    line-height: 20px;
+    color: #3c4043;
+    text-transform: none;
+    text-align: left;
+    white-space: nowrap;
+}
+.filterItem {
+    cursor: pointer;
+}
+
+.filterItemTitleContainer {
+    display: flex;
+    padding: 4px 4px;
+}
+.filterItemTitleText {
+    flex-grow: 5;
+    padding: 4px 4px 2px 12px;
+}
+.filterItemTitleActionsContainer {
+    flex-grow: 0;
+    display: flex;
+}
+.filterItemTitleActionsContainer >div {
+    margin-left: 4px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.filterItemContainer {
+    background-color: white;
+    margin-bottom: 16px;
+}
+.filterItemOptionContainer {
+    display: flex;
+    padding-left: 8px;
+    cursor: pointer;
+}
+.filterItemOptionContainer .mainItem {
+    flex-grow: 5;
+}
+.filterItemOptionContainer .actionItem {
+    flex-grow: 0;
+}
+
+.actionItemOptionContainer {
+    display: flex;
+    padding: 4px 4px 4px 12px;
+    cursor: pointer;
+}
+.actionItemOptionContainer:hover {
+    background-color: #E0E0E0;
+}
+.filterItemOptionContainer:hover {
+    background-color: #E0E0E0;
+}
+.actionItemOptionContainer .icon {
+    margin-right: 4px;
+    margin-left: 4px;
+    flex-grow: 0;
+    color: #546E7A;
+}
+.actionItemOptionContainer .mainItem {
+    margin-right: 4px;
+    margin-left: 8px;
+    font-weight: 500;
+    color: #3c4043;
+    flex-grow: 5;
+}
