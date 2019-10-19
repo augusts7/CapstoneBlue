@@ -3,28 +3,6 @@ import React, { Component } from "react";
 import "./EventList.css";
 
 class EventList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      events: [
-        {
-          eventID: 1,
-          title: "Event Title",
-          description: "This is a description for the event",
-          start: new Date(),
-          end: new Date()
-        },
-        {
-          eventID: 2,
-          title: "Event Title",
-          description: "This is a description for the event",
-          start: new Date(),
-          end: new Date()
-        }
-      ]
-    };
-  }
-
   getMonth(month, type) {
     var monthName = "";
     var monthAbrv = "";
@@ -89,26 +67,30 @@ class EventList extends Component {
   }
 
   render() {
-    var eventsList = this.state.events.map(event => {
-      return (
-        <div className="eventListItem" key={event.eventID}>
-          <div className="date">
-            <div className="date-number">{event.start.getDay()}</div>
-            <div className="date-name">
-              {this.getMonth(event.start.getMonth(), "abrv")}{" "}
+    if (this.props.events) {
+      var eventsList = this.props.events.map(event => {
+        return (
+          <div className="eventListItem" key={event.eventID}>
+            <div className="date">
+              <div className="date-number">
+                {new Date(event.start).getDay()}
+              </div>
+              <div className="date-name">
+                {this.getMonth(new Date(event.start).getMonth(), "abrv")}{" "}
+              </div>
+            </div>
+            <div className="description">
+              <div className="event-title">{event.title}</div>
+              <div className="time">
+                {new Date(event.start).toLocaleTimeString("en-US")} -{" "}
+                {new Date(event.end).toLocaleTimeString("en-US")}
+              </div>
+              {event.description}
             </div>
           </div>
-          <div className="description">
-            <div className="event-title">{event.title}</div>
-            <div className="time">
-              {event.start.toLocaleTimeString("en-US")} -{" "}
-              {event.end.toLocaleTimeString("en-US")}
-            </div>
-            {event.description}
-          </div>
-        </div>
-      );
-    });
+        );
+      });
+    }
 
     return <div className="eventList">{eventsList}</div>;
   }
