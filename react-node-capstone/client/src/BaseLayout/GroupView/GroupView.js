@@ -1,6 +1,7 @@
 import React from "react";
 import EventList from "../../components/EventList/EventList";
 import GroupMemberList from "./GroupMemberList";
+import ls from "local-storage";
 
 import "./GroupView.css";
 
@@ -11,55 +12,41 @@ class GroupView extends React.Component {
     super(props);
     this.state = {
       group_id: 2,
+      my_groups: [],
       groupName: "Group Name",
-      eventListItems: [
-        {
-          title: "Event Title 1",
-          description: "This is a description for the event",
-          start: new Date(),
-          end: new Date()
-        },
-        {
-          title: "Event Title 2",
-          description: "This is a description for the event",
-          start: new Date(),
-          end: new Date()
-        }
-      ],
-      groupMembers: [
-        {
-          user_id: 1,
-          first_name: "Nick",
-          last_name: "Fontana",
-          status: "Owner"
-        },
-        {
-          user_id: 2,
-          first_name: "Bob",
-          last_name: "Builder",
-          status: "Member"
-        }
-      ],
-      groupOwner: 1
+      eventListItems: [],
+      groupMembers: [],
+      user_type: ls.get()
     };
+    this.getGroupInfoHelper = this.getGroupInfoHelper.bind(this);
   }
 
   componentDidMount() {
+    this.getMyGroups();
     this.getGroupEvents();
     this.getGroupMembers();
-    //this.getGroupInfo();
+    this.getGroupInfo();
   }
 
+  getMyGroups() {
+    var myGroupsURL = "/my_groups/" + this.state.group_id;
+    fetch(myGroupsURL)
+      .then(res => res.json())
+      .then(myGroups => this.setState({ my_groups: myGroups }));
+  }
+
+  getGroupInfoHelper(args) {
+    var info = { ...args };
+    this.setState({
+      groupName: info.group_name,
+      group_id: info.group_id
+    });
+  }
   getGroupInfo() {
     var groupInfoURL = "/groups/groupInfo/" + this.state.group_id;
     fetch(groupInfoURL)
       .then(res => res.json())
-      .then(groupInfo =>
-        this.setState({
-          groupName: groupInfo.group_name,
-          groupOwner: groupInfo.creator_id
-        })
-      );
+      .then(groupInfo => this.getGroupInfoHelper(...groupInfo));
   }
 
   getGroupMembers() {
