@@ -10,12 +10,16 @@ router.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 router.use(bodyParser.json());
 
-router.route("/:group_id").get(async (req, res) => {
+router.route("/").get(async (req, res) => {
   try {
-    let groupid = req.params.group_id;
+    let user_id = req.user.user_id;
+    console.log(user_id);
     let my_groups = await pool.query(
-      "SELECT * FROM my_groups WHERE group_id =" + groupid + ";"
+      "SELECT my_groups.group_id , groups.group_name FROM my_groups,groups WHERE groups.group_id = my_groups.group_id AND user_id=" +
+        user_id +
+        ";"
     );
+    console.log("check");
     res.json(my_groups);
   } catch (e) {
     console.log(e);
