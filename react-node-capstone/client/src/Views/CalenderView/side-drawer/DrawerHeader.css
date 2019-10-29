@@ -3,6 +3,7 @@
 .calendar-view-drawer-header {
     height: 100px;
     display: flex;
+    padding-left: 0;
     align-items: center;
 }
 .calendar-view-drawer-header .mainItem {
@@ -10,4 +11,7 @@
 }
 .calendar-view-drawer-header .secondaryItem {
     flex-grow: 0;
+}
+.mdl-layout__drawer > .mdl-layout-title{
+    padding-left: 12px;
 }

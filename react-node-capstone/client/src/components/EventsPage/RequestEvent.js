@@ -18,6 +18,8 @@ class RequestEvent extends React.Component {
         };
         this.handleStartTimeChange = this.handleStartTimeChange.bind(this);
         this.handleEndTimeChange = this.handleEndTimeChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.onClickSubmit = this.onClickSubmit.bind(this);
     }
 
     handleStartTimeChange(datetime) {
@@ -28,33 +30,48 @@ class RequestEvent extends React.Component {
         this.setState({end: datetime});
     }
 
-    onClickSubmit() {
-        //Wait to implement until API is done
+    handleChange(event) {
+        this.setState({ [event.target.name]: event.target.value });
+    }
+
+    onClickSubmit(e) {
+        //implement that endpoint
         // e.preventDefault();
-        // fetch("/requestEvents", {
+        // fetch("/events/request", {
         //     method: "POST",
+        //     headers: {
+        //         Accept: 'application/json',
+        //         "Content-Type": "application/json"
+        //     },
         //     body: JSON.stringify({
         //         start: this.state.start,
         //         end: this.state.end,
         //         title: this.state.title,
-        //         description: this.state.description
+        //         description: this.state.description,
+        //         event_type: "global"
         //     }),
-        //     headers: {"Content-Type": "application/json"}
         // })
-        //     .then(function (response) {
+        //     .then(function(response) {
         //         return response.json();
         //     })
-        //     .then(function (body) {
+        //     .then(function(body) {
         //         console.log(body);
         //     });
+        // this.setState({
+        //     start: new Date(),
+        //     end: new Date(),
+        //     title: "",
+        //     description: ""
+        // });
         window.alert("submitted");
     }
 
     render() {
         return (
-            <div>
-                <h4 className="title">Request New Event</h4>
-                <hr/>
+            <div className="request-event-container">
+                <div className="requestTitle">
+                    <h3> Request New Event</h3>
+                </div>
                 <div className="requestForm">
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <div className="datePicker">
@@ -80,13 +97,36 @@ class RequestEvent extends React.Component {
                             </DateTimePicker>
                         </div>
                     </MuiPickersUtilsProvider><br/>
-                    <TextField className="title" placeholder="Title of Event" variant="outlined"
-                               value={this.state.title}/>
-                    <TextField className="description" multiline placeholder="Description of Event" variant="outlined"
-                               value={this.state.description}/><br/>
-                    <div className="requestForm">
-                        <Button type="submit" variant="contained" size="large" className="submit"
-                                onClick={this.onClickSubmit}>Submit</Button>
+                    <div className="text-input">
+                        <TextField
+                            className="eventTitle"
+                            name="title"
+                            placeholder="Title of Event"
+                            variant="outlined"
+                            onChange={this.handleChange}
+                            value={this.state.title}
+                        />
+                        <TextField
+                            className="description"
+                            name="description"
+                            multiline
+                            placeholder="Description of Event"
+                            variant="outlined"
+                            onChange={this.handleChange}
+                            value={this.state.description}
+                        />
+                    </div>
+                    <div>
+                        <Button
+                            type="submit"
+                            name="submit"
+                            variant="contained"
+                            size="large"
+                            className="submit"
+                            onClick={this.onClickSubmit}
+                        >
+                            Submit
+                        </Button>
                     </div>
                 </div>
             </div>

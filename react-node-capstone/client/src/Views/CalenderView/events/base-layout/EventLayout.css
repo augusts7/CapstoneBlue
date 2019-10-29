@@ -1,0 +1,28 @@
+
+.start-time, .end-time {
+    margin-right: 8px;
+    font-weight: 600;
+}
+.event-layout-root {
+    background-color: white;
+    margin: 8px 4px 16px 4px;
+}
+.event-layout-header {
+    color: black;
+    padding: 8px;
+}
+.event-layout-contents {
+    padding: 4px 8px;
+}
+.flex {
+    display: flex;
+}
+.flex-main {
+    flex-grow: 5;
+}
+.flex-sub {
+    flex-grow: 0;
+}
+.event-buttons {
+    margin-top: 16px;
+}

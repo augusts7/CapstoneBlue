@@ -3,12 +3,13 @@
 var router = require("express").Router();
 var pool = require("../db/database");
 var sqlHelper = require("../utils/sql-helper/sql-helper");
-
 var bodyParser = require("body-parser");
+let authMiddleware = require("../middlewares/auth-middleware").authMiddleware;
 
-router.use(bodyParser.urlencoded({ extended: false }));
-
+router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
+router.use(authMiddleware);
+
 
 router.get("/", (req, res, next) => {
 
@@ -42,14 +43,14 @@ router.post("/", (req, res) => {
 
 });
 
-router.post("/share", (req, res) => {
+router.post("/share", (req, res, next) => {
 
     let sql = "SELECT user_id FROM user_info WHERE campusEmail = ?";
 
     pool.query(sql, req.body.sharedToEmail, function (error, results, fields) {
 
         if (error) {
-            return res.json({ "success": false, "message": "Failed to connect to the database. " + error });
+            return next("Failed to connect to the database. " + error);
         }
         const calendar = {
             sharedByUserId: req.user.user_id,

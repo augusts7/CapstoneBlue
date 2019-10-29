@@ -1,18 +1,8 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import {get, post} from "../../../../ApiHelper/ApiHelper"
-import Progress from "../../generic-components/progress";
 import Select from "../../../../components/Select/Select";
-import {DialogContentText} from "@material-ui/core";
-
-
-const headerStyle = {"padding": "16px", "backgroundColor": "#01579B", "color": "white"};
-const dialogTitleStyle = {"padding": "0px", "margin": "0px"};
+import CalendarFormBaseLayout from "../base-layout/BaseLayout";
 
 
 export default class ShareCalendarForm extends React.Component {
@@ -20,7 +10,7 @@ export default class ShareCalendarForm extends React.Component {
     state = {
         name: "",
         email: "",
-        progress: "",
+        progress: false,
         calendarOptions: [],
         calendarId: -1,
     };
@@ -96,11 +86,19 @@ export default class ShareCalendarForm extends React.Component {
         });
     };
 
+    layoutValues = {
+        "text": "Enter the name of the shared calendar and the email of the user to share the calendar with.",
+        buttons: [
+            {name: "Cancel", onClick: this.handleClose},
+            {name: "Share Calendar", onClick: this.handleShare}
+        ]
+    };
+
     render() {
 
         let calendarOptions = null;
 
-        if (this.props.showCalendarOptions === true) {
+        if (this.props.sharedCalendarId == null || this.props.sharedCalendarId < 1) {
             calendarOptions = <Select label="Calendar" helperText="Select the Calendar to share"
                                       name="calendarId" value={this.state.calendarId}
                                       options={this.state.calendarOptions}
@@ -108,49 +106,28 @@ export default class ShareCalendarForm extends React.Component {
         }
 
         return (
-            <Dialog fullWidth={true} open={this.props.open} onClose={this.handleClose}
-                    aria-labelledby="form-dialog-title">
-                <DialogTitle style={dialogTitleStyle} id="form-dialog-title">
-                    <div style={headerStyle}>
-                        <div><h4>Share your calendar</h4></div>
-                    </div>
-                </DialogTitle>
+            <CalendarFormBaseLayout onClose={this.handleClose} open={this.props.open} buttons={this.layoutValues.buttons} text={this.layoutValues.text} progress={this.state.progress}
+                                    title="Share Your Calendar">
+                <TextField
+                    fullWidth
+                    type="text"
+                    name="name"
+                    onChange={this.handleChange}
+                    value={this.state.name}
+                    label={"Name for Shared Calendar"}
+                    margin="normal"/>
 
-                <Progress show={this.state.progress}/>
-                <DialogContent>
-                    <DialogContentText>
-                        Enter the name of the shared calendar and the email of the user to share the calendar with.
-                    </DialogContentText>
-                    <TextField
-                        fullWidth
-                        type="text"
-                        name="name"
-                        onChange={this.handleChange}
-                        value={this.state.name}
-                        label={"Name for Shared Calendar"}
-                        margin="normal"/>
+                <TextField
+                    fullWidth
+                    type="email"
+                    name="email"
+                    onChange={this.handleChange}
+                    value={this.state.email}
+                    label={"Email of user to share Calendar with"}
+                    margin="normal"/>
 
-                    <TextField
-                        fullWidth
-                        type="email"
-                        name="email"
-                        onChange={this.handleChange}
-                        value={this.state.email}
-                        label={"Email of user to share Calendar with"}
-                        margin="normal"/>
-
-                    {calendarOptions}
-
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={this.handleClose} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={this.handleShare} color="primary">
-                        Share Calendar
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                {calendarOptions}
+            </CalendarFormBaseLayout>
         );
     }
 }

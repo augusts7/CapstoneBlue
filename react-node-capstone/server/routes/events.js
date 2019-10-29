@@ -1,13 +1,12 @@
 var router = require("express").Router();
 var pool = require("../db/database");
-
 var sqlHandler = require("../utils/sql-helper/sql-helper");
-
-
 var bodyParser = require("body-parser");
+let authMiddleware = require("../middlewares/auth-middleware").authMiddleware;
 
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
+router.use(authMiddleware);
 
 
 router.get("/attending/:calendarId", function (req, res) {
@@ -16,22 +15,18 @@ router.get("/attending/:calendarId", function (req, res) {
 
     let select = "SELECT * FROM attending INNER JOIN event ON event.eventID = attending.event_id WHERE attendee_id = " + req.user.user_id;
 
-    if (calendarId !== "main") {
-        select = "SELECT * FROM attending INNER JOIN event ON event.eventID = attending.event_id WHERE attendee_id = " + req.user.user_id + " AND calendar_id = " + req.params.calendarId;
-    }
-
     sqlHandler.handleSelectAndRespond(select, res);
 
 });
 
-router.get("/sharedCalendar/:sharedCalId", function (req, res) {
+router.get("/sharedCalendar/:sharedCalId", function (req, res, next) {
 
     let select = "SELECT * FROM shared_calendars WHERE shared_calendars.id = " + req.params.sharedCalId;
 
     pool.query(select, function (error, results, fields) {
 
         if (error) {
-            return res.json({success: false, "message": error});
+            return next(error);
         }
 
         if (results.length > 0) {
@@ -56,6 +51,17 @@ router.get("/all", async (req, res) => {
         res.sendStatus(500);
     }
 });
+
+//needs work
+// router.get("/allGlobal", async (req, res) => {
+//     try {
+//         let events = await pool.query("SELECT * FROM event WHERE event_type = 'global'");
+//         res.json(events);
+//     } catch (e) {
+//         console.log(e);
+//         res.sendStatus(500);
+//     }
+// });
 
 router.get("/created/:calendarId", function (req, res) {
 

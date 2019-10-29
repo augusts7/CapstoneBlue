@@ -3,21 +3,25 @@ let pool = require("../db/database");
 let bodyParser = require("body-parser");
 let { getSlots } = require('../utils/timeSlot');
 let sqlHelper = require("../utils/sql-helper/sql-helper");
+let authMiddleware = require("../middlewares/auth-middleware").authMiddleware;
 
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
+router.use(authMiddleware);
 
 
-router.get("/all", function (req, res) {
+router.get("/all", function (req, res, next) {
 
     let userType = "" + req.user.user_type;
+
+    console.log(userType);
 
     if (userType === "student") {
 
         pool.query("SELECT advisor_id FROM student_info WHERE user_id = ?", req.user.user_id, function (error, results, fields) {
 
             if (error) {
-                return res.json({"success": false, "message": "Failed to connect to database"});
+                return next("Failed to connect to database");
             }
 
             if (results.length > 0) {
@@ -27,10 +31,8 @@ router.get("/all", function (req, res) {
                 sqlHelper.handleSelectAndRespond(sql, res);
 
             } else {
-                return res.json({"success": false, "message": "Couldn't find any advising slots."});
+                return next("Couldn't find any advising slots.");
             }
-
-
         });
     } else {
         let sql = "SELECT * FROM event WHERE event_type = 'advising' AND creator_id = " + req.user.user_id;
@@ -41,12 +43,12 @@ router.get("/all", function (req, res) {
 
 
 
-router.post("/attend", function (req, res) {
+router.post("/attend", function (req, res, next) {
 
     pool.query("SELECT advisor_id FROM student_info WHERE user_id = ?", req.user.user_id, async function (error, result, fields) {
 
         if (error) {
-            return res.json({success: false, message: "Failed to connect to database"});
+            return next("Failed to connect to database");
         }
         if (result.length > 0) {
 
@@ -69,14 +71,14 @@ router.post("/attend", function (req, res) {
             return res.json({"success": true});
 
         } else {
-            return res.json({success: false, message: "Couldn't add advising slot to the database"});
+            return next("Couldn't add advising slot to the database");
         }
 
     });
 });
 
 
-router.post("/", async function (req, res) {
+router.post("/", async function (req, res, next) {
 
     try {
         let data = {
@@ -101,7 +103,7 @@ router.post("/", async function (req, res) {
 
 
     } catch (err) {
-        return res.json({"success": false, "message": "Error in the advising routing function. " + err});
+        return next("Error in the advising routing function. " + err);
     }
 
 });

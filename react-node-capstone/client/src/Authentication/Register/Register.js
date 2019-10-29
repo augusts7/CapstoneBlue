@@ -3,9 +3,11 @@ import Form from "../../components/Form/Form";
 import MessageBox from "../../components/Form/MessageBox/MessageBox"
 import {Link} from "react-router-dom"
 import Button from "../../components/Button/Button"
-import { AuthContext } from "../../Context/AuthContext";
+import AuthContext from "../../Context/AuthContext";
 
 class Register extends React.Component {
+
+    static contextType = AuthContext;
 
     constructor(props) {
         super(props);
@@ -60,7 +62,7 @@ class Register extends React.Component {
                     "isLoading": false
                 });
                 if (res.success) {
-                    this.login(res.user);
+                    this.context.login(res.user);
                 }
             });
     }
@@ -189,22 +191,12 @@ class Register extends React.Component {
 
             </div>
         );
-    }
+    };
 
-    handleAuthContext = (ctx) => {
-        this.login = ctx.login;
-
-        return this.layout();
-    }
 
     render() {
-        return (
-            <AuthContext.Consumer>
 
-                {(ctx) => { return this.handleAuthContext(ctx) }}
-
-            </AuthContext.Consumer>
-        );
+        return this.layout();
     }
 }
 

@@ -1,17 +1,18 @@
 import React from "react";
-import MaterialButton from "@material-ui/core/Button"
-import EventItem from "./EventItem"
-import AppointmentItem from "./AppointmentItem"
-import AdvisingItem from "./AdvisingItem";
+import EventItem from "./event-type-specific-items/EventItem"
+import AppointmentItem from "./event-type-specific-items/AppointmentItem"
+import AdvisingItem from "./event-type-specific-items/AdvisingItem";
 
 
 export default function Event(props) {
 
-    if (props.event.eventType == "appointment") {
+    const eventType = "" + props.event.event_type;
+
+    if (eventType === "appointment") {
 
         return (<AppointmentItem {...props} />);
 
-    } else if (props.event.eventType == "advising") {
+    } else if (eventType === "advising") {
 
         return (<AdvisingItem {...props} />);
 

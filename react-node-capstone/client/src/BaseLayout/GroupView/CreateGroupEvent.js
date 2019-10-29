@@ -21,6 +21,7 @@ class CreateGroupEvent extends React.Component {
     this.handleStartTimeChange = this.handleStartTimeChange.bind(this);
     this.handleEndTimeChange = this.handleEndTimeChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.onClickSubmit = this.onClickSubmit.bind(this);
   }
 
   handleStartTimeChange(datetime) {
@@ -35,23 +36,34 @@ class CreateGroupEvent extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  onClickSubmit() {
-    fetch("/requestEvents", {
+  onClickSubmit(e) {
+    e.preventDefault();
+    fetch("/events", {
       method: "POST",
+      headers: {
+        Accept: 'application/json',
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({
         start: this.state.start,
         end: this.state.end,
         title: this.state.title,
-        description: this.state.description
+        description: this.state.description,
+        event_type: "group_event"
       }),
-      headers: { "Content-Type": "application/json" }
     })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(body) {
-        console.log(body);
-      });
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(body) {
+          console.log(body);
+        });
+    this.setState({
+      start: new Date(),
+      end: new Date(),
+      title: "",
+      description: ""
+    });
     window.alert("submitted");
   }
 
@@ -63,7 +75,7 @@ class CreateGroupEvent extends React.Component {
         </div>
         <div className="requestForm">
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <div className="start-date-picker">
+            <div className="date-picker">
               <DateTimePicker
                 autoOk
                 disablePast
@@ -71,9 +83,10 @@ class CreateGroupEvent extends React.Component {
                 label="Start Time"
                 value={this.state.start}
                 onChange={this.handleStartTimeChange}
-              ></DateTimePicker>
+              >
+              </DateTimePicker>
             </div>
-            <div className="end-date-picker">
+            <div className="date-picker">
               <DateTimePicker
                 autoOk
                 disablePast
@@ -81,11 +94,11 @@ class CreateGroupEvent extends React.Component {
                 label="End Time"
                 value={this.state.end}
                 onChange={this.handleEndTimeChange}
-              ></DateTimePicker>
+              >
+              </DateTimePicker>
             </div>
           </MuiPickersUtilsProvider>
           <div className="text-input">
-            <div>
               <TextField
                 className="title"
                 name="title"
@@ -94,8 +107,6 @@ class CreateGroupEvent extends React.Component {
                 onChange={this.handleChange}
                 value={this.state.title}
               />
-            </div>
-            <div>
               <TextField
                 className="description"
                 name="description"
@@ -105,7 +116,6 @@ class CreateGroupEvent extends React.Component {
                 onChange={this.handleChange}
                 value={this.state.description}
               />
-            </div>
           </div>
           <div>
             <Button

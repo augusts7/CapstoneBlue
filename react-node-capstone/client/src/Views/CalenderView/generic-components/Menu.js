@@ -18,6 +18,7 @@ export default function CustomMenu(props) {
                 key={props.key}
                 anchorEl={props.anchor}
                 keepMounted
+                fullWidth
                 open={Boolean(props.anchor)}
                 onClose={props.onClose}>
 

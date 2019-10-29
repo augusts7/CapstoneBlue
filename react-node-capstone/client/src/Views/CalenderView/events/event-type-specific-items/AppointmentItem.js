@@ -1,12 +1,16 @@
 import React from "react";
 import MaterialButton from "@material-ui/core/Button"
-import EventLayout from "./EventLayout";
-import { post } from "../../../ApiHelper/ApiHelper";
+import EventLayout from "../base-layout/EventLayout";
+import { post } from "../../../../ApiHelper/ApiHelper";
+import EventLayoutButton from "../base-layout/EventLayoutButton";
+import CalendarActionsContext from "../../context/CalendarActionsContext";
 
 
 
 
 export default function AppointmentItem(props) {
+
+    const calendarActionsContext = React.useContext(CalendarActionsContext);
 
     const acceptAppointment = () => {
 
@@ -39,7 +43,6 @@ export default function AppointmentItem(props) {
                 console.log(res.message);
             }
         });
-
     };
 
     const editAppointment = () => {
@@ -48,9 +51,7 @@ export default function AppointmentItem(props) {
             "eventId": props.event.id,
             "event": props.event 
         };
-
-        props.handleAction("editAppointment", data);
-
+        calendarActionsContext.showEditAppointmentForm(data);
     };
 
     let buttons = [];
@@ -63,10 +64,9 @@ export default function AppointmentItem(props) {
             buttons.push(<div style={{ "display": "inline-block" }}><MaterialButton key="1" style={{ "padding": "2px", "backgroundColor": "#455A64", "color": "white" }} onClick={deleteAppointment}>Delete</MaterialButton></div>);
 
         } else {
-            buttons.push(<div style={{ "display": "inline-block" }}><MaterialButton key="1" style={{ "padding": "2px", "backgroundColor": "#455A64", "color": "white" }} onClick={deleteAppointment}>Delete</MaterialButton></div>);
-            buttons.push(<div style={{ "display": "inline-block" }}><MaterialButton key="1" style={{ "padding": "2px", "backgroundColor": "#455A64", "color": "white" }} onClick={acceptAppointment}>Accept</MaterialButton></div>);
-            buttons.push(<div style={{ "display": "inline-block" }}><MaterialButton key="1" style={{ "padding": "2px", "backgroundColor": "#455A64", "color": "white" }} onClick={editAppointment}>Edit</MaterialButton></div>);
-
+            buttons.push(<EventLayoutButton icon="delete" onClick={deleteAppointment}>Delete</EventLayoutButton>);
+            buttons.push(<EventLayoutButton icon="done" onClick={acceptAppointment}>Accept</EventLayoutButton>);
+            buttons.push(<EventLayoutButton icon="edit" onClick={editAppointment}>Edit</EventLayoutButton>);
         }
 
     }

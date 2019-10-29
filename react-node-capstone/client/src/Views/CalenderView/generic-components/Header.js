@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from "./Menu";
-import Progress from "./progress";
+import Progress from "./Progress";
 import MenuIcon from '@material-ui/icons/Menu';
 
 

@@ -1,20 +1,25 @@
 import React from "react";
 import {get, post} from "../../../../../ApiHelper/ApiHelper"
-import CalLayout from "./CalendarOptionsLayout";
-import AddNewCalendarForm from "../../../calendar-forms/calendar-forms/AddNewCalendarForm";
-import ShareCalendarForm from "../../../calendar-forms/calendar-forms/ShareCalendarForm";
+import BaseCalendarsLayout from "../base-calendars-layout/BaseCalendarsLayout";
+import CalendarActionsContext from "../../../context/CalendarActionsContext";
+import CustomIconButton from "../../../generic-components/IconButton";
+import Icon from "@material-ui/core/Icon";
+
+const menuOptions = [
+    { "name": "Share calendar", "key": "share" },
+    { "name": "Delete calendar", "key": "delete" }
+];
 
 export default class CalendarFilter extends React.Component {
+
+    static contextType = CalendarActionsContext;
 
     constructor(props) {
         super(props);
 
         this.state = {
             "cals": [],
-            "openShare": false,
-            "openAdd": false,
             "isLoading": false,
-            "sharedCalId": null,
         };
     }
 
@@ -27,7 +32,7 @@ export default class CalendarFilter extends React.Component {
         this.setState({[name]: checked}, () => {
             this.props.onChangeCalendarData("sharedCal", {"id": id, "show": checked});
         });
-    }
+    };
 
     componentDidMount() {
 
@@ -41,7 +46,7 @@ export default class CalendarFilter extends React.Component {
 
         get("calendar/", (res) => {
 
-            var cals = [];
+            let cals = [];
 
             if (res.success) {
 
@@ -52,77 +57,30 @@ export default class CalendarFilter extends React.Component {
 
             this.setState({"cals": cals, "isLoading": false});
         });
-    }
+    };
 
-    handleAction = (actionType, data) => {
 
-        var calId = -1;
+    handleListMenuClick = (actionKey, calendarId) => {
 
-        if (data !== null && data.calId !== null) {
-            calId = data.calId;
-        }
+        if (actionKey === "share") {
+            this.context.showShareCalendarForm(calendarId);
 
-        if (actionType == "share") {
-            if (calId !== -1) {
-                this.setState({"openShare": true, "sharedCalId": data.calId});
-            }
-        } else if (actionType == "delete") {
-            if (calId !== -1) {
-                this.setState({"openShare": true, "sharedCalId": data.calId});
-            }
-        } else if (actionType == "add") {
-            this.handlePopup("addForm", true);
+        } else if (actionKey === "delete") {
+            alert("imeplement");
         }
     };
 
-
-    closePopup = (name) => {
-        this.handlePopup(name, false);
-    };
-
-    openPopup = (name) => {
-        this.handlePopup(name, true);
-    };
-
-    handlePopup = (popupName, show) => {
-
-        switch (popupName) {
-            case "addForm":
-                if (show === true) {
-                    this.setState({"openAdd": true});
-                } else {
-                    this.setState({"openAdd": false});
-                }
-
-                break;
-            case "shareForm":
-                if (show === true) {
-                    this.setState({"openShare": true});
-                } else {
-                    this.setState({"openShare": false});
-                }
-                break;
-        }
-    };
-
-    closeSharePopup = () => {
-        this.closePopup("shareForm");
-    };
-
-    closeAddPopup = () => {
-        this.closePopup("addForm");
+    handleAddCalendar = () => {
+        this.context.showAddCalendarForm();
     };
 
     render() {
 
+        const headerIcon = <CustomIconButton onClick={this.handleAddCalendar}><Icon>add</Icon></CustomIconButton>;
+
         return (
-            <div>
-                <AddNewCalendarForm open={this.state.openAdd} onClose={this.closeAddPopup}/>
-                <ShareCalendarForm open={this.state.openShare} sharedCalId={this.state.sharedCalId}
-                                   onClose={this.closeSharePopup}/>
-                <CalLayout isLoading={this.state.isLoading} handleAction={this.handleAction}
-                           handleCalsChange={this.handleCalsChange} cals={this.state.cals}/>
-            </div>
+            <BaseCalendarsLayout headerIcon={headerIcon} menuOptions={menuOptions} onMenuClick={this.handleListMenuClick} isLoading={this.state.isLoading}
+                                 handleCalsChange={this.handleCalsChange} cals={this.state.cals}/>
         );
 
     }

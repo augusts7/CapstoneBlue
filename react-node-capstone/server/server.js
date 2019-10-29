@@ -23,6 +23,7 @@ app.use(expressSession(session));
 const passportHelper = require("./auth/passport");
 passportHelper.initPassport(app);
 
+
 //Routes
 const eventRouter = require("./routes/events");
 const authRouter = require("./routes/auth");
@@ -53,15 +54,15 @@ app.use("/profile", profileRouter);
 app.use("/calendar", calRouter);
 
 
+
 //Error Handler
 app.use((err, req, res, next) => {
 
     console.log(err);
 
-  res.status(400)
-    .json({
+  res.status(500).json({
       success: false,
-      messsage: err || err.messsage
+      message: err
     });
 });
 

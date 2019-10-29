@@ -1,13 +1,9 @@
 var router = require("express").Router();
 var pool = require("../db/database");
-
-//Makes app accept JSON objects.
 var bodyParser = require("body-parser");
 
-// parse application/x-www-form-urlencoded
-router.use(bodyParser.urlencoded({ extended: false }));
 
-// parse application/json
+router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
 
 router.route("/").get(async (req, res) => {

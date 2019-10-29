@@ -1,17 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '../../../generic-components/IconButton';
 import Icon from '@material-ui/core/Icon';
 import Menu from "../../../generic-components/Menu";
-import Progress from '../../../generic-components/progress';
+import Progress from '../../../generic-components/Progress';
 
-
-const smallButton = makeStyles(theme => ({
-    "root": {
-        "padding": "4px"
-    }
-}));
 
 
 const menuOptions = [
@@ -43,7 +37,6 @@ export default function SharedCalLayout (props) {
 
 function Header(props) {
 
-    const classes = smallButton();
 
     var expandIcon = props.show === true ? "keyboard_arrow_up" : "keyboard_arrow_down";
 
@@ -58,7 +51,7 @@ function Header(props) {
             <div className="filterItemTitleText">Shared Calendars</div>
 
             <div className="filterItemTitleActionsContainer">
-                <div><IconButton onClick={toggleShow} classes={classes}><Icon>{expandIcon}</Icon></IconButton></div>
+                <div><IconButton onClick={toggleShow}><Icon>{expandIcon}</Icon></IconButton></div>
             </div>
 
         </div>
@@ -141,11 +134,9 @@ const ListItemMenu = (props) => {
         setAnchorEl(null);
     };
 
-    const classes = smallButton();
-
     return (
         <div>
-            <IconButton onClose={handleClose} onClick={handleClick} classes={classes}>
+            <IconButton onClose={handleClose} onClick={handleClick}>
                 <Icon>more_vert</Icon>
                 
             </IconButton>
