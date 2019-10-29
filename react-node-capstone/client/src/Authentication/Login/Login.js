@@ -3,23 +3,21 @@ import Form from "../../components/Form/Form";
 import MessageBox from "../../components/Form/MessageBox/MessageBox"
 import Button from "../../components/Button/Button"
 import { Link } from "react-router-dom"
-import { AuthContext } from "../../Context/AuthContext";
+import AuthContext from "../../Context/AuthContext";
 
 
 const fields = [
     { "name": "campusEmail", "type": "email", "label": "Campus Email", "required": true },
     { "name": "password", "type": "password", "label": "Password", "required": true }
 ];
-// eslint-disable-next-line
-const actionLinks = [
-    { "link": "register", "title": "Register", "icon": "person_add" },
-    { "link": "forgotPassword", "title": "Forgot Password", "icon": "help_outline" },
-];
+
 const title = "Welcome to the ULM Scheduler Application";
 const id = "login";
 
 
 class Login extends React.Component {
+
+    static contextType = AuthContext;
 
     constructor(props) {
         super(props);
@@ -32,13 +30,11 @@ class Login extends React.Component {
         this.hideMessage = this.hideMessage.bind(this);
     }
 
-    onLogin = (user) => {
-
-    }
 
     hideMessage() {
         this.setState({ "message": "" });
     }
+
     handleOptionChange = changeEvent => {
         this.setState({
             user_type: changeEvent.target.value
@@ -66,13 +62,15 @@ class Login extends React.Component {
                     "message": res.message
                 });
                 if (res.success) {
-                    this.login(res.user);
+                    this.context.login(res.user);
 
                 }
             });
     }
 
-    layout = () => {
+
+    render() {
+
 
         return (
             <div className="mdl-grid" style={{ "width": "100%" }}>
@@ -95,22 +93,6 @@ class Login extends React.Component {
                 </div>
             </div>
         );
-    }
-
-    handleAuthContext = (ctx) => {
-        this.login = ctx.login;
-
-        return this.layout();
-    }
-
-    render() {
-        return (
-            <AuthContext.Consumer>
-
-                {(ctx) => { return this.handleAuthContext(ctx) }}
-
-            </AuthContext.Consumer>
-            );
     }
 }
 

@@ -3,8 +3,10 @@ import React from 'react';
 
 
 
-export const AuthContext = React.createContext({
+const AuthContext = React.createContext({
     "login": (user) => { },
     "logout": () => { },
 });
+
+export default AuthContext;
 

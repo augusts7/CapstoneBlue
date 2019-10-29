@@ -1,342 +1,105 @@
 import React from "react";
-import Calendar from "./calendar/Calendar";
-import CalendarOptions from "./calendar-options-view/CalendarOptions"
-import ls from "local-storage"
-import { get } from "../../ApiHelper/ApiHelper"
-import "./scroll.css"
-import EventTypesData from "./data/EventTypesData";
-import DetailView from "./calendar-detail-view/CalendarEventsDetailView";
-import DrawerHeader from "./side-drawer/DrawerHeader";
-import Progress from "./generic-components/progress";
+import EventForm from "./calendar-forms/EventForm";
+import AdvisingSlotForm from "./calendar-forms/advising-forms/AdvisingSlotForm";
+import AdvisingSignUpForm from "./calendar-forms/advising-forms/AdvisingSignUpForm";
+import ShareCalendarForm from "./calendar-forms/calendar-forms/ShareCalendarForm";
+import CalendarActionsContext from "./context/CalendarActionsContext";
+import CalendarViewLayout from "./CalenderViewLayout";
+import AddNewCalendarForm from "./calendar-forms/calendar-forms/AddNewCalendarForm";
 
-
-class CalenderView extends React.Component {
-
-    state = {
-        "userType": ls.get("user_type"),
-        "isLoading": false,
-        "formMode": "event",
-        "advisingSlotForm": false,
-        "cals": ["main"],
-        "eventTypes": ["attendingEvents"],
-        "sharedCals": [],
-        "eventsDetailView": false,
-        "eventsDetailViewData": {},
-    };
+export default class CalenderView extends React.Component {
 
     constructor(props) {
         super(props);
 
-        this.loadData = this.loadData.bind(this);
-        this.onChangeCalendarData = this.onChangeCalendarData.bind(this);
-        this.getProcessedEventsToDisplay = this.getProcessedEventsToDisplay.bind(this);
-        this.handlePopupClose = this.handlePopupClose.bind(this);
-        this.openPopup = this.openPopup.bind(this);
-    }
-
-    onChangeCalendarData(action, values) {
-
-        if (action === "eventTypes") {
-            this.onDisplayEventTypesChange(values);
-        } else if (action === "clear") {
-            this.setState({ "data": [] });
-        } else if (action === "cal") {
-            this.onChangeCalendarOptions(values);
-        } else if (action === "sharedCal") {
-            this.onChangeSharedCalendarOptions(values);
-        }
+        this.state = {
+            eventFormData: {},
+            shareCalendarForm: false,
+            addCalendarForm: false,
+            formMode: "",
+            eventForm: false,
+            advisingSignUpForm: false,
+            advisingSlotForm: false,
+            sharedCalendarId: -1,
+        };
 
     }
 
-    onChangeCalendarOptions = (values) => {
 
-        const calId = values.id;
-
-        if (values.show) {
-
-            this.state.eventTypes.forEach((type) => {
-                const name = type + calId;
-
-                const allEvents = this.state[name];
-
-                if (allEvents == null || allEvents.length === 0) {
-                    this.loadData(type, calId);
-                }
-            });
-
-            this.setState({ "cals": [...this.state.cals, calId] })
-
-        } else {
-
-            var nState = {};
-
-            this.state.eventTypes.forEach((type) => {
-                const name = type + calId;
-                nState[name] = [];
-            });
-
-            nState["cals"] = this.state.cals.filter((id) => { return id !== calId ? true : false });
-            this.setState(nState);
-        }
-        console.log(values);
+    closePopup = (popupName) => {
+        this.setState({[popupName]: false})
     };
 
-    onChangeSharedCalendarOptions(values) {
+    closeAddCalendarForm = () => {
+        this.closePopup("addCalendarForm");
+    };
 
-        const calId = values.id;
-        const name = "sharedCalData-" + calId;
-        if (values.show) {
+    closeAdvisingForm = () => {
+        this.closePopup("advisingSlotForm");
+    };
 
-            if (this.state[name] == null || this.state[name].length === 0) {
-                this.loadSharedCalendarData(calId);
-                this.setState({ "sharedCals": [...this.state.sharedCals, calId] })
-            }
+    closeAdvisingSignUpForm = () => {
+        this.closePopup("advisingSignUpForm");
+    };
 
-        } else {
-           
-            let nState = {};
+    closeShareForm = () => {
+        this.closePopup("shareCalendarForm");
+    };
 
-            nState[name] = [];
-            nState["sharedCals"] = this.state.sharedCals.filter((id) => { return id !== calId ? true : false });
-            this.setState(nState);
-        }
-        console.log(values);
-    }
-
-    onDisplayEventTypesChange = (showEventTypes) => {
-
-        //this.setState({ "displayDataType": displayDataType });
-
-        if (showEventTypes == null || showEventTypes.length === 0) {
-            return;
-        }
-
-        let eventTypes = [];
-        for (let eventType in showEventTypes) {
-
-            const eType = eventType;
-
-            if (showEventTypes[eType]) {
-                const type = eType;
-                this.state.cals.forEach((id) => {
-                    const name = type + id;
-
-                    console.log(this.state);
-                    console.log(this.state[name]);
-
-                    var currentData = this.state[name];
-                    if (currentData == null || currentData.length === 0) {
-                        this.loadData(eType, id);
-                    }
-                });
-
-                eventTypes.push(eType);
-
-            } else {
-                let newState = {};
-                this.state.cals.forEach(function (id) {
-                    const name = eType + id;
-                    newState[name] = [];
-                });
-                this.setState(newState);
-            }
-        }
-        this.setState({ "eventTypes": eventTypes });
-        console.log(showEventTypes);
+    closeEventForm = () => {
+        this.setState({"eventForm": false, "formMode": "", "eventFormData": {}});
     };
 
 
+    calendarActionsContext = {
 
-    openPopup(name, data) {
-
-        if (name === "eventDetails") {
-
-            this.setState({ "eventDetails": true });
-
-        }
-    }
-
-   
-    handlePopupClose(popupName) {
-
-        this.setState({ [popupName]: false })
-    }
-
-
-    loadData(displayDataType, calId) {
-
-        if (calId == null || calId.length === 0) {
-            calId = "main";
-        }
-
-        if (this.state.isLoading) {
-            return;
-        }
-
-        if (!this.state.isLoading) {
-            this.setState({ isLoading: true, });
-        }
-
-        let url = EventTypesData.dataMapping[displayDataType].url;
-
-        if ((calId.length > 0)) {
-            url += "/" + calId;
-        }
-        get(url, (res) => {
-
-            let data = [];
-
-            if (res.success) {
-
-                res.results.forEach(d => {
-                    console.log(d);
-                    data.push({
-                        "key": d.eventID,
-                        "start": d.start,
-                        "end": d.end,
-                        "id": d.eventID,
-                        "title": d.title,
-                        "description": d.description,
-                        "color": "white",
-                        "backgroundColor": "#880E4F",
-                        "eventType": d.event_type,
-                    });
-                    data = EventTypesData.addEventSpecificData(displayDataType, data);
-                });
-
-            }
-            const name = displayDataType + calId;
-            this.setState({[name]: data, "isLoading": false});
-        });
-
-    }
-
-    loadSharedCalendarData(calId) {
-
-        if (calId == null || calId.length === 0) {
-            calId = "main";
-        }
-
-        if (this.state.isLoading) {
-            return;
-        }
-
-        if (!this.state.isLoading) {
-            this.setState({ isLoading: true, "showSnackbar": true, "snackbarMessage": "Loading. Please Wait!" });
-        }
-
-        let url = "/events/sharedCalendar/" + calId;
-
-        get(url, (res) => {
-
-            let data = [];
-
-            if (res.success) {
-
-                res.results.forEach(d => {
-                    console.log(d);
-                    data.push({
-                        "key": d.eventID,
-                        "start": d.start,
-                        "end": d.end,
-                        "id": d.eventID,
-                        "title": d.title,
-                        "description": d.description,
-                        "color": "white",
-                        "backgroundColor": "#E65100",
-                        "eventType": d.event_type,
-                    });
-                });
-
-            } else {
-                console.log("ERROR");
-                console.log(res.message);
-                console.log("ERROR");
-
-            }
-            const name = "sharedCalData-" + calId;
-            this.setState({[name] : data, "isLoading": false});
-        });
-
-    }
-
-
-    componentDidMount() {
-
-        this.loadData("attendingEvents", "main");
-
-    }
-
-    getProcessedEventsToDisplay() {
-        let events = [];
-
-        this.state.eventTypes.forEach((type) => {
-
-            this.state.cals.forEach(id => {
-                const name = type + id;
-                const currentEvents = this.state[name];
-                console.log(name);
-                console.log(currentEvents);
-                if (currentEvents != null && currentEvents.length > 0) {
-
-                    events = events.concat(currentEvents);
-                }
-
-            });
-        });
-
-        this.state.sharedCals.forEach((sCal) => {
-
-            const name = "sharedCalData-" + sCal;
-            const list = this.state[name];
-            if (list != null && list.length > 0) {
-                events = events.concat(list);
-            }
-            
-        });
-
-        console.log(events);
-        return events;
-    }
-
-    onDateClick = (date) => {
-        this.setState({"eventsDetailView": true, "eventsDetailViewData": {"sortBy": "date", "date" : date}});
-    };
-
-    onEventClick = (event) => {
-        this.setState({"eventsDetailView": true, "eventsDetailViewData": {"sortBy": "id", "id" : event.id}});
+        "showShareCalendarForm": (sharedCalendarId) => {
+            this.setState({"shareCalendarForm": true, "sharedCalendarId": sharedCalendarId});
+        },
+        "showAddCalendarForm": () => {
+            this.setState({"addCalendarForm": true});
+        },
+        "showAddEventForm": () => {
+            this.setState({"eventForm": true});
+        },
+        "showAddAppointmentForm": () => {
+            this.setState({"eventForm": true, "formMode": "appointment"});
+        },
+        "showEditAppointmentForm": (eventData) => {
+            this.setState({"eventForm": true, "formMode": "editAppointment", "eventFormData": eventData});
+        },
+        "showAdvisingSlotForm": () => {
+            this.setState({"advisingSlotForm": true});
+        },
+        "showAdvisingSignUpForm": () => {
+            this.setState({"advisingSignUpForm": true});
+        },
     };
 
     render() {
 
-        let events = this.getProcessedEventsToDisplay();
-
-        let title = "Selected Events";
-
-        if (this.state.isLoading) {
-            title = "Loading .....";
-        }
-
         return (
-            <div className="calendarViewRoot mdl-layout mdl-layout--fixed-drawer">
+            <CalendarActionsContext.Provider value={this.calendarActionsContext}>
+                <div>
 
-                <DetailView data={this.state.eventsDetailViewData} events={events} onCancel={() => this.handlePopupClose("eventsDetailView")} onClose={() => this.handlePopupClose("eventsDetailView")} open={this.state.eventsDetailView} />
+                    <AdvisingSlotForm onClose={this.closeAdvisingForm} open={this.state.advisingSlotForm}/>
 
-                <div className="mdl-layout__drawer styleScroll" style={{ paddingBottom: "16px" }}>
-                    <DrawerHeader />
-                    <CalendarOptions isLoading={this.state.isLoading} onChangeCalendarData={this.onChangeCalendarData} events={events} userType={this.state.userType} />
+                    <AdvisingSignUpForm onClose={this.closeAdvisingSignUpForm} open={this.state.advisingSignUpForm}/>
 
+                    <ShareCalendarForm sharedCalendarId={this.state.sharedCalendarId} open={this.state.shareCalendarForm}
+                                       onClose={this.closeShareForm}/>
+
+                    <AddNewCalendarForm open={this.state.addCalendarForm} onClose={this.closeAddCalendarForm}/>
+
+                    <EventForm eventFormData={this.state.eventFormData} formMode={this.state.formMode}
+                               onClose={this.closeEventForm} open={this.state.eventForm}/>
+
+                    <CalendarViewLayout />
                 </div>
-                <main className="mdl-layout__content">
-                    <Progress show={this.state.isLoading} />
-                    <Calendar onEventClick={this.onEventClick} onDateClick={this.onDateClick} events={events} />
 
-                </main>
+            </CalendarActionsContext.Provider>
 
-            </div>
         );
     }
+
 }
-
-
-export default CalenderView;

@@ -10,7 +10,7 @@ function initPassport(app) {
         { "usernameField": "campusEmail", "session": true },
         function (campusEmail, password, done) {
 
-            pool.query("SELECT * FROM schedulerdb.user_info WHERE campusEmail = ?", campusEmail, function (error, results, fields) {
+            pool.query("SELECT * FROM user_info WHERE campusEmail = ?", campusEmail, function (error, results, fields) {
                 if (error) {
                     return done("Error while connecting to the database. " + error, false);
                 }

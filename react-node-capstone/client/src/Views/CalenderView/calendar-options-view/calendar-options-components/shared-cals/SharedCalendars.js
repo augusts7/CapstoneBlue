@@ -1,20 +1,24 @@
 import React from "react";
 import {get, post} from "../../../../../ApiHelper/ApiHelper"
-import SharedCalLayout from "./SharedCalLayout";
-import AddNewCalendarForm from "../../../calendar-forms/calendar-forms/AddNewCalendarForm";
-import ShareCalendarForm from "../../../calendar-forms/calendar-forms/ShareCalendarForm";
+import BaseCalendarsLayout from "../base-calendars-layout/BaseCalendarsLayout";
+import CalendarActionsContext from "../../../context/CalendarActionsContext";
+
+const menuOptions = [
+    { "name": "Share calendar", "key": "share" },
+    { "name": "Delete calendar", "key": "delete" }
+];
+
 
 export default class CalendarFilter extends React.Component {
+
+    static contextType = CalendarActionsContext;
 
     constructor(props) {
         super(props);
 
         this.state = {
             "cals": [],
-            "openShare": false,
-            "openAdd": false,
             "isLoading": false,
-            "sharedCalId": null,
         };
     }
 
@@ -52,63 +56,24 @@ export default class CalendarFilter extends React.Component {
 
             this.setState({"cals": cals, "isLoading": false});
         });
-    }
+    };
 
-    handleAction = (actionType, data) => {
 
-        let action = "" + actionType;
+    handleListMenuClick = (actionKey, calendarId) => {
 
-        if (data === null || data.calId === null) {
-            alert("Error in the front end");
-            return;
+        if (actionKey === "share") {
+            this.context.showShareCalendarForm(calendarId);
+
+        } else if (actionKey === "delete") {
+            alert("imeplement");
         }
-        if (action === "share") {
-            this.setState({"openShare": true, "sharedCalId": data.calId});
-        } else if (action === "delete") {
-
-        }
-    };
-
-
-    closePopup = (name) => {
-        this.handlePopup(name, false);
-    };
-
-    openPopup = (name) => {
-        this.handlePopup(name, true);
-    };
-
-    handlePopup = (popupName, show) => {
-
-        switch (popupName) {
-            case "addForm":
-                this.setState({"openAdd": show});
-
-                break;
-            case "shareForm":
-                this.setState({"openShare": show});
-                break;
-        }
-    };
-
-    closeAddPopup = () => {
-        this.closePopup("addForm");
-    };
-
-    closeSharePopup = () => {
-        this.closePopup("shareForm");
     };
 
     render() {
 
         return (
-            <div>
-                <AddNewCalendarForm open={this.state.openAdd} onClose={this.closeAddPopup}/>
-                <ShareCalendarForm open={this.state.openShare} sharedCalId={this.state.sharedCalId}
-                                   onClose={this.closeSharePopup}/>
-                <SharedCalLayout isLoading={this.state.isLoading} handleAction={this.handleAction}
+            <BaseCalendarsLayout menuOptions={menuOptions} onMenuClick={this.handleListMenuClick} isLoading={this.state.isLoading}
                                  handleCalsChange={this.handleCalsChange} cals={this.state.cals}/>
-            </div>
         );
 
     }

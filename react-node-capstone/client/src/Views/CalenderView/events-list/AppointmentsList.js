@@ -6,10 +6,10 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Progress from "../generic-components/progress";
+import Progress from "../generic-components/Progress";
 import {get} from "../../../ApiHelper/ApiHelper";
 import Select from "../../../components/Select/Select";
-import AppointmentItem from "../events/AppointmentItem";
+import AppointmentItem from "../events/event-type-specific-items/AppointmentItem";
 
 const dialogStyle = { padding: "0px" };
 const dialogTitleStyle = { backgroundColor: "#01579B", color: "white" };

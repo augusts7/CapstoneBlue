@@ -3,9 +3,10 @@ import React from 'react';
 
 
 
-export const UserContext = React.createContext({
-    "isLoggedIn": false,
-    "user_type": null,
+const UserContext = React.createContext({
     "user": null,
+    "user_type": "",
+    "isLoggedIn": false
 });
 
+export default UserContext;

@@ -1,0 +1,20 @@
+.flex {
+    display: flex;
+}
+.flex-main {
+    flex-grow: 5;
+}
+.flex-sub {
+    flex-grow: 0;
+}
+.profile-view-base-layout > .item-title {
+    padding: 24px 16px 16px 16px;
+    font-size: 24px;
+}
+.profile-view-root-container-1 {
+    background: url("./images/material-background.png");
+}
+.profile-view-root-container {
+
+}
+

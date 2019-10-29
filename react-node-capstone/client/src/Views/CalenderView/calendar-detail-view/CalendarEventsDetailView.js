@@ -6,11 +6,11 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Progress from "../generic-components/progress";
+import Progress from "../generic-components/Progress";
 import EventListItem from "../events/EventListItem";
 
-const dialogStyle = { padding: "0px" };
-const dialogTitleStyle = { backgroundColor: "#01579B", color: "white" };
+
+const dialogStyle = {padding : "0px"};
 
 export default class EventsList extends React.Component {
 
@@ -93,22 +93,20 @@ export default class EventsList extends React.Component {
 
         return (
             <div>
-                <Dialog fullWidth={true} style={dialogStyle} open={this.props.open} onClose={this.props.onClose} aria-labelledby="form-dialog-title">
-                    <DialogTitle id="form-dialog-title" style={dialogTitleStyle}>
+                <Dialog fullWidth={true} className="dialog" open={this.props.open} onClose={this.props.onClose} aria-labelledby="form-dialog-title">
+                    <DialogTitle className="dialog-title">
 
                         <h4>{this.props.title || "Events"}</h4>
                     </DialogTitle>
 
                     <Progress show={this.state.progress} />
 
-                    <DialogContent>
+                    <DialogContent style={dialogStyle} className="styleScroll dialog-grey-content">
 
-                        <div>
-                            {events}
-                        </div>
+                        {events}
 
                     </DialogContent>
-                    <DialogActions>
+                    <DialogActions className="dialog-grey-footer">
                         <MaterialButton onClick={this.props.onCancel} color="primary">
                             Cancel
                         </MaterialButton>

@@ -1,0 +1,19 @@
+.profile-drawer-item {
+    padding: 16px 8px 8px 16px;
+    color: black;
+    background-color: white;
+}
+.profile-drawer-item .flex-sub {
+    color: #1565C0;
+    margin-right: 16px;
+}
+.profile-drawer-item .flex-main {
+    font-weight: 600;
+    color: #424242;
+}
+.profile-drawer-item:hover {
+    background-color: #EEEEEE;
+}
+.profile-view-drawer {
+    padding: 32px 0px;
+}

@@ -16,6 +16,7 @@ import ForgotPassword from "../Authentication/ForgotPassword/ForgotPassword";
 import Login from "../Authentication/Login/Login";
 import Register from "../Authentication/Register/Register";
 import AuthRoute from "../Route/AuthRoute";
+import ProfileView from "../Views/ProfileView/ProfileView";
 import "./Application.css";
 
 
@@ -30,7 +31,7 @@ export default function ApplicationRouter(props) {
     if (props.auth) {
 
         header = <Header />;
-        footer = null;
+        footer = <Footer />;
 
         wrapperClassName += " login-container";
         contentClassName += " mdl-layout__content mdl-color--grey-200";
@@ -52,6 +53,7 @@ export default function ApplicationRouter(props) {
         routesHtml.push(<Route auth={props.auth} path="/requestEvent" component={RequestEvent} />);
         routesHtml.push(<Route auth={props.auth} path="/viewAllEvents" component={ViewAllEvents} />);
         routesHtml.push(<Route auth={props.auth} path="/createEvent" component={CreateEvent} />);
+        routesHtml.push(<Route auth={props.auth} path="/profileView" component={ProfileView} />);
         routesHtml.push(<Route auth={props.auth} path="/approveEvent" component={ApproveEvent} />);
         routesHtml.push(<Route auth={props.auth} path="/" component={Main} />);
 

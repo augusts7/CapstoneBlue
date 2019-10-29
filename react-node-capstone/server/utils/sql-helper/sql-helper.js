@@ -61,5 +61,5 @@ function handleDeleteAndRespond(deleteSql, res) {
 module.exports = {
 	"handleSelectAndRespond": handleSelectAndRespond,
 	"handleSetObjectAndRespond": handleSetObjectAndRespond,
-	"handleDeleteAndRespond": handleDeleteAndRespond
+	"handleDeleteAndRespond": handleDeleteAndRespond,
 };
