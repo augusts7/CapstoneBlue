@@ -18,36 +18,50 @@ class CreateEvent extends React.Component {
         };
         this.handleStartTimeChange = this.handleStartTimeChange.bind(this);
         this.handleEndTimeChange = this.handleEndTimeChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.onClickSubmit = this.onClickSubmit.bind(this);
     }
 
     handleStartTimeChange(datetime) {
-        this.setState({start: datetime});
+        this.setState({ start: datetime });
     }
 
     handleEndTimeChange(datetime) {
-        this.setState({end: datetime});
+        this.setState({ end: datetime });
     }
 
-    onClickSubmit() {
-        //Wait to implement until API is done
-        // e.preventDefault();
-        // fetch("/requestEvents", {
-        //     method: "POST",
-        //     body: JSON.stringify({
-        //         start: this.state.start,
-        //         end: this.state.end,
-        //         title: this.state.title,
-        //         description: this.state.description
-        //     }),
-        //     headers: {"Content-Type": "application/json"}
-        // })
-        //     .then(function (response) {
-        //         return response.json();
-        //     })
-        //     .then(function (body) {
-        //         console.log(body);
-        //     });
-        window.alert("submitted");
+    handleChange(event) {
+        this.setState({ [event.target.name]: event.target.value });
+    }
+
+    onClickSubmit(e) {
+        e.preventDefault();
+        fetch("/events", {
+            method: "POST",
+            headers: {
+                Accept: 'application/json',
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                start: this.state.start,
+                end: this.state.end,
+                title: this.state.title,
+                description: this.state.description,
+                event_type: "global"
+            }),
+        })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(body) {
+                console.log(body);
+            });
+        this.setState({
+            start: new Date(),
+            end: new Date(),
+            title: "",
+            description: ""
+        });
     }
 
     render() {
@@ -80,14 +94,37 @@ class CreateEvent extends React.Component {
                             >
                             </DateTimePicker>
                         </div>
-                    </MuiPickersUtilsProvider><br/>
-                    <TextField className="eventTitle" placeholder="Title of Event" variant="outlined"
-                               value={this.state.title}/>
-                    <TextField className="description" multiline placeholder="Description of Event" variant="outlined"
-                               value={this.state.description}/><br/>
-                    <div className="requestForm">
-                        <Button type="submit" variant="contained" size="large" className="submit"
-                                onClick={this.onClickSubmit}>Submit</Button>
+                    </MuiPickersUtilsProvider>
+                    <div className="text-input">
+                        <TextField
+                            className="eventTitle"
+                            name="title"
+                            placeholder="Title of Event"
+                            variant="outlined"
+                            onChange={this.handleChange}
+                            value={this.state.title}
+                        />
+                        <TextField
+                            className="description"
+                            name="description"
+                            multiline
+                            placeholder="Description of Event"
+                            variant="outlined"
+                            onChange={this.handleChange}
+                            value={this.state.description}
+                        />
+                    </div>
+                    <div>
+                        <Button
+                            type="submit"
+                            name="submit"
+                            variant="contained"
+                            size="large"
+                            className="submit"
+                            onClick={this.onClickSubmit}
+                        >
+                            Submit
+                        </Button>
                     </div>
                 </div>
             </div>

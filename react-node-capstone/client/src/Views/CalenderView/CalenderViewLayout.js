@@ -6,7 +6,7 @@ import {get} from "../../ApiHelper/ApiHelper"
 import EventTypesData from "./data/EventTypesData";
 import DetailView from "./calendar-detail-view/CalendarEventsDetailView";
 import DrawerHeader from "./side-drawer/DrawerHeader";
-import Progress from "./generic-components/Progress";
+import Progress from "../../components/Container/Progress/Progress";
 import FloatingAddButton from "./floating-action-button/FloatingAddButton";
 
 import "./scroll.css"

@@ -52,6 +52,17 @@ router.get("/all", async (req, res) => {
     }
 });
 
+//needs work
+// router.get("/allGlobal", async (req, res) => {
+//     try {
+//         let events = await pool.query("SELECT * FROM event WHERE event_type = 'global'");
+//         res.json(events);
+//     } catch (e) {
+//         console.log(e);
+//         res.sendStatus(500);
+//     }
+// });
+
 router.get("/created/:calendarId", function (req, res) {
 
     let calendarId = "" + req.params.calendarId;

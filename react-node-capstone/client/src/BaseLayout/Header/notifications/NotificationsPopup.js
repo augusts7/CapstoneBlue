@@ -1,7 +1,7 @@
 import React from "react";
 import Popover from '@material-ui/core/Popover';
 import NotificationsItem from "./NotificationsItem";
-import Progress from "../../../Views/CalenderView/generic-components/Progress";
+import Progress from "../../../components/Container/Progress/Progress";
 import {get} from "../../../ApiHelper/ApiHelper";
 
 const anchorOrigin = {
@@ -53,7 +53,7 @@ export default class NotificationsPopup extends React.Component {
         if (this.state.invitedEvents == null || this.state.invitedEvents.length < 1) {
             return false;
         }
-        let newEvents = this.state.invitedEvents.filter((iE) => iE.eventID == id ? false : true);
+        let newEvents = this.state.invitedEvents.filter((iE) => iE.eventID === id ? false : true);
         this.setState({"invitedEvents": newEvents});
     };
 

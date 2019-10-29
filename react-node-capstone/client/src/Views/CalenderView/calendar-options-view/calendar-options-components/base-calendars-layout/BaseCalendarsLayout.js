@@ -3,7 +3,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '../../../generic-components/IconButton';
 import Icon from '@material-ui/core/Icon';
 import Menu from "../../../generic-components/Menu";
-import Progress from '../../../generic-components/Progress';
+import Progress from "../../../../../components/Container/Progress/Progress";
 import {Tooltip} from "@material-ui/core";
 
 
