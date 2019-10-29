@@ -3,13 +3,13 @@
   margin: 10% auto;
   width: 50%;
   flex-direction: column;
-  border: 5px solid #2c3e50;
+  border: 3px solid grey;
   border-radius: 7px;
   overflow: auto;
 }
 
 .container-title {
-  background-color: #2c3e50;
+  background-color: #BD955A;
   color: white;
   padding-left: 30px;
 }
@@ -19,24 +19,23 @@
   margin: 20px auto;
 }
 
-.start-date-picker {
-  padding: 20px;
-}
-
-.end-date-picker {
-  padding: 20px;
+.date-picker {
+  margin-left: 2em;
+  margin-top:1em;
+  display: inline-block;
 }
 
 .title {
-  flex-basis: 100%;
-  padding-bottom: 20px;
+  margin-top: 2em !important;
+  margin-left: 2em !important;
 }
+
 .description {
-  flex-basis: 100%;
-  padding-bottom: 20px;
+  margin-top: 2em !important;
+  margin-left: 2em !important;
 }
 
 .submit {
-  flex-basis: 100%;
-  padding-bottom: 20px;
+  margin-top: 2em !important;
+  float: left;
 }

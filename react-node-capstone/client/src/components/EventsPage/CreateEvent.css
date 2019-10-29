@@ -8,7 +8,7 @@
     overflow: auto;
 }
 
-.requestTitle {
+.createTitle {
     background-color: #BD955A;
     color: white;
     padding-left: 30px;
@@ -21,8 +21,9 @@
 
 .datePicker {
     margin-left: 2em;
-    display: inline-block;
     margin-top: 1em;
+    display: inline-block;
+    margin-left: 2em;
 }
 .eventTitle {
     margin-top: 2em !important;
