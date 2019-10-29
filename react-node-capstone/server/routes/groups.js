@@ -3,8 +3,7 @@ var pool = require("../db/database");
 var bodyParser = require("body-parser");
 var sqlHandler = require("../utils/sql-helper/sql-helper");
 
-
-router.use(bodyParser.urlencoded({extended: false}));
+router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 router.route("/").get(async (req, res) => {
@@ -45,6 +44,7 @@ router.route("/groupMembers/:group_id").get(async (req, res) => {
   }
 });
 
+//Broken. Needs to pull only events for that group.
 router.route("/groupEvents/:group_id").get(async (req, res) => {
   try {
     let groupid = req.params.group_id;

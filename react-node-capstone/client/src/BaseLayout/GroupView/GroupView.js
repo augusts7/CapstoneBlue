@@ -27,9 +27,6 @@ class GroupView extends React.Component {
       user_type: ls.get()
     };
     this.handleChange = this.handleChange.bind(this);
-    this.getGroupEvents = this.getGroupEvents.bind(this);
-    this.getGroupMembers = this.getGroupMembers.bind(this);
-    this.getGroupInfo = this.getGroupInfo.bind(this);
   }
 
   componentDidMount() {
@@ -38,14 +35,12 @@ class GroupView extends React.Component {
     this.getGroupMembers(this.state.group_id);
     this.getGroupInfo(this.state.group_id);
   }
-
   getMyGroups() {
     var myGroupsURL = "/my_groups";
     fetch(myGroupsURL)
       .then(res => res.json())
       .then(myGroups => this.setState({ my_groups: myGroups }));
   }
-
   getGroupInfo(groupID) {
     var groupInfoURL = "/groups/groupInfo/" + groupID;
     fetch(groupInfoURL)
@@ -65,16 +60,18 @@ class GroupView extends React.Component {
       .then(res => res.json())
       .then(group_members => this.setState({ groupMembers: group_members }));
   }
-
   getGroupEvents(groupID) {
     var groupEventsURL = "/groups/groupEvents/" + groupID;
     fetch(groupEventsURL)
       .then(res => res.json())
       .then(group_events => this.setState({ eventListItems: group_events }));
   }
-
   handleChange(event) {
-    this.setState({ group_id: event.target.value });
+    let groupID = event.target.value;
+    this.setState({ group_id: groupID });
+    this.getGroupEvents(groupID);
+    this.getGroupInfo(groupID);
+    this.getGroupMembers(groupID);
   }
 
   render() {
@@ -85,10 +82,7 @@ class GroupView extends React.Component {
     return (
       <div className="group-view">
         <div className="group-name">
-          <h2>
-            {this.state.groupName}
-            {this.state.group_id}
-          </h2>
+          <h2>{this.state.groupName}</h2>
         </div>
         <div className="my-groups-select">
           <FormControl variant="outlined">
@@ -113,10 +107,10 @@ class GroupView extends React.Component {
               type="submit"
               variant="contained"
               size="large"
-              className="create-group-event"
-              onClick={this.showModal}
+              className="msgBtn2"
+              href="/requestEvent"
             >
-              <i className="material-icons">schedule</i>Create Event
+              <i className="material-icons">schedule</i>Request Event
             </Button>
           </div>
           <div className="group-event-list">
