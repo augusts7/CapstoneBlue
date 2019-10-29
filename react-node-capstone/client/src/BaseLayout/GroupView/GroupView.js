@@ -11,7 +11,7 @@ import ls from "local-storage";
 
 import "./GroupView.css";
 import CreateGroupEvent from "./CreateGroupEvent";
-import { minWidth } from "@material-ui/system";
+import { MenuItem, Menu } from "@material-ui/core";
 
 //Mockup: https://www.figma.com/file/r5yEpMlG5SzIAkONOOAWc0/Groups-faculty-%26-student?node-id=0%3A1
 
@@ -27,13 +27,16 @@ class GroupView extends React.Component {
       user_type: ls.get()
     };
     this.handleChange = this.handleChange.bind(this);
+    this.getGroupEvents = this.getGroupEvents.bind(this);
+    this.getGroupMembers = this.getGroupMembers.bind(this);
+    this.getGroupInfo = this.getGroupInfo.bind(this);
   }
 
   componentDidMount() {
     this.getMyGroups();
-    this.getGroupEvents();
-    this.getGroupMembers();
-    this.getGroupInfo();
+    this.getGroupEvents(this.state.group_id);
+    this.getGroupMembers(this.state.group_id);
+    this.getGroupInfo(this.state.group_id);
   }
 
   getMyGroups() {
@@ -43,8 +46,8 @@ class GroupView extends React.Component {
       .then(myGroups => this.setState({ my_groups: myGroups }));
   }
 
-  getGroupInfo() {
-    var groupInfoURL = "/groups/groupInfo/" + this.state.group_id;
+  getGroupInfo(groupID) {
+    var groupInfoURL = "/groups/groupInfo/" + groupID;
     fetch(groupInfoURL)
       .then(res => res.json())
       .then(groupInfo => this.getGroupInfoHelper(...groupInfo));
@@ -56,15 +59,15 @@ class GroupView extends React.Component {
       group_id: info.group_id
     });
   }
-  getGroupMembers() {
-    var groupMembersURL = "/groups/groupMembers/" + this.state.group_id;
+  getGroupMembers(groupID) {
+    var groupMembersURL = "/groups/groupMembers/" + groupID;
     fetch(groupMembersURL)
       .then(res => res.json())
       .then(group_members => this.setState({ groupMembers: group_members }));
   }
 
-  getGroupEvents() {
-    var groupEventsURL = "/groups/groupEvents/" + this.state.group_id;
+  getGroupEvents(groupID) {
+    var groupEventsURL = "/groups/groupEvents/" + groupID;
     fetch(groupEventsURL)
       .then(res => res.json())
       .then(group_events => this.setState({ eventListItems: group_events }));
@@ -76,26 +79,28 @@ class GroupView extends React.Component {
 
   render() {
     var groups = this.state.my_groups.map(g => {
-      return <option value={g.group_id}>{g.group_name}</option>;
+      return <MenuItem value={g.group_id}>{g.group_name}</MenuItem>;
     });
 
     return (
       <div className="group-view">
         <div className="group-name">
-          <h2>{this.state.groupName}</h2>
+          <h2>
+            {this.state.groupName}
+            {this.state.group_id}
+          </h2>
         </div>
         <div className="my-groups-select">
           <FormControl variant="outlined">
-            <InputLabel htmlFor="outlined-age-native-simple">
-              My Groups
-            </InputLabel>
+            <InputLabel htmlFor="outlined-age-simple">My Groups</InputLabel>
             <Select
-              native={true}
               autoWidth={true}
               value={this.state.group_id}
               onChange={this.handleChange}
             >
-              <option value="" />
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
               {groups}
             </Select>
           </FormControl>
@@ -109,7 +114,7 @@ class GroupView extends React.Component {
               variant="contained"
               size="large"
               className="create-group-event"
-              href="/createGroupEvent"
+              onClick={this.showModal}
             >
               <i className="material-icons">schedule</i>Create Event
             </Button>
