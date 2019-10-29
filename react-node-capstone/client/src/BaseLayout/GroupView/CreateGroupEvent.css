@@ -1,0 +1,41 @@
+.create-group-event-container {
+  display: flex;
+  margin: 10% auto;
+  width: 50%;
+  flex-direction: column;
+  border: 3px solid grey;
+  border-radius: 7px;
+  overflow: auto;
+}
+
+.container-title {
+  background-color: #BD955A;
+  color: white;
+  padding-left: 30px;
+}
+
+.requestForm {
+  width: 90%;
+  margin: 20px auto;
+}
+
+.date-picker {
+  margin-left: 2em;
+  margin-top:1em;
+  display: inline-block;
+}
+
+.title {
+  margin-top: 2em !important;
+  margin-left: 2em !important;
+}
+
+.description {
+  margin-top: 2em !important;
+  margin-left: 2em !important;
+}
+
+.submit {
+  margin-top: 2em !important;
+  float: left;
+}

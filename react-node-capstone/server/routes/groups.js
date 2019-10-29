@@ -44,6 +44,7 @@ router.route("/groupMembers/:group_id").get(async (req, res) => {
     res.sendStatus(500);
   }
 });
+
 router.route("/groupEvents/:group_id").get(async (req, res) => {
   try {
     let groupid = req.params.group_id;

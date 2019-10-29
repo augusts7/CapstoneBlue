@@ -52,9 +52,10 @@ class RequestEvent extends React.Component {
 
     render() {
         return (
-            <div>
-                <h4 className="title">Request New Event</h4>
-                <hr/>
+            <div className="create-event-container">
+                <div className="requestTitle">
+                    <h3> Request New Event</h3>
+                </div>
                 <div className="requestForm">
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <div className="datePicker">
@@ -80,7 +81,7 @@ class RequestEvent extends React.Component {
                             </DateTimePicker>
                         </div>
                     </MuiPickersUtilsProvider><br/>
-                    <TextField className="title" placeholder="Title of Event" variant="outlined"
+                    <TextField className="eventTitle" placeholder="Title of Event" variant="outlined"
                                value={this.state.title}/>
                     <TextField className="description" multiline placeholder="Description of Event" variant="outlined"
                                value={this.state.description}/><br/>
