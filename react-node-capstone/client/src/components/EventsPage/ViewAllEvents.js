@@ -1,44 +1,31 @@
 import React from "react";
+import EventsList from "./EventsList";
+import "./ViewAll.css";
 
 class ViewAllEvents extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            events: [
-                {
-                    title: "",
-                    start: new Date(),
-                    end: new Date(),
-                    description: ""
-                }
-            ]
+            events: []
         };
     }
 
-    // onComponentDidMount() {
-    //     fetch("/events/allGlobal")
-    //         .then(res => res.json())
-    //         .then(eventData =>
-    //             this.setState({
-    //                 events: eventData.map(event => ({
-    //                         title: event.title,
-    //                         start: event.start,
-    //                         end: event.end,
-    //                         description: event.description
-    //                     })
-    //                 )
-    //             }));
-    // }
+    componentDidMount() {
+        fetch("/events/allGlobal")
+            .then(res => res.json())
+            .then(eventData =>
+                this.setState({events: eventData}));
+
+    }
 
     render() {
-        // var {events} = this.state;
         return (
             <div className="viewAll">
-                <h4>All Events</h4>
+                <div className="allEventsTitle">
+                    <h4>All Events</h4>
+                </div>
                 <hr/>
-                <ul>
-                    <li>list of global events</li>
-                </ul>
+                <EventsList events={this.state.events}/>
             </div>
         );
     }

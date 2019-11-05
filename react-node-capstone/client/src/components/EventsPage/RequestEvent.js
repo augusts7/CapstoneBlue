@@ -14,7 +14,8 @@ class RequestEvent extends React.Component {
             end: new Date(),
             title: "",
             description: "",
-            event_type: "global"
+            event_type: "global",
+            status: "pending"
         };
         this.handleStartTimeChange = this.handleStartTimeChange.bind(this);
         this.handleEndTimeChange = this.handleEndTimeChange.bind(this);
@@ -35,34 +36,34 @@ class RequestEvent extends React.Component {
     }
 
     onClickSubmit(e) {
-        //implement that endpoint
-        // e.preventDefault();
-        // fetch("/events/request", {
-        //     method: "POST",
-        //     headers: {
-        //         Accept: 'application/json',
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: JSON.stringify({
-        //         start: this.state.start,
-        //         end: this.state.end,
-        //         title: this.state.title,
-        //         description: this.state.description,
-        //         event_type: "global"
-        //     }),
-        // })
-        //     .then(function(response) {
-        //         return response.json();
-        //     })
-        //     .then(function(body) {
-        //         console.log(body);
-        //     });
-        // this.setState({
-        //     start: new Date(),
-        //     end: new Date(),
-        //     title: "",
-        //     description: ""
-        // });
+        e.preventDefault();
+        fetch("/events", {
+            method: "POST",
+            headers: {
+                Accept: 'application/json',
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                start: this.state.start,
+                end: this.state.end,
+                title: this.state.title,
+                description: this.state.description,
+                event_type: "global",
+                status: "pending"
+            }),
+        })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(body) {
+                console.log(body);
+            });
+        this.setState({
+            start: new Date(),
+            end: new Date(),
+            title: "",
+            description: ""
+        });
         window.alert("submitted");
     }
 

@@ -16,7 +16,8 @@ class CreateGroupEvent extends React.Component {
       title: "",
       description: "",
       event_type: "group",
-      group_id: 0
+      group_id: 0,
+      status: null
     };
     this.handleStartTimeChange = this.handleStartTimeChange.bind(this);
     this.handleEndTimeChange = this.handleEndTimeChange.bind(this);
@@ -49,7 +50,8 @@ class CreateGroupEvent extends React.Component {
         end: this.state.end,
         title: this.state.title,
         description: this.state.description,
-        event_type: "group_event"
+        event_type: "group_event",
+        status: null
       }),
     })
         .then(function(response) {

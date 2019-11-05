@@ -14,7 +14,8 @@ class CreateEvent extends React.Component {
             end: new Date(),
             title: "",
             description: "",
-            event_type: "global"
+            event_type: "global",
+            status: "approved"
         };
         this.handleStartTimeChange = this.handleStartTimeChange.bind(this);
         this.handleEndTimeChange = this.handleEndTimeChange.bind(this);
@@ -47,7 +48,8 @@ class CreateEvent extends React.Component {
                 end: this.state.end,
                 title: this.state.title,
                 description: this.state.description,
-                event_type: "global"
+                event_type: "global",
+                status: "approved"
             }),
         })
             .then(function(response) {
