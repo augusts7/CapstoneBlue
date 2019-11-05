@@ -21,7 +21,7 @@ class GroupView extends React.Component {
     this.state = {
       group_id: 2,
       my_groups: [],
-      groupName: "Group Name",
+      groupName: "",
       eventListItems: [],
       groupMembers: [],
       user_type: ls.get()
@@ -81,23 +81,25 @@ class GroupView extends React.Component {
 
     return (
       <div className="group-view">
-        <div className="group-name">
-          <h2>{this.state.groupName}</h2>
-        </div>
+        <div className="group-header">
         <div className="my-groups-select">
-          <FormControl variant="outlined">
-            <InputLabel htmlFor="outlined-age-simple">My Groups</InputLabel>
-            <Select
-              autoWidth={true}
-              value={this.state.group_id}
-              onChange={this.handleChange}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              {groups}
-            </Select>
-          </FormControl>
+            <FormControl variant="outlined">
+              <InputLabel htmlFor="outlined-age-simple">My Groups</InputLabel>
+              <Select
+                autoWidth={true}
+                value={this.state.group_id}
+                onChange={this.handleChange}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {groups}
+              </Select>
+            </FormControl>
+          </div>
+          <div className="group-name">
+            <h2>{this.state.groupName}</h2>
+          </div>
         </div>
         <hr />
         <div className="group-events">

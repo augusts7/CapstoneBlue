@@ -6,8 +6,12 @@
   text-align: center;
 }
 
-.group-name > h2 {
-  margin-top: 40px;
+.my-groups-select{
+  display: inline-block;
+}
+
+.group-name {
+  display: inline-block;
   color: maroon;
   font-weight: bold;
 }
