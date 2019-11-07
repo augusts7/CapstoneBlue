@@ -47,9 +47,12 @@ export default class extends Component {
 
   render() {
     const { open } = this.state;
+    var button = <div>Error</div>;
+    var submitButton = "";
+    var title = "";
 
-    return (
-      <Fragment>
+    if (this.props.user === "member") {
+      button = (
         <Button
           type="submit"
           variant="contained"
@@ -60,12 +63,35 @@ export default class extends Component {
         >
           <i className="material-icons">schedule</i>Request Event
         </Button>
+      );
+      title = "Request Group Event";
+      submitButton = "Request Event";
+    } else if (this.props.user === "owner") {
+      button = (
+        <Button
+          type="submit"
+          variant="contained"
+          size="large"
+          className="msgBtn2"
+          onClick={this.handleToggle}
+          mini
+        >
+          <i className="material-icons">event</i>Create Event
+        </Button>
+      );
+      title = "Create Group Event";
+      submitButton = "Create Event";
+    }
+
+    return (
+      <Fragment>
+        {button}
         <Dialog
           open={open}
           onClose={this.handleToggle}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Request Group Event</DialogTitle>
+          <DialogTitle id="form-dialog-title">{title}</DialogTitle>
           <DialogContent>
             <DialogContentText>
               To request a event for this group please fill out the following
@@ -118,7 +144,7 @@ export default class extends Component {
               Cancel
             </Button>
             <Button onClick={this.handleToggle} color="primary">
-              Request Event
+              {submitButton}
             </Button>
           </DialogActions>
         </Dialog>

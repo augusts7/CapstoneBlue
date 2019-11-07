@@ -3,15 +3,14 @@ import EventList from "../../components/EventList/EventList";
 import GroupMemberList from "./GroupMemberList";
 import Button from "@material-ui/core/Button";
 import InputLabel from "@material-ui/core/InputLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import NativeSelect from "@material-ui/core/NativeSelect";
 import ls from "local-storage";
 
 import "./GroupView.css";
 import CreateGroupEvent from "./CreateGroupEvent";
-import { MenuItem, Menu } from "@material-ui/core";
+import AddGroupMember from "./AddGroupMember";
+import { MenuItem } from "@material-ui/core";
 
 //Mockup: https://www.figma.com/file/r5yEpMlG5SzIAkONOOAWc0/Groups-faculty-%26-student?node-id=0%3A1
 
@@ -22,11 +21,11 @@ class GroupView extends React.Component {
       group_id: 2,
       my_groups: [],
       groupName: "",
+      creator_id: 0,
       eventListItems: [],
       groupMembers: [],
-      user_type: ls.get(),
-      createEventDialog: false,
-      addMemberDialog: false
+      user_type: "owner",
+      user_id: 0
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -53,7 +52,8 @@ class GroupView extends React.Component {
     var info = { ...args };
     this.setState({
       groupName: info.group_name,
-      group_id: info.group_id
+      group_id: info.group_id,
+      creator_id: info.creator_id
     });
   }
   getGroupMembers(groupID) {
@@ -107,7 +107,10 @@ class GroupView extends React.Component {
         <div className="group-events">
           <h3 className="group-events-list-header">Group Events</h3>
           <div className="buttons-group-events">
-            <CreateGroupEvent groupID={this.state.group_id} />
+            <CreateGroupEvent
+              user={this.state.user_type}
+              groupID={this.state.group_id}
+            />
           </div>
           <div className="group-event-list">
             <hr />
@@ -117,15 +120,7 @@ class GroupView extends React.Component {
         <div className="group-members">
           <h3 className="list-header">Group Members</h3>
           <div className="buttons-group-members">
-            <Button
-              type="submit"
-              variant="contained"
-              size="large"
-              className="msgBtn2"
-              href="/addMembers"
-            >
-              <i className="material-icons">group_add</i>Add Members
-            </Button>
+            <AddGroupMember />
           </div>
           <hr />
           <GroupMemberList groupMembers={this.state.groupMembers} />
