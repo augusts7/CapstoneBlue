@@ -24,7 +24,9 @@ class GroupView extends React.Component {
       groupName: "",
       eventListItems: [],
       groupMembers: [],
-      user_type: ls.get()
+      user_type: ls.get(),
+      createEventDialog: false,
+      addMemberDialog: false
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -82,7 +84,7 @@ class GroupView extends React.Component {
     return (
       <div className="group-view">
         <div className="group-header">
-        <div className="my-groups-select">
+          <div className="my-groups-select">
             <FormControl variant="outlined">
               <InputLabel htmlFor="outlined-age-simple">My Groups</InputLabel>
               <Select
@@ -105,15 +107,7 @@ class GroupView extends React.Component {
         <div className="group-events">
           <h3 className="group-events-list-header">Group Events</h3>
           <div className="buttons-group-events">
-            <Button
-              type="submit"
-              variant="contained"
-              size="large"
-              className="msgBtn2"
-              href="/requestEvent"
-            >
-              <i className="material-icons">schedule</i>Request Event
-            </Button>
+            <CreateGroupEvent groupID={this.state.group_id} />
           </div>
           <div className="group-event-list">
             <hr />
@@ -122,6 +116,17 @@ class GroupView extends React.Component {
         </div>
         <div className="group-members">
           <h3 className="list-header">Group Members</h3>
+          <div className="buttons-group-members">
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+              className="msgBtn2"
+              href="/addMembers"
+            >
+              <i className="material-icons">group_add</i>Add Members
+            </Button>
+          </div>
           <hr />
           <GroupMemberList groupMembers={this.state.groupMembers} />
         </div>

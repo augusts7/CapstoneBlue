@@ -2,15 +2,14 @@
   justify-content: center;
 }
 
+.my-groups-select {
+  display: inline-block;
+  padding: 30px 0;
+}
+
 .group-name {
   text-align: center;
-}
-
-.my-groups-select{
-  display: inline-block;
-}
-
-.group-name {
+  padding: 30px 0;
   display: inline-block;
   color: maroon;
   font-weight: bold;
