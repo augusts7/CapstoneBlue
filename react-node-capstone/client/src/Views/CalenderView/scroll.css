@@ -1,19 +1,27 @@
 /* width */
 .styleScroll::-webkit-scrollbar {
-    width: 2px;
+    width: 4px;
+    height: 24px;
+}
+
+.styleScroll::-webkit-scrollbar:hover {
+    width: 8px;
 }
 
 /* Track */
 .styleScroll::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background-color: #f1f1f1;
 }
 
 /* Handle */
 .styleScroll::-webkit-scrollbar-thumb {
-    background: #888;
+    background-color: #BDBDBD;
+    min-height: 24px;
+    max-height: 24px;
 }
 
 /* Handle on hover */
 .styleScroll::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background-color: #757575;
 }
+

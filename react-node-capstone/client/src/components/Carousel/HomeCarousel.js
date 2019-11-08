@@ -10,40 +10,42 @@ class HomeCarousel extends React.Component {
         autoPlay
         interval={6500}
         swipeable={false}
-        width="850px"
+        width="1650px"
         showThumbs={false}
+        showStatus = {false}
+        
       >
         <div>
           <img
-            src="https://live.staticflickr.com/5652/23595625072_12db0d751d_b.jpg"
+            src="https://www.wallpaperup.com/uploads/wallpapers/2014/11/12/514433/474ec055f0eaf86e7e91637bbaa05ce6-500.jpg"
             alt=""
           />
           <p className="legend">Legend</p>
         </div>
         <div>
           <img
-            src="https://live.staticflickr.com/5652/23595625072_12db0d751d_b.jpg"
+            src="https://www.wallpaperup.com/uploads/wallpapers/2014/11/12/514433/474ec055f0eaf86e7e91637bbaa05ce6-500.jpg"
             alt=""
           />
           <p className="legend">Legend</p>
         </div>
         <div>
           <img
-            src="https://live.staticflickr.com/5652/23595625072_12db0d751d_b.jpg"
+            src="https://www.wallpaperup.com/uploads/wallpapers/2014/11/12/514433/474ec055f0eaf86e7e91637bbaa05ce6-500.jpg"
             alt=""
           />
           <p className="legend">Legend</p>
         </div>
         <div>
           <img
-            src="https://live.staticflickr.com/5652/23595625072_12db0d751d_b.jpg"
+            src="https://www.wallpaperup.com/uploads/wallpapers/2014/11/12/514433/474ec055f0eaf86e7e91637bbaa05ce6-500.jpg"
             alt=""
           />
           <p className="legend">Legend</p>
         </div>
         <div>
           <img
-            src="https://live.staticflickr.com/5652/23595625072_12db0d751d_b.jpg"
+            src="https://www.wallpaperup.com/uploads/wallpapers/2014/11/12/514433/474ec055f0eaf86e7e91637bbaa05ce6-500.jpg"
             alt=""
           />
           <p className="legend">Legend</p>

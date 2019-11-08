@@ -73,10 +73,10 @@ class EventList extends Component {
           <div className="eventListItem" key={event.eventID}>
             <div className="date">
               <div className="date-number">
-                {new Date(event.start).getDay()}
+                {new Date(event.start).getDate()}
               </div>
               <div className="date-name">
-                {this.getMonth(new Date(event.start).getMonth(), "abrv")}{" "}
+                {this.getMonth(new Date(event.start).getMonth() + 1, "abrv")}{" "}
               </div>
             </div>
             <div className="description">

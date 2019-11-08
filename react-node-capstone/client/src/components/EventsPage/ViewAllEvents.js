@@ -1,12 +1,31 @@
 import React from "react";
+import EventsList from "./EventsList";
+import "./ViewAll.css";
 
-class ViewAllEvents extends React.Component{
+class ViewAllEvents extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            events: []
+        };
+    }
 
-    render(){
-        return(
-            <div>
-                <h4>View All Events</h4><hr/>
-                add list of global events that you can add to calendar
+    componentDidMount() {
+        fetch("/events/allGlobal")
+            .then(res => res.json())
+            .then(eventData =>
+                this.setState({events: eventData}));
+
+    }
+
+    render() {
+        return (
+            <div className="viewAll">
+                <div className="allEventsTitle">
+                    <h4>All Events</h4>
+                </div>
+                <hr/>
+                <EventsList events={this.state.events}/>
             </div>
         );
     }

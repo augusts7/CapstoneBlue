@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import CustomMenu from "../../generic-components/Menu";
 import CustomIconButton from "../../generic-components/IconButton";
 import Icon from "@material-ui/core/Icon";
-import Progress from "../../generic-components/Progress";
+import Progress from "../../../../components/Container/Progress/Progress";
 const dateOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
 const timeOptions = {minute: '2-digit', hour: "2-digit"};
 

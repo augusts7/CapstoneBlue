@@ -1,12 +1,11 @@
 .main {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 0.4fr 1.6fr;
+  grid-template-rows: 0.4fr 1.4fr;
   grid-template-areas:
     "main-carousel main-carousel"
-    /* "main-calendar main-events main-events"  */
     "main-calendar main-events";
-  background-color: rgb(170, 134, 35);
+  background-color: rgb(189,149,90);
 }
 
 .main-carousel {
@@ -16,10 +15,9 @@
 
 .main-events {
   background-color: white;
-
-  grid-area: main-events;
   border-top: groove;
-  border-left: groove;
+  grid-area: main-events;
+  
 }
 
 .events > h3 {
@@ -31,8 +29,8 @@
 }
 
 .main-calendar {
-  background-color: white;
-
+  background-color:  white;
+  border-right: groove;
   border-top: groove;
   grid-area: main-calendar;
 }

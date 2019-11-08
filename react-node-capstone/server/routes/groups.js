@@ -3,8 +3,7 @@ var pool = require("../db/database");
 var bodyParser = require("body-parser");
 var sqlHandler = require("../utils/sql-helper/sql-helper");
 
-
-router.use(bodyParser.urlencoded({extended: false}));
+router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 router.route("/").get(async (req, res) => {
@@ -45,13 +44,14 @@ router.route("/groupMembers/:group_id").get(async (req, res) => {
   }
 });
 
+//Broken. Needs to pull only events for that group.
 router.route("/groupEvents/:group_id").get(async (req, res) => {
   try {
     let groupid = req.params.group_id;
     let group_events = await pool.query(
-      "SELECT e.eventID, e.title, e.description, e.start, e.end FROM event e inner join groups g on e.creator_id = g.creator_id where g.group_id =" +
+      "SELECT eventID, title, description, start, end FROM event WHERE group_id =" +
         groupid +
-        ' and e.event_type = "group_event";'
+        ";"
     );
     res.json(group_events);
   } catch (e) {

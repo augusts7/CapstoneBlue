@@ -1,27 +1,19 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-  },
-});
+const styles = {width: "100%"};
 
-const progressStyle = { height: "8px" };
+export default function ProgressBar(props) {
 
-export default function Progress(props) {
-  const classes = useStyles();
+    const progress = [];
 
-    if (props.show) {
-        return (
-            <div className={classes.root}>
-                <LinearProgress style={progressStyle} />
-            </div>
-        );
-    } else {
-        return (<div />);
+    if (props.show === true) {
+        progress.push(<LinearProgress variant="query"/>);
     }
 
-  
+    return (
+        <div style={styles}>
+            {progress}
+        </div>
+    );
 }

@@ -77,7 +77,7 @@ export default function Header(props) {
                                 <i className="material-icons">group</i>Events
                             </li>
                         </Link>
-                        <Link to="/profile">
+                        <Link to="/profileView">
                             <li className="mdl-menu__item">
                                 <i className="material-icons">face</i>My Profile
                             </li>

@@ -4,6 +4,7 @@ import NotificationsPopupItem from "./NotificationsPopupItem";
 import Progress from "../../../../Views/CalenderView/generic-components/Progress";
 import {get} from "../../../../api-helper/ApiHelper";
 
+
 const anchorOrigin = {
     vertical: 'bottom',
     horizontal: 'center',
@@ -14,7 +15,12 @@ const transformOrigin = {
     horizontal: 'center',
 };
 
-const containerStyle = {backgroundColor: "white", "padding": "8px", width:  window.innerWidth* 0.4, maxHeight: window.innerHeight * 0.7};
+const containerStyle = {
+    backgroundColor: "white",
+    "padding": "8px",
+    width: window.innerWidth * 0.4,
+    maxHeight: window.innerHeight * 0.7
+};
 
 export default class NotificationsPopup extends React.Component {
 
@@ -57,6 +63,20 @@ export default class NotificationsPopup extends React.Component {
             }
         });
     };
+
+
+    handleClose = () => {
+        this.props.onClose();
+    };
+
+    handleRemoveItem = (id) => {
+        if (this.state.invitedEvents == null || this.state.invitedEvents.length < 1) {
+            return false;
+        }
+        let newEvents = this.state.invitedEvents.filter((iE) => iE.eventID === id ? false : true);
+        this.setState({"invitedEvents": newEvents});
+    };
+
 
     componentWillReceiveProps(nextProps, nextContext) {
         this.loadAllEventRequests();

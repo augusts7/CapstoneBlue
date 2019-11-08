@@ -39,6 +39,39 @@ router.get("/sharedCalendar/:sharedCalId", function (req, res, next) {
     });
 });
 
+
+router.get("/all", async (req, res) => {
+    try {
+        let events = await pool.query("SELECT * FROM event");
+        res.json(events);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
+//next 2 need work
+//need to get eventID
+router.get("/allGlobal", async (req, res) => {
+    try {
+        let events = await pool.query("SELECT title, description, start, end FROM event WHERE event_type = 'global' AND status='approved'");
+        res.json(events);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
+router.get("/approveEvent", async (req, res) => {
+    try {
+        let events = await pool.query("SELECT title, description, start, end FROM event WHERE event_type = 'global' AND status='pending'");
+        res.json(events);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
 router.get("/created/:calendarId", function (req, res) {
 
     let calendarId = "" + req.params.calendarId;
@@ -63,6 +96,7 @@ router.post("/", (req, res) => {
         event_type: req.body.event_type,
         creator_id: req.user.user_id,
         carousel: req.body.carousel || "1",
+        status: req.body.status
     };
 
     sqlHelper.handleSetObjectAndRespond("INSERT INTO event SET ?", event, res);

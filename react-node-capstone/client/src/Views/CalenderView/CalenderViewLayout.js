@@ -3,7 +3,6 @@ import Calendar from "./calendar/Calendar";
 import CalendarOptions from "./calendar-options-view/CalendarOptions"
 import ls from "local-storage"
 import {get} from "../../api-helper/ApiHelper"
-import EventTypesData from "./data/EventTypesData";
 import DetailView from "./calendar-detail-view/CalendarEventsDetailView";
 import Progress from "./generic-components/Progress";
 import FloatingAddButton from "./floating-action-button/FloatingAddButton";

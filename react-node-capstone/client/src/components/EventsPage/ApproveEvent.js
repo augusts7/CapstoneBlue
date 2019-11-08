@@ -1,12 +1,31 @@
 import React from "react";
+import "./ApproveEvent.css";
+import EventsList from "./EventsList";
 
 class ApproveEvent extends React.Component{
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            events: []
+        };
+    }
+
+    componentDidMount() {
+        fetch("/events/approveEvent")
+            .then(res => res.json())
+            .then(eventData =>
+                this.setState({events: eventData}));
+
+    }
     render(){
         return(
             <div>
-                <h4>Approve Events</h4><hr/>
-                add list of pending student events
+                <div className="approveTitle">
+                    <h4>Approve Events</h4>
+                </div>
+                <hr/>
+                <EventsList events={this.state.events}/>
             </div>
         );
     }

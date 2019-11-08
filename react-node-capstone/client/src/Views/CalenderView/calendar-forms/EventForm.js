@@ -205,7 +205,7 @@ export default class EventForm extends React.Component {
                                     label={"Emails of invited users"}
                                     margin="normal"/>
 
-                                    <SelectCalendars />
+                                <SelectCalendars/>
 
                                 <Select
                                     label="Calendar"
