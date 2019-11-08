@@ -121,7 +121,7 @@ export default class extends Component {
                 <DateTimePicker
                   autoOk
                   disablePast
-                  inputVariant="outlined"
+                  variant="inline"
                   label="Start Time"
                   value={this.state.start}
                   onChange={this.handleStartTimeChange}
@@ -131,7 +131,7 @@ export default class extends Component {
                 <DateTimePicker
                   autoOk
                   disablePast
-                  inputVariant="outlined"
+                  variant="outlined"
                   label="End Time"
                   value={this.state.end}
                   onChange={this.handleEndTimeChange}

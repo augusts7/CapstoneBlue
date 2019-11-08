@@ -4,13 +4,15 @@ import GroupMemberList from "./GroupMemberList";
 import Button from "@material-ui/core/Button";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
+import { MenuItem, Menu } from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import ls from "local-storage";
 
 import "./GroupView.css";
+
 import CreateGroupEvent from "./CreateGroupEvent";
 import AddGroupMember from "./AddGroupMember";
-import { MenuItem } from "@material-ui/core";
+import GroupOptions from "./GroupOptionsMenu";
 
 //Mockup: https://www.figma.com/file/r5yEpMlG5SzIAkONOOAWc0/Groups-faculty-%26-student?node-id=0%3A1
 
@@ -24,7 +26,6 @@ class GroupView extends React.Component {
       creator_id: 0,
       eventListItems: [],
       groupMembers: [],
-      user_type: "owner",
       user_id: 0
     };
     this.handleChange = this.handleChange.bind(this);
@@ -81,52 +82,95 @@ class GroupView extends React.Component {
       return <MenuItem value={g.group_id}>{g.group_name}</MenuItem>;
     });
 
-    return (
-      <div className="group-view">
-        <div className="group-header">
-          <div className="my-groups-select">
-            <FormControl variant="outlined">
-              <InputLabel htmlFor="outlined-age-simple">My Groups</InputLabel>
-              <Select
-                autoWidth={true}
-                value={this.state.group_id}
-                onChange={this.handleChange}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                {groups}
-              </Select>
-            </FormControl>
-          </div>
-          <div className="group-name">
-            <h2>{this.state.groupName}</h2>
-          </div>
-        </div>
-        <hr />
-        <div className="group-events">
-          <h3 className="group-events-list-header">Group Events</h3>
-          <div className="buttons-group-events">
-            <CreateGroupEvent
-              user={this.state.user_type}
-              groupID={this.state.group_id}
-            />
-          </div>
-          <div className="group-event-list">
-            <hr />
-            <EventList events={this.state.eventListItems} />
-          </div>
-        </div>
-        <div className="group-members">
-          <h3 className="list-header">Group Members</h3>
-          <div className="buttons-group-members">
-            <AddGroupMember />
+    if (this.state.user_id === this.state.creator_id) {
+      return (
+        <div className="group-view">
+          <div className="group-header">
+            <div className="my-groups-select">
+              <FormControl variant="outlined">
+                <InputLabel htmlFor="outlined-age-simple">My Groups</InputLabel>
+                <Select
+                  autoWidth={true}
+                  value={this.state.group_id}
+                  onChange={this.handleChange}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {groups}
+                </Select>
+              </FormControl>
+            </div>
+            <div className="group-name">
+              <h2>{this.state.groupName}</h2>
+            </div>
+            <div className="group-options">
+              <GroupOptions />
+            </div>
           </div>
           <hr />
-          <GroupMemberList groupMembers={this.state.groupMembers} />
+          <div className="group-events">
+            <h3 className="group-events-list-header">Group Events</h3>
+            <div className="buttons-group-events">
+              <CreateGroupEvent user={"owner"} groupID={this.state.group_id} />
+            </div>
+            <div className="group-event-list">
+              <hr />
+              <EventList events={this.state.eventListItems} />
+            </div>
+          </div>
+          <div className="group-members">
+            <h3 className="list-header">Group Members</h3>
+            <div className="buttons-group-members">
+              <AddGroupMember />
+            </div>
+            <hr />
+            <GroupMemberList groupMembers={this.state.groupMembers} />
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="group-view">
+          <div className="group-header">
+            <div className="my-groups-select">
+              <FormControl variant="outlined">
+                <InputLabel htmlFor="outlined-age-simple">My Groups</InputLabel>
+                <Select
+                  autoWidth={true}
+                  value={this.state.group_id}
+                  onChange={this.handleChange}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {groups}
+                </Select>
+              </FormControl>
+            </div>
+            <div className="group-name">
+              <h2>{this.state.groupName}</h2>
+            </div>
+          </div>
+          <hr />
+          <div className="group-events">
+            <h3 className="group-events-list-header">Group Events</h3>
+            <div className="buttons-group-events">
+              <CreateGroupEvent user={"member"} groupID={this.state.group_id} />
+            </div>
+            <div className="group-event-list">
+              <hr />
+              <EventList events={this.state.eventListItems} />
+            </div>
+          </div>
+          <div className="group-members">
+            <h3 className="list-header">Group Members</h3>
+            <hr />
+            <GroupMemberList groupMembers={this.state.groupMembers} />
+          </div>
+        </div>
+      );
+    }
   }
 }
 
