@@ -1,15 +1,15 @@
-var router = require("express").Router();
-var sqlHandler = require("../utils/sql-helper/sql-helper");
-var pool = require("../db/database");
-var bodyParser = require("body-parser");
-let authMiddleware = require("../middlewares/auth-middleware").authMiddleware;
-
+const router = require("express").Router();
+const sqlHandler = require("../utils/sql-helper/sql-helper");
+const pool = require("../db/database");
+const bodyParser = require("body-parser");
+const authMiddleware = require("../middlewares/auth-middleware").authMiddleware;
+const emailUtils = require("../utils/email/email-utils");
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
 router.use(authMiddleware);
 
 
-router.post("/create", (req, res, next) => {
+router.post("/", (req, res, next) => {
 
     const appointment = {
         title: req.body.title,
@@ -34,7 +34,9 @@ router.post("/create", (req, res, next) => {
 
         if (req.body.attendeeEmails) {
 
-            getEmailList(req.body.attendeeEmails).forEach((email) => {
+            const emailList = emailUtils.getEmailList(req.body.attendeeEmails);
+
+            emailList.forEach((email) => {
 
                 pool.query("SELECT user_id FROM user_info WHERE campusEmail = ?", email, function (error, results, fields) {
 
@@ -52,7 +54,7 @@ router.post("/create", (req, res, next) => {
                         if (err) {
                             return next(err);
                         }
-                        return res.json({ success: true });
+                        return res.json({success: true});
                     });
                 });
 
@@ -60,15 +62,6 @@ router.post("/create", (req, res, next) => {
         }
     });
 });
-
-function getEmailList(emailString) {
-    if (emailString == null || emailString.length === 0) {
-        return [];
-    }
-    var emails = emailString.split(",");
-
-    return emails;
-}
 
 
 router.post("/delete", (req, res, next) => {
@@ -85,7 +78,7 @@ router.post("/delete", (req, res, next) => {
 
     });
 
-    
+
 });
 
 
@@ -131,8 +124,6 @@ router.post("/attend", function (req, res, next) {
             });
 
 
-
-
         });
 
     });
@@ -144,62 +135,6 @@ router.get("/receivedInvite", function (req, res) {
     let select = "SELECT * FROM event INNER JOIN event_invite ON event_id = eventID WHERE invited_user_id = " + req.user.user_id;
 
     sqlHandler.handleSelectAndRespond(select, res);
-});
-
-
-router.get("/all/:calendarId", function (req, res) {
-
-    console.log("Get appointment data");
-
-    let calId = "" + req.params.calendarId;
-
-    let select = "SELECT * FROM event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id + " UNION SELECT * FROM event INNER JOIN attending ON event_id = eventID WHERE event_type = 'appointment' AND attendee_id = " + req.user.user_id;
-
-    if (calId !== "main") {
-        select = "SELECT * FROM event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id + " AND creator_calendar_id = " + req.params.calendarId + " UNION SELECT * FROM event INNER JOIN attending ON event_id = eventID WHERE attendee_id = " + req.user.user_id + " AND calendar_id = " + req.params.calendarId;
-    }
-
-    sqlHandler.handleSelectAndRespond(select, res);
-
-});
-
-router.get("/created/:calendarId", function (req, res) {
-
-    let select = "SELECT * FROM event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id;
-
-    if (req.params.calendarId != "main") {
-        select = "SELECT * FROM event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id + " AND creator_calendar_id = " + req.params.calendarId;
-    }
-
-    sqlHandler.handleSelectAndRespond(select, res);
-
-});
-
-router.get("/attending/:calendarId", function (req, res) {
-
-    let select = "SELECT * FROM event INNER JOIN attending ON event_id = eventID WHERE event_type = 'appointment' AND attendee_id = " + req.user.user_id;
-
-    if (req.params.calendarId != "main") {
-        select = "SELECT * FROM event INNER JOIN attending ON event_id = eventID WHERE attendee_id = " + req.user.user_id + " AND calendar_id = " + req.params.calendarId;
-    }
-
-    sqlHandler.handleSelectAndRespond(select, res);
-
-});
-
-
-
-
-router.get("/sentInvite/:calendarId", function (req, res) {
-
-    let select = "SELECT * FROM event WHERE event_type = 'appointment' AND creator_id = " + req.user.user_id;
-
-    if (req.params.calendarId != "main") {
-        select = "SELECT * FROM event WHERE event_type='appointment' AND creator_id = " + req.user.user_id + " AND creator_calendar_id = " + req.params.calendarId;
-    }
-
-    sqlHandler.handleSelectAndRespond(select, res);
-
 });
 
 

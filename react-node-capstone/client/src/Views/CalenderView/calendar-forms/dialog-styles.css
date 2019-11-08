@@ -1,0 +1,32 @@
+.dialog {
+    padding: 0px;
+}
+.dialog-title {
+    background-color: #0277BD;
+    color: white;
+}
+.dialog-form-title {
+    background-color: #01579B;
+    color: white;
+}
+.dialog-grey-content {
+    padding: 0;
+    background-color: #EEEEEE;
+}
+.dialog-grey-content > div {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.dialog-white-content {
+    padding: 0;
+    background-color: white;
+}
+.dialog-grey-footer {
+    background-color: #EEEEEE;
+}
+.dialog-white-footer {
+    background-color: white;
+}
+.MuiDialogContent-root {
+    padding: 0px 0px;
+}

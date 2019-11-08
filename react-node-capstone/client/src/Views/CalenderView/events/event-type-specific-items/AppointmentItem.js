@@ -1,7 +1,6 @@
 import React from "react";
-import MaterialButton from "@material-ui/core/Button"
 import EventLayout from "../base-layout/EventLayout";
-import { post } from "../../../../ApiHelper/ApiHelper";
+import { post } from "../../../../api-helper/ApiHelper";
 import EventLayoutButton from "../base-layout/EventLayoutButton";
 import CalendarActionsContext from "../../context/CalendarActionsContext";
 
@@ -11,26 +10,11 @@ import CalendarActionsContext from "../../context/CalendarActionsContext";
 export default function AppointmentItem(props) {
 
     const calendarActionsContext = React.useContext(CalendarActionsContext);
+    const [progress, setProgress] = React.useState(false);
 
-    const acceptAppointment = () => {
-
-        const data = {
-            eventId: props.event.id
-        };
-
-        post("/appointments/attend/main", data, (res) => {
-
-            if (res.success) {
-                alert("attended");
-            } else {
-                console.log(res.message);
-            }
-        });
-
-    };
 
     const deleteAppointment = () => {
-
+        setProgress(true);
         const data = {
             eventId: props.event.id
         };
@@ -42,6 +26,7 @@ export default function AppointmentItem(props) {
             } else {
                 console.log(res.message);
             }
+            setProgress(false);
         });
     };
 
@@ -56,21 +41,9 @@ export default function AppointmentItem(props) {
 
     let buttons = [];
 
+    buttons.push(<EventLayoutButton icon="delete" onClick={deleteAppointment}>Delete</EventLayoutButton>);
+    buttons.push(<EventLayoutButton icon="edit" onClick={editAppointment}>Edit</EventLayoutButton>);
 
-    if (props.event.created) {
-        buttons.push(<div style={{ "display": "inline-block", "marginLeft": "4px" }}><MaterialButton key="2" style={{ "padding": "2px", "backgroundColor": "#455A64", "color": "white" }} onClick={deleteAppointment}>Delete</MaterialButton></div>);
-    } else {
-        if (props.event.accepted) {
-            buttons.push(<div style={{ "display": "inline-block" }}><MaterialButton key="1" style={{ "padding": "2px", "backgroundColor": "#455A64", "color": "white" }} onClick={deleteAppointment}>Delete</MaterialButton></div>);
-
-        } else {
-            buttons.push(<EventLayoutButton icon="delete" onClick={deleteAppointment}>Delete</EventLayoutButton>);
-            buttons.push(<EventLayoutButton icon="done" onClick={acceptAppointment}>Accept</EventLayoutButton>);
-            buttons.push(<EventLayoutButton icon="edit" onClick={editAppointment}>Edit</EventLayoutButton>);
-        }
-
-    }
-
-    return (<EventLayout {...props} buttons={buttons} />);
+    return (<EventLayout progress={progress} {...props} buttons={buttons} />);
 
 }

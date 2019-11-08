@@ -4,6 +4,12 @@ import MessageBox from "../../components/Form/MessageBox/MessageBox"
 import {Link} from "react-router-dom"
 import Button from "../../components/Button/Button"
 import AuthContext from "../../Context/AuthContext";
+import AuthFormContainer from "../AuthFormLayout/AuthFormContainer";
+import AuthFormAlternateButton from "../AuthFormLayout/AuthFormAlternateButton";
+import {post, get} from "../../api-helper/ApiHelper";
+import AuthFormSubmitButton from "../AuthFormLayout/AuthFormSubmitButton";
+
+
 
 class Register extends React.Component {
 
@@ -35,7 +41,6 @@ class Register extends React.Component {
             "last_name": target.last_name.value,
             "user_id": target.cwid.value,
             "campusEmail": target.campusEmail.value,
-            "personalEmail": target.personalEmail.value || "",
             "password": target.password.value,
             "confirmPassword": target.confirmPassword.value,
             "user_type": target.user_type.value,
@@ -46,88 +51,64 @@ class Register extends React.Component {
             data["major"] = target.major.value;
         }
 
-        fetch("/auth/register", {
-            method: 'POST',
-            body: JSON.stringify(data),
-            credentials: "include",
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }).then(res => {
-            return res.json();
-        })
-            .then((res) => {
-                this.setState({
-                    "message": res.message,
-                    "isLoading": false
-                });
-                if (res.success) {
-                    this.context.login(res.user);
-                }
+        post("/auth/register", data, (res) => {
+            this.setState({
+                "message": res.message,
+                "isLoading": false
             });
-    }
-
-    handleChangeInUserType(value) {
-        this.setState({"user_type": value});
-
-        if (value === "student") {
-            fetch("/user_info/advisors", {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(res => {
-                return res.json();
-            })
-                .then((res) => {
-                    if (res.success) {
-                        let advisors = [];
-                        res.results.forEach(d => {
-                            advisors.push({"name": d.first_name + " " + d.last_name, "value": d.user_id});
-                        });
-                        this.setState({"advisors": advisors});
-                    }
-                });
-        }
+            if (res.success) {
+                this.context.login(res.user);
+            }
+        });
 
     }
 
-    layout = () => {
-
-        let fields = [
-            { "name": "first_name", "type": "text", "label": "First Name", "required": true },
-            { "name": "last_name", "type": "text", "label": "Last Name", "required": true },
-            { "name": "cwid", "type": "number", "label": "Campus Wide ID (CWID)", "required": true },
-            { "name": "campusEmail", "type": "email", "label": "Campus Email", "required": true },
-            { "name": "personalEmail", "type": "email", "label": "Personal Email (Not Required)", "required": false },
+    commonData = {
+        commonFields: [
+            {"name": "first_name", "type": "text", "label": "First Name", "required": true},
+            {"name": "last_name", "type": "text", "label": "Last Name", "required": true},
+            {"name": "cwid", "type": "number", "label": "Campus Wide ID (CWID)", "required": true},
+            {"name": "campusEmail", "type": "email", "label": "Campus Email", "required": true},
             {
                 "name": "user_type",
                 "type": "select",
                 "label": "User Type",
                 "require": true,
                 "onChange": this.handleChangeInUserType,
-                "options": [{ "name": "Student", "value": "student" }, { "name": "Faculty", "value": "faculty" }]
+                "options": [{"name": "Student", "value": "student"}, {"name": "Faculty", "value": "faculty"}]
             },
-            { "name": "password", "type": "password", "label": "Password", "required": true },
-            { "name": "confirmPassword", "type": "password", "label": "Confirm Password", "required": true },
-        ];
+        ],
+
+        passwordFields: [
+            {"name": "password", "type": "password", "label": "Password", "required": true},
+            {"name": "confirmPassword", "type": "password", "label": "Confirm Password", "required": true},
+        ],
+    };
+
+    handleChangeInUserType(value) {
+        this.setState({"user_type": value});
+
+        if (value === "student") {
+            get("/user_info/advisors", (res) => {
+                if (res.success) {
+                    let advisors = [];
+                    res.results.forEach(d => {
+                        advisors.push({"name": d.first_name + " " + d.last_name, "value": d.user_id});
+                    });
+                    this.setState({"advisors": advisors});
+                }
+            });
+        }
+
+    }
+
+    getFields = () => {
+
+        let studentFields = [];
 
         if (this.state.user_type === "student") {
-            fields = [
-                { "name": "first_name", "type": "text", "label": "First Name", "required": true },
-                { "name": "last_name", "type": "text", "label": "Last Name", "required": true },
-                { "name": "cwid", "type": "number", "label": "Campus Wide ID (CWID)", "required": true },
-                { "name": "campusEmail", "type": "email", "label": "Campus Email", "required": true },
-                { "name": "personalEmail", "type": "email", "label": "Personal Email (Not Required)", "required": false },
-                {
-                    "name": "user_type",
-                    "type": "select",
-                    "label": "User Type",
-                    "require": true,
-                    "onChange": this.handleChangeInUserType,
-                    "options": [{ "name": "Student", "value": "student" }, { "name": "Faculty", "value": "faculty" }]
-                },
-                { "name": "major", "type": "text", "label": "Major", "required": true },
+            studentFields = [
+                {"name": "major", "type": "text", "label": "Major", "required": true},
                 {
                     "name": "advisor",
                     "type": "select",
@@ -140,63 +121,36 @@ class Register extends React.Component {
                     "label": "Classification",
                     "type": "select",
                     "required": true,
-                    "options": [{ "name": "Freshman", "value": "freshman" }, {
+                    "options": [{"name": "Freshman", "value": "freshman"}, {
                         "name": "Sophomore",
                         "value": "sophomore"
-                    }, { "name": "Junior", "value": "junior" }, { "name": "Senior", "value": "senior" }]
+                    }, {"name": "Junior", "value": "junior"}, {"name": "Senior", "value": "senior"}]
                 },
-                { "name": "password", "type": "password", "label": "Password", "required": true },
-                { "name": "confirmPassword", "type": "password", "label": "Confirm Password", "required": true },
             ];
         }
 
-        let title = "Create a new Account";
-        let icon = "add";
-        let id = "register";
-
-        return (
-            <div className="center mdl-grid" style={{ "width": "100%" }}>
-                <div
-                    className="mdl-cell--6-col mdl-cell--12-col-phone mdl-cell--10-col-tablet mdl-color--white mdl-shadow--4dp center">
-                    <div>
-                        <MessageBox message={this.state.message} hideMessage={this.hideMessage} />
-                        <Form customSubmitButton={true} id={id} icon={icon} onSubmit={this.onSubmit} title={title}
-                            fields={fields}>
-                            <div><Link to="/forgotPassword">Forgot password?</Link></div>
-                            <div>
-                                <Button role="main" type="submit"
-                                    style={{ "margin-top": "16px", "padding-left": "16px", "padding-right": "32px" }}><i
-                                        className="material-icons">add</i>Create new Account</Button>
-                            </div>
-                        </Form>
-                    </div>
-                    <div className="mdl-shadow--4dp" style={{
-                        "border": "0.5px solid #1976D2",
-                        "background-color": "#1565C0",
-                        "color": "white",
-                        "padding": "24px 8px 8px 8px",
-                        "margin": "16px 0px 0px 0px"
-                    }}>
-                        <div style={{ "display": "flex", "justify-content": "center", "margin-bottom": "16px" }}>Already
-                            have an Account? Sign in
-                        </div>
-                        <div style={{ "display": "flex", "justify-content": "center" }}>
-                            <Link to="/login">
-                                <Button role="primary" style={{ "padding-left": "16px", "padding-right": "32px" }}><i
-                                    className="material-icons">accessibility</i>Sign In</Button>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        );
+        return this.commonData.commonFields.concat(studentFields).concat(this.commonData.passwordFields);
     };
 
 
     render() {
 
-        return this.layout();
+        let fields = this.getFields();
+
+        return (
+            <AuthFormContainer>
+                <MessageBox message={this.state.message} hideMessage={this.hideMessage}/>
+                <Form customSubmitButton={true} id="register" onSubmit={this.onSubmit}
+                      title="Create Your new Account"
+                      fields={fields}>
+                    <div><Link to="/forgotPassword">Forgot password?</Link></div>
+                    <AuthFormSubmitButton icon="how_to_reg">Create Account</AuthFormSubmitButton>
+                </Form>
+                <AuthFormAlternateButton link="/login" text="Already created an account? Sign In instead.">
+                    <i className="material-icons">accessibility</i>Sign In
+                </AuthFormAlternateButton>
+            </AuthFormContainer>
+        );
     }
 }
 

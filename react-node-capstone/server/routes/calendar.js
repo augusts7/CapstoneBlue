@@ -1,10 +1,9 @@
-
-
-var router = require("express").Router();
-var pool = require("../db/database");
-var sqlHelper = require("../utils/sql-helper/sql-helper");
-var bodyParser = require("body-parser");
-let authMiddleware = require("../middlewares/auth-middleware").authMiddleware;
+const router = require("express").Router();
+const pool = require("../db/database");
+const sqlHelper = require("../utils/sql-helper/sql-helper");
+const bodyParser = require("body-parser");
+const authMiddleware = require("../middlewares/auth-middleware").authMiddleware;
+const socket = require("../utils/socket/socket");
 
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
@@ -49,6 +48,8 @@ router.post("/share", (req, res, next) => {
 
     pool.query(sql, req.body.sharedToEmail, function (error, results, fields) {
 
+        console.log("Start share calendar");
+
         if (error) {
             return next("Failed to connect to the database. " + error);
         }
@@ -58,6 +59,8 @@ router.post("/share", (req, res, next) => {
             sharedCalendarId: req.body.sharedCalendarId,
             sharedCalendarName: req.body.sharedCalendarName
         };
+
+        socket.broadcastToUser(calendar.sharedToUserId, "newCalendarShared", calendar);
 
         console.log(calendar);
 

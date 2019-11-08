@@ -8,7 +8,7 @@ import {
     DateTimePicker,
 } from '@material-ui/pickers';
 import TextField from "@material-ui/core/TextField"
-import {post} from "../../../../ApiHelper/ApiHelper"
+import {post} from "../../../../api-helper/ApiHelper"
 import {getSlots} from "../utils/slotsHelper";
 import CalendarFormBaseLayout from "../base-layout/BaseLayout";
 import AdvisingSlotShowAdvisingItem from "./AdvisingSlotShowAdvisingItem";

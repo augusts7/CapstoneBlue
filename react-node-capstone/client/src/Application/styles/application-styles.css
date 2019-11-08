@@ -1,0 +1,42 @@
+a {
+    color: darkslateblue;
+}
+
+a:hover {
+    font-weight: bold;
+}
+
+.mdl-menu__item {
+    font-size: 16px;
+}
+
+.drawer-text {
+    font-size: 16px;
+}
+
+.full {
+    height: 100%;
+    width: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+#content-div {
+    min-height: 85%;
+}
+
+a {
+    text-decoration: none;
+}
+
+.cols-2 {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.center {
+    margin-right: auto;
+    margin-left: auto;
+}

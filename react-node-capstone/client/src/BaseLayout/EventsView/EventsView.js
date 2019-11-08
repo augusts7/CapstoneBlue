@@ -16,7 +16,7 @@ class EventsView extends React.Component {
     render() {
         if (this.state.user_type === "student") {
             return (
-                <div>
+                <div className="flex-full">
 
                     <div className="inner">
                         <Button type="submit" variant="contained" size="large" className="msgBtn2" href="/requestEvent"><i className="material-icons">schedule</i>Request Event</Button>
@@ -31,7 +31,7 @@ class EventsView extends React.Component {
             );
         } else {
             return (
-                <div>
+                <div className="flex-full">
 
                     <div className="inner">
                         <Button type="submit" variant="contained" size="large" className="msgBtn" href="/createEvent"><i className="material-icons">create</i>Create Events</Button>

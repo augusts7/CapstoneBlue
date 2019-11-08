@@ -60,7 +60,7 @@ export default class CalenderView extends React.Component {
             this.setState({"addCalendarForm": true});
         },
         "showAddEventForm": () => {
-            this.setState({"eventForm": true});
+            this.setState({"eventForm": true, "formMode": "event"});
         },
         "showAddAppointmentForm": () => {
             this.setState({"eventForm": true, "formMode": "appointment"});

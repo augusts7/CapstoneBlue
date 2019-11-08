@@ -1,7 +1,7 @@
 import React from 'react';
 import MessageBox from "../../../../components/Form/MessageBox/MessageBox"
 import 'date-fns';
-import { get, post } from "../../../../ApiHelper/ApiHelper"
+import { get, post } from "../../../../api-helper/ApiHelper"
 import CalendarFormBaseLayout from "../base-layout/BaseLayout";
 import UnSelectedAdvisingItem from "../../events/event-type-specific-items/AdvisingSignUpItem";
 

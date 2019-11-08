@@ -1,0 +1,40 @@
+
+.filterItem {
+    cursor: pointer;
+}
+
+.filterItemTitleContainer {
+    display: flex;
+    padding: 4px 4px;
+}
+.filterItemTitleText {
+    flex-grow: 5;
+    padding: 4px 4px 2px 12px;
+}
+.filterItemTitleActionsContainer {
+    flex-grow: 0;
+    display: flex;
+}
+.filterItemTitleActionsContainer >div {
+    margin-left: 4px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.filterItemContainer {
+    background-color: white;
+    padding-bottom: 8px;
+}
+.filterItemOptionContainer {
+    display: flex;
+    padding-left: 8px;
+    cursor: pointer;
+}
+.filterItemOptionContainer .mainItem {
+    flex-grow: 5;
+}
+.filterItemOptionContainer .actionItem {
+    flex-grow: 0;
+}
+.filterItemOptionContainer:hover {
+    background-color: #E0E0E0;
+}

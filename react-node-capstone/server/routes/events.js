@@ -1,8 +1,8 @@
-var router = require("express").Router();
-var pool = require("../db/database");
-var sqlHandler = require("../utils/sql-helper/sql-helper");
-var bodyParser = require("body-parser");
-let authMiddleware = require("../middlewares/auth-middleware").authMiddleware;
+const router = require("express").Router();
+const pool = require("../db/database");
+const sqlHelper = require("../utils/sql-helper/sql-helper");
+const bodyParser = require("body-parser");
+const authMiddleware = require("../middlewares/auth-middleware").authMiddleware;
 
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
@@ -11,12 +11,9 @@ router.use(authMiddleware);
 
 router.get("/attending/:calendarId", function (req, res) {
 
-    let calendarId = "" +  req.params.calendarId;
+    const select = "SELECT * FROM attending INNER JOIN event ON event.eventID = attending.event_id WHERE attendee_id = " + req.user.user_id;
 
-    let select = "SELECT * FROM attending INNER JOIN event ON event.eventID = attending.event_id WHERE attendee_id = " + req.user.user_id;
-
-    sqlHandler.handleSelectAndRespond(select, res);
-
+    sqlHelper.handleSelectAndRespond(select, res);
 });
 
 router.get("/sharedCalendar/:sharedCalId", function (req, res, next) {
@@ -34,22 +31,12 @@ router.get("/sharedCalendar/:sharedCalId", function (req, res, next) {
 
             let select = "SELECT * FROM event INNER JOIN attending ON eventID = event_id WHERE attendee_id = " + sharingUserId;
 
-            sqlHandler.handleSelectAndRespond(select, res);
+            sqlHelper.handleSelectAndRespond(select, res);
         } else {
             return res.json({success: true, results: []});
         }
 
     });
-});
-
-router.get("/all", async (req, res) => {
-    try {
-        let events = await pool.query("SELECT * FROM event");
-        res.json(events);
-    } catch (e) {
-        console.log(e);
-        res.sendStatus(500);
-    }
 });
 
 router.get("/created/:calendarId", function (req, res) {
@@ -62,7 +49,7 @@ router.get("/created/:calendarId", function (req, res) {
         select = "SELECT * FROM event WHERE creator_id = " + req.user.user_id + " AND creator_calendar_id = " + req.params.calendarId;
     }
 
-    sqlHandler.handleSelectAndRespond(select, res);
+    sqlHelper.handleSelectAndRespond(select, res);
 
 });
 
@@ -78,7 +65,7 @@ router.post("/", (req, res) => {
         carousel: req.body.carousel || "1",
     };
 
-    sqlHandler.handleSetObjectAndRespond("INSERT INTO event SET ?", event, res);
+    sqlHelper.handleSetObjectAndRespond("INSERT INTO event SET ?", event, res);
 });
 
 router.post("/edit", (req, res) => {
@@ -100,7 +87,7 @@ router.post("/edit", (req, res) => {
             eventID: req.body.eventId
         };
 
-        sqlHandler.handleSetObjectAndRespond("UPDATE event SET ? WHERE eventID = " + event.eventID, event, res);
+        sqlHelper.handleSetObjectAndRespond("UPDATE event SET ? WHERE eventID = " + event.eventID, event, res);
     });
 });
 
@@ -111,7 +98,7 @@ router.post("/delete", (req, res) => {
 
         const id = req.body.eventId;
 
-        sqlHandler.handleDeleteAndRespond("DELETE FROM event WHERE eventID = " + id, res);
+        sqlHelper.handleDeleteAndRespond("DELETE FROM event WHERE eventID = " + id, res);
     }
 
 });

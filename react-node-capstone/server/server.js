@@ -3,6 +3,8 @@ const app = express(); //Intializes an express app
 const port = process.env.PORT || 8080; //Creates a port varible to be used later in app.listen()
 const cookieParser = require("cookie-parser");
 const expressSession = require("express-session");
+const http = require("http").createServer(app);
+const socket = require("./utils/socket/socket");
 
 const session = {
   secret: "LoxodontaElephasMammuthusPalaeoloxodonPrimelephas",
@@ -22,6 +24,7 @@ app.use(expressSession(session));
 
 const passportHelper = require("./auth/passport");
 passportHelper.initPassport(app);
+socket.initSocket(http);
 
 
 //Routes
@@ -67,4 +70,4 @@ app.use((err, req, res, next) => {
 });
 
 // console.log that your server is up and running
-app.listen(port, () => console.log(`Listening on port ${port}`));
+http.listen(port, () => console.log(`Listening on port ${port}`));

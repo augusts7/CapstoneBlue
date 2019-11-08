@@ -11,13 +11,13 @@ import Progress from "../../generic-components/Progress";
 export default function CalendarFormBaseLayout (props) {
 
     return (
-        <Dialog fullWidth={true} className="dialog styleScroll" open={props.open} onClose={props.onClose} aria-labelledby="form-dialog-title">
+        <Dialog fullWidth={true} className="dialog" open={props.open} onClose={props.onClose} aria-labelledby="form-dialog-title">
             <DialogTitle className="dialog-title">
                 <h4>{props.title}</h4>
             </DialogTitle>
 
             <Progress show={props.progress} />
-            <DialogContent className="dialog-white-content">
+            <DialogContent className="dialog-white-content styleScroll">
                 <DialogContentText>
                     {props.text}
                 </DialogContentText>

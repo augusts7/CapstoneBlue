@@ -2,15 +2,15 @@ import React from "react";
 import Calendar from "./calendar/Calendar";
 import CalendarOptions from "./calendar-options-view/CalendarOptions"
 import ls from "local-storage"
-import {get} from "../../ApiHelper/ApiHelper"
+import {get} from "../../api-helper/ApiHelper"
 import EventTypesData from "./data/EventTypesData";
 import DetailView from "./calendar-detail-view/CalendarEventsDetailView";
-import DrawerHeader from "./side-drawer/DrawerHeader";
 import Progress from "./generic-components/Progress";
 import FloatingAddButton from "./floating-action-button/FloatingAddButton";
 
-import "./scroll.css"
-import "./dialog-styles.css"
+import "./scroll.css";
+import "./CalendarViewLayout.css";
+import "./calendar-forms/dialog-styles.css";
 
 
 class CalenderViewLayout extends React.Component {
@@ -39,57 +39,39 @@ class CalenderViewLayout extends React.Component {
 
     onChangeCalendarData(action, values) {
 
-        if (action === "eventTypes") {
-            this.onDisplayEventTypesChange(values);
-        } else if (action === "clear") {
-            this.setState({"data": []});
-        } else if (action === "cal") {
+        if (action === "cal") {
             this.onChangeCalendarOptions(values);
         } else if (action === "sharedCal") {
             this.onChangeSharedCalendarOptions(values);
         }
-
     }
 
     onChangeCalendarOptions = (values) => {
 
         const calId = values.id;
+        const name = "calData-" + calId;
 
         if (values.show) {
-
-            this.state.eventTypes.forEach((type) => {
-                const name = type + calId;
-
-                const allEvents = this.state[name];
-
-                if (allEvents == null || allEvents.length === 0) {
-                    this.loadData(type, calId);
-                }
-            });
-
-            this.setState({"cals": [...this.state.cals, calId]})
-
+            if (this.state[name] == null || this.state[name].length === 0) {
+                this.loadData(calId);
+                this.setState({"cals": [...this.state.cals, calId]})
+            }
         } else {
 
             let nState = {};
-
-            this.state.eventTypes.forEach((type) => {
-                const name = type + calId;
-                nState[name] = [];
-            });
-
+            nState[name] = [];
             nState["cals"] = this.state.cals.filter((id) => {
-                return id !== calId ? true : false
+                return id !== calId
             });
             this.setState(nState);
         }
-        console.log(values);
     };
 
     onChangeSharedCalendarOptions(values) {
 
         const calId = values.id;
         const name = "sharedCalData-" + calId;
+
         if (values.show) {
 
             if (this.state[name] == null || this.state[name].length === 0) {
@@ -103,54 +85,12 @@ class CalenderViewLayout extends React.Component {
 
             nState[name] = [];
             nState["sharedCals"] = this.state.sharedCals.filter((id) => {
-                return id !== calId ? true : false
+                return id !== calId
             });
             this.setState(nState);
         }
         console.log(values);
     }
-
-    onDisplayEventTypesChange = (showEventTypes) => {
-
-        //this.setState({ "displayDataType": displayDataType });
-
-        if (showEventTypes == null || showEventTypes.length === 0) {
-            return;
-        }
-
-        let eventTypes = [];
-        for (let eventType in showEventTypes) {
-
-            const eType = eventType;
-
-            if (showEventTypes[eType]) {
-                const type = eType;
-                this.state.cals.forEach((id) => {
-                    const name = type + id;
-
-                    console.log(this.state);
-                    console.log(this.state[name]);
-
-                    let currentData = this.state[name];
-                    if (currentData == null || currentData.length === 0) {
-                        this.loadData(eType, id);
-                    }
-                });
-
-                eventTypes.push(eType);
-
-            } else {
-                let newState = {};
-                this.state.cals.forEach(function (id) {
-                    const name = eType + id;
-                    newState[name] = [];
-                });
-                this.setState(newState);
-            }
-        }
-        this.setState({"eventTypes": eventTypes});
-        console.log(showEventTypes);
-    };
 
 
     openPopup(name, data) {
@@ -169,7 +109,7 @@ class CalenderViewLayout extends React.Component {
     }
 
 
-    loadData(displayDataType, calId) {
+    loadData(calId) {
 
         if (calId == null || calId.length === 0) {
             calId = "main";
@@ -178,14 +118,11 @@ class CalenderViewLayout extends React.Component {
         if (this.state.isLoading) {
             return;
         } else {
-            this.setState({isLoading: true,});
+            this.setState({isLoading: true});
         }
 
-        let url = EventTypesData.dataMapping[displayDataType].url;
+        let url = "events/attending/";
 
-        if ((calId.length > 0)) {
-            url += "/" + calId;
-        }
         get(url, (res) => {
 
             let data = [];
@@ -205,11 +142,9 @@ class CalenderViewLayout extends React.Component {
                         "backgroundColor": "#880E4F",
                         "event_type": d.event_type,
                     });
-                    data = EventTypesData.addEventSpecificData(displayDataType, data);
                 });
-
             }
-            const name = displayDataType + calId;
+            const name = "calData-" + calId;
             this.setState({[name]: data, "isLoading": false});
         });
 
@@ -226,7 +161,7 @@ class CalenderViewLayout extends React.Component {
         }
 
         if (!this.state.isLoading) {
-            this.setState({isLoading: true, "showSnackbar": true, "snackbarMessage": "Loading. Please Wait!"});
+            this.setState({isLoading: true});
         }
 
         let url = "/events/sharedCalendar/" + calId;
@@ -274,21 +209,14 @@ class CalenderViewLayout extends React.Component {
     getProcessedEventsToDisplay() {
         let events = [];
 
-        this.state.eventTypes.forEach((type) => {
+        this.state.cals.forEach(id => {
+            const name = "calData-" + id;
+            const currentEvents = this.state[name];
 
-            this.state.cals.forEach(id => {
-                const name = type + id;
-                const currentEvents = this.state[name];
-                console.log(name);
-                console.log(currentEvents);
-                if (currentEvents != null && currentEvents.length > 0) {
-
-                    events = events.concat(currentEvents);
-                }
-
-            });
+            if (currentEvents != null && currentEvents.length > 0) {
+                events = events.concat(currentEvents);
+            }
         });
-
         this.state.sharedCals.forEach((sCal) => {
 
             const name = "sharedCalData-" + sCal;
@@ -298,8 +226,6 @@ class CalenderViewLayout extends React.Component {
             }
 
         });
-
-        console.log(events);
         return events;
     }
 
@@ -321,27 +247,26 @@ class CalenderViewLayout extends React.Component {
             title = "Loading .....";
         }
 
+
         return (
-            <div className="calendarViewRoot mdl-layout mdl-layout--fixed-drawer">
+            <div className="flex-full mdl-color--white">
 
                 <DetailView data={this.state.eventsDetailViewData} events={events}
                             onCancel={() => this.handlePopupClose("eventsDetailView")}
                             onClose={() => this.handlePopupClose("eventsDetailView")}
                             open={this.state.eventsDetailView}/>
 
-                <div className="mdl-layout__drawer styleScroll" style={{paddingBottom: "16px"}}>
-                    <DrawerHeader/>
-                    <CalendarOptions isLoading={this.state.isLoading} onChangeCalendarData={this.onChangeCalendarData}
+                <div className="CalendarViewContentContainer">
+                    <CalendarOptions isLoading={this.state.isLoading}
+                                     onChangeCalendarData={this.onChangeCalendarData}
                                      events={events} userType={this.state.userType}/>
 
+                    <div>
+                        <Progress show={this.state.isLoading}/>
+                        <Calendar onEventClick={this.onEventClick} onDateClick={this.onDateClick} events={events}/>
+                        <FloatingAddButton/>
+                    </div>
                 </div>
-                <main className="mdl-layout__content">
-                    <Progress show={this.state.isLoading}/>
-                    <Calendar onEventClick={this.onEventClick} onDateClick={this.onDateClick} events={events}/>
-                    <FloatingAddButton/>
-                </main>
-
-
             </div>
         );
     }

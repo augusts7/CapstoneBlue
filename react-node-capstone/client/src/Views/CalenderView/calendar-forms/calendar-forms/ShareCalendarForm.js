@@ -1,6 +1,6 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import {get, post} from "../../../../ApiHelper/ApiHelper"
+import {get, post} from "../../../../api-helper/ApiHelper"
 import Select from "../../../../components/Select/Select";
 import CalendarFormBaseLayout from "../base-layout/BaseLayout";
 
@@ -32,7 +32,7 @@ export default class ShareCalendarForm extends React.Component {
 
         if (this.state.name.length > 0 && this.state.email.length > 0) {
 
-            let calendarId = this.props.sharedCalId;
+            let calendarId = this.props.sharedCalendarId;
 
             if (calendarId === null || calendarId <= 0) {
                 calendarId = this.state.calendarId;
@@ -87,7 +87,6 @@ export default class ShareCalendarForm extends React.Component {
     };
 
     layoutValues = {
-        "text": "Enter the name of the shared calendar and the email of the user to share the calendar with.",
         buttons: [
             {name: "Cancel", onClick: this.handleClose},
             {name: "Share Calendar", onClick: this.handleShare}
@@ -106,7 +105,7 @@ export default class ShareCalendarForm extends React.Component {
         }
 
         return (
-            <CalendarFormBaseLayout onClose={this.handleClose} open={this.props.open} buttons={this.layoutValues.buttons} text={this.layoutValues.text} progress={this.state.progress}
+            <CalendarFormBaseLayout onClose={this.handleClose} open={this.props.open} buttons={this.layoutValues.buttons} progress={this.state.progress}
                                     title="Share Your Calendar">
                 <TextField
                     fullWidth
@@ -114,7 +113,7 @@ export default class ShareCalendarForm extends React.Component {
                     name="name"
                     onChange={this.handleChange}
                     value={this.state.name}
-                    label={"Name for Shared Calendar"}
+                    label={"Name"}
                     margin="normal"/>
 
                 <TextField
@@ -123,7 +122,7 @@ export default class ShareCalendarForm extends React.Component {
                     name="email"
                     onChange={this.handleChange}
                     value={this.state.email}
-                    label={"Email of user to share Calendar with"}
+                    label={"User Email"}
                     margin="normal"/>
 
                 {calendarOptions}

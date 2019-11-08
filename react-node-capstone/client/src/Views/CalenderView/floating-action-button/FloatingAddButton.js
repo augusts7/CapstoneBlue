@@ -13,6 +13,8 @@ const buttonStyle = {
     zIndex: "900"
 };
 
+const textStyle = {marginLeft: "8px"};
+
 export default class FloatingAddButton extends React.Component {
 
     render() {
@@ -24,9 +26,9 @@ export default class FloatingAddButton extends React.Component {
         return (
             <div style={buttonStyle}>
 
-                <Tooltip title="Add Event or Appointment" aria-label="add">
-                    <Fab onClick={handleClick} color="secondary">
-                        <AddIcon/>
+                <Tooltip enterDelay={600} leaveDelay={100} title="Add Event or Appointment" aria-label="add">
+                    <Fab variant="extended" onClick={handleClick} color="primary" size="large">
+                        <AddIcon/><span style={textStyle}>Add</span>
                     </Fab>
                 </Tooltip>
             </div>

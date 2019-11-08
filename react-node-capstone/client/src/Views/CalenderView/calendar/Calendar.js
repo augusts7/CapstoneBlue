@@ -66,7 +66,7 @@ export default class Calendar extends React.Component {
         return (
             <div style={calendarContainerStyle} className='center full'>
 
-                <div style={calendarAppStyle} className="mdl-color--white mdl-shadow--2dp">
+                <div style={calendarAppStyle} className="mdl-color--white">
                     <FullCalendar
                         defaultView="dayGridMonth"
                         header={{

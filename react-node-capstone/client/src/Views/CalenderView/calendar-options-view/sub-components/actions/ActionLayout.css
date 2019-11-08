@@ -1,0 +1,21 @@
+.actionItemOptionContainer .icon {
+    margin-right: 4px;
+    margin-left: 4px;
+    flex-grow: 0;
+    color: #0D47A1;
+}
+.actionItemOptionContainer .mainItem {
+    margin-right: 4px;
+    margin-left: 8px;
+    font-weight: 500;
+    color: #3c4043;
+    flex-grow: 5;
+}
+.actionItemOptionContainer {
+    display: flex;
+    padding: 4px 4px 4px 12px;
+    cursor: pointer;
+}
+.actionItemOptionContainer:hover {
+    background-color: #E0E0E0;
+}

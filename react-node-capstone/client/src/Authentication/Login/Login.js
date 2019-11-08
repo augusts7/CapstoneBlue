@@ -4,6 +4,9 @@ import MessageBox from "../../components/Form/MessageBox/MessageBox"
 import Button from "../../components/Button/Button"
 import { Link } from "react-router-dom"
 import AuthContext from "../../Context/AuthContext";
+import AuthFormContainer from "../AuthFormLayout/AuthFormContainer";
+import AuthFormAlternateButton from "../AuthFormLayout/AuthFormAlternateButton";
+import AuthFormSubmitButton from "../AuthFormLayout/AuthFormSubmitButton";
 
 
 const fields = [
@@ -35,11 +38,6 @@ class Login extends React.Component {
         this.setState({ "message": "" });
     }
 
-    handleOptionChange = changeEvent => {
-        this.setState({
-            user_type: changeEvent.target.value
-        });
-    };
     onSubmit(target) {
 
         this.setState({ "isLoading": true });
@@ -71,27 +69,17 @@ class Login extends React.Component {
 
     render() {
 
-
         return (
-            <div className="mdl-grid" style={{ "width": "100%" }}>
-                <div className="mdl-cell--6-col mdl-cell--10-col-phone mdl-cell--10-col-tablet mdl-color--white mdl-shadow--4dp center">
-                    <MessageBox message={this.state.message} hideMessage={this.hideMessage} />
-                    <Form customSubmitButton={true} id={id} onSubmit={this.onSubmit} title={title} fields={fields}>
-                        <div><Link to="/forgotPassword">Forgot password?</Link></div>
-                        <div>
-                            <Button role="main" type="submit" style={{ "margin-top": "16px", "padding-left": "16px", "padding-right": "16px" }}>Submit</Button>
-                        </div>
-
-                    </Form>
-                    <div className="mdl-shadow--4dp" style={{ "border": "0.5px solid #1976D2", "background-color": "#1565C0", "color": "white", "padding": "24px 8px 8px 8px", "margin": "24px 0px 0px 0px" }}>
-                        <div style={{ "display": "flex", "justify-content": "center" }}>
-                            <Link to="/register">
-                                <Button role="main" style={{ "padding-left": "816x", "padding-right": "32px" }}><i className="material-icons">how_to_reg</i>Register</Button>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <AuthFormContainer>
+                <MessageBox message={this.state.message} hideMessage={this.hideMessage} />
+                <Form customSubmitButton={true} id={id} onSubmit={this.onSubmit} title={title} fields={fields}>
+                    <div><Link to="/forgotPassword">Forgot password?</Link></div>
+                    <AuthFormSubmitButton icon="accessibility">Sign In</AuthFormSubmitButton>
+                </Form>
+                <AuthFormAlternateButton link="/register" text="Create a new Account instead">
+                    <i className="material-icons">how_to_reg</i>Register
+                </AuthFormAlternateButton>
+            </AuthFormContainer>
         );
     }
 }

@@ -1,15 +1,15 @@
-var router = require("express").Router();
-var pool = require("../db/database");
+const router = require("express").Router();
+const pool = require("../db/database");
 const passport = require("passport");
-var bodyParser = require("body-parser");
-var emailHelper = require("../email/emailHelper");
-
+const bodyParser = require("body-parser");
+const emailHelper = require("../utils/email/email-sender");
+const tokens = require("../utils/tokens/tokens");
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 router.post('/login', function (req, res, next) {
-  
+
     passport.authenticate('local', function (err, user, info) {
         if (err) {
             return next("Couldn't connect to the database. " + err );
@@ -22,10 +22,10 @@ router.post('/login', function (req, res, next) {
             if (err) {
                 return next("Authentication failed. Error logging in user.");
             }
-            
+            user.token = tokens.encode(user.user_id);
             return res.json({ "success": true, "message": "User has been logged in", "user": user });
         });
-        
+
 
     })(req, res);
 });
@@ -44,8 +44,6 @@ router.get('/silentLogin', function (req, res, next) {
             } else {
                 return next("Couldn't silent login");
             }
-
-
         });
     }
 });
@@ -97,32 +95,33 @@ router.post("/register", function (req, res, next) {
                             }
 
                             req.login(user, function (err) {
-                                if (error) {
+                                if (err) {
                                     return next("Couldn't connect to the database. " + error);
                                 }
-                               
+                                user.token = tokens.encode(user.user_id);
                                 return res.json({ "success": true, "message": "User has been registered and logged in as " + user.campusEmail, "user": user });
                             });
 
                         });
                     } else {
                         req.login(user, function (err) {
-                            if (error) {
+                            if (err) {
                                 return next("User has been registered, but couldn't be logged in.");
-                            } 
+                            }
+                            user.token = tokens.encode(user.user_id);
                             return res.json({ "success": true, "message": "User has been registered and logged in as " + user.campusEmail, "user": user });
                         });
                     }
                 });
             } else {
                 return next("User already exists in database");
-            
+
             }
         } catch (err) {
             return next("Error while trying to register user");
         }
 
-        
+
     });
 });
 
@@ -143,7 +142,7 @@ router.post('/forgotPassword', function (req, res, next) {
                 } else {
                     return res.json({ "success": false, "message": "Your campus Id was incorrect" });
                 }
-                
+
 
             } else {
                 return next("Email does not exist");
@@ -152,7 +151,7 @@ router.post('/forgotPassword', function (req, res, next) {
         } catch (err) {
             return next("Error while handling request. Are you sure that the email exists in our database? " + err);
         }
-        
+
     });
 
 });

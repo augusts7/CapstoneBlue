@@ -1,6 +1,6 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import { post } from "../../../../ApiHelper/ApiHelper"
+import {post} from "../../../../api-helper/ApiHelper"
 import CalendarFormBaseLayout from "../base-layout/BaseLayout";
 
 
@@ -20,7 +20,7 @@ export default function AddNewCalendarForm(props) {
     const handleSave = () => {
         if (calName.length > 0) {
 
-            let data = { "calendarName": calName };
+            let data = {"calendarName": calName};
 
             post("/calendar", data, (res) => {
 
@@ -35,21 +35,21 @@ export default function AddNewCalendarForm(props) {
         }
     };
 
-    const text = "To create a New Calendar, you have to enter the name for your New Calendar.";
     const buttons = [
         {name: "Cancel", onClick: handleClose},
         {name: "Add Calendar", onClick: handleSave}
     ];
 
     return (
-        <CalendarFormBaseLayout open={props.open} buttons={buttons} onClose={handleClose} text={text} progress={progress} title="Add New Calendar">
+        <CalendarFormBaseLayout open={props.open} buttons={buttons} onClose={handleClose} progress={progress}
+                                title="Add New Calendar">
             <TextField
                 fullWidth
                 type="text"
                 onChange={handleChange}
                 value={calName}
-                label={"Enter Calendar Name"}
-                margin="normal" />
+                label={"Name"}
+                margin="normal"/>
         </CalendarFormBaseLayout>
     );
 }

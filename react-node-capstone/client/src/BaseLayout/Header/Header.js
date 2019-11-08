@@ -3,13 +3,13 @@ import {Link} from "react-router-dom";
 import "./Header.css";
 import AuthContext from "../../Context/AuthContext";
 import Avatar from "@material-ui/core/Avatar";
-import Notifications from "./notifications/NotificationsIcon";
+import Notifications from "./notifications/NotificationsView";
+import AppBarWithTabs from "./AppBar";
 
 
 export default function Header(props) {
 
     const authContext = useContext(AuthContext);
-
 
     return (
         <header className="mdl-layout__header">
@@ -37,9 +37,6 @@ export default function Header(props) {
                         </Link>
                         <Link className="mdl-navigation__link" to="/eventsView">
                             Events
-                        </Link>
-                        <Link className="mdl-navigation__link" to="/profile">
-                            My Profile
                         </Link>
                         <Link className="mdl-navigation__link" to="/profileView">
                             Profile

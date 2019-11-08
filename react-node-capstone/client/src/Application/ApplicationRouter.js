@@ -17,13 +17,18 @@ import Login from "../Authentication/Login/Login";
 import Register from "../Authentication/Register/Register";
 import AuthRoute from "../Route/AuthRoute";
 import ProfileView from "../Views/ProfileView/ProfileView";
-import "./Application.css";
+import "./images/background.jpg";
+
+import "./styles/application-styles.css";
+import "./styles/flex-styles.css";
+import "./styles/text-and-background-colors.css";
+import "./styles/background-images.css";
 
 export default function ApplicationRouter(props) {
 
     let header = <div/>;
     let footer = <div/>;
-    let wrapperClassName = "mdl-layout mdl-js-layout mdl-layout--fixed-header full";
+    let wrapperClassName = "mdl-layout mdl-js-layout flex-column mdl-layout--fixed-header full";
     let contentClassName = "mdl-layout__content";
 
 
@@ -32,11 +37,11 @@ export default function ApplicationRouter(props) {
         header = <Header/>;
         footer = <Footer/>;
 
-        wrapperClassName += " login-container";
-        contentClassName += " mdl-layout__content mdl-color--grey-200";
+        wrapperClassName += " ";
+        contentClassName += " flex-column flex-full mdl-color--grey-200";
     } else {
 
-        wrapperClassName += " login-container";
+        wrapperClassName += " flex-full ulm-library-image";
         contentClassName += "";
     }
 
@@ -74,7 +79,7 @@ export default function ApplicationRouter(props) {
                 {header}
 
                 <main className={contentClassName}>
-                    <div id="content-div">
+                    <div className="flex-column flex-full">
 
                         <Switch>
                             {routesHtml}
