@@ -26,7 +26,7 @@ class GroupView extends React.Component {
       creator_id: 0,
       eventListItems: [],
       groupMembers: [],
-      user_id: 0
+      user_id: 30030101
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -82,7 +82,7 @@ class GroupView extends React.Component {
       return <MenuItem value={g.group_id}>{g.group_name}</MenuItem>;
     });
 
-    if (this.state.user_id === this.state.creator_id) {
+    if (this.state.user_id == this.state.creator_id) {
       return (
         <div className="group-view">
           <div className="group-header">

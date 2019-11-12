@@ -45,6 +45,36 @@ export default class extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
+  createGroupEvent() {
+    fetch("/events", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        start: this.state.start,
+        end: this.state.end,
+        title: this.state.title,
+        description: this.state.description,
+        event_type: "global",
+        group_id: this.state.groupID
+      })
+    })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(body) {
+        console.log(body);
+      });
+    this.setState({
+      start: new Date(),
+      end: new Date(),
+      title: "",
+      description: ""
+    });
+  }
+
   render() {
     const { open } = this.state;
     var button = <div>Error</div>;
@@ -59,7 +89,6 @@ export default class extends Component {
           size="large"
           className="msgBtn2"
           onClick={this.handleToggle}
-          mini
         >
           <i className="material-icons">schedule</i>Request Event
         </Button>
@@ -74,7 +103,6 @@ export default class extends Component {
           size="large"
           className="msgBtn2"
           onClick={this.handleToggle}
-          mini
         >
           <i className="material-icons">event</i>Create Event
         </Button>

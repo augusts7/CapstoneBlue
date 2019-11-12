@@ -2,8 +2,7 @@ var router = require("express").Router();
 var pool = require("../db/database");
 var bodyParser = require("body-parser");
 
-
-router.use(bodyParser.urlencoded({extended: false}));
+router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 router.route("/").get(async (req, res) => {
@@ -18,7 +17,7 @@ router.route("/").get(async (req, res) => {
     console.log("check");
     res.json(my_groups);
   } catch (e) {
-    console.log(e);
+    console.log("Please restart Server");
     res.sendStatus(500);
   }
 });

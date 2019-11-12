@@ -66,9 +66,11 @@ class EventList extends Component {
     }
   }
 
+  deleteEvent() {}
+
   render() {
-    if (this.props.events) {
-      var eventsList = this.props.events.map(event => {
+    var eventsList = this.props.events.map(event => {
+      if (event.title.length > 0) {
         return (
           <div className="eventListItem" key={event.eventID}>
             <div className="date">
@@ -89,8 +91,10 @@ class EventList extends Component {
             </div>
           </div>
         );
-      });
-    }
+      } else {
+        return <h5>No Events Scheduled</h5>;
+      }
+    });
 
     return <div className="eventList">{eventsList}</div>;
   }
