@@ -1,8 +1,7 @@
 import React from "react";
 import Popover from '@material-ui/core/Popover';
 import NotificationsPopupItem from "./NotificationsPopupItem";
-import Progress from "../../../../Views/CalenderView/generic-components/Progress";
-import {get} from "../../../../api-helper/ApiHelper";
+import Progress from "../../../../Views/CalenderView/components/generic/Progress";
 
 
 const anchorOrigin = {
@@ -24,12 +23,11 @@ const containerStyle = {
 
 export default class NotificationsPopup extends React.Component {
 
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
-            "isLoading": false,
-            "invitedEvents": [],
+            isLoading: false
         };
     }
 
@@ -38,54 +36,20 @@ export default class NotificationsPopup extends React.Component {
         this.props.onClose();
     };
 
-    handleRemoveItem = (id) => {
-        if (this.state.invitedEvents == null || this.state.invitedEvents.length < 1) {
-            return false;
-        }
-        let newEvents = this.state.invitedEvents.filter((iE) => iE.eventID == id ? false : true);
-        this.setState({"invitedEvents": newEvents});
-    };
-
-    componentDidMount() {
-        this.loadAllEventRequests();
-    }
-
-    loadAllEventRequests = () => {
-        this.setState({isLoading: true});
-        get("/appointments/receivedInvite", (res) => {
-            let allEvents = [];
-            if (res.success) {
-                allEvents = res.results;
-            }
-            this.setState({"invitedEvents": allEvents, isLoading: false});
-            if (allEvents.length === 0) {
-                this.props.onClose();
-            }
-        });
-    };
-
 
     handleClose = () => {
         this.props.onClose();
     };
 
     handleRemoveItem = (id) => {
-        if (this.state.invitedEvents == null || this.state.invitedEvents.length < 1) {
-            return false;
-        }
-        let newEvents = this.state.invitedEvents.filter((iE) => iE.eventID === id ? false : true);
-        this.setState({"invitedEvents": newEvents});
+        this.props.onDeleteItem(id);
     };
 
 
-    componentWillReceiveProps(nextProps, nextContext) {
-        this.loadAllEventRequests();
-    }
-
     render() {
         let invitedEvents = [];
-        if (this.state.invitedEvents != null && this.state.invitedEvents.length > 0) {
-            this.state.invitedEvents.forEach((iE) => {
+        if (this.props.invitedEvents != null && this.props.invitedEvents.length > 0) {
+            this.props.invitedEvents.forEach((iE) => {
                 invitedEvents.push(<NotificationsPopupItem onRemoveItem={this.handleRemoveItem} event={iE}/>);
             });
         }

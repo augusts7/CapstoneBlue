@@ -1,11 +1,11 @@
 import React from "react";
-import EventForm from "./calendar-forms/EventForm";
-import AdvisingSlotForm from "./calendar-forms/advising-forms/AdvisingSlotForm";
-import AdvisingSignUpForm from "./calendar-forms/advising-forms/AdvisingSignUpForm";
-import ShareCalendarForm from "./calendar-forms/calendar-forms/ShareCalendarForm";
+import EventForm from "./components/forms/event-forms/EventForm";
+import AdvisingSlotForm from "./components/forms/advising-forms/AdvisingSlotForm";
+import AdvisingSignUpForm from "./components/forms/advising-forms/AdvisingSignUpForm";
+import ShareCalendarForm from "./components/forms/calendar-forms/ShareCalendarForm";
 import CalendarActionsContext from "./context/CalendarActionsContext";
-import CalendarViewLayout from "./CalenderViewLayout";
-import AddNewCalendarForm from "./calendar-forms/calendar-forms/AddNewCalendarForm";
+import CalendarViewLayout from "./components/main-component/CalenderViewLayout";
+import AddNewCalendarForm from "./components/forms/calendar-forms/AddNewCalendarForm";
 
 export default class CalenderView extends React.Component {
 

@@ -2,12 +2,11 @@ import React from "react";
 import Form from "../../components/Form/Form";
 import MessageBox from "../../components/Form/MessageBox/MessageBox"
 import {Link} from "react-router-dom"
-import Button from "../../components/Button/Button"
 import AuthContext from "../../Context/AuthContext";
-import AuthFormContainer from "../AuthFormLayout/AuthFormContainer";
-import AuthFormAlternateButton from "../AuthFormLayout/AuthFormAlternateButton";
-import {post, get} from "../../api-helper/ApiHelper";
-import AuthFormSubmitButton from "../AuthFormLayout/AuthFormSubmitButton";
+import AuthFormContainer from "../AuthenticationFormLayout/AuthFormContainer";
+import AuthFormAlternateButton from "../AuthenticationFormLayout/AuthFormAlternateButton";
+import {post, get} from "../../ApiHelper/ApiHelper";
+import AuthFormSubmitButton from "../AuthenticationFormLayout/AuthFormSubmitButton";
 
 
 

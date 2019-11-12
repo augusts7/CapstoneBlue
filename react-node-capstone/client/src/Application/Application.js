@@ -3,8 +3,7 @@ import ls from "local-storage";
 import UserContext from "../Context/UserContext";
 import AuthContext from "../Context/AuthContext";
 import ApplicationRouter from "./ApplicationRouter";
-import {get} from "../api-helper/ApiHelper";
-import {connectSocket, disconnectSocket, Socket} from "../api-helper/Socket";
+import {connectSocket} from "../ApiHelper/Socket";
 import SocketContext from "../Context/SocketContext";
 
 
@@ -49,6 +48,10 @@ class Application extends React.Component {
             return null;
         }
     };
+
+    componentDidMount() {
+        this.socket = this.getSocket();
+    }
 
 
     render() {

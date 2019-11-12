@@ -24,6 +24,7 @@ import "./styles/flex-styles.css";
 import "./styles/text-and-background-colors.css";
 import "./styles/background-images.css";
 
+
 export default function ApplicationRouter(props) {
 
     let header = <div/>;
@@ -41,7 +42,7 @@ export default function ApplicationRouter(props) {
         contentClassName += " flex-column flex-full mdl-color--grey-200";
     } else {
 
-        wrapperClassName += " flex-full ulm-library-image";
+        wrapperClassName += "flex-full ulm-library-image";
         contentClassName += "";
     }
 
@@ -55,7 +56,7 @@ export default function ApplicationRouter(props) {
         routesHtml.push(<Route auth={props.auth} path="/groupView" component={GroupView}/>);
         routesHtml.push(<Route auth={props.auth} path="/eventsView" component={EventsView}/>);
         routesHtml.push(<Route auth={props.auth} path="/viewAllEvents" component={ViewAllEvents}/>);
-        routesHtml.push(<Route auth={props.auth} path="/createGroupEvent" component={CreateGroupEvent} />);
+        routesHtml.push(<Route auth={props.auth} path="/createGroupEvent" component={CreateGroupEvent}/>);
         routesHtml.push(<Route auth={props.auth} path="/requestEvent" component={RequestEvent}/>);
         routesHtml.push(<Route auth={props.auth} path="/viewAllEvents" component={ViewAllEvents}/>);
         routesHtml.push(<Route auth={props.auth} path="/createEvent" component={CreateEvent}/>);

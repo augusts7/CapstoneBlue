@@ -12,7 +12,7 @@ class ApproveEvent extends React.Component{
     }
 
     componentDidMount() {
-        fetch("/events/approveEvent")
+        fetch("/single-event-layout/approveEvent")
             .then(res => res.json())
             .then(eventData =>
                 this.setState({events: eventData}));

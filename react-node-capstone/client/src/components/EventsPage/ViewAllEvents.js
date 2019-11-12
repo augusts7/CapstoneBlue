@@ -11,7 +11,7 @@ class ViewAllEvents extends React.Component {
     }
 
     componentDidMount() {
-        fetch("/events/allGlobal")
+        fetch("/single-event-layout/allGlobal")
             .then(res => res.json())
             .then(eventData =>
                 this.setState({events: eventData}));

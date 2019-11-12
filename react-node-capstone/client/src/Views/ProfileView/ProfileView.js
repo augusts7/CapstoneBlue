@@ -1,5 +1,5 @@
 import React from "react";
-import ProfileViewTabbedLayout from "./ProfileViewTabbedLayout";
+import ProfileViewTabbedLayout from "./components/main-layout/ProfileViewTabbedLayout";
 
 
 

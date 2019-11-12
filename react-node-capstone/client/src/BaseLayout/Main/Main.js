@@ -24,7 +24,7 @@ class Main extends React.Component {
 
 
   componentDidMount() {
-    fetch("/events")
+    fetch("/single-event-layout")
       .then(res => res.json())
       .then(eventData => this.setState({ events: eventData }));
   }

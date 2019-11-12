@@ -11,6 +11,11 @@
     flex: 1;
 }
 
+.flex-center {
+    justify-content: center;
+    align-items: center;
+}
+
 .flex-sub {
     flex-grow: 0;
 }

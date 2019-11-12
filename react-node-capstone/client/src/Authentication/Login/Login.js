@@ -1,12 +1,11 @@
 import React from 'react';
 import Form from "../../components/Form/Form";
 import MessageBox from "../../components/Form/MessageBox/MessageBox"
-import Button from "../../components/Button/Button"
 import { Link } from "react-router-dom"
 import AuthContext from "../../Context/AuthContext";
-import AuthFormContainer from "../AuthFormLayout/AuthFormContainer";
-import AuthFormAlternateButton from "../AuthFormLayout/AuthFormAlternateButton";
-import AuthFormSubmitButton from "../AuthFormLayout/AuthFormSubmitButton";
+import AuthFormContainer from "../AuthenticationFormLayout/AuthFormContainer";
+import AuthFormAlternateButton from "../AuthenticationFormLayout/AuthFormAlternateButton";
+import AuthFormSubmitButton from "../AuthenticationFormLayout/AuthFormSubmitButton";
 
 
 const fields = [
@@ -46,7 +45,7 @@ class Login extends React.Component {
             "campusEmail": target.campusEmail.value,
             "password": target.password.value,
         };
-        fetch("/auth/login", {
+        fetch("/auth/Login", {
             method: 'POST',
             body: JSON.stringify(data),
             credentials: "include",

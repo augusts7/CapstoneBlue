@@ -1,8 +1,8 @@
 import React from 'react';
 import "../notifications.css"
-import EventLayoutButton from "../../../../Views/CalenderView/events/base-layout/EventLayoutButton";
-import {post} from "../../../../api-helper/ApiHelper";
-import EventLayout from "../../../../Views/CalenderView/events/base-layout/EventLayout";
+import EventLayoutButton from "../../../../Views/CalenderView/components/calendar-click-popup/single-event-layout/base-layout/EventLayoutButton";
+import {post} from "../../../../ApiHelper/ApiHelper";
+import EventLayout from "../../../../Views/CalenderView/components/calendar-click-popup/single-event-layout/base-layout/EventLayout";
 
 export default function NotificationsPopupItem(props) {
 

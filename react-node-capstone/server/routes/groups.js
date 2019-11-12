@@ -44,7 +44,7 @@ router.route("/groupMembers/:group_id").get(async (req, res) => {
   }
 });
 
-//Broken. Needs to pull only events for that group.
+//Broken. Needs to pull only single-event-layout for that group.
 router.route("/groupEvents/:group_id").get(async (req, res) => {
   try {
     let groupid = req.params.group_id;

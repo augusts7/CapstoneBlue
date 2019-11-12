@@ -37,7 +37,7 @@ class RequestEvent extends React.Component {
 
     onClickSubmit(e) {
         e.preventDefault();
-        fetch("/events", {
+        fetch("/single-event-layout", {
             method: "POST",
             headers: {
                 Accept: 'application/json',

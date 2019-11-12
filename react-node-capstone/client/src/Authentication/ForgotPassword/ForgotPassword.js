@@ -2,9 +2,9 @@ import React from 'react';
 import Form from "../../components/Form/Form";
 import MessageBox from "../../components/Form/MessageBox/MessageBox";
 import Button from "../../components/Button/Button"
-import AuthFormAlternateButton from "../AuthFormLayout/AuthFormAlternateButton";
-import AuthFormContainer from "../AuthFormLayout/AuthFormContainer";
-import AuthFormSubmitButton from "../AuthFormLayout/AuthFormSubmitButton";
+import AuthFormAlternateButton from "../AuthenticationFormLayout/AuthFormAlternateButton";
+import AuthFormContainer from "../AuthenticationFormLayout/AuthFormContainer";
+import AuthFormSubmitButton from "../AuthenticationFormLayout/AuthFormSubmitButton";
 
 
 class ForgotPassword extends React.Component {

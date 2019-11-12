@@ -19,7 +19,7 @@ class Form extends React.Component {
     onFormSubmit(event) {
         event.preventDefault();
         if (!event.target.checkValidity()) {
-            
+
             return;
         }
         this.props.onSubmit(event.target);
@@ -31,29 +31,29 @@ class Form extends React.Component {
 
         this.props.fields.map(field => {
             if (field.type === "select") {
-                return(
-                fields.push(<Select
-                    key={field.name}
-                    name={field.name}
-                    label={field.label}
-                    onChange={field.onChange}
-                    options={field.options}
-                    required={field.required}
-                />));
+                return (
+                    fields.push(<Select
+                        key={field.name}
+                        name={field.name}
+                        label={field.label}
+                        onChange={field.onChange}
+                        options={field.options}
+                        required={field.required}
+                    />));
             } else {
-                return(
+                return (
                     fields.push(<TextField
-                            fullWidth
-                            id={field.id}
-                            required={field.required}
-                            value={field.value}
-                            type={field.type}
-                            label={field.label}
-                            name={field.name}
-                            margin="normal" />));
+                        fullWidth
+                        id={field.id}
+                        required={field.required}
+                        value={field.value}
+                        type={field.type}
+                        label={field.label}
+                        name={field.name}
+                        margin="normal"/>));
             }
         })
-       
+
 
         return fields;
     }
@@ -77,7 +77,7 @@ class Form extends React.Component {
                 </div>
             );
         } else {
-            actionLinks = <div />;
+            actionLinks = <div/>;
         }
         return actionLinks;
     }
@@ -85,7 +85,7 @@ class Form extends React.Component {
     render() {
 
         let styles = {
-            header: { "background": 'linear-gradient(45deg, #3949AB 30%, #1E88E5 90%)' },
+            header: {"background": 'linear-gradient(45deg, #3949AB 30%, #1E88E5 90%)'},
         };
         let encType = "";
         if (this.props.includesFile) {
@@ -95,29 +95,28 @@ class Form extends React.Component {
         if (this.props.customSubmitButton) {
             submitButton = "";
         }
+
         return (
-            <div>
-                <Container styles={styles} title={this.props.title} icon={this.props.icon} isLoading={this.props.isLoading}>
+            <Container styles={styles} title={this.props.title} icon={this.props.icon} isLoading={this.props.isLoading}>
+                <div>
                     <div>
-                        <div>
-                            <form
-                                onSubmit={this.onFormSubmit}
-                                method="post"
-                                encType={encType} >
-                                <div>
-                                    {this.getFields()}
-                                </div>
-                                {submitButton}
-                                {this.props.children}
-                                
-                            </form> 
-                        </div>
-                        <div>
-                            {this.getActionLinks()}
-                        </div>
+                        <form
+                            onSubmit={this.onFormSubmit}
+                            method="post"
+                            encType={encType}>
+                            <div>
+                                {this.getFields()}
+                            </div>
+                            {submitButton}
+                            {this.props.children}
+
+                        </form>
                     </div>
-                </Container>
-            </div>
+                    <div>
+                        {this.getActionLinks()}
+                    </div>
+                </div>
+            </Container>
         );
     }
 }
