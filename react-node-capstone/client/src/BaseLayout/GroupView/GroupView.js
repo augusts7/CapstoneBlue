@@ -82,11 +82,11 @@ class GroupView extends React.Component {
       return <MenuItem value={g.group_id}>{g.group_name}</MenuItem>;
     });
 
-    if (this.state.user_id == this.state.creator_id) {
+    if (this.state.user_id === this.state.creator_id) {
       return (
         <div className="group-view">
           <div className="group-header">
-            <div className="my-groups-select">
+            <div className="my-groups-select inline">
               <FormControl variant="outlined">
                 <InputLabel htmlFor="outlined-age-simple">My Groups</InputLabel>
                 <Select
@@ -101,10 +101,10 @@ class GroupView extends React.Component {
                 </Select>
               </FormControl>
             </div>
-            <div className="group-name">
+            <div className="group-name inline">
               <h2>{this.state.groupName}</h2>
             </div>
-            <div className="group-options">
+            <div className="group-options inline">
               <GroupOptions />
             </div>
           </div>

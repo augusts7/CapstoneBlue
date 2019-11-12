@@ -17,7 +17,13 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      events: []
+      events: [{
+        eventID: 1,
+        start: new Date(),
+        end: new Date(),
+        title: "Title",
+        description: "esf"
+      }]
     };
   }
 

@@ -2,19 +2,21 @@
   justify-content: center;
 }
 
-.my-groups-select {
-  display: inline-block;
-  padding: 30px 0;
-}
-
 .group-name {
   text-align: center;
-  padding: 30px 0;
-  display: inline-block;
   color: maroon;
   font-weight: bold;
 }
 
+.group-header{
+  width:100%;
+  display: inline-block;
+}
+
+.inline{
+float:left;
+margin: 4em 0em 3em 20em;
+}
 .group-events {
   display: flex;
   flex-direction: row;
@@ -33,9 +35,9 @@
   text-shadow: 2px 2px black;
 }
 
-.buttons-group-events {
+.buttons-group-events, .buttons-group-members {
   flex-basis: 10%;
-  min-width: 10%;
+  min-width: 15%;
   padding: 24px;
 }
 
