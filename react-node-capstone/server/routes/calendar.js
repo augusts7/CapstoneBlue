@@ -19,14 +19,14 @@ router.get("/", (req, res, next) => {
 
 router.get("/sharedToUser", (req, res, next) => {
 
-    let sql = "SELECT * FROM shared_calendars WHERE sharedToUserId = " + req.user.user_id;
+    let sql = "SELECT * FROM shared_calendars INNER JOIN calendar ON sharedCalendarId = calendarId INNER JOIN user_info ON sharedByUserId = user_id WHERE sharedToUserId = " + req.user.user_id;
 
     sqlHelper.handleSelectAndRespond(sql, res);
 });
 
 router.get("/sharedByUser", (req, res, next) => {
 
-    let sql = "SELECT * FROM shared_calendars WHERE sharedByUserId = " + req.user.user_id;
+    let sql = "SELECT * FROM shared_calendars INNER JOIN calendar ON sharedCalendarId = calendarId INNER JOIN user_info ON sharedToUserId = user_id WHERE sharedByUserId = " + req.user.user_id;
 
     sqlHelper.handleSelectAndRespond(sql, res);
 });

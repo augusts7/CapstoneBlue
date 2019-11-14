@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import {post} from "../../../../../ApiHelper/ApiHelper"
-import CalendarFormBaseLayout from "../dialog-layout/BaseLayout";
+import DialogForm from "../dialog-form/DialogForm";
 
 
 export default function AddNewCalendarForm(props) {
@@ -37,19 +37,23 @@ export default function AddNewCalendarForm(props) {
 
     const buttons = [
         {name: "Cancel", onClick: handleClose},
-        {name: "Add Calendar", onClick: handleSave}
+        {name: "Submit", onClick: handleSave}
     ];
 
     return (
-        <CalendarFormBaseLayout open={props.open} buttons={buttons} onClose={handleClose} progress={progress}
-                                title="Add New Calendar">
+        <DialogForm open={props.open} buttons={buttons} onClose={handleClose} progress={progress}
+                                title="Add New Calendar"
+                                text="To add a new calendar, enter the name for the new calendar."
+        >
+
             <TextField
+                autoFocus
                 fullWidth
                 type="text"
                 onChange={handleChange}
                 value={calName}
                 label={"Name"}
                 margin="normal"/>
-        </CalendarFormBaseLayout>
+        </DialogForm>
     );
 }

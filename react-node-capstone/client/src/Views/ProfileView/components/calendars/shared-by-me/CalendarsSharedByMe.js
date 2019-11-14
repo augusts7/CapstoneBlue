@@ -1,5 +1,5 @@
 import React from "react";
-import ProfileItemBlockContainer from "../../container/profile-item-blocks/ProfileItemBlockContainer";
+import ProfileItemBlockContainer from "../../../generic/profile-view-item/profile-item-blocks/ProfileItemBlockContainer";
 
 
 export default class CalendarsSharedByMe extends React.Component {
@@ -16,7 +16,6 @@ export default class CalendarsSharedByMe extends React.Component {
 
     render() {
         return (
-
             <ProfileItemBlockContainer title="Calendars Shared By Me">
                 Hi
             </ProfileItemBlockContainer>

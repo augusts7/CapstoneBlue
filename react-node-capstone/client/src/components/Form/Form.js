@@ -5,14 +5,14 @@ import ActionLink from "../Button/ActionLink";
 import Select from "../Select/Select";
 import Container from "../Container/Container/Container";
 import TextField from "@material-ui/core/TextField"
+import FormInputFields from "./FormInputFields";
 
 class Form extends React.Component {
 
     constructor(props) {
         super(props);
-        this.onFormSubmit = this.onFormSubmit.bind(this);
 
-        this.getFields = this.getFields.bind(this);
+        this.onFormSubmit = this.onFormSubmit.bind(this);
         this.getActionLinks = this.getActionLinks.bind(this);
     }
 
@@ -23,39 +23,6 @@ class Form extends React.Component {
             return;
         }
         this.props.onSubmit(event.target);
-    }
-
-
-    getFields() {
-        let fields = [];
-
-        this.props.fields.map(field => {
-            if (field.type === "select") {
-                return (
-                    fields.push(<Select
-                        key={field.name}
-                        name={field.name}
-                        label={field.label}
-                        onChange={field.onChange}
-                        options={field.options}
-                        required={field.required}
-                    />));
-            } else {
-                return (
-                    fields.push(<TextField
-                        fullWidth
-                        id={field.id}
-                        required={field.required}
-                        value={field.value}
-                        type={field.type}
-                        label={field.label}
-                        name={field.name}
-                        margin="normal"/>));
-            }
-        })
-
-
-        return fields;
     }
 
     getActionLinks() {
@@ -104,16 +71,11 @@ class Form extends React.Component {
                             onSubmit={this.onFormSubmit}
                             method="post"
                             encType={encType}>
-                            <div>
-                                {this.getFields()}
-                            </div>
+                            <FormInputFields fullWidth={true} fields={this.props.fields}/>
                             {submitButton}
                             {this.props.children}
 
                         </form>
-                    </div>
-                    <div>
-                        {this.getActionLinks()}
                     </div>
                 </div>
             </Container>

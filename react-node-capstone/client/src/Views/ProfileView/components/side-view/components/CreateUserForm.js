@@ -1,11 +1,11 @@
 import React from "react";
-import Form from "../../../../components/Form/Form";
-import MessageBox from "../../../../components/Form/MessageBox/MessageBox"
-import {post, get} from "../../../../ApiHelper/ApiHelper";
-import AuthFormSubmitButton from "../../../../Authentication/AuthenticationFormLayout/AuthFormSubmitButton";
+import MessageBox from "../../../../../components/Form/MessageBox/MessageBox"
+import {post, get} from "../../../../../ApiHelper/ApiHelper";
+import DialogForm from "../../../../CalenderView/components/forms/dialog-form/DialogForm";
+import FormInputFields from "../../../../../components/Form/FormInputFields";
 
 
-class AddUserForm extends React.Component {
+class CreateUserForm extends React.Component {
 
     constructor(props) {
         super(props);
@@ -28,7 +28,6 @@ class AddUserForm extends React.Component {
         let data = {
             "first_name": target.first_name.value,
             "last_name": target.last_name.value,
-            "user_id": target.cwid.value,
             "campusEmail": target.campusEmail.value,
             "password": target.password.value,
             "confirmPassword": target.confirmPassword.value,
@@ -65,8 +64,7 @@ class AddUserForm extends React.Component {
                 },
                 {"name": "first_name", "type": "text", "label": "First Name", "required": true},
                 {"name": "last_name", "type": "text", "label": "Last Name", "required": true},
-                {"name": "cwid", "type": "number", "label": "Campus Wide ID (CWID)", "required": true},
-                {"name": "campusEmail", "type": "email", "label": "Campus Email", "required": true},
+                {"name": "campusEmail", "type": "email", "label": "Campus Email", "required": true, fullWidth: true},
 
             ],
 
@@ -102,17 +100,21 @@ class AddUserForm extends React.Component {
         this.setState({"user_type": value});
 
         if (value === "student") {
-            get("/user_info/advisors", (res) => {
-                if (res.success) {
-                    let advisors = [];
-                    res.results.forEach(d => {
-                        advisors.push({"name": d.first_name + " " + d.last_name, "value": d.user_id});
-                    });
-                    this.setState({"advisors": advisors});
-                }
-            });
+            this.loadAllAdvisers();
         }
 
+    };
+
+    loadAllAdvisers = () => {
+        get("/user_info/advisors", (res) => {
+            if (res.success) {
+                let advisors = [];
+                res.results.forEach(d => {
+                    advisors.push({"name": d.first_name + " " + d.last_name, "value": d.user_id});
+                });
+                this.setState({"advisors": advisors});
+            }
+        });
     };
 
     getFields = () => {
@@ -126,21 +128,29 @@ class AddUserForm extends React.Component {
         return this.commonData().commonFields.concat(studentFields).concat(this.commonData().passwordFields);
     };
 
+    handleSubmit = () => {
+
+    };
+
+    buttons = [
+        {name: "Cancel", onClick: this.props.onClose},
+        {name: "Submit", onClick: this.handleSubmit},
+    ];
 
     render() {
 
         let fields = this.getFields();
 
         return (
-            <div>
+            <DialogForm open={this.props.open} buttons={this.buttons} onClose={this.props.onClose}
+                        progress={this.state.isLoading}
+                        title="Create a New User"
+                        text="To create a new user, enter his information and hit submit.">
                 <MessageBox message={this.state.message} hideMessage={this.hideMessage}/>
-                <Form customSubmitButton={true} id="new-user-form" onSubmit={this.onSubmit}
-                      fields={fields}>
-                    <AuthFormSubmitButton icon="how_to_reg">Create User</AuthFormSubmitButton>
-                </Form>
-            </div>
+                <FormInputFields fields={fields}/>
+            </DialogForm>
         );
     }
 }
 
-export default AddUserForm;
+export default CreateUserForm;
