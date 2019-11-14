@@ -41,7 +41,6 @@ class Main extends React.Component {
         <div class="main-carousel">
           <Carosel />
         </div>
-        <hr />
         <div class="main-calendar">
           <FullCalendar
             className="calender"
@@ -55,7 +54,7 @@ class Main extends React.Component {
             events={this.state.events}
             dateClick={this.handleDateClick}
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, resourceTimelinePlugin]}
-            height={550}
+            height={700}
           />
         </div>
         <div class="main-events">
