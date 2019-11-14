@@ -40,17 +40,12 @@ class GroupView extends React.Component {
     this.getGroupInfo(this.state.group_id);
   }
 
-  setFirstGroup(){
-    var myGroups = this.state.my_groups;
-    this.setState({group_id: 2});
-  }
 
   getMyGroups() {
     var myGroupsURL = "/my_groups";
     fetch(myGroupsURL)
       .then(res => res.json())
       .then(myGroups => this.setState({ my_groups: myGroups}));
-    this.setFirstGroup();
   }
   getGroupInfo(groupID) {
     var groupInfoURL = "/groups/groupInfo/" + groupID;
@@ -79,11 +74,12 @@ class GroupView extends React.Component {
       .then(group_events => this.setState({ eventListItems: group_events }));
   }
   handleChange(event) {
-    let groupID = event.target.value;
+    var groupID = event.target.value;
     this.setState({ group_id: groupID });
     this.getGroupEvents(groupID);
     this.getGroupInfo(groupID);
     this.getGroupMembers(groupID);
+    console.log(groupID + "ASDFSDF" + this.state.group_id);
   }
 
   render() {
@@ -114,7 +110,7 @@ class GroupView extends React.Component {
               <h2>{this.state.groupName}</h2>
             </div>
             <div className="group-options inline">
-              <GroupOptions group={this.group_id} />
+              <GroupOptions groupID={this.state.group_id}/>
             </div>
           </div>
           <hr />
