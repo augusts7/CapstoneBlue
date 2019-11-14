@@ -74,23 +74,21 @@ router.route("/createGroups").post((req, res) => {
       group_name: req.body.title,
       creator_id: req.body.creator_id
     };
-    console.log('help');
-    
-    let sql1 = "INSERT INTO groups VALUES (24, "+group_name+", "+creator_id+");";
+    let sql1 = "INSERT INTO 'groups' VALUES (24, "+group_name+", "+creator_id+");";
     pool.query(sql1, groups, function(
       error,
       results,
       fields
     ){ if (error) throw error;
         res.send(results);
-    } );
+    });
       console.log('test1');
       let groupid = await pool.query("SELECT group_id FROM groups WHERE group_name = '"+group_name +"';");
       let sql2 = "INSERT INTO my_groups VALUES ((SELECT U.campusEmail FROM user_info U WHERE JSON_CONTAINS(" + JSON.stringify(req.body.data) + ", JSON_OBJECT('Email address', U.campusEmail))), " + groupid + ", 'Member');";
         pool.query(sql2);
       res.send(results);
 
-  }catch (e) {
+  }catch(e) {
         console.log(e);
         res.sendStatus(500);
       }

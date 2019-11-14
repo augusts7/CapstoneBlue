@@ -15,13 +15,13 @@ class CreateGroup extends React.Component{
           file: {},
           data: [],
           cols: [],
-          groupName: "Grades", //get from input
+          groupName: "Grades",
           creator_id: 30030101
         }
         this.handleFile = this.handleFile.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleGroupName = this.handleGroupName.bind(this);
-        this.createGroup = this.createGroup.bind(this);
+       // this.createGroup = this.createGroup.bind(this);
       }
 
     handleChange(e) {
@@ -44,9 +44,10 @@ class CreateGroup extends React.Component{
         const wsname = wb.SheetNames[0];
         const ws = wb.Sheets[wsname];
         const data = XLSX.utils.sheet_to_json(ws);
-        this.setState({ data: data }, () => {
-          console.log(JSON.stringify(this.state.data, null, 1)); 
-        });
+        // this.setState({ data: data }, () => {
+        //   console.log(JSON.stringify(this.state.data, null, 1)); 
+        //   this.createGroup();
+        // });
       };
    
       if (rABS) {
@@ -116,10 +117,6 @@ class CreateGroup extends React.Component{
                           className='submit'
                           onClick={this.handleFile}
                         />
-
-                        <input
-                        type='submit'
-                        onClick={this.createGroup()}/>
                     
                     </div>
 
