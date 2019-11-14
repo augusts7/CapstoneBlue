@@ -9,7 +9,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
-export default class extends Component {
+class CreateGroupEvent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,18 +35,22 @@ export default class extends Component {
 
   handleStartTimeChange(datetime) {
     this.setState({ start: datetime });
+    console.log(this.state.start);
   }
 
   handleEndTimeChange(datetime) {
     this.setState({ end: datetime });
+    console.log(this.state.end);
   }
 
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  createGroupEvent() {
-    fetch("/events", {
+  createGroupEvent(){
+    console.log(this.state.start);
+    console.log(this.state.end);
+    fetch("/groups/createEvents", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -57,8 +61,8 @@ export default class extends Component {
         end: this.state.end,
         title: this.state.title,
         description: this.state.description,
-        event_type: "global",
-        group_id: this.state.groupID
+        group_id: this.state.groupID,
+        carousel: 0
       })
     })
       .then(function(response) {
@@ -67,12 +71,6 @@ export default class extends Component {
       .then(function(body) {
         console.log(body);
       });
-    this.setState({
-      start: new Date(),
-      end: new Date(),
-      title: "",
-      description: ""
-    });
   }
 
   render() {
@@ -171,7 +169,7 @@ export default class extends Component {
             <Button onClick={this.handleToggle} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleToggle} color="primary">
+            <Button onClick={this.createGroupEvent} color="primary">
               {submitButton}
             </Button>
           </DialogActions>
@@ -180,3 +178,4 @@ export default class extends Component {
     );
   }
 }
+export default CreateGroupEvent;

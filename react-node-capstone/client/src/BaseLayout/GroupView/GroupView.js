@@ -31,13 +31,19 @@ class GroupView extends React.Component {
       groupMembers: [],
     };
     this.handleChange = this.handleChange.bind(this);
+    this.refreshGroup = this.refreshGroup.bind(this);
+    this.getGroupInfoHelper = this.getGroupInfoHelper.bind(this);
   }
 
   componentDidMount() {
     this.getMyGroups();
-    this.getGroupEvents(this.state.group_id);
-    this.getGroupMembers(this.state.group_id);
-    this.getGroupInfo(this.state.group_id);
+    this.refreshGroup(this.state.group_id);
+  }
+  
+  refreshGroup(group){
+    this.getGroupEvents(group);
+    this.getGroupMembers(group);
+    this.getGroupInfo(group);
   }
 
   setFirstGroup(){
@@ -78,12 +84,12 @@ class GroupView extends React.Component {
       .then(res => res.json())
       .then(group_events => this.setState({ eventListItems: group_events }));
   }
+
   handleChange(event) {
-    let groupID = event.target.value;
-    this.setState({ group_id: groupID });
-    this.getGroupEvents(groupID);
-    this.getGroupInfo(groupID);
-    this.getGroupMembers(groupID);
+    this.setState({ group_id: event.target.value },() => {
+      this.refreshGroup(event.target.value);
+      console.log(this.state.group_id);
+    });
   }
 
   render() {
@@ -96,8 +102,8 @@ class GroupView extends React.Component {
         <div className="group-view">
           <div className="group-header">
             <div className="my-groups-select inline">
-              <FormControl variant="outlined">
-                <InputLabel htmlFor="outlined-age-simple">My Groups</InputLabel>
+              <FormControl variant="standard">
+                <InputLabel>My Groups</InputLabel>
                 <Select
                   autoWidth={true}
                   value={this.state.group_id}
