@@ -1,39 +1,82 @@
-import React from "react";
+import React, {Component} from "react";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+// import Modal from '@material-ui/core/Modal';
 
-export default function GroupOptions() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+export default class extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            anchorEl: null,
+            group_id: this.props.groupID,
+            open: false
+        };
+        this.handleClick = this.handleClick.bind(this);
+        this.handleCreate = this.handleCreate.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleDelete = this.handleDelete.bind(this)
+    }
 
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
+  handleClick(event){
+    this.setState({anchorEl: event.currentTarget});
+      this.setState({open: !this.state.open});
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  handleCreate(){
+      this.setState({anchorEl: null});
   };
 
+  handleClose(){
+      this.setState({anchorEl: null});
+      this.setState({open: false});
+  };
+
+  handleDelete(){
+      console.log(this.state.group_id + " groupid");
+      this.setState({anchorEl: null});
+      fetch("/groups/delete/" + this.state.group_id, {
+          method: "DELETE",
+          headers: {
+              Accept: 'application/json',
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+              group_id: this.state.group_id
+          }),
+      })
+          .then(function(response) {
+              return response.json();
+          })
+          .then(function(body) {
+              console.log(body);
+          });
+      window.alert("group deleted");
+  };
+render(){
   return (
     <div>
       <Button
         aria-controls="simple-menu"
         aria-haspopup="true"
         variant="contained"
-        onClick={handleClick}
+        onClick={this.handleClick}
       >
         Group Options
       </Button>
       <Menu
         id="group-options"
-        anchorEl={anchorEl}
         keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
+        open={this.state.anchorEl}
+        onClose={this.handleClose}
       >
-        <MenuItem onClick={handleClose}>Create Group</MenuItem>
-        <MenuItem onClick={handleClose}>Delete Group</MenuItem>
+        <MenuItem onClick={this.handleCreate}>Create Group</MenuItem>
+        <MenuItem onClick={this.handleDelete}>Delete Group</MenuItem>
       </Menu>
+        {/*<Modal open={open}*/}
+        {/*       onClose={handleClose}>*/}
+
+        {/*</Modal>*/}
     </div>
   );
-}
+}}

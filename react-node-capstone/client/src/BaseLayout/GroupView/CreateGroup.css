@@ -1,0 +1,14 @@
+.create-group-constainer {
+    display: flex;
+    margin: 10% auto;
+    width: 50%;
+    flex-direction: column;
+    border: 3px solid grey;
+    border-radius: 7px;
+    overflow: auto;
+}
+.createGroupTitle {
+    background-color: #BD955A;
+    color: white;
+    padding-left: 30px;
+}

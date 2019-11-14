@@ -14,35 +14,45 @@ import CreateGroupEvent from "./CreateGroupEvent";
 import AddGroupMember from "./AddGroupMember";
 import GroupOptions from "./GroupOptionsMenu";
 import AddMultipleUsersFromList from "../../Views/GroupView/AddMultipleUsersFromList";
+import UserContext from "../../Context/UserContext";
 
 //Mockup: https://www.figma.com/file/r5yEpMlG5SzIAkONOOAWc0/Groups-faculty-%26-student?node-id=0%3A1
 
 class GroupView extends React.Component {
+
+  static contextType = UserContext;
   constructor(props) {
     super(props);
     this.state = {
       group_id: 2,
       my_groups: [],
       groupName: "",
-      creator_id: 0,
+      creator_id: 30030101,
       eventListItems: [],
       groupMembers: [],
-      user_id: 30030101
     };
     this.handleChange = this.handleChange.bind(this);
+    this.refreshGroup = this.refreshGroup.bind(this);
+    this.getGroupInfoHelper = this.getGroupInfoHelper.bind(this);
   }
 
   componentDidMount() {
     this.getMyGroups();
-    this.getGroupEvents(this.state.group_id);
-    this.getGroupMembers(this.state.group_id);
-    this.getGroupInfo(this.state.group_id);
+    this.refreshGroup(this.state.group_id);
   }
+  
+  refreshGroup(group){
+    this.getGroupEvents(group);
+    this.getGroupMembers(group);
+    this.getGroupInfo(group);
+  }
+
+
   getMyGroups() {
     var myGroupsURL = "/my_groups";
     fetch(myGroupsURL)
       .then(res => res.json())
-      .then(myGroups => this.setState({ my_groups: myGroups }));
+      .then(myGroups => this.setState({ my_groups: myGroups}));
   }
   getGroupInfo(groupID) {
     var groupInfoURL = "/groups/groupInfo/" + groupID;
@@ -70,12 +80,12 @@ class GroupView extends React.Component {
       .then(res => res.json())
       .then(group_events => this.setState({ eventListItems: group_events }));
   }
+
   handleChange(event) {
-    let groupID = event.target.value;
-    this.setState({ group_id: groupID });
-    this.getGroupEvents(groupID);
-    this.getGroupInfo(groupID);
-    this.getGroupMembers(groupID);
+    this.setState({ group_id: event.target.value },() => {
+      this.refreshGroup(event.target.value);
+      console.log(this.state.group_id);
+    });
   }
 
   render() {
@@ -83,13 +93,13 @@ class GroupView extends React.Component {
       return <MenuItem value={g.group_id}>{g.group_name}</MenuItem>;
     });
 
-    if (this.state.user_id === this.state.creator_id) {
+    if (this.context.user != this.state.creator_id) {
       return (
         <div className="group-view">
           <div className="group-header">
             <div className="my-groups-select inline">
-              <FormControl variant="outlined">
-                <InputLabel htmlFor="outlined-age-simple">My Groups</InputLabel>
+              <FormControl variant="standard">
+                <InputLabel>My Groups</InputLabel>
                 <Select
                   autoWidth={true}
                   value={this.state.group_id}
@@ -106,7 +116,7 @@ class GroupView extends React.Component {
               <h2>{this.state.groupName}</h2>
             </div>
             <div className="group-options inline">
-              <GroupOptions />
+              <GroupOptions groupID={this.state.group_id}/>
             </div>
           </div>
           <hr />
@@ -137,7 +147,7 @@ class GroupView extends React.Component {
           <div className="group-header">
             <div className="my-groups-select">
               <FormControl variant="outlined">
-                <InputLabel htmlFor="outlined-age-simple">My Groups</InputLabel>
+                <InputLabel>My Groups</InputLabel>
                 <Select
                   autoWidth={true}
                   value={this.state.group_id}

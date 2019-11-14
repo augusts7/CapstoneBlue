@@ -16,7 +16,7 @@ router.route("/all").get(async (req, res) => {
 })
 
 router.route("/").post((req, res) => {
-    const class_info = {
+    let class_info = {
       CRN: req.body.CRN,
       course_title: req.body.course_title,
       course_subject: req.body.course_subject,

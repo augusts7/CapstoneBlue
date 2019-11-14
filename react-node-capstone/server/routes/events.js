@@ -51,7 +51,7 @@ router.get("/all", async (req, res) => {
 });
 
 //next 2 need work
-//need to get eventID
+//allGlobal needs to be the global events that are not in the students attending table
 router.get("/allGlobal", async (req, res) => {
     try {
         let events = await pool.query("SELECT title, description, start, end FROM event WHERE event_type = 'global' AND status='approved'");

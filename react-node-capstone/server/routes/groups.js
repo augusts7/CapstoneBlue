@@ -2,10 +2,13 @@ var router = require("express").Router();
 var pool = require("../db/database");
 var bodyParser = require("body-parser");
 var sqlHandler = require("../utils/sql-helper/sql-helper");
+const sqlHelper = require("../utils/sql-helper/sql-helper");
+var emailhelper = require("../utils/email/email-sender");
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
+//Get Groups
 router.route("/").get(async (req, res) => {
   try {
     let groups = await pool.query("SELECT * FROM groups");
@@ -16,6 +19,7 @@ router.route("/").get(async (req, res) => {
   }
 });
 
+//Get Specific group info
 router.route("/groupInfo/:group_id").get(async (req, res) => {
   try {
     let groupid = req.params.group_id;
@@ -29,6 +33,7 @@ router.route("/groupInfo/:group_id").get(async (req, res) => {
   }
 });
 
+//Get all group Members
 router.route("/groupMembers/:group_id").get(async (req, res) => {
   try {
     let groupid = req.params.group_id;
@@ -45,6 +50,7 @@ router.route("/groupMembers/:group_id").get(async (req, res) => {
 });
 
 //Broken. Needs to pull only single-event-layout for that group.
+//Get all group events
 router.route("/groupEvents/:group_id").get(async (req, res) => {
   try {
     let groupid = req.params.group_id;
@@ -59,10 +65,12 @@ router.route("/groupEvents/:group_id").get(async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+//Create a group with the user logged in
 router.route("/").post((req, res) => {
   const groups = {
     group_name: req.body.group_name,
-    creator_id: req.body.creator_id
+    creator_id: req.user.user_id
   };
 
   pool.query("INSERT INTO groups SET ?", groups, function(
@@ -72,8 +80,9 @@ router.route("/").post((req, res) => {
   ) {
     if (error) throw error;
     const my_groups = {
-      user_id: req.body.creator_id,
-      group_id: results.insertId
+      user_id: req.user.user_id,
+      group_id: results.insertId,
+      status: "Owner"
     };
     pool.query("INSERT INTO my_groups SET ?", my_groups, function(
       error,
@@ -87,10 +96,12 @@ router.route("/").post((req, res) => {
   });
 });
 
+//Delete a group
 router.route("/delete/:group_id").delete(async (req, res) => {
   try {
     let group_id = req.params.group_id;
-    pool.query("DELETE FROM my_groups WHERE group_id = ?", group_id, function(
+    let sql = "DELETE FROM my_groups WHERE group_id = " + group_id + ";";
+    pool.query(sql, function(
       error,
       results,
       fields
@@ -98,8 +109,8 @@ router.route("/delete/:group_id").delete(async (req, res) => {
       if (error) {
         return res.json({ success: false, message: error });
       }
-      let sql = "DELETE FROM groups WHERE group_id = " + group_id + ";";
-      pool.query(sql, function(error, results, fields) {
+      let sql2 = "DELETE FROM groups WHERE group_id = " + group_id + ";";
+      pool.query(sql2, function(error, results, fields) {
         if (error) {
           return res.json({
             success: false,
@@ -119,4 +130,59 @@ router.route("/delete/:group_id").delete(async (req, res) => {
   }
 });
 
+//Create a group event
+router.route("/createEvents").post(async (req,res) =>{
+  try{
+    let creator_id = req.user.user_id;
+    let group_id = req.body.group_id;
+    let status = await pool.query("SELECT status FROM my_groups WHERE user_id =" + creator_id + " AND group_id = " + group_id + ";");
+    if (status[0].status == "Owner"){
+      let newEvent = {
+      title: req.body.title,
+      description: req.body.description,
+      start: req.body.start,
+      end: req.body.end,
+      event_type: "group_event",
+      creator_id: req.user.user_id,
+      carousel: req.body.carousel,
+      group_id: req.body.group_id,
+      status: "approved"
+      }
+      pool.query("INSERT INTO event SET ?", newEvent, function(
+        error,
+        results,
+        fields
+      ){
+        if (error) throw error;
+        res.send(results);
+      })
+    }
+    else {
+      let newEvent = {
+        title: req.body.title,
+        description: req.body.description,
+        start: req.body.start,
+        end: req.body.end,
+        event_type: "group_event",
+        creator_id: req.user.user_id,
+        carousel: req.body.carousel,
+        group_id: req.body.group_id,
+        status: "pending"
+      }
+      pool.query("INSERT INTO event SET ?", newEvent, function(
+        error,
+        results,
+        fields
+      ){
+        if (error) throw error;
+        res.send(results);
+      })
+    }
+
+}
+  catch(e){
+    console.log(e);
+    res.sendStatus(500);
+  }
+})
 module.exports = router;

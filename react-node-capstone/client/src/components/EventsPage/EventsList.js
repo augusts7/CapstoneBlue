@@ -8,7 +8,7 @@ class EventsList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            event_id: 0,
+            eventID: 0,
             attendee_id: 0
         };
         this.addToCalendar = this.addToCalendar.bind(this);
@@ -102,10 +102,49 @@ class EventsList extends Component {
     }
 
     approveEvent(e) {
+        // e.preventDefault();
+        // fetch("/events/edit", {
+        //     method: "POST",
+        //     headers: {
+        //         Accept: 'application/json',
+        //         "Content-Type": "application/json"
+        //     },
+        //     body: JSON.stringify({
+        //         start: this.state.start,
+        //         end: this.state.end,
+        //         title: this.state.title,
+        //         description: this.state.description,
+        //         event_type: "global",
+        //         status: "approved"
+        //     }),
+        // })
+        //     .then(function(response) {
+        //         return response.json();
+        //     })
+        //     .then(function(body) {
+        //         console.log(body);
+        //     });
         window.alert("approved");
     }
 
     deleteEvent(e) {
+        e.preventDefault();
+        fetch("/events/delete", {
+            method: "POST",
+            headers: {
+                Accept: 'application/json',
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                eventID: this.props.eventID
+            }),
+        })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(body) {
+                console.log(body);
+            });
         window.alert("denied");
     }
 
