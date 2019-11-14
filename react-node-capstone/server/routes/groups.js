@@ -129,25 +129,58 @@ router.route("/delete/:group_id").delete(async (req, res) => {
 });
 
 //Create a group event
-router.route("/createEvents").post((req,res) =>{
-  let newEvent = {
-    title: req.body.title,
-    description: req.body.description,
-    start: req.body.start,
-    end: req.body.end,
-    event_type: "group_event",
-    creator_id: req.user.user_id,
-    carousel: req.body.carousel,
-    group_id: req.body.group_id,
-    status: "pending"
-  };
-  pool.query("INSERT INTO event SET ?", newEvent, function(
-    error,
-    results,
-    fields
-  ){
-    if (error) throw error;
-    res.send(results);
-  })
+router.route("/createEvents").post(async (req,res) =>{
+  try{
+    let creator_id = req.user.user_id;
+    let group_id = req.body.group_id;
+    let status = await pool.query("SELECT status FROM my_groups WHERE user_id =" + creator_id + " AND group_id = " + group_id + ";");
+    if (status[0].status == "Owner"){
+      let newEvent = {
+      title: req.body.title,
+      description: req.body.description,
+      start: req.body.start,
+      end: req.body.end,
+      event_type: "group_event",
+      creator_id: req.user.user_id,
+      carousel: req.body.carousel,
+      group_id: req.body.group_id,
+      status: "approved"
+      }
+      pool.query("INSERT INTO event SET ?", newEvent, function(
+        error,
+        results,
+        fields
+      ){
+        if (error) throw error;
+        res.send(results);
+      })
+    }
+    else {
+      let newEvent = {
+        title: req.body.title,
+        description: req.body.description,
+        start: req.body.start,
+        end: req.body.end,
+        event_type: "group_event",
+        creator_id: req.user.user_id,
+        carousel: req.body.carousel,
+        group_id: req.body.group_id,
+        status: "pending"
+      }
+      pool.query("INSERT INTO event SET ?", newEvent, function(
+        error,
+        results,
+        fields
+      ){
+        if (error) throw error;
+        res.send(results);
+      })
+    }
+  
+}
+  catch(e){
+    console.log(e);
+    res.sendStatus(500);
+  }
 })
 module.exports = router;
