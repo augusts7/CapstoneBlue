@@ -13,20 +13,22 @@ import "./GroupView.css";
 import CreateGroupEvent from "./CreateGroupEvent";
 import AddGroupMember from "./AddGroupMember";
 import GroupOptions from "./GroupOptionsMenu";
+import UserContext from "../../Context/UserContext";
 
 //Mockup: https://www.figma.com/file/r5yEpMlG5SzIAkONOOAWc0/Groups-faculty-%26-student?node-id=0%3A1
 
 class GroupView extends React.Component {
+
+  static contextType = UserContext;
   constructor(props) {
     super(props);
     this.state = {
       group_id: 2,
       my_groups: [],
       groupName: "",
-      creator_id: 0,
+      creator_id: 30030101,
       eventListItems: [],
       groupMembers: [],
-      user_id: 30030101
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -37,11 +39,18 @@ class GroupView extends React.Component {
     this.getGroupMembers(this.state.group_id);
     this.getGroupInfo(this.state.group_id);
   }
+
+  setFirstGroup(){
+    var myGroups = this.state.my_groups;
+    this.setState({group_id: 2});
+  }
+
   getMyGroups() {
     var myGroupsURL = "/my_groups";
     fetch(myGroupsURL)
       .then(res => res.json())
-      .then(myGroups => this.setState({ my_groups: myGroups }));
+      .then(myGroups => this.setState({ my_groups: myGroups}));
+    this.setFirstGroup();
   }
   getGroupInfo(groupID) {
     var groupInfoURL = "/groups/groupInfo/" + groupID;
@@ -82,7 +91,7 @@ class GroupView extends React.Component {
       return <MenuItem value={g.group_id}>{g.group_name}</MenuItem>;
     });
 
-    if (this.state.user_id === this.state.creator_id) {
+    if (this.context.user != this.state.creator_id) {
       return (
         <div className="group-view">
           <div className="group-header">
@@ -105,7 +114,7 @@ class GroupView extends React.Component {
               <h2>{this.state.groupName}</h2>
             </div>
             <div className="group-options inline">
-              <GroupOptions />
+              <GroupOptions group={this.group_id} />
             </div>
           </div>
           <hr />
@@ -135,7 +144,7 @@ class GroupView extends React.Component {
           <div className="group-header">
             <div className="my-groups-select">
               <FormControl variant="outlined">
-                <InputLabel htmlFor="outlined-age-simple">My Groups</InputLabel>
+                <InputLabel>My Groups</InputLabel>
                 <Select
                   autoWidth={true}
                   value={this.state.group_id}
