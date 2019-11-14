@@ -15,7 +15,28 @@ exports.get = (url, callback) => {
     }).catch((err) => { 
         callback({"success": false, "err": err})
     });
-}
+};
+
+exports.uploadFile = (url, file, callback) => {
+
+    let data = new FormData();
+    data.append('file', file);
+
+    fetch(url, {
+        method: 'POST',
+        body: data,
+        credentials: "include",
+        headers: {
+
+        }
+    }).then(res => {
+        return res.json();
+    }).then((res) => {
+        callback(res);
+    }).catch((err) => {
+        callback({"success": false, "err": err})
+    });
+};
 
 
 exports.post = (url, jsonData, callback) => {
@@ -34,4 +55,4 @@ exports.post = (url, jsonData, callback) => {
     }).catch((err) => {
         callback({"success": false, "err": err})
     });
-}
+};

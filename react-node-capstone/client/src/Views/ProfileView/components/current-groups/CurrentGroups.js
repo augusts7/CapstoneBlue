@@ -1,6 +1,6 @@
 import React from "react";
-import ProfileItemContainer from "../container/ProfileItemContainer";
-import ProfileItemBlockContainer from "../container/profile-item-blocks/ProfileItemBlockContainer";
+import ProfileSectionContainer from "../../generic/profile-view-section/ProfileSectionContainer";
+import ProfileItemBlockContainer from "../../generic/profile-view-item/profile-item-blocks/ProfileItemBlockContainer";
 
 
 export default class ProfileInfo extends React.Component {
@@ -19,11 +19,9 @@ export default class ProfileInfo extends React.Component {
 
         return (
 
-            <ProfileItemContainer title="Current Groups">
-                <ProfileItemBlockContainer>
-                    Hello
-                </ProfileItemBlockContainer>
-            </ProfileItemContainer>
+            <ProfileItemBlockContainer title="Current Groups">
+                Hello
+            </ProfileItemBlockContainer>
         );
     }
 }

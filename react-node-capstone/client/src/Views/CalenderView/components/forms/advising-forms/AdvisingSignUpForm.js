@@ -2,7 +2,7 @@ import React from 'react';
 import MessageBox from "../../../../../components/Form/MessageBox/MessageBox"
 import 'date-fns';
 import { get, post } from "../../../../../ApiHelper/ApiHelper"
-import CalendarFormBaseLayout from "../dialog-layout/BaseLayout";
+import CalendarFormBaseLayout from "../dialog-form/DialogForm";
 import UnSelectedAdvisingItem from "../../calendar-click-popup/single-event-layout/event-type-specific-items/AdvisingSignUpItem";
 
 export default class AdvisingSignUpForm extends React.Component {

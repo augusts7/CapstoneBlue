@@ -2,8 +2,9 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import {get, post} from "../../../../../ApiHelper/ApiHelper"
 import Select from "../../../../../components/Select/Select";
-import CalendarFormBaseLayout from "../dialog-layout/BaseLayout";
+import CalendarFormBaseLayout from "../dialog-form/DialogForm";
 
+const textFieldStyle = {marginRight: "16px"};
 
 export default class ShareCalendarForm extends React.Component {
 
@@ -105,10 +106,12 @@ export default class ShareCalendarForm extends React.Component {
         }
 
         return (
-            <CalendarFormBaseLayout onClose={this.handleClose} open={this.props.open} buttons={this.layoutValues.buttons} progress={this.state.progress}
+            <CalendarFormBaseLayout onClose={this.handleClose} open={this.props.open}
+                                    buttons={this.layoutValues.buttons} progress={this.state.progress}
                                     title="Share Your Calendar">
                 <TextField
-                    fullWidth
+                    style={textFieldStyle}
+                    autoFocus
                     type="text"
                     name="name"
                     onChange={this.handleChange}
@@ -117,7 +120,7 @@ export default class ShareCalendarForm extends React.Component {
                     margin="normal"/>
 
                 <TextField
-                    fullWidth
+                    style={textFieldStyle}
                     type="email"
                     name="email"
                     onChange={this.handleChange}

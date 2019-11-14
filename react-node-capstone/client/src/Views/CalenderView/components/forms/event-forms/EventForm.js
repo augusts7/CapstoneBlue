@@ -17,6 +17,7 @@ import Select from "../../../../../components/Select/Select"
 import DialogContent from "@material-ui/core/DialogContent";
 import SelectCalendars from "../../generic/select-calendars/SelectCalendars";
 import Slide from "@material-ui/core/Slide";
+import DialogForm from "../dialog-form/DialogForm";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -52,7 +53,7 @@ export default class EventForm extends React.Component {
         this.setState({[name]: value});
     };
 
-    
+
     componentWillReceiveProps(nextProps) {
 
         const formMode = "" + nextProps.formMode;
@@ -75,6 +76,7 @@ export default class EventForm extends React.Component {
             this.setState({formTitle: "Add Appointment"});
         }
     }
+
     componentDidMount() {
         this.loadCalendars();
     }
@@ -153,6 +155,17 @@ export default class EventForm extends React.Component {
         });
     }
 
+    getEventFormHelperText = () => {
+        switch (this.state.formMode) {
+            case "event":
+                return "Enter all the details including start, end time, title, description, and calendar to create a new event";
+            case "appointment":
+                return "Enter all the details including the start and end time, title, description, and enter the emails of all the users who are to be invited";
+            case "editAppointment":
+                return "Enter details to edit them in the database";
+        }
+    };
+
     render() {
 
         let eventTypeHtml = null;
@@ -169,90 +182,81 @@ export default class EventForm extends React.Component {
 
         }
 
+        let formHelperText = this.getEventFormHelperText();
+
+        const buttons = [
+            {name: "Cancel", onClick: this.props.onClose},
+            {name: "Submit", onClick: this.handleSave}
+        ];
+
         return (
-            <div>
-                <Dialog TransitionComponent={Transition} open={this.props.open} className="dialog"
+            <DialogForm open={this.props.open}
+                        buttons={buttons}
                         onClose={this.props.onClose}
-                        aria-labelledby="form-dialog-title">
-                    <DialogTitle className="dialog-title" id="form-dialog-title">
-                        <h4>{this.state.formTitle}</h4>
-                    </DialogTitle>
+                        progress={this.state.isLoading}
+                        title={this.state.formTitle}
 
-                    <Progress show={this.state.isLoading}/>
+            >
+                <MessageBox noPadding message={this.state.message} hideMessage={this.hideMessage}/>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <div>
 
-                    <DialogContent className="dialog-white-content styleScroll">
+                        <DateTimePicker
+                            fullWidth
+                            autoOk
+                            inputVariant="outlined"
+                            margin="normal"
+                            label="Start Time"
+                            value={this.state.start}
+                            onChange={(value) => this.handleChange("start", value)}
+                        />
+                        <DateTimePicker
+                            fullWidth
+                            autoOk
+                            inputVariant="outlined"
+                            margin="normal"
+                            label="End Time"
+                            value={this.state.end}
+                            onChange={(value) => this.handleChange("end", value)}
+                        />
 
-                        <MessageBox noPadding message={this.state.message} hideMessage={this.hideMessage}/>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <div>
+                        <TextField
+                            autoFocus
+                            fullWidth
+                            type="text"
+                            onChange={(event) => this.handleChange("title", event.target.value)}
+                            value={this.state.title}
+                            label={"Title"}
+                            margin="normal"/>
 
-                                <DateTimePicker
-                                    fullWidth
-                                    autoOk
-                                    inputVariant="outlined"
-                                    margin="normal"
-                                    label="Start Time"
-                                    value={this.state.start}
-                                    onChange={(value) => this.handleChange("start", value)}
-                                />
-                                <DateTimePicker
-                                    fullWidth
-                                    autoOk
-                                    inputVariant="outlined"
-                                    margin="normal"
-                                    label="End Time"
-                                    value={this.state.end}
-                                    onChange={(value) => this.handleChange("end", value)}
-                                />
+                        <TextField
+                            fullWidth
+                            type="text"
+                            onChange={(event) => this.handleChange("description", event.target.value)}
+                            value={this.state.description}
+                            label={"Description"}
+                            margin="normal"/>
 
-                                <TextField
-                                    fullWidth
-                                    type="text"
-                                    onChange={(event) => this.handleChange("title", event.target.value)}
-                                    value={this.state.title}
-                                    label={"Title"}
-                                    margin="normal"/>
+                        {eventTypeHtml}
 
-                                <TextField
-                                    fullWidth
-                                    type="text"
-                                    onChange={(event) => this.handleChange("description", event.target.value)}
-                                    value={this.state.description}
-                                    label={"Description"}
-                                    margin="normal"/>
+                        <TextField
+                            fullWidth
+                            type="text"
+                            onChange={(event) => this.handleChange("attendeeEmails", event.target.value)}
+                            value={this.state.attendeeEmails}
+                            label={"Emails of invited users"}
+                            margin="normal"/>
 
-                                {eventTypeHtml}
+                        <Select
+                            label="Calendar"
+                            helperText="Select the Calendar to associate this event in"
+                            value={this.state.calendarId}
+                            options={this.state.calendarOptions}
+                            onChange={(value) => this.handleChange("calendarId", value)}/>
 
-                                <TextField
-                                    fullWidth
-                                    type="text"
-                                    onChange={(event) => this.handleChange("attendeeEmails", event.target.value)}
-                                    value={this.state.attendeeEmails}
-                                    label={"Emails of invited users"}
-                                    margin="normal"/>
-
-                                <Select
-                                    label="Calendar"
-                                    helperText="Select the Calendar to associate this event in"
-                                    value={this.state.calendarId}
-                                    options={this.state.calendarOptions}
-                                    onChange={(value) => this.handleChange("calendarId", value)}/>
-
-                            </div>
-                        </MuiPickersUtilsProvider>
-
-                    </DialogContent>
-                    <DialogActions className="dialog-grey-footer">
-                        <MaterialButton color="primary" onClick={this.props.onClose}>
-                            Cancel
-                        </MaterialButton>
-                        <MaterialButton color="primary" role="main" onClick={this.handleSave}>
-                            Save
-                        </MaterialButton>
-                    </DialogActions>
-                </Dialog>
-            </div>
-
+                    </div>
+                </MuiPickersUtilsProvider>
+            </DialogForm>
         );
     }
 }

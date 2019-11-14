@@ -1,12 +1,12 @@
 import React from "react";
-import ProfileItemContainer from "../container/ProfileItemContainer";
-import ProfileItemBlockContainer from "../container/profile-item-blocks/ProfileItemBlockContainer";
+import ProfileSectionContainer from "../../generic/profile-view-section/ProfileSectionContainer";
+import ProfileItemBlockContainer from "../../generic/profile-view-item/profile-item-blocks/ProfileItemBlockContainer";
 
 
 export default class ProfileInfo extends React.Component {
 
 
-    constructor (props) {
+    constructor(props) {
         super(props);
 
         this.state = {};
@@ -16,14 +16,12 @@ export default class ProfileInfo extends React.Component {
 
     }
 
-    render () {
+    render() {
         return (
 
-            <ProfileItemContainer title="Classes Taken">
-                <ProfileItemBlockContainer>
-                    Classes Taken
-                </ProfileItemBlockContainer>
-            </ProfileItemContainer>
+            <ProfileItemBlockContainer title="Classes Taken">
+                Classes Taken
+            </ProfileItemBlockContainer>
         );
     }
 }

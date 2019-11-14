@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import {get, post} from "../../../../../../ApiHelper/ApiHelper"
 import Select from "../../../../../../components/Select/Select";
-import CalendarFormBaseLayout from "../../dialog-layout/BaseLayout";
+import CalendarFormBaseLayout from "../../dialog-form/DialogForm";
 
 
 export default class ShareCalendarForm extends React.Component {

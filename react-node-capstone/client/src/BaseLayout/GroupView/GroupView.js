@@ -13,6 +13,7 @@ import "./GroupView.css";
 import CreateGroupEvent from "./CreateGroupEvent";
 import AddGroupMember from "./AddGroupMember";
 import GroupOptions from "./GroupOptionsMenu";
+import AddMultipleUsersFromList from "../../Views/GroupView/AddMultipleUsersFromList";
 
 //Mockup: https://www.figma.com/file/r5yEpMlG5SzIAkONOOAWc0/Groups-faculty-%26-student?node-id=0%3A1
 
@@ -123,6 +124,7 @@ class GroupView extends React.Component {
             <h3 className="list-header">Group Members</h3>
             <div className="buttons-group-members">
               <AddGroupMember />
+              <AddMultipleUsersFromList />
             </div>
             <hr />
             <GroupMemberList groupMembers={this.state.groupMembers} />

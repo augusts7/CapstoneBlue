@@ -10,7 +10,7 @@ import {
 import TextField from "@material-ui/core/TextField"
 import {post} from "../../../../../ApiHelper/ApiHelper"
 import {getSlots} from "../../../utils/advising-slots/AdvisingSlotsHelper";
-import CalendarFormBaseLayout from "../dialog-layout/BaseLayout";
+import CalendarFormBaseLayout from "../dialog-form/DialogForm";
 import AdvisingSlotShowAdvisingItem from "./AdvisingSlotShowAdvisingItem";
 
 

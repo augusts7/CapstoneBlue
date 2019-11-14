@@ -1,6 +1,6 @@
 import React from "react";
-import ProfileItemContainer from "../container/ProfileItemContainer";
-import ProfileItemBlockContainer from "../container/profile-item-blocks/ProfileItemBlockContainer";
+import ProfileSectionContainer from "../../generic/profile-view-section/ProfileSectionContainer";
+import ProfileItemBlockContainer from "../../generic/profile-view-item/profile-item-blocks/ProfileItemBlockContainer";
 import UploadButton from "./UploadButton";
 
 
@@ -19,11 +19,11 @@ export default class UploadStudents extends React.Component {
     render () {
         return (
 
-            <ProfileItemContainer title="Upload Students">
+            <ProfileSectionContainer title="Upload Students">
                 <ProfileItemBlockContainer title="Upload Students">
                     <UploadButton>Upload Students</UploadButton>
                 </ProfileItemBlockContainer>
-            </ProfileItemContainer>
+            </ProfileSectionContainer>
         );
     }
 }
