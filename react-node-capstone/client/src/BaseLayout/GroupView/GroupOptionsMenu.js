@@ -9,7 +9,6 @@ export default class extends Component {
         super(props);
         this.state = {
             anchorEl: null,
-            group_id: this.props.groupID,
             open: false
         };
         this.handleClick = this.handleClick.bind(this);
@@ -33,16 +32,16 @@ export default class extends Component {
   };
 
   handleDelete(){
-      console.log(this.state.group_id + " groupid");
+      console.log(this.props.groupID + " groupid");
       this.setState({anchorEl: null});
-      fetch("/groups/delete/" + this.state.group_id, {
+      fetch("/groups/delete/" + this.props.groupID, {
           method: "DELETE",
           headers: {
               Accept: 'application/json',
               "Content-Type": "application/json"
           },
           body: JSON.stringify({
-              group_id: this.state.group_id
+              group_id: this.props.groupID
           }),
       })
           .then(function(response) {

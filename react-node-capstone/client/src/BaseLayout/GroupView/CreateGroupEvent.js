@@ -8,13 +8,16 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import UserContext from "../../Context/UserContext";
+
 
 class CreateGroupEvent extends React.Component {
+  static contextType = UserContext;
+
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      groupID: this.props.groupID,
       title: "",
       description: "",
       start: new Date(),
@@ -35,21 +38,19 @@ class CreateGroupEvent extends React.Component {
 
   handleStartTimeChange(datetime) {
     this.setState({ start: datetime });
-    console.log(this.state.start);
+    console.log(this.state.start)
   }
 
   handleEndTimeChange(datetime) {
     this.setState({ end: datetime });
-    console.log(this.state.end);
+    console.log(this.state.end)
   }
 
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  createGroupEvent(){
-    console.log(this.state.start);
-    console.log(this.state.end);
+  createGroupEvent = () => {
     fetch("/groups/createEvents", {
       method: "POST",
       headers: {
@@ -61,7 +62,8 @@ class CreateGroupEvent extends React.Component {
         end: this.state.end,
         title: this.state.title,
         description: this.state.description,
-        group_id: this.state.groupID,
+        group_id: this.props.groupID,
+        user_id: this.context.user_id,
         carousel: 0
       })
     })
@@ -147,7 +149,7 @@ class CreateGroupEvent extends React.Component {
                 <DateTimePicker
                   autoOk
                   disablePast
-                  variant="inline"
+                  variant="standard"
                   label="Start Time"
                   value={this.state.start}
                   onChange={this.handleStartTimeChange}
@@ -157,7 +159,7 @@ class CreateGroupEvent extends React.Component {
                 <DateTimePicker
                   autoOk
                   disablePast
-                  variant="outlined"
+                  variant="standard"
                   label="End Time"
                   value={this.state.end}
                   onChange={this.handleEndTimeChange}
