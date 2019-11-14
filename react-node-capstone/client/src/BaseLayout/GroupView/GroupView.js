@@ -137,7 +137,7 @@ class GroupView extends React.Component {
               <AddMultipleUsersFromList />
             </div>
             <hr />
-            <GroupMemberList groupMembers={this.state.groupMembers} />
+            <GroupMemberList value={this.state.group_id} groupMembers={this.state.groupMembers} />
           </div>
         </div>
       );

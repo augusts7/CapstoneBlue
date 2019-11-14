@@ -37,7 +37,6 @@ export default class DialogForm extends React.Component {
         this.setState({progress: true});
         get(url, (res) => {
             this.setState({"allUsers": res.results, "displayedUser": res.results, "progress": false});
-            alert("Hey  " + res.message);
             console.log(res.results);
         });
     };

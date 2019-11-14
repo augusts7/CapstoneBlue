@@ -129,6 +129,26 @@ router.route("/delete/:group_id").delete(async (req, res) => {
     res.sendStatus(500);
   }
 });
+//Delete a user from a group
+router.route("/deleteUser/:user_id").delete(async (req, res) => {
+  try {
+    let user_id = req.params.user_id;
+    let group_id = req.body.group_id;
+    let sql = "DELETE FROM my_groups WHERE group_id = " + group_id + " AND user_id = "+ user_id + ";";
+    pool.query(sql, function(
+        error,
+        results,
+        fields
+    ) {
+      if (error) {
+        return res.json({ success: false, message: error });
+      }
+    });
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
 
 //Create a group event
 router.route("/createEvents").post(async (req,res) =>{
