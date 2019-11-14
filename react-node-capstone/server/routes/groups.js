@@ -2,6 +2,7 @@ var router = require("express").Router();
 var pool = require("../db/database");
 var bodyParser = require("body-parser");
 var sqlHandler = require("../utils/sql-helper/sql-helper");
+const sqlHelper = require("../utils/sql-helper/sql-helper");
 var emailhelper = require("../utils/email/email-sender");
 
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -99,7 +100,8 @@ router.route("/").post((req, res) => {
 router.route("/delete/:group_id").delete(async (req, res) => {
   try {
     let group_id = req.params.group_id;
-    pool.query("DELETE FROM my_groups WHERE group_id = ?", group_id, function(
+    let sql = "DELETE FROM my_groups WHERE group_id = " + group_id + ";";
+    pool.query(sql, function(
       error,
       results,
       fields
@@ -107,8 +109,8 @@ router.route("/delete/:group_id").delete(async (req, res) => {
       if (error) {
         return res.json({ success: false, message: error });
       }
-      let sql = "DELETE FROM groups WHERE group_id = " + group_id + ";";
-      pool.query(sql, function(error, results, fields) {
+      let sql2 = "DELETE FROM groups WHERE group_id = " + group_id + ";";
+      pool.query(sql2, function(error, results, fields) {
         if (error) {
           return res.json({
             success: false,
@@ -176,7 +178,7 @@ router.route("/createEvents").post(async (req,res) =>{
         res.send(results);
       })
     }
-  
+
 }
   catch(e){
     console.log(e);
