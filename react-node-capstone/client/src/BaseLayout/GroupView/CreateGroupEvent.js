@@ -10,7 +10,6 @@ import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import UserContext from "../../Context/UserContext";
 
-
 class CreateGroupEvent extends React.Component {
   static contextType = UserContext;
 
@@ -38,12 +37,12 @@ class CreateGroupEvent extends React.Component {
 
   handleStartTimeChange(datetime) {
     this.setState({ start: datetime });
-    console.log(this.state.start)
+    console.log(this.state.start);
   }
 
   handleEndTimeChange(datetime) {
     this.setState({ end: datetime });
-    console.log(this.state.end)
+    console.log(this.state.end);
   }
 
   handleChange(event) {
@@ -73,7 +72,8 @@ class CreateGroupEvent extends React.Component {
       .then(function(body) {
         console.log(body);
       });
-  }
+    this.handleToggle();
+  };
 
   render() {
     const { open } = this.state;

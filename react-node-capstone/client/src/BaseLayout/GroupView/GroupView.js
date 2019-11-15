@@ -17,7 +17,6 @@ import UserContext from "../../Context/UserContext";
 //Mockup: https://www.figma.com/file/r5yEpMlG5SzIAkONOOAWc0/Groups-faculty-%26-student?node-id=0%3A1
 
 class GroupView extends React.Component {
-
   static contextType = UserContext;
   constructor(props) {
     super(props);
@@ -27,7 +26,7 @@ class GroupView extends React.Component {
       groupName: "",
       creator_id: 0,
       eventListItems: [],
-      groupMembers: [],
+      groupMembers: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.refreshGroup = this.refreshGroup.bind(this);
@@ -36,10 +35,9 @@ class GroupView extends React.Component {
 
   componentDidMount() {
     this.getMyGroups();
-    this.refreshGroup(this.state.group_id);
   }
-  
-  refreshGroup(group){
+
+  refreshGroup(group) {
     this.getGroupEvents(group);
     this.getGroupMembers(group);
     this.getGroupInfo(group);
@@ -49,11 +47,12 @@ class GroupView extends React.Component {
     var myGroupsURL = "/my_groups";
     fetch(myGroupsURL)
       .then(res => res.json())
-      .then(myGroups => this.setState({group_id : myGroups[0].group_id},() => {
-        this.setState({ my_groups: myGroups})
-        console.log("Method "+ this.state.group_id)
-      
-      }));
+      .then(myGroups =>
+        this.setState({ group_id: myGroups[0].group_id }, () => {
+          this.setState({ my_groups: myGroups });
+          this.refreshGroup(myGroups[0].group_id);
+        })
+      );
   }
   getGroupInfo(groupID) {
     var groupInfoURL = "/groups/groupInfo/" + groupID;
@@ -82,61 +81,64 @@ class GroupView extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({ group_id: event.target.value },() => {
+    this.setState({ group_id: event.target.value }, () => {
       this.refreshGroup(event.target.value);
     });
   }
 
   render() {
-
     console.log("Render " + this.state.group_id);
     var groups = this.state.my_groups.map(g => {
       return <MenuItem value={g.group_id}>{g.group_name}</MenuItem>;
     });
-      return (
-        <div className="group-view">
-          <div className="group-header">
-            <div className="my-groups-select inline">
-              <FormControl variant="standard">
-                <InputLabel>My Groups</InputLabel>
-                <Select
-                  displayEmpty
-                  autoWidth={true}
-                  value={this.state.group_id}
-                  onChange={this.handleChange}
-                  children={groups}
-                  />
-              </FormControl>
-            </div>
-            <div className="group-name inline">
-              <h2>{this.state.groupName}</h2>
-            </div>
-            <div className="group-options inline">
-              <GroupOptions groupID={this.state.group_id}/>
-            </div>
+
+    return (
+      <div className="group-view">
+        <div className="group-header">
+          <div className="my-groups-select">
+            <FormControl variant="standard">
+              <InputLabel>My Groups</InputLabel>
+              <Select
+                displayEmpty
+                autoWidth={true}
+                value={this.state.group_id}
+                onChange={this.handleChange}
+                children={groups}
+              />
+            </FormControl>
           </div>
-          <hr />
-          <div className="group-events">
-            <h3 className="group-events-list-header">Group Events</h3>
-            <div className="buttons-group-events">
-              <CreateGroupEvent user={"owner"} groupID={this.state.group_id} />
-            </div>
-            <div className="group-event-list">
-              <hr />
-              <EventList events={this.state.eventListItems} />
-            </div>
+          <div className="group-name">
+            <h2>{this.state.groupName}</h2>
           </div>
-          <div className="group-members">
-            <h3 className="list-header">Group Members</h3>
-            <div className="buttons-group-members">
-              <AddGroupMember />
-              <AddMultipleUsersFromList />
-            </div>
-            <hr />
-            <GroupMemberList value={this.state.group_id} groupMembers={this.state.groupMembers} />
+          <div className="group-options">
+            <GroupOptions groupID={this.state.group_id} />
           </div>
         </div>
-      );
+        <hr />
+        <div className="group-events">
+          <h3 className="group-events-list-header">Group Events</h3>
+          <div className="buttons-group-events">
+            <CreateGroupEvent user={"owner"} groupID={this.state.group_id} />
+          </div>
+          <div className="group-event-list">
+            <hr />
+            <EventList events={this.state.eventListItems} />
+          </div>
+        </div>
+        <div className="group-members">
+          <h3 className="list-header">Group Members</h3>
+          <div className="buttons-group-members">
+            <AddGroupMember />
+            <AddMultipleUsersFromList />
+          </div>
+          <hr />
+          <GroupMemberList
+            value={this.state.group_id}
+            groupMembers={this.state.groupMembers}
+          />
+        </div>
+      </div>
+    );
   }
 }
 
