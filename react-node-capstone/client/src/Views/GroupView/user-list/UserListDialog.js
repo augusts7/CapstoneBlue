@@ -7,9 +7,12 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Progress from "../../../components/Container/Progress/Progress";
 import Slide from "@material-ui/core/Slide";
-import {get} from "../../../ApiHelper/ApiHelper";
-import UserListDialogTitle from "./UserListDialogTitle";
+import {get, post} from "../../../ApiHelper/ApiHelper";
 import SingleItemInUserList from "./SingleItemInUserList";
+import UserListDialogTitle from "./UserListDialogTitle";
+import LengthValidator from "../../../utils/length-utils/LengthValidator";
+import ArrayToggleUtills from "../../../utils/array-utils/ArrayToggleHelper";
+import ArraySearchHelper from "../../../utils/array-utils/ArraySearchHelper";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -25,6 +28,7 @@ export default class DialogForm extends React.Component {
             progress: false,
             allUsers: [],
             displayedUsers: [],
+            selectedUsers: []
         };
     }
 
@@ -36,47 +40,49 @@ export default class DialogForm extends React.Component {
         let url = "user_info/userList";
         this.setState({progress: true});
         get(url, (res) => {
-            this.setState({"allUsers": res.results, "displayedUser": res.results, "progress": false});
+            this.setState({"allUsers": res.results, "displayedUsers": res.results, "progress": false});
             console.log(res.results);
         });
     };
 
 
     handleSubmit = () => {
+        const data = {};
+        post("/groups/createMultiple", data, res => {
 
+        });
     };
 
-    toggleUserChecked = () => {
-
+    toggleUserChecked = (userId) => {
+        let newSelectedUsers = ArrayToggleUtills.toggleStringValue(this.state.selectedUsers, userId);
+        this.setState({selectedUsers: newSelectedUsers});
     };
 
     getAllUsers() {
-        if (this.state.allUsers === undefined || this.state.allUsers === null || this.state.allUsers.length === 0) {
+
+        if (LengthValidator.isEmpty(this.state.displayedUsers)) {
             return (<div/>);
         }
 
-        let allUsers = [];
+        let displayedUsers = [];
 
-        this.state.allUsers.forEach((user) => {
-            allUsers.push(<SingleItemInUserList user={user} toggleChecked={this.toggleUserChecked}/>);
+        this.state.displayedUsers.forEach((user) => {
+            displayedUsers.push(<SingleItemInUserList user={user} toggleChecked={this.toggleUserChecked}/>);
         });
 
-        return allUsers;
+        return displayedUsers;
     }
 
     handleSearch = (text) => {
-        let results = [];
-        if (this.state.allUsers === undefined || this.state.allUsers === null || this.state.allUsers.length === 0 || text === undefined || text === null || text.length === 0) {
-            return false;
-        }
-        this.state.allUsers.forEach((user) => {
-            let value = user.first_name.toUpperCase() + " " + user.last_name.toUpperCase();
-            let searchText = text.toUpperCase();
-            if (value.contains(searchText)) {
-                results.push(user);
-            }
+        let results = ArraySearchHelper.search(this.state.allUsers, text, (user) => {
+            return user.first_name.toUpperCase() + " " + user.last_name.toUpperCase();
         });
+
         this.setState({displayedUsers: results});
+    };
+
+    handleClearSearch = () => {
+        this.setState({displayedUsers: this.state.allUsers});
     };
 
     render() {
@@ -88,7 +94,7 @@ export default class DialogForm extends React.Component {
                     onClose={this.props.onClose} aria-labelledby="form-dialog-title">
 
                 <DialogTitle>
-                    <UserListDialogTitle handleSearch={this.handleSearch}/>
+                    <UserListDialogTitle onClearSearch={this.handleClearSearch} onSearch={this.handleSearch}/>
                 </DialogTitle>
 
                 <Progress show={this.state.progress}/>

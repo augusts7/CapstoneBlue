@@ -18,8 +18,7 @@ export default function AddMultipleUsersFromList (props) {
                 variant="contained"
                 size="large"
                 className="msgBtn2"
-                onClick={handleToggle}
-            >
+                onClick={handleToggle}>
                 <i className="material-icons">group_add</i>Select Users to add
             </Button>
         </Fragment>

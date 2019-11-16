@@ -1,8 +1,8 @@
 import React from "react";
-import MessageBox from "../../../../../components/Form/MessageBox/MessageBox"
-import {post, get} from "../../../../../ApiHelper/ApiHelper";
-import DialogForm from "../../../../CalenderView/components/forms/dialog-form/DialogForm";
-import FormInputFields from "../../../../../components/Form/FormInputFields";
+import MessageBox from "../../../../../../components/Form/MessageBox/MessageBox"
+import {post, get} from "../../../../../../ApiHelper/ApiHelper";
+import DialogForm from "../../../../../CalenderView/components/forms/dialog-form/DialogForm";
+import FormInputFields from "../../../../../../components/Form/FormInputFields";
 
 
 class CreateUserForm extends React.Component {
