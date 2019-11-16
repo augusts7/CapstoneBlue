@@ -36,13 +36,11 @@ class GroupView extends React.Component {
   componentDidMount() {
     this.getMyGroups();
   }
-
   refreshGroup(group) {
     this.getGroupEvents(group);
     this.getGroupMembers(group);
     this.getGroupInfo(group);
   }
-
   getMyGroups() {
     var myGroupsURL = "/my_groups";
     fetch(myGroupsURL)
@@ -79,7 +77,6 @@ class GroupView extends React.Component {
       .then(res => res.json())
       .then(group_events => this.setState({ eventListItems: group_events }));
   }
-
   handleChange(event) {
     this.setState({ group_id: event.target.value }, () => {
       this.refreshGroup(event.target.value);
@@ -87,7 +84,6 @@ class GroupView extends React.Component {
   }
 
   render() {
-    console.log("Render " + this.state.group_id);
     var groups = this.state.my_groups.map(g => {
       return <MenuItem value={g.group_id}>{g.group_name}</MenuItem>;
     });
@@ -118,7 +114,10 @@ class GroupView extends React.Component {
         <div className="group-events">
           <h3 className="group-events-list-header">Group Events</h3>
           <div className="buttons-group-events">
-            <CreateGroupEvent user={"owner"} groupID={this.state.group_id} />
+            <CreateGroupEvent
+              user={this.state.creator_id}
+              groupID={this.state.group_id}
+            />
           </div>
           <div className="group-event-list">
             <hr />
