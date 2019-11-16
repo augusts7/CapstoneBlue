@@ -41,14 +41,14 @@ export default function AddNewCalendarForm(props) {
     ];
 
     return (
-        <DialogForm open={props.open} buttons={buttons} onClose={handleClose} progress={progress}
+        <DialogForm fullWidth={false} open={props.open} buttons={buttons} onClose={handleClose} progress={progress}
                                 title="Add New Calendar"
                                 text="To add a new calendar, enter the name for the new calendar."
         >
 
             <TextField
-                autoFocus
                 fullWidth
+                autoFocus
                 type="text"
                 onChange={handleChange}
                 value={calName}

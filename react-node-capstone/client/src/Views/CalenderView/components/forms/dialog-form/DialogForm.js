@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Progress from "../../../../../components/Container/Progress/Progress";
-import "../../../styles/dialogs/dialog-with-colored-title.css";
+import "../../../../../Application/styles/dialogs/dialog.css";
 import Slide from "@material-ui/core/Slide";
 import {Typography} from "@material-ui/core";
 import DialogFormContentText from "./DialogFormContentText";
@@ -17,11 +17,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function DialogForm(props) {
 
+    let fullWidth = true;
+    if (props.fullWidth === false){
+        fullWidth = false;
+    }
+
     return (
-        <Dialog TransitionComponent={Transition} fullWidth={true} className="dialog" open={props.open}
+        <Dialog TransitionComponent={Transition} fullWidth={fullWidth} className="dialog" open={props.open}
                 onClose={props.onClose} aria-labelledby="form-dialog-title">
             <DialogTitle className="dialog-title">
-                <h5>{props.title}</h5>
+                {props.title}
             </DialogTitle>
 
             <Progress show={props.progress}/>

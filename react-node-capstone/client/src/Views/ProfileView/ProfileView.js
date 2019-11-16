@@ -14,30 +14,10 @@ export default class ProfileView extends React.Component {
         super(props);
     }
 
-    layoutInfo = () => {
-
-        const data = {
-            data: {
-                title: "Basic Profile Info", items: [
-                    {name: "First name", value: "Sanjeeb"},
-                    {name: "Last name", value: "Sangraula"},
-                    {name: "Email", value: "sanjeeb@ulm.edu"},
-                    {name: "User Type", value: "sanjeeb@ulm.edu"},
-                ]
-            },
-            buttons: [
-                {name: "Log Out", onClick: () => this.navigateTo("logOut")},
-                {name: "Reset Password", onClick: () => this.navigateTo("resetPassword")}
-            ]
-        };
-        return data;
-    };
 
     render() {
 
         let title = "Profile";
-
-        let layoutInfo = this.layoutInfo();
 
         return (
             <div className="flex-full ulm-library-image">

@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import "./Header.css";
 import AuthContext from "../../Context/AuthContext";
 import Avatar from "@material-ui/core/Avatar";
-import Notifications from "./notifications/NotificationsContatiner";
+import Notifications from "./notifications/Notifications";
 import AppBarWithTabs from "./AppBar";
 
 

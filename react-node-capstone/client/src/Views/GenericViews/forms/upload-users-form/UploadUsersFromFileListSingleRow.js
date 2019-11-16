@@ -1,11 +1,11 @@
 import React from "react";
 import {Typography} from "@material-ui/core";
-import ListItemWithCheckbox from "../../../../../../GenericViews/list/list-items/ListItemWithCheckbox";
+import ListItemWithCheckbox from "../../list/list-items/ListItemWithCheckbox";
 
 const containerStyle = {display: "grid", "grid-template-columns": "40% 40%", padding: "8px 0px"};
 const nameContainerStyle = {fontWeight: "600"};
 
-export default function UploadedUserDataListRow (props) {
+export default function UploadUsersFromFileListSingleRow(props) {
 
     const onCheckBoxClick = () => {
         props.onToggleUser(props.data.campusEmail);
@@ -18,7 +18,7 @@ export default function UploadedUserDataListRow (props) {
     );
 }
 
-function UserRow (props) {
+function UserRow(props) {
 
     const name = props.data.first_name + " " + props.data.last_name;
     const email = props.data.campusEmail;

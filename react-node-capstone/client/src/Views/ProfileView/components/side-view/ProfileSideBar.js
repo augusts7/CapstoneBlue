@@ -3,32 +3,44 @@ import ProfileItemBlockContainer from "../../generic/profile-view-item/profile-i
 import ProfileListItemContents from "../../generic/profile-view-item/list-items/ProfileListItemContents";
 import ProfileSectionContainer from "../../generic/profile-view-section/ProfileSectionContainer";
 import ManageUsersView from "./ManageUsersView";
+import AuthContext from "../../../../Context/AuthContext";
+import LengthValidator from "../../../../utils/length-utils/LengthValidator";
 
 export default class ProfileSideBar extends React.Component {
 
+    static contextType = AuthContext;
 
     constructor(props) {
         super(props);
 
     }
 
+    handleResetPassword = () => {
+
+    };
+
     layoutInfo = () => {
 
-        const data = {
+        const user = this.context.getUser();
+
+        let profileItems = [];
+
+        if (LengthValidator.isNotEmpty(user)) {
+            profileItems.push({name: "First name", value: user.first_name});
+            profileItems.push({name: "Last name", value: user.last_name});
+            profileItems.push({name: "Email", value: user.campusEmail});
+            profileItems.push({name: "User Type", value: user.user_type});
+        }
+
+        return {
             data: {
-                title: "Basic Profile Info", items: [
-                    {name: "First name", value: "Sanjeeb"},
-                    {name: "Last name", value: "Sangraula"},
-                    {name: "Email", value: "sanjeeb@ulm.edu"},
-                    {name: "User Type", value: "sanjeeb@ulm.edu"},
-                ]
+                title: "Basic Profile Info", items: profileItems
             },
             buttons: [
-                {name: "Log Out", onClick: () => this.navigateTo("logOut")},
-                {name: "Reset Password", onClick: () => this.navigateTo("resetPassword")}
+                {name: "Log Out", onClick: () => this.context.logout()},
+                {name: "Reset Password", onClick: () => this.handleResetPassword()}
             ]
         };
-        return data;
     };
 
     render() {
