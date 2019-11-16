@@ -38,7 +38,7 @@
   overflow: auto;
   background-color: #bd955a;
   border-radius: 7px;
-  margin: 15px;
+  margin: 20px;
 }
 
 .group-events-list-header {
@@ -69,7 +69,7 @@
 }
 
 .group-members {
-  margin: 15px;
+  margin: 20px;
   overflow: auto;
   background-color: rgb(100, 101, 105);
   border-radius: 7px;
