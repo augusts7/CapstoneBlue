@@ -21,9 +21,9 @@ import ProfileView from "../Views/ProfileView/ProfileView";
 import "./images/background.jpg";
 
 import "./styles/application-styles.css";
-import "./styles/generic/flex-styles.css";
-import "./styles/generic/text-and-background-colors.css";
-import "./styles/image-styles/background-images.css";
+import "./styles/flex/flex.css";
+import "./styles/colors/colors.css";
+import "./styles/images/background-images.css";
 
 
 export default function ApplicationRouter(props) {

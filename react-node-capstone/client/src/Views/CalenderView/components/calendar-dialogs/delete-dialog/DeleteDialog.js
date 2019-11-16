@@ -5,7 +5,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import "../../../styles/dialogs/dialog-with-colored-title.css";
+import "../../../../../Application/styles/dialogs/dialog.css";
 
 const contentStyle = {padding: "32px 32px"};
 

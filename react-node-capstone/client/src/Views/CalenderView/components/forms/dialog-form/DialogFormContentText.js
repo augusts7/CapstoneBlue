@@ -1,5 +1,6 @@
 import React from "react";
 import {Typography} from "@material-ui/core";
+import DialogContentText from "@material-ui/core/DialogContentText";
 
 const styles = {
     paddingTop: "8px"
@@ -8,9 +9,9 @@ const styles = {
 export default function DialogFormContentText(props) {
 
     return (
-        <Typography variant="subtitle2" style={styles}>
+        <DialogContentText style={styles}>
             {props.children}
-        </Typography>
+        </DialogContentText>
     );
 
 }

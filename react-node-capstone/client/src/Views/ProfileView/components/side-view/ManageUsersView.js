@@ -2,7 +2,7 @@ import React from "react";
 import ProfileSectionTitle from "../../generic/profile-view-section/ProfileSectionTitle";
 import ProfileSectionButtons from "../../generic/profile-view-section/ProfileSectionButtons";
 import CreateUserForm from "./components/create-user-form/CreateUserForm";
-import CreateUsersUsingFileForm from "./components/upload-file-form/UploadFileForm";
+import CreateUsersUsingFileForm from "./components/upload-file-form/CreateUsersFromFileForm";
 import ProfileItemBlockContainer from "../../generic/profile-view-item/profile-item-blocks/ProfileItemBlockContainer";
 
 export default class ManageUsersView extends React.Component {

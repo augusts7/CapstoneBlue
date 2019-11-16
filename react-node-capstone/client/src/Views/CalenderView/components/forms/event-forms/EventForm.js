@@ -7,21 +7,18 @@ import {
     DateTimePicker,
 } from '@material-ui/pickers'
 import TextField from "@material-ui/core/TextField"
-import MaterialButton from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import Progress from "../../generic/Progress"
-import {get, post} from "../../../../../ApiHelper/ApiHelper"
 import Select from "../../../../../components/Select/Select"
-import DialogContent from "@material-ui/core/DialogContent";
-import SelectCalendars from "../../generic/select-calendars/SelectCalendars";
 import Slide from "@material-ui/core/Slide";
 import DialogForm from "../dialog-form/DialogForm";
+
+import "../../../../../Application/styles/grid/grids.css";
+import {post, get} from "../../../../../ApiHelper/ApiHelper";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
+
+const textFieldStyles = {marginRight: "16px"};
 
 export default class EventForm extends React.Component {
 
@@ -173,7 +170,7 @@ export default class EventForm extends React.Component {
         if (("" + this.props.formMode) === "event") {
 
             eventTypeHtml = <TextField
-                fullWidth
+                style={textFieldStyles}
                 type="text"
                 onChange={(event) => this.handleChange("event_type", event.target.value)}
                 value={this.state.event_type}
@@ -200,29 +197,32 @@ export default class EventForm extends React.Component {
                 <MessageBox noPadding message={this.state.message} hideMessage={this.hideMessage}/>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <div>
+                        <div className="grid-2">
+                            <DateTimePicker
+                                fullWidth
+                                autoOk
+                                inputVariant="outlined"
+                                margin="normal"
+                                label="Start Time"
+                                value={this.state.start}
+                                onChange={(value) => this.handleChange("start", value)}
+                            />
+                            <DateTimePicker
+                                fullWidth
+                                autoOk
+                                inputVariant="outlined"
+                                margin="normal"
+                                label="End Time"
+                                value={this.state.end}
+                                onChange={(value) => this.handleChange("end", value)}
+                            />
+                        </div>
 
-                        <DateTimePicker
-                            fullWidth
-                            autoOk
-                            inputVariant="outlined"
-                            margin="normal"
-                            label="Start Time"
-                            value={this.state.start}
-                            onChange={(value) => this.handleChange("start", value)}
-                        />
-                        <DateTimePicker
-                            fullWidth
-                            autoOk
-                            inputVariant="outlined"
-                            margin="normal"
-                            label="End Time"
-                            value={this.state.end}
-                            onChange={(value) => this.handleChange("end", value)}
-                        />
 
                         <TextField
-                            autoFocus
                             fullWidth
+                            style={textFieldStyles}
+                            autoFocus
                             type="text"
                             onChange={(event) => this.handleChange("title", event.target.value)}
                             value={this.state.title}
@@ -230,8 +230,8 @@ export default class EventForm extends React.Component {
                             margin="normal"/>
 
                         <TextField
-                            fullWidth
                             type="text"
+                            fullWidth
                             onChange={(event) => this.handleChange("description", event.target.value)}
                             value={this.state.description}
                             label={"Description"}

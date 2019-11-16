@@ -1,0 +1,6 @@
+.list-item-with-hover:hover {
+    background-color: #EEEEEE;
+}
+.list-item-with-hover {
+    cursor: pointer;
+}

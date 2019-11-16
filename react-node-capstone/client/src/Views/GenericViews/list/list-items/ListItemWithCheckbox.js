@@ -5,6 +5,8 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Checkbox from "@material-ui/core/Checkbox";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import {Typography} from "@material-ui/core";
+import "./ListItemWithCheckbox.css";
+
 
 export default function ListItemWithCheckbox(props) {
 
@@ -16,7 +18,7 @@ export default function ListItemWithCheckbox(props) {
     };
 
     return (
-        <ListItem>
+        <ListItem className="list-item-with-hover" onClick={handleToggle}>
             <ListItemIcon>
                 <Checkbox
                     color="primary"

@@ -21,20 +21,27 @@ class Application extends React.Component {
         };
     }
 
-    authCtx = {
+    authCtx = () => {
 
-        "login": (user) => {
+        let authCtx = {};
+
+        authCtx.login = (user) => {
             this.setState({"user": user, "isLoggedIn": true, "user_type": user.user_type, token: user.token});
             ls.set("user_type", user.user_type);
             ls.set("token", user.token);
             ls.set("isLoggedIn", true);
-        },
-        "logout": () => {
+        };
+        authCtx.logout = () => {
             this.setState({"user": null, "isLoggedIn": false, "user_type": ""});
             ls.set("user_type", "");
             ls.set("isLoggedIn", false);
             ls.set("token", "");
-        }
+        };
+        authCtx.getUser = () => {
+            return this.state.user;
+        };
+
+        return authCtx;
 
     };
 
@@ -66,7 +73,7 @@ class Application extends React.Component {
         const socket = {socket: this.getSocket()};
 
         return (
-            <AuthContext.Provider value={this.authCtx}>
+            <AuthContext.Provider value={this.authCtx()}>
                 <UserContext.Provider value={userContext}>
                     <SocketContext.Provider value={socket}>
                         <ApplicationRouter auth={this.state.isLoggedIn}/>

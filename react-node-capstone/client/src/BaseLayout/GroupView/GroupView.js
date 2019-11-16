@@ -13,6 +13,8 @@ import AddGroupMember from "./AddGroupMember";
 import GroupOptions from "./GroupOptionsMenu";
 import AddMultipleUsersFromList from "../../Views/GroupView/AddMultipleUsersFromList";
 import UserContext from "../../Context/UserContext";
+import LengthValidator from "../../utils/length-utils/LengthValidator";
+import AddMultipleUsersFromFile from "../../Views/GroupView/AddMultipleUsersFromFile";
 
 //Mockup: https://www.figma.com/file/r5yEpMlG5SzIAkONOOAWc0/Groups-faculty-%26-student?node-id=0%3A1
 
@@ -48,12 +50,15 @@ class GroupView extends React.Component {
         var myGroupsURL = "/my_groups";
         fetch(myGroupsURL)
             .then(res => res.json())
-            .then(myGroups =>
-                this.setState({group_id: myGroups[0].group_id}, () => {
-                    this.setState({my_groups: myGroups});
-                    this.refreshGroup(myGroups[0].group_id);
-                })
+            .then(myGroups => {
+
+                    this.setState({group_id: myGroups[0].group_id}, () => {
+                        this.setState({my_groups: myGroups});
+                        this.refreshGroup(myGroups[0].group_id);
+                    })
+                }
             );
+
     }
 
     getGroupInfo(groupID) {
@@ -137,6 +142,7 @@ class GroupView extends React.Component {
                     <div className="buttons-group-members">
                         <AddGroupMember/>
                         <AddMultipleUsersFromList/>
+                        <AddMultipleUsersFromFile/>
                     </div>
                     <hr/>
                     <GroupMemberList
