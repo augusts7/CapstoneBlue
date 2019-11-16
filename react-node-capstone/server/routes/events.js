@@ -4,7 +4,9 @@ const sqlHelper = require("../utils/sql-helper/sql-helper");
 const bodyParser = require("body-parser");
 const authMiddleware = require("../middlewares/auth-middleware").authMiddleware;
 
-router.use(bodyParser.urlencoded({extended: false}));
+router.use(bodyParser.urlencoded({
+    extended: false
+}));
 router.use(bodyParser.json());
 router.use(authMiddleware);
 
@@ -33,7 +35,10 @@ router.get("/sharedCalendar/:sharedCalId", function (req, res, next) {
 
             sqlHelper.handleSelectAndRespond(select, res);
         } else {
-            return res.json({success: true, results: []});
+            return res.json({
+                success: true,
+                results: []
+            });
         }
 
     });
@@ -107,7 +112,10 @@ router.post("/edit", (req, res) => {
     pool.query("SELECT creator_id FROM event WHERE eventID = ?", req.body.eventId, function (error, results, fields) {
 
         if (error) {
-            return res.json({success: false, "message": error});
+            return res.json({
+                success: false,
+                "message": error
+            });
         }
 
         const event = {
@@ -130,7 +138,7 @@ router.post("/delete", (req, res) => {
 
     if (req.user != null) {
 
-        const id = req.body.eventId;
+        const id = req.body.event_id;
 
         sqlHelper.handleDeleteAndRespond("DELETE FROM event WHERE eventID = " + id, res);
     }

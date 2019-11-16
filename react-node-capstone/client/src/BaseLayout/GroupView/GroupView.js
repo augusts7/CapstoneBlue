@@ -13,7 +13,6 @@ import AddGroupMember from "./AddGroupMember";
 import GroupOptions from "./GroupOptionsMenu";
 import AddMultipleUsersFromList from "../../Views/GroupView/AddMultipleUsersFromList";
 import UserContext from "../../Context/UserContext";
-import LengthValidator from "../../utils/length-utils/LengthValidator";
 
 //Mockup: https://www.figma.com/file/r5yEpMlG5SzIAkONOOAWc0/Groups-faculty-%26-student?node-id=0%3A1
 
@@ -49,15 +48,11 @@ class GroupView extends React.Component {
         var myGroupsURL = "/my_groups";
         fetch(myGroupsURL)
             .then(res => res.json())
-            .then(myGroups => {
-                    if (LengthValidator.isEmpty(myGroups)) {
-                        return;
-                    }
-                    this.setState({group_id: myGroups[0].group_id}, () => {
-                        this.setState({my_groups: myGroups});
-                        this.refreshGroup(myGroups[0].group_id);
-                    })
-                }
+            .then(myGroups =>
+                this.setState({group_id: myGroups[0].group_id}, () => {
+                    this.setState({my_groups: myGroups});
+                    this.refreshGroup(myGroups[0].group_id);
+                })
             );
     }
 
@@ -97,7 +92,6 @@ class GroupView extends React.Component {
     }
 
     render() {
-        console.log("Render " + this.state.group_id);
         var groups = this.state.my_groups.map(g => {
             return <MenuItem value={g.group_id}>{g.group_name}</MenuItem>;
         });
@@ -128,7 +122,10 @@ class GroupView extends React.Component {
                 <div className="group-events">
                     <h3 className="group-events-list-header">Group Events</h3>
                     <div className="buttons-group-events">
-                        <CreateGroupEvent user={"owner"} groupID={this.state.group_id}/>
+                        <CreateGroupEvent
+                            user={this.state.creator_id}
+                            groupID={this.state.group_id}
+                        />
                     </div>
                     <div className="group-event-list">
                         <hr/>

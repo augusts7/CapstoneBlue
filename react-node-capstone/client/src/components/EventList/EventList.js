@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 import "./EventList.css";
 
@@ -65,9 +67,29 @@ class EventList extends Component {
       return monthAbrv;
     }
   }
+
+  deleteEvent() {
+    fetch("/events/delete", {
+      method: "DELETE",
+      body: JSON.stringify({
+        event_id: this.props.events.key
+      })
+    })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(body) {
+        console.log(body);
+      });
+  }
+
   render() {
     var eventsList;
-    if (this.props.events !== undefined && this.props.events !== null && this.props.events.length > 0) {
+    if (
+      this.props.events !== undefined &&
+      this.props.events !== null &&
+      this.props.events.length > 0
+    ) {
       eventsList = this.props.events.map(event => {
         return (
           <div className="eventListItem" key={event.eventID}>
@@ -87,12 +109,14 @@ class EventList extends Component {
               </div>
               {event.description}
             </div>
+            <IconButton aria-label="delete" className="delete-event-button">
+              <DeleteIcon onClick={this.deleteEvent} />
+            </IconButton>
           </div>
         );
-    });
+      });
     } else {
-
-    }    
+    }
     return <div className="eventList">{eventsList}</div>;
   }
 }
