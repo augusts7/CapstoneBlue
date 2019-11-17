@@ -71,9 +71,8 @@ class EventList extends Component {
   deleteEvent(event) {
     console.log(event);
     fetch("/events/delete", {
-      method: "DELETE",
+      method: "POST",
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
