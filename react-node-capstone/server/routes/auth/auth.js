@@ -179,12 +179,7 @@ router.post("/createMultipleUsers", async function (req, res, next) {
 
     const users = req.body.users;
 
-    let promises = [];
-    users.forEach(function (user) {
-        promises.push(insertUser(user));
-    });
-
-    function insertUser(user) {
+    users.forEach(async (user) => {
         if (!user.hasOwnProperty("password")) {
             user.password = "CapstoneBlue";
         }
@@ -192,13 +187,16 @@ router.post("/createMultipleUsers", async function (req, res, next) {
             user.user_type = "student";
         }
         console.log(user);
-        pool.query("INSERT INTO user_info SET ?", user, () => {
+        await pool.query("INSERT INTO user_info SET ?", user, (error, results, fields) => {
+            if (error) {
+                console.log(error);
+            }
+            console.log("Another user has been created " + results);
         });
-    }
-
-    Promise.all(promises).then(() => {
-        return res.json({success: true});
     });
+
+    return res.json({success: true});
+
 });
 
 router.post('/forgotPassword', function (req, res, next) {

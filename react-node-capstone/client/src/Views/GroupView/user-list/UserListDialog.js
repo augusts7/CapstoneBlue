@@ -48,12 +48,10 @@ export default class DialogForm extends React.Component {
 
 
     handleSubmit = () => {
-        alert("submit");
         if (ArrayLengthValidator.isEmpty(this.state.selectedUsers)) {
             alert("Empty");
             return false;
         }
-
 
         let allSelectedUsers = this.getAllUsersFromUids(this.state.allUsers, this.state.selectedUsers);
 
@@ -62,6 +60,7 @@ export default class DialogForm extends React.Component {
         const data = {users: allSelectedUsers, group_id: this.props.groupId};
 
         post("/my_groups/addMultipleUsers", data, res => {
+
             this.props.onClose();
         });
     };

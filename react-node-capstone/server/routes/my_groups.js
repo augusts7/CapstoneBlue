@@ -42,31 +42,44 @@ router.post("/addMultipleUsers", async function (req, res, next) {
 
     const users = req.body.users;
 
-    let promises = [];
-    users.forEach(function (user) {
-        promises.push(addUserToGroup(user));
-    });
+    console.log(users);
 
-    function addUserToGroup(user) {
+    await users.forEach(async (user) => {
+        console.log(2);
         if (!user.hasOwnProperty("user_id")) {
+            console.log(3);
             if (user.hasOwnProperty("campusEmail")) {
-                pool.query("SELECT user_id FROM user_info WHERE campusEmail = ?", user.campusEmail, (error, results, fields) => {
+                await pool.query("SELECT user_id FROM user_info WHERE campusEmail = ?", user.campusEmail, async (error, results, fields) => {
+                    console.log(4);
+                    if (error) {
+                        console.log(error);
+                    }
+                    console.log(results);
                     if (results.length > 0) {
+                        console.log(5);
                         const user_id = results[0].user_id;
                         const user_in_group = {user_id, group_id: req.body.group_id};
-                        pool.query("INSERT INTO my_groups SET ?", user_in_group, () => {});
+                        await pool.query("INSERT INTO my_groups SET ?", user_in_group, () => {
+                        });
                     }
                 });
             }
         } else {
+            console.log("Adding user using UId");
             const user_in_group = {user_id: user.user_id, group_id: req.body.group_id};
-            pool.query("INSERT INTO my_groups SET ?", user_in_group, () => {});
-        }
-    }
+            await pool.query("INSERT INTO my_groups SET ?", user_in_group, (error, results, fields) => {
+                if (error) {
+                    console.log("error");
+                }
+                console.log("User has been added using Uid " + results);
+            });
 
-    Promise.all(promises).then(() => {
-        return res.json({success: true});
+        }
     });
+
+    console.log(1);
+
+    return res.json({success: true});
 
 });
 
