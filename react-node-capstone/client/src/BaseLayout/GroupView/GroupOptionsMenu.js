@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import Button from "@material-ui/core/Button";
+import {Link} from "react-router-dom";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 // import Modal from '@material-ui/core/Modal';
@@ -69,7 +70,9 @@ render(){
         open={this.state.anchorEl}
         onClose={this.handleClose}
       >
-        <MenuItem onClick={this.handleCreate}>Create Group</MenuItem>
+        <MenuItem>
+        <Link to="/createGroup">Create Group</Link>
+        </MenuItem>
         <MenuItem onClick={this.handleDelete}>Delete Group</MenuItem>
       </Menu>
         {/*<Modal open={open}*/}
