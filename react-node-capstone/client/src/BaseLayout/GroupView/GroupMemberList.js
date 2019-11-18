@@ -8,14 +8,10 @@ class GroupMemberList extends Component {
     constructor(props){
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
-        this.state = {
-            group_id: this.props.value
-        }
     }
 
-    onSubmit(event){
-        var member_id = event.target.value;
-        console.log(event.target.value);
+    onSubmit(member_id){
+        console.log(member_id);
         fetch("/groups/deleteUser/" + member_id, {
             method: "DELETE",
             headers: {
@@ -23,7 +19,7 @@ class GroupMemberList extends Component {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                group_id: this.state.group_id
+                group_id: this.props.group_id
             }),
         })
             .then(function(response) {
@@ -32,7 +28,7 @@ class GroupMemberList extends Component {
             .then(function(body) {
                 console.log(body);
             });
-        window.alert(member_id + "user deleted");
+        window.alert(member_id + "user deleted and group id is " + this.props.group_id);
     }
 
     render() {
@@ -49,8 +45,7 @@ class GroupMemberList extends Component {
                 variant="contained"
                 size="large"
                 className="msgBtn"
-                value={member.user_id}
-                onClick={this.onSubmit}
+                onClick={() => this.onSubmit(member.user_id)}
             >
                 <i className="material-icons">highlight_off</i>
             </Button>

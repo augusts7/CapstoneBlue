@@ -148,7 +148,7 @@ class GroupView extends React.Component {
                         </div>
                         <hr/>
                         <GroupMemberList
-                            value={this.state.group_id}
+                            group_id={this.state.group_id}
                             groupMembers={this.state.groupMembers}
                         />
                     </div>
