@@ -68,31 +68,47 @@ router.route("/groupEvents/:group_id").get(async (req, res) => {
 
 
 //Create a group with moodle dump
-router.route("/createGroups").post((req, res) => {
-  try{  
-  const groups = {
+router.route("/createGroups").post(async (req, res) => {
+  try{
+    const groups = {
       group_name: req.body.title,
       creator_id: req.body.creator_id
     };
-    let sql1 = "INSERT INTO 'groups' VALUES (24, "+group_name+", "+creator_id+");";
-    pool.query(sql1, groups, function(
-      error,
-      results,
-      fields
-    ){ if (error) throw error;
-        res.send(results);
+    let sql1 = "INSERT INTO groups (group_name, creator_id) VALUES ('"+groups.group_name+"', "+groups.creator_id+");";
+    pool.query(sql1, function(error, results, fields) {
+      let group_id = results.insertId;
+      if (error) {
+        return res.json({
+          success: false,
+          message: "Error while creating the group"
+        });
+      } 
+      let sql2 = "INSERT INTO my_groups SELECT U.user_id, "+group_id+", 'Member' FROM user_info U WHERE JSON_CONTAINS('" + JSON.stringify(req.body.data) + "', JSON_OBJECT('Email address', U.campusEmail));";
+      pool.query(sql2, function(error, results, fields) {
+        if (error) {
+          return res.json({
+            success: false,
+            message: "Error while adding file members to group" //change later
+          });
+        }
+        let sql3 = "INSERT INTO my_groups (user_id, group_id, status) VALUES ("+groups.creator_id+", "+group_id+", 'Owner');";
+        pool.query(sql3, function(error, results, fields) {
+          if (error) {
+            return res.json({
+              success: false,
+              message: "Error while adding owner to group"
+            });
+          }
+        });
+      });
     });
-      console.log('test1');
-      let groupid = await pool.query("SELECT group_id FROM groups WHERE group_name = '"+group_name +"';");
-      let sql2 = "INSERT INTO my_groups VALUES ((SELECT U.campusEmail FROM user_info U WHERE JSON_CONTAINS(" + JSON.stringify(req.body.data) + ", JSON_OBJECT('Email address', U.campusEmail))), " + groupid + ", 'Member');";
-        pool.query(sql2);
-      res.send(results);
+  }
+   catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
 
-  }catch(e) {
-        console.log(e);
-        res.sendStatus(500);
-      }
-} );
 
 //Create a group with the user logged in
 router.route("/").post((req, res) => {

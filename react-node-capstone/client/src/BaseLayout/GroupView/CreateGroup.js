@@ -15,39 +15,36 @@ class CreateGroup extends React.Component{
           file: {},
           data: [],
           cols: [],
-          groupName: "Grades",
+          groupName: "",
           creator_id: 30030101
         }
         this.handleFile = this.handleFile.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleGroupName = this.handleGroupName.bind(this);
-       // this.createGroup = this.createGroup.bind(this);
+        this.createGroup = this.createGroup.bind(this);
       }
 
     handleChange(e) {
       const files = e.target.files;
       if (files && files[0]) this.setState({ file: files[0] });
-    };
+    }
 
     handleGroupName(e) {
-      this.state.groupName = e;
-      console.log(this.state.groupName);
+      this.setState({groupName: e.target.value});
     }
       
     handleFile() {
       const reader = new FileReader();
       const rABS = !!reader.readAsBinaryString;
-      
       reader.onload = (e) => {
         const bstr = e.target.result;
         const wb = XLSX.read(bstr, { type: rABS ? 'binary' : 'array', bookVBA : true });
         const wsname = wb.SheetNames[0];
         const ws = wb.Sheets[wsname];
         const data = XLSX.utils.sheet_to_json(ws);
-        // this.setState({ data: data }, () => {
-        //   console.log(JSON.stringify(this.state.data, null, 1)); 
-        //   this.createGroup();
-        // });
+        this.setState({ data: data }, () => {
+          this.createGroup();
+         });
       };
    
       if (rABS) {
@@ -56,7 +53,7 @@ class CreateGroup extends React.Component{
         reader.readAsArrayBuffer(this.state.file);
       };
       
-    };
+    }
 
     createGroup(){
       fetch("/groups/createGroups", {
@@ -80,7 +77,6 @@ class CreateGroup extends React.Component{
     }
 
     render(){
-      console.log(this.state.groupName);
          return(
            <Fragment>
             <div className="create-group-constainer">
@@ -92,17 +88,17 @@ class CreateGroup extends React.Component{
                     To create a group select a .xlsx file containing your group members.
                   </DialogContentText>
                     <div className='uploadfile'>
-                        {/* <TextField 
+                        <TextField //Needs limiter on number of characters for group name
                           className='groupTitle'
                           name='title'
-                          label="Group Name"
+                          title="Group Name"
+                          placeholder="Group Name"
                           fullWidth
                           variant='outlined'
                           type="text"
                           onChange={this.handleGroupName}
-                        /> */}
-                        
-
+                          value={this.state.groupName}
+                        /> 
                         <br/><br/>
                         <input type='file' 
                           className='custom-file-input' 
@@ -117,12 +113,9 @@ class CreateGroup extends React.Component{
                           className='submit'
                           onClick={this.handleFile}
                         />
-                    
                     </div>
-
-                    </DialogContent>
+                  </DialogContent>
             </div>
-            
             </Fragment>   
          );
     }
