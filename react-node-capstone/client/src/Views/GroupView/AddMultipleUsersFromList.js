@@ -14,6 +14,8 @@ export default function AddMultipleUsersFromList (props) {
         setShow(true);
     };
 
+    console.log(props.groupId);
+
     return (
         <Fragment>
             <UserListDialog groupId={props.groupId} open={show} onClose={handleClose} />
