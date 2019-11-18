@@ -52,9 +52,7 @@ class CreateGroup extends React.Component {
       const wsname = wb.SheetNames[0];
       const ws = wb.Sheets[wsname];
       const data = XLSX.utils.sheet_to_json(ws);
-      this.setState({ data: data }, () => {
-        this.createGroup();
-      });
+      this.setState({ data: data });
     };
 
     if (rABS) {
@@ -69,6 +67,14 @@ class CreateGroup extends React.Component {
       open: !this.state.open
     });
   };
+
+  handleSubmit = () => {
+    this.setState({
+      open: !this.state.open
+    });
+    this.createGroup();
+  };
+
 
   createGroup() {
     if (this.state.data !== null) {
@@ -164,7 +170,7 @@ class CreateGroup extends React.Component {
             <Button onClick={this.handleToggle} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleToggle} color="primary">
+            <Button onClick={this.handleSubmit} color="primary">
               Create Group
             </Button>
           </DialogActions>
