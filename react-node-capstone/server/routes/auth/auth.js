@@ -1,10 +1,10 @@
 const router = require("express").Router();
-const pool = require("../db/database");
+const pool = require("../../db/database");
 const passport = require("passport");
 const bodyParser = require("body-parser");
-const emailHelper = require("../utils/email/email-sender");
-const tokens = require("../utils/tokens/tokens");
-const sqlHelper = require("../utils/sql-helper/sql-helper");
+const emailHelper = require("../../utils/email/email-sender");
+const tokens = require("../../utils/tokens/tokens");
+const sqlHelper = require("../../utils/sql-helper/sql-helper");
 const expressFileUpload = require("express-fileupload");
 
 router.use(bodyParser.urlencoded({extended: false}));
@@ -159,67 +159,46 @@ router.post("/createUser", function (req, res, next) {
         };
     }
 
-    pool.query("SELECT COUNT(*) AS count FROM user_info WHERE campusEmail = ?", user.campusEmail, function (error, results, fields) {
+    pool.query("INSERT INTO user_info SET ?", user, function (error, results, fields) {
         if (error) {
-            return res.json({"success": false, "message": "Couldn't connect to the database. " + error});
-        }
-        try {
-            if (results[0].count === 0) {
-                pool.query("INSERT INTO user_info SET ?", user, function (error, results, fields) {
-                    if (error) {
-                        return next("Couldn't connect to the database. " + error);
-                    }
-
-                    if (user.user_type === "student") {
-
-                        sqlHelper.handleSetObjectAndRespond("INSERT INTO student_info SET ?", student, res);
-
-
-                    } else {
-                        return res.json({"success": false, "message": "User has been already been registered"});
-                    }
-                });
-            } else {
-                return next("User already exists in database");
-
-            }
-        } catch (err) {
-            return next("Error while trying to register user");
+            return next("Couldn't connect to the database. " + error);
         }
 
+        if (user.user_type === "student") {
 
+            sqlHelper.handleSetObjectAndRespond("INSERT INTO student_info SET ?", student, res);
+
+
+        } else {
+            return res.json({"success": false, "message": "User has been already been registered"});
+        }
     });
 });
 
-router.post("/createUsersFromFile", async function (req, res, next) {
+router.post("/createMultipleUsers", async function (req, res, next) {
 
-    const dataFile = req.files.userInfoFile.data;
+    const users = req.body.users;
 
-    const fileData = dataFile.toString("utf8");
+    let promises = [];
+    users.forEach(function (user) {
+        promises.push(insertUser(user));
+    });
 
-    const users = [];
+    function insertUser(user) {
+        if (!user.hasOwnProperty("password")) {
+            user.password = "CapstoneBlue";
+        }
+        if (!user.hasOwnProperty("user_type")) {
+            user.user_type = "student";
+        }
+        console.log(user);
+        pool.query("INSERT INTO user_info SET ?", user, () => {
+        });
+    }
 
-    console.log(fileData);
-
-    // for (let i = 0; i < fileData.length; i++) {
-    //     console.log("File data => " + fileData[i]);
-    //     if (i > 0) {
-    //         let currentData = fileData[i].split(",");
-    //         const user = {
-    //             first_name: currentData[0],
-    //             last_name: currentData[1],
-    //             user_id: currentData[2],
-    //             campusEmail: currentData[5]
-    //         };
-    //         users.push(user);
-    //     }
-    // }
-    //
-    // await users.forEach(async function (user) {
-    //     await pool.query("INSERT INTO user_info SET ?", user);
-    // });
-    return res({success: true});
-
+    Promise.all(promises).then(() => {
+        return res.json({success: true});
+    });
 });
 
 router.post('/forgotPassword', function (req, res, next) {

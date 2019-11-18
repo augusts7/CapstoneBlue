@@ -5,13 +5,11 @@ import LengthValidator from "../../../../utils/length-utils/LengthValidator";
 import UsersListSingleRow from "./UploadUsersFromFileListSingleRow";
 import DialogFormContentText from "../../../CalenderView/components/forms/dialog-form/DialogFormContentText";
 import ArrayToggleHelper from "../../../../utils/array-utils/ArrayToggleHelper";
-import Typography from "@material-ui/core/Typography";
-import {TextField} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
-import InputBase from "@material-ui/core/InputBase";
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
+import MessageBox from "../../../../components/Form/MessageBox/MessageBox";
 
 
 const containerStyle = {paddingTop: "32px", paddingBottom: "32px"};
@@ -34,6 +32,7 @@ export default class UploadUsersFromFileForm extends React.Component {
 
     handleSubmit = () => {
         if (LengthValidator.isEmpty(this.state.file)) {
+            this.props.onSubmit([]);
             return false;
         }
 
@@ -73,9 +72,11 @@ export default class UploadUsersFromFileForm extends React.Component {
             const last_name = singleRow["Last name"];
             const campusEmail = singleRow["Email address"];
 
-            usersEmailList.push(campusEmail);
-
-            users.push({first_name, last_name, campusEmail});
+            if (!usersEmailList.includes(campusEmail)) {
+                // Only add the users if their email is not in the array already
+                usersEmailList.push(campusEmail);
+                users.push({first_name, last_name, campusEmail});
+            }
         });
         return [users, usersEmailList];
     };
@@ -109,6 +110,8 @@ export default class UploadUsersFromFileForm extends React.Component {
                         progress={this.state.progress}
                         title={this.props.title}
                         text={this.props.text}>
+
+                <MessageBox message={this.props.message} hideMessage={this.props.hideMessage} />
 
                 <div style={containerStyle}>
                     <div style={inputContainerStyle}>

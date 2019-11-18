@@ -29,7 +29,7 @@ socket.initSocket(http);
 
 //Routes
 const eventRouter = require("./routes/events");
-const authRouter = require("./routes/auth");
+const authRouter = require("./routes/auth/auth");
 const userInfoRouter = require("./routes/user_info");
 const appointmentRouter = require("./routes/appointments");
 const advisingRouter = require("./routes/advising");

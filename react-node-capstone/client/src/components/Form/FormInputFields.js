@@ -38,6 +38,7 @@ export default function FormInputFields(props) {
                 autofocusHasBeenAdded = true;
                 return (
                     fields.push(<TextField
+                        onChange={props.onChange}
                         autoFocus
                         fullWidth={fullWidth || full}
                         style={textFieldStyle}
@@ -51,6 +52,7 @@ export default function FormInputFields(props) {
             } else {
                 return (
                     fields.push(<TextField
+                        onChange={props.onChange}
                         style={textFieldStyle}
                         fullWidth={fullWidth || full}
                         id={field.id}

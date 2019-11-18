@@ -3,6 +3,7 @@ import MessageBox from "../../../../../../components/Form/MessageBox/MessageBox"
 import {post, get} from "../../../../../../ApiHelper/ApiHelper";
 import DialogForm from "../../../../../CalenderView/components/forms/dialog-form/DialogForm";
 import FormInputFields from "../../../../../../components/Form/FormInputFields";
+import LengthValidatorForMultipleValues from "../../../../../../utils/length-utils/LengthValidatorForMultipleValues";
 
 
 class CreateUserForm extends React.Component {
@@ -22,34 +23,6 @@ class CreateUserForm extends React.Component {
         this.setState({"message": ""});
     };
 
-    onSubmit = (target) => {
-
-        this.setState({"isLoading": true});
-        let data = {
-            "first_name": target.first_name.value,
-            "last_name": target.last_name.value,
-            "campusEmail": target.campusEmail.value,
-            "password": target.password.value,
-            "confirmPassword": target.confirmPassword.value,
-            "user_type": target.user_type.value,
-        };
-        if (this.state.user_type === "student") {
-            data["classification"] = target.classification.value;
-            data["advisor_id"] = target.advisor.value;
-            data["major"] = target.major.value;
-        }
-
-        post("/auth/createUser", data, (res) => {
-            this.setState({
-                "message": res.message,
-                "isLoading": false
-            });
-            if (res.success) {
-                this.context.login(res.user);
-            }
-        });
-
-    };
 
     commonData = () => {
         return {
@@ -75,10 +48,11 @@ class CreateUserForm extends React.Component {
             studentFields: [
                 {"name": "major", "type": "text", "label": "Major", "required": true},
                 {
-                    "name": "advisor",
+                    "name": "advisor_id",
                     "type": "select",
                     "label": "Select Advisor",
                     "require": true,
+                    onChange: this.handleChangeInAdvisors,
                     "options": this.state.advisors
                 },
                 {
@@ -93,6 +67,10 @@ class CreateUserForm extends React.Component {
                 },
             ],
         }
+    };
+
+    handleChangeInAdvisors = (value) => {
+        this.setState({advisor_id: value});
     };
 
     handleChangeInUserType = (value) => {
@@ -129,7 +107,42 @@ class CreateUserForm extends React.Component {
     };
 
     handleSubmit = () => {
+        this.setState({"isLoading": true});
+        if (LengthValidatorForMultipleValues.containsEmptyValue([this.state.first_name, this.state.last_name,
+            this.state.campusEmail, this.state.password, this.state.confirmPassword, this.state.user_type])) {
+            this.setState({message: "Please enter all required values"});
+            return false;
+        }
+        let data = {
+            "first_name": this.state.first_name,
+            "last_name": this.state.last_name,
+            "campusEmail": this.state.campusEmail,
+            "password": this.state.password,
+            "confirmPassword": this.state.confirmPassword,
+            "user_type": this.state.user_type,
+        };
 
+        if (this.state.user_type === "student") {
+            if (LengthValidatorForMultipleValues.containsEmptyValue([this.state.classification, this.state.advisor_id, this.state.major])) {
+                alert("empty");
+                return false;
+            }
+
+            data["classification"] = this.state.classification;
+            data["advisor_id"] = this.state.advisor_id;
+            data["major"] = this.state.major;
+        }
+
+        post("/auth/createUser", data, (res) => {
+            this.setState({
+                "message": res.message,
+                "isLoading": false
+            });
+        });
+    };
+
+    handleChange = (event) => {
+        this.setState({[event.target.name]: event.target.value});
     };
 
     buttons = [
@@ -147,7 +160,7 @@ class CreateUserForm extends React.Component {
                         title="Create a New User"
                         text="To create a new user, enter his information and hit submit.">
                 <MessageBox message={this.state.message} hideMessage={this.hideMessage}/>
-                <FormInputFields fields={fields}/>
+                <FormInputFields onChange={this.handleChange} fields={fields}/>
             </DialogForm>
         );
     }

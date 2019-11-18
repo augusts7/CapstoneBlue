@@ -204,5 +204,5 @@ router.route("/createEvents").post(async (req,res) =>{
     console.log(e);
     res.sendStatus(500);
   }
-})
+});
 module.exports = router;

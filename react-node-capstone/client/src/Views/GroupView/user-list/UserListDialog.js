@@ -13,6 +13,7 @@ import UserListDialogTitle from "./UserListDialogTitle";
 import LengthValidator from "../../../utils/length-utils/LengthValidator";
 import ArrayToggleUtills from "../../../utils/array-utils/ArrayToggleHelper";
 import ArraySearchHelper from "../../../utils/array-utils/ArraySearchHelper";
+import ArrayLengthValidator from "../../../utils/length-utils/ArrayLengthValidator";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -47,10 +48,32 @@ export default class DialogForm extends React.Component {
 
 
     handleSubmit = () => {
-        const data = {};
-        post("/groups/createMultiple", data, res => {
+        alert("submit");
+        if (ArrayLengthValidator.isEmpty(this.state.selectedUsers)) {
+            alert("Empty");
+            return false;
+        }
 
+
+        let allSelectedUsers = this.getAllUsersFromUids(this.state.allUsers, this.state.selectedUsers);
+
+        console.log(allSelectedUsers);
+
+        const data = {users: allSelectedUsers, group_id: this.props.groupId};
+
+        post("/my_groups/addMultipleUsers", data, res => {
+            this.props.onClose();
         });
+    };
+
+    getAllUsersFromUids = (allUsers, uids) => {
+        let results = [];
+        allUsers.forEach((user) => {
+            if (uids.includes(user.user_id)) {
+                results.push(user);
+            }
+        });
+        return results;
     };
 
     toggleUserChecked = (userId) => {

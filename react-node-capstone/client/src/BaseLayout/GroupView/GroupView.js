@@ -51,7 +51,7 @@ class GroupView extends React.Component {
         fetch(myGroupsURL)
             .then(res => res.json())
             .then(myGroups => {
-
+                    console.log(myGroups);
                     this.setState({group_id: myGroups[0].group_id}, () => {
                         this.setState({my_groups: myGroups});
                         this.refreshGroup(myGroups[0].group_id);
@@ -141,8 +141,8 @@ class GroupView extends React.Component {
                     <h3 className="list-header">Group Members</h3>
                     <div className="buttons-group-members">
                         <AddGroupMember/>
-                        <AddMultipleUsersFromList/>
-                        <AddMultipleUsersFromFile/>
+                        <AddMultipleUsersFromList groupId={this.state.group_id}/>
+                        <AddMultipleUsersFromFile groupId={this.state.group_id}/>
                     </div>
                     <hr/>
                     <GroupMemberList

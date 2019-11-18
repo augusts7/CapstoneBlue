@@ -1,7 +1,5 @@
 import React, {Fragment} from "react";
 import Button from "@material-ui/core/Button";
-import UserListDialog from "./user-list/UserListDialog";
-import DialogForm from "../CalenderView/components/forms/dialog-form/DialogForm";
 import CreateGroupFromFile from "./user-list-from-file/CreateGroupFromFile";
 
 export default function AddMultipleUsersFromFile (props) {
@@ -18,7 +16,7 @@ export default function AddMultipleUsersFromFile (props) {
 
     return (
         <Fragment>
-            <CreateGroupFromFile open={show} onClose={handleClose} />
+            <CreateGroupFromFile groupId={props.groupId} open={show} onClose={handleClose} />
             <Button
                 variant="contained"
                 size="large"

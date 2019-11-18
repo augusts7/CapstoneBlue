@@ -1,5 +1,6 @@
 import React from "react";
 import UploadUsersFromFileForm from "../../GenericViews/forms/upload-users-form/UploadUsersFromFileForm";
+import {post} from "../../../ApiHelper/ApiHelper";
 
 
 const containerStyle = {paddingTop: "32px", paddingBottom: "32px"};
@@ -12,8 +13,11 @@ export default class CreateGroupFromFile extends React.Component {
 
     }
 
-    handleSubmit = (results) => {
-        console.log(results);
+    handleSubmit = (allSelectedUsers) => {
+        const data = {users: allSelectedUsers, group_id: this.props.groupId};
+        post("/my_groups/addMultipleUsers/", data, (res) => {
+            this.props.onClose();
+        });
     };
 
 

@@ -23,7 +23,6 @@ export default function ListItemWithCheckbox(props) {
                 <Checkbox
                     color="primary"
                     edge="end"
-                    onChange={handleToggle}
                     checked={checked}
                 />
             </ListItemIcon>
