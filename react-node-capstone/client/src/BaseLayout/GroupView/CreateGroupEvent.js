@@ -50,6 +50,7 @@ class CreateGroupEvent extends React.Component {
   }
 
   createGroupEvent = () => {
+    this.handleToggle();
     fetch("/groups/createEvents", {
       method: "POST",
       headers: {
@@ -72,7 +73,7 @@ class CreateGroupEvent extends React.Component {
       .then(function(body) {
         console.log(body);
       });
-    this.handleToggle();
+    this.props.action();
   };
 
   render() {

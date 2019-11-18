@@ -85,6 +85,7 @@ class EventList extends Component {
       .then(function(body) {
         console.log(body);
       });
+    this.props.action();
   }
 
   render() {
@@ -113,8 +114,12 @@ class EventList extends Component {
               </div>
               {event.description}
             </div>
-            <IconButton aria-label="delete" className="delete-event-button">
-              <DeleteIcon onClick={() => this.deleteEvent(event.eventID)} />
+            <IconButton
+              aria-label="delete"
+              className="delete-event-button"
+              onClick={() => this.deleteEvent(event.eventID)}
+            >
+              <DeleteIcon />
             </IconButton>
           </div>
         );

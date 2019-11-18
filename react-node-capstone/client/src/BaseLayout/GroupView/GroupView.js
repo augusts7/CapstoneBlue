@@ -126,13 +126,17 @@ class GroupView extends React.Component {
             <h3 className="group-events-list-header">Group Events</h3>
             <div className="buttons-group-events">
               <CreateGroupEvent
+                action={() => this.refreshGroup(this.state.group_id)}
                 user={this.state.creator_id}
                 groupID={this.state.group_id}
               />
             </div>
             <div className="group-event-list">
               <hr />
-              <EventList events={this.state.eventListItems} />
+              <EventList
+                action={() => this.refreshGroup(this.state.group_id)}
+                events={this.state.eventListItems}
+              />
             </div>
           </div>
           <div className="group-members">
