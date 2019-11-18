@@ -38,12 +38,13 @@
   overflow: auto;
   background-color: #bd955a;
   border-radius: 7px;
-  margin: 15px;
+  margin: 20px;
 }
 
-.group-events-list-header {
-  flex-basis: 85%;
-  margin-left: 30px;
+.group-events-list-header,
+.list-header {
+  flex-basis: 80%;
+  margin-left: 20px;
   font-weight: bold;
   color: white;
   text-shadow: 2px 2px black;
@@ -53,23 +54,16 @@
 .buttons-group-members {
   flex-basis: 10%;
   min-width: 15%;
-  padding: 24px;
+  padding-top: 24px;
+  margin-right: auto;
 }
 
 .group-event-list {
   flex-basis: 100%;
 }
 
-.list-header {
-  margin-left: 30px;
-  width: 80%;
-  font-weight: bold;
-  color: white;
-  text-shadow: 2px 2px black;
-}
-
 .group-members {
-  margin: 15px;
+  margin: 20px;
   overflow: auto;
   background-color: rgb(100, 101, 105);
   border-radius: 7px;

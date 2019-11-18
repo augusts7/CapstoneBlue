@@ -68,11 +68,15 @@ class EventList extends Component {
     }
   }
 
-  deleteEvent() {
+  deleteEvent(event) {
+    console.log(event);
     fetch("/events/delete", {
-      method: "DELETE",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({
-        event_id: this.props.events.key
+        event_id: event
       })
     })
       .then(function(response) {
@@ -81,6 +85,7 @@ class EventList extends Component {
       .then(function(body) {
         console.log(body);
       });
+    this.props.action();
   }
 
   render() {
@@ -109,8 +114,12 @@ class EventList extends Component {
               </div>
               {event.description}
             </div>
-            <IconButton aria-label="delete" className="delete-event-button">
-              <DeleteIcon onClick={this.deleteEvent} />
+            <IconButton
+              aria-label="delete"
+              className="delete-event-button"
+              onClick={() => this.deleteEvent(event.eventID)}
+            >
+              <DeleteIcon />
             </IconButton>
           </div>
         );

@@ -50,15 +50,12 @@ class GroupView extends React.Component {
         var myGroupsURL = "/my_groups";
         fetch(myGroupsURL)
             .then(res => res.json())
-            .then(myGroups => {
-                    console.log(myGroups);
-                    this.setState({group_id: myGroups[0].group_id}, () => {
-                        this.setState({my_groups: myGroups});
-                        this.refreshGroup(myGroups[0].group_id);
-                    })
-                }
+            .then(myGroups =>
+                this.setState({group_id: myGroups[0].group_id}, () => {
+                    this.setState({my_groups: myGroups});
+                    this.refreshGroup(myGroups[0].group_id);
+                })
             );
-
     }
 
     getGroupInfo(groupID) {
@@ -124,31 +121,37 @@ class GroupView extends React.Component {
                     </div>
                 </div>
                 <hr/>
-                <div className="group-events">
-                    <h3 className="group-events-list-header">Group Events</h3>
-                    <div className="buttons-group-events">
-                        <CreateGroupEvent
-                            user={this.state.creator_id}
-                            groupID={this.state.group_id}
+                <div className="group-body">
+                    <div className="group-events">
+                        <h3 className="group-events-list-header">Group Events</h3>
+                        <div className="buttons-group-events">
+                            <CreateGroupEvent
+                                action={() => this.refreshGroup(this.state.group_id)}
+                                user={this.state.creator_id}
+                                groupID={this.state.group_id}
+                            />
+                        </div>
+                        <div className="group-event-list">
+                            <hr/>
+                            <EventList
+                                action={() => this.refreshGroup(this.state.group_id)}
+                                events={this.state.eventListItems}
+                            />
+                        </div>
+                    </div>
+                    <div className="group-members">
+                        <h3 className="list-header">Group Members</h3>
+                        <div className="buttons-group-members">
+                            <AddGroupMember/>
+                            <AddMultipleUsersFromList/>
+                            <AddMultipleUsersFromFile/>
+                        </div>
+                        <hr/>
+                        <GroupMemberList
+                            value={this.state.group_id}
+                            groupMembers={this.state.groupMembers}
                         />
                     </div>
-                    <div className="group-event-list">
-                        <hr/>
-                        <EventList events={this.state.eventListItems}/>
-                    </div>
-                </div>
-                <div className="group-members">
-                    <h3 className="list-header">Group Members</h3>
-                    <div className="buttons-group-members">
-                        <AddGroupMember/>
-                        <AddMultipleUsersFromList groupId={this.state.group_id}/>
-                        <AddMultipleUsersFromFile groupId={this.state.group_id}/>
-                    </div>
-                    <hr/>
-                    <GroupMemberList
-                        value={this.state.group_id}
-                        groupMembers={this.state.groupMembers}
-                    />
                 </div>
             </div>
         );
