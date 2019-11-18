@@ -4,11 +4,12 @@ import {TextField} from "@material-ui/core";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import XLSX from 'xlsx';
+import UserContext from "../../Context/UserContext";
  
  
  
 class CreateGroup extends React.Component{
- 
+  static contextType = UserContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -43,7 +44,7 @@ class CreateGroup extends React.Component{
         const ws = wb.Sheets[wsname];
         const data = XLSX.utils.sheet_to_json(ws);
         this.setState({ data: data }, () => {
-          this.createGroup();
+         this.createGroup();
          });
       };
    
@@ -65,7 +66,7 @@ class CreateGroup extends React.Component{
         body: JSON.stringify({
           data: this.state.data,
           title: this.state.groupName,
-          creator_id: this.state.creator_id
+          creator_id: this.context.user_id
         }),
       })
       .then(function(response) {

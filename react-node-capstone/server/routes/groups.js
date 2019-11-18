@@ -72,7 +72,7 @@ router.route("/createGroups").post(async (req, res) => {
   try{
     const groups = {
       group_name: req.body.title,
-      creator_id: req.body.creator_id
+      creator_id: req.user.user_id
     };
     let sql1 = "INSERT INTO groups (group_name, creator_id) VALUES ('"+groups.group_name+"', "+groups.creator_id+");";
     pool.query(sql1, function(error, results, fields) {
@@ -114,7 +114,7 @@ router.route("/createGroups").post(async (req, res) => {
 router.route("/").post((req, res) => {
   const groups = {
     group_name: req.body.group_name,
-    creator_id: req.user.user_i
+    creator_id: req.user.user_id
   };
 
   pool.query("INSERT INTO groups SET ?", groups, function(
