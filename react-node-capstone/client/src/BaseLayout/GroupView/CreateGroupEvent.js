@@ -81,22 +81,7 @@ class CreateGroupEvent extends React.Component {
     var button = <div>Error</div>;
     var submitButton = "";
     var title = "";
-
-    if (this.context.user === this.props.creator_id) {
-      button = (
-        <Button
-          type="submit"
-          variant="contained"
-          size="large"
-          className="msgBtn2"
-          onClick={this.handleToggle}
-        >
-          <i className="material-icons">schedule</i>Request Event
-        </Button>
-      );
-      title = "Request Group Event";
-      submitButton = "Request Event";
-    } else {
+    if (this.props.user === this.props.creator_id) {
       button = (
         <Button
           type="submit"
@@ -110,6 +95,20 @@ class CreateGroupEvent extends React.Component {
       );
       title = "Create Group Event";
       submitButton = "Create Event";
+    } else {
+      button = (
+        <Button
+          type="submit"
+          variant="contained"
+          size="large"
+          className="msgBtn2"
+          onClick={this.handleToggle}
+        >
+          <i className="material-icons">schedule</i>Request Event
+        </Button>
+      );
+      title = "Request Group Event";
+      submitButton = "Request Event";
     }
 
     return (

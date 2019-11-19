@@ -3,7 +3,6 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 
 import "./GroupMemberList.css";
-import Button from "@material-ui/core/Button";
 
 class GroupMemberList extends Component {
   constructor(props) {
@@ -12,7 +11,6 @@ class GroupMemberList extends Component {
   }
 
   onSubmit(member_id) {
-    console.log(member_id);
     fetch("/groups/deleteUser/" + member_id, {
       method: "DELETE",
       headers: {
@@ -36,7 +34,6 @@ class GroupMemberList extends Component {
 
   render() {
     var memberList = this.props.groupMembers.map(member => {
-      console.log(member.user_id);
       return (
         <div className="member-list-container" key={member.user_id}>
           <div className="member-name">

@@ -24,6 +24,7 @@ class GroupView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: 0,
       group_id: 0,
       my_groups: [],
       groupName: "",
@@ -38,6 +39,7 @@ class GroupView extends React.Component {
 
   componentDidMount() {
     this.getMyGroups();
+    this.getUser();
   }
 
   refreshGroup(group) {
@@ -46,6 +48,15 @@ class GroupView extends React.Component {
     this.getGroupInfo(group);
   }
 
+  getUser() {
+    try {
+      this.setState({
+        user: this.context.user.user_id
+      });
+    } catch (err) {
+      console.log("Error with Context");
+    }
+  }
   getMyGroups() {
     var myGroupsURL = "/my_groups";
     fetch(myGroupsURL)
@@ -130,13 +141,15 @@ class GroupView extends React.Component {
             <div className="buttons-group-events">
               <CreateGroupEvent
                 action={() => this.refreshGroup(this.state.group_id)}
-                user={this.state.creator_id}
+                user={this.state.user}
+                creator_id={this.state.creator_id}
                 groupID={this.state.group_id}
               />
             </div>
             <div className="group-event-list">
               <hr />
               <EventList
+                creator_id={this.state.creator_id}
                 action={() => this.refreshGroup(this.state.group_id)}
                 events={this.state.eventListItems}
               />
