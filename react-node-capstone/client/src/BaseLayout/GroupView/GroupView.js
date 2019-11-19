@@ -144,16 +144,17 @@ class GroupView extends React.Component {
           </div>
           <div className="group-members">
             <h3 className="list-header">Group Members</h3>
-            <div className="buttons-group-members">
-              <AddGroupMember />
-              <AddMultipleUsersFromList />
-              <AddMultipleUsersFromFile />
+            <div className="mem-buttons">
+              <AddMultipleUsersFromList className="buttons-group-members" />
+              <AddMultipleUsersFromFile className="buttons-group-members" />
             </div>
-            <hr />
-            <GroupMemberList
-              group_id={this.state.group_id}
-              groupMembers={this.state.groupMembers}
-            />
+            <div className="group-member-list">
+              <hr />
+              <GroupMemberList
+                group_id={this.state.group_id}
+                groupMembers={this.state.groupMembers}
+              />
+            </div>
           </div>
         </div>
       </div>
