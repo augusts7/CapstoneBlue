@@ -32,6 +32,20 @@ class GroupMemberList extends Component {
     );
   }
 
+  getDeleteButton(member_id, status) {
+    if (status === "Member") {
+      return (
+        <IconButton
+          aria-label="delete"
+          className="delete-user-button"
+          onClick={() => this.onSubmit(member_id)}
+        >
+          <DeleteIcon />
+        </IconButton>
+      );
+    }
+  }
+
   render() {
     var memberList = this.props.groupMembers.map(member => {
       return (
@@ -40,13 +54,7 @@ class GroupMemberList extends Component {
             {member.first_name + " " + member.last_name}
           </div>
           <div className="member-status">{member.status}</div>
-          <IconButton
-            aria-label="delete"
-            className="delete-user-button"
-            onClick={() => this.onSubmit(member.user_id)}
-          >
-            <DeleteIcon />
-          </IconButton>
+          {this.getDeleteButton(member.member_id, member.status)}
         </div>
       );
     });

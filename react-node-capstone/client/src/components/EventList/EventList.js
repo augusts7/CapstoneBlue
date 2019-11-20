@@ -91,7 +91,7 @@ class EventList extends Component {
     this.props.action();
   }
   getDeleteButton(eventID) {
-    if (this.props.creator_id === this.context.user.user_id) {
+    if (this.props.creator_id === this.props.user) {
       return (
         <IconButton
           aria-label="delete"

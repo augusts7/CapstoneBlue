@@ -76,6 +76,34 @@ class CreateGroupEvent extends React.Component {
     this.props.action();
   };
 
+  requestGroupEvent = () => {
+    this.handleToggle();
+    fetch("/groups/requestEvents", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        start: this.state.start,
+        end: this.state.end,
+        title: this.state.title,
+        description: this.state.description,
+        group_id: this.props.groupID,
+        user_id: this.props.user,
+        status: "pending",
+        carousel: 0
+      })
+    })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(body) {
+        console.log(body);
+      });
+    this.props.action();
+  };
+
   render() {
     const { open } = this.state;
     var button = <div>Error</div>;
@@ -94,7 +122,11 @@ class CreateGroupEvent extends React.Component {
         </Button>
       );
       title = "Create Group Event";
-      submitButton = "Create Event";
+      submitButton = (
+        <Button onClick={this.createGroupEvent} color="primary">
+          Create Event
+        </Button>
+      );
     } else {
       button = (
         <Button
@@ -108,7 +140,11 @@ class CreateGroupEvent extends React.Component {
         </Button>
       );
       title = "Request Group Event";
-      submitButton = "Request Event";
+      submitButton = (
+        <Button onClick={this.requestGroupEvent} color="primary">
+          Request Event
+        </Button>
+      );
     }
 
     return (
@@ -171,9 +207,7 @@ class CreateGroupEvent extends React.Component {
             <Button onClick={this.handleToggle} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.createGroupEvent} color="primary">
-              {submitButton}
-            </Button>
+            {submitButton}
           </DialogActions>
         </Dialog>
       </Fragment>
