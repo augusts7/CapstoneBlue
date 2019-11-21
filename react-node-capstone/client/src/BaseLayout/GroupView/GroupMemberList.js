@@ -1,54 +1,60 @@
 import React, { Component } from "react";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
 
 import "./GroupMemberList.css";
-import Button from "@material-ui/core/Button";
 
 class GroupMemberList extends Component {
+  constructor(props) {
+    super(props);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
 
-    constructor(props){
-        super(props);
-        this.onSubmit = this.onSubmit.bind(this);
+  onSubmit(member_id) {
+    fetch("/groups/deleteUser/" + member_id, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        group_id: this.props.group_id
+      })
+    })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(body) {
+        console.log(body);
+      });
+    window.alert(
+      member_id + "user deleted and group id is " + this.props.group_id
+    );
+  }
+
+  getDeleteButton(member_id, status) {
+    if (status === "Member") {
+      return (
+        <IconButton
+          aria-label="delete"
+          className="delete-user-button"
+          onClick={() => this.onSubmit(member_id)}
+        >
+          <DeleteIcon />
+        </IconButton>
+      );
     }
+  }
 
-    onSubmit(member_id){
-        console.log(member_id);
-        fetch("/groups/deleteUser/" + member_id, {
-            method: "DELETE",
-            headers: {
-                Accept: 'application/json',
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                group_id: this.props.group_id
-            }),
-        })
-            .then(function(response) {
-                return response.json();
-            })
-            .then(function(body) {
-                console.log(body);
-            });
-        window.alert(member_id + "user deleted and group id is " + this.props.group_id);
-    }
-
-    render() {
+  render() {
     var memberList = this.props.groupMembers.map(member => {
-        console.log(member.user_id);
       return (
         <div className="member-list-container" key={member.user_id}>
           <div className="member-name">
             {member.first_name + " " + member.last_name}
           </div>
           <div className="member-status">{member.status}</div>
-            <Button
-                type="submit"
-                variant="contained"
-                size="large"
-                className="msgBtn"
-                onClick={() => this.onSubmit(member.user_id)}
-            >
-                <i className="material-icons">highlight_off</i>
-            </Button>
+          {this.getDeleteButton(member.member_id, member.status)}
         </div>
       );
     });
