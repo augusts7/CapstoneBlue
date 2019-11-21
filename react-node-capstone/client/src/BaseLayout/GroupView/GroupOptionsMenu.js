@@ -69,7 +69,8 @@ export default class extends Component {
         <Menu
           id="group-options"
           keepMounted
-          open={this.state.anchorEl}
+          anchorEl={this.state.anchorEl}
+          open={this.state.anchorEl !== null}
           onClose={this.handleClose}
         >
           <CreateGroup creator_id={this.props.creator_id} />

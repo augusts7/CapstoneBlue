@@ -32,8 +32,8 @@ class GroupMemberList extends Component {
     );
   }
 
-  getDeleteButton(member_id, status) {
-    if (status === "Member") {
+  getDeleteButton(member_id) {
+    if (this.props.creator_id !== member_id) {
       return (
         <IconButton
           aria-label="delete"
@@ -54,7 +54,7 @@ class GroupMemberList extends Component {
             {member.first_name + " " + member.last_name}
           </div>
           <div className="member-status">{member.status}</div>
-          {this.getDeleteButton(member.member_id, member.status)}
+          {this.getDeleteButton(member.member_id)}
         </div>
       );
     });
