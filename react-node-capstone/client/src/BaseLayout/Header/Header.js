@@ -5,6 +5,7 @@ import AuthContext from "../../Context/AuthContext";
 import Avatar from "@material-ui/core/Avatar";
 import Notifications from "./notifications/Notifications";
 import AppBarWithTabs from "./AppBar";
+import Messages from "./messages/Messages";
 
 
 export default function Header(props) {
@@ -43,6 +44,9 @@ export default function Header(props) {
                         </Link>
                         <Link onClick={authContext.logout} className="mdl-navigation__link">
                             Logout
+                        </Link>
+                        <Link className="mdl-navigation__link">
+                            <Messages />
                         </Link>
                         <Link className="mdl-navigation__link">
                             <Notifications/>

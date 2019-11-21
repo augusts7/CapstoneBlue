@@ -2,8 +2,11 @@ import React from "react";
 import ProfileItemBlockContainer
     from "../../../generic/profile-view-item/profile-item-blocks/ProfileItemBlockContainer";
 import {get} from "../../../../../ApiHelper/ApiHelper";
-import CalendarsSharedByMeSingleRow from "./CalendarsSharedByMeSingleRow";
 import LengthValidator from "../../../../../utils/length-utils/LengthValidator";
+import CalendarItem from "../components/CalendarItem";
+import CalendarTitleRow from "../components/CalendarTitleRow";
+
+const calendarTitles = ["Shared Calendar Name", "Shared To", "Email of Shared to user"];
 
 export default class CalendarsSharedByMe extends React.Component {
 
@@ -11,30 +14,53 @@ export default class CalendarsSharedByMe extends React.Component {
         super(props);
 
         this.state = {
-            calendars: []
+            calendars: [],
+            progress: false
         };
 
     }
 
-
     componentDidMount() {
-        get("/calendar/sharedByMe", (res) => {
-
-        });
+        this.loadCalendars();
     }
 
-    render() {
+    loadCalendars = () => {
+        this.setState({"progress": true});
+
+        get("/calendar/sharedByUser", (res) => {
+            if (res.success) {
+
+                let calendars = [];
+
+                if (res.results) {
+                    calendars = res.results.concat();
+                }
+
+                this.setState({"progress": false, "calendars": calendars});
+
+            } else {
+                this.setState({"progress": false, message: res.message});
+            }
+            console.log("hi");
+            console.log(res);
+        });
+    };
+
+    render () {
 
         let calendars = [];
 
         if (LengthValidator.isNotEmpty(this.state.calendars)) {
+            calendars.push(<CalendarTitleRow titles={calendarTitles}/>);
             this.state.calendars.forEach((calendar) => {
-                calendars.push(<CalendarsSharedByMeSingleRow data={calendar}/>);
+                calendars.push(<CalendarItem data={calendar}/>);
             });
         }
 
+
         return (
-            <ProfileItemBlockContainer title="Calendars Shared By Me">
+
+            <ProfileItemBlockContainer progress={this.state.progress} title="Calendars Shared By Me">
                 {calendars}
             </ProfileItemBlockContainer>
         );

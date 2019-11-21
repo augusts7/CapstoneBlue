@@ -1,6 +1,6 @@
 import React from "react"
 import {Typography} from "@material-ui/core";
-import CustomIconButton from "../../../../CalenderView/components/generic/IconButton";
+import CustomIconButton from "../../../../GenericViews/IconButton";
 
 
 export default function ProfileCardListItemButton(props) {

@@ -1,7 +1,7 @@
 import React from 'react';
-import IconButton from '../../../generic/IconButton';
+import IconButton from '../../../../../GenericViews/IconButton';
 import Icon from '@material-ui/core/Icon';
-import Progress from '../../../generic/Progress';
+import Progress from '../../../../../GenericViews/Progress/Progress';
 import Typography from "@material-ui/core/Typography";
 
 

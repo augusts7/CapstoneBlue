@@ -99,9 +99,11 @@ export default class AdvisingSlotForm extends React.Component {
                 "message": res.message
             });
             if (res.success) {
-
+                this.props.onClose();
+            } else {
+                this.setState({progress: false, message: res.message});
             }
-            this.props.onClose();
+
         }))
     };
 

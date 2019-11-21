@@ -1,10 +1,10 @@
 import React from "react";
 import "./EventLayout.css";
 import Typography from '@material-ui/core/Typography';
-import CustomMenu from "../../../../components/generic/Menu";
-import CustomIconButton from "../../../../components/generic/IconButton";
+import CustomMenu from "../../../../../GenericViews/menu/Menu";
+import CustomIconButton from "../../../../../GenericViews/IconButton";
 import Icon from "@material-ui/core/Icon";
-import Progress from "../../../../../../components/Container/Progress/Progress";
+import Progress from "../../../../../GenericViews/Progress/Progress";
 import DateTimeFormatter from "../../../../utils/date-time-utils/DateTimeFormatter";
 import {makeUppercase} from "../../../../utils/string/StringUtils";
 

@@ -23,7 +23,7 @@ export default function CustomMenu(props) {
                 onClose={props.onClose}>
 
                 {props.menuOptions.map((item) => {
-                    return <MenuItem onClick={() => onMenuOptionClick(item.key)} key={item.key}>
+                    return <MenuItem fullWidth onClick={() => onMenuOptionClick(item.key)} key={item.key}>
                         <ListItemText primary={item.name} />
                     </MenuItem>
                 })}

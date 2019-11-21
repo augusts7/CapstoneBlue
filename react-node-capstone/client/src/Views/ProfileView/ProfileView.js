@@ -5,7 +5,6 @@ import CalendarsSharedWithMe from "./components/calendars/shared-with-me/Calenda
 import CalendarsSharedByMe from "./components/calendars/shared-by-me/CalendarsSharedByMe";
 import ClassesTaken from "./components/classes-taken/ClassesTaken";
 import "./ProfileView.css";
-import {Typography} from "@material-ui/core";
 
 
 export default class ProfileView extends React.Component {

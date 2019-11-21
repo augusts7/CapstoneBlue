@@ -4,6 +4,7 @@ let bodyParser = require("body-parser");
 let { getSlots } = require('../utils/timeSlot');
 let sqlHelper = require("../utils/sql-helper/sql-helper");
 let authMiddleware = require("../middlewares/auth-middleware").authMiddleware;
+const socket = require("../utils/socket/socket");
 
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
@@ -66,6 +67,17 @@ router.post("/attend", function (req, res, next) {
 
             await values.forEach(async function (value) {
                 await pool.query("INSERT INTO attending SET ?", value);
+            });
+
+            await pool.query("SELECT * FROM event WHERE eventID = ?", studentData.event_id, (error, results, fields) => {
+                if (error) {
+                    console.log(error);
+                    return;
+                }
+                if (results.length > 0) {
+                    socket.broadcastToUser(studentData.attendee_id, "newAttendingEvent", results[0]);
+                    socket.broadcastToUser(facultyData.attendee_id, "newAttendingEvent", results[0]);
+                }
             });
 
             return res.json({"success": true});

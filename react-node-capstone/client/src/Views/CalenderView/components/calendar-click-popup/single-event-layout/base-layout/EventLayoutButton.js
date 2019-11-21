@@ -16,7 +16,7 @@ export default function EventLayoutButton(props) {
 
     return (
         <div style={buttonContainerStyle}>
-            <MaterialButton color="primary" onClick={props.onClick}>
+            <MaterialButton variant="outlined" color="primary" onClick={props.onClick}>
                 {icon}
                 {props.children}
             </MaterialButton>

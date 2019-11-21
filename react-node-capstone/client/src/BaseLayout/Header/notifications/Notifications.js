@@ -2,12 +2,14 @@ import React from 'react';
 import "./notifications.css"
 import NotificationsPopup from "./popup-views/NotificationsPopup";
 import Badge from "@material-ui/core/Badge";
-import CustomIconButton from "../../../Views/CalenderView/components/generic/IconButton";
+import CustomIconButton from "../../../Views/GenericViews/IconButton";
 import SocketContext from "../../../Context/SocketContext";
 import {get} from "../../../ApiHelper/ApiHelper";
+import NotificationsDataStore from "./NotificationsDataStore";
+import LengthValidator from "../../../utils/length-utils/LengthValidator";
 
 
-export default class DrawerHeader extends React.Component {
+export default class Notifications extends React.Component {
 
     static contextType = SocketContext;
 
@@ -20,13 +22,24 @@ export default class DrawerHeader extends React.Component {
             badgeCount: 0
         };
 
-        this.isSocketConnected = false;
+        this.dataStore = null;
     }
 
     componentDidMount() {
-        this.loadAllEventRequests();
-        this.connectToSocket();
+        if (this.dataStore === undefined || this.dataStore === null) {
+            this.dataStore = new NotificationsDataStore(this.context.socket, this.onDataChange, this.onProgress);
+        }
     }
+
+    onProgress = (isLoading) => {
+        this.setState({isLoading: isLoading});
+    };
+
+    onDataChange = (listOfData) => {
+
+        this.setState({invitedEvents: listOfData});
+        console.log(listOfData);
+    };
 
     handlePopupClose = () => {
         this.setState({showPopup: false, anchor: null});
@@ -36,54 +49,17 @@ export default class DrawerHeader extends React.Component {
         this.setState({showPopup: true, anchor: event.currentTarget});
     };
 
-    connectToSocket = () => {
-        const socket = this.context.socket;
-
-        console.log("Socket");
-        console.log(socket);
-
-        if (socket !== null && this.isSocketConnected === false) {
-            this.isSocketConnected = true;
-            socket.on('newAppointmentInviteReceived', (data) => {
-                if (data === undefined || data === null) {
-                    return;
-                }
-                let newCal = {"calendarId": data.id, "calendarName": data.sharedCalendarName};
-                console.log(newCal);
-                const cals = this.state.cals.concat(newCal);
-                this.setState({"cals": cals});
-            });
-        }
-    };
-
     onDeleteItem = (id) => {
-        if (this.state.invitedEvents == null || this.state.invitedEvents.length < 1) {
-            return false;
-        }
-        let newEvents = this.state.invitedEvents.filter((invitedEvent) => invitedEvent.eventID !== id);
-        this.setState({"invitedEvents": newEvents});
+        this.dataStore.deleteItem(id);
     };
 
-    loadAllEventRequests = () => {
-        this.setState({isLoading: true});
-        get("/appointments/receivedInvite", (res) => {
-            let allEvents = [];
-            if (res.success) {
-                allEvents = res.results;
-            }
-            this.setState({"invitedEvents": allEvents, isLoading: false});
-            if (allEvents.length === 0) {
-
-            }
-        });
-    };
 
     render() {
 
         let icon = <i className="material-icons">notifications</i>;
 
-        if (this.state.badgeCount > 0) {
-            icon = <Badge badgeContent={this.props.badgeCount} color="primary">
+        if (LengthValidator.isNotEmpty(this.state.invitedEvents)) {
+            icon = <Badge badgeContent={this.state.invitedEvents.length} color="primary">
                 <i className="material-icons">notifications</i>
             </Badge>;
         }

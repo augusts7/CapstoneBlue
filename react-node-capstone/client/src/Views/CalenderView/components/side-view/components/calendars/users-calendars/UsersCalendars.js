@@ -1,7 +1,7 @@
 import React from "react";
 import {get, post} from "../../../../../../../ApiHelper/ApiHelper"
 import BaseCalendarsLayout from "../base-layout/BaseCalendarsLayout";
-import CustomIconButton from "../../../../generic/IconButton";
+import CustomIconButton from "../../../../../../GenericViews/IconButton";
 import Icon from "@material-ui/core/Icon";
 import SocketContext from "../../../../../../../Context/SocketContext";
 

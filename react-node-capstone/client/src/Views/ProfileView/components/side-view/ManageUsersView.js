@@ -4,6 +4,11 @@ import ProfileSectionButtons from "../../generic/profile-view-section/ProfileSec
 import CreateUserForm from "./components/create-user-form/CreateUserForm";
 import CreateUsersUsingFileForm from "./components/upload-file-form/CreateUsersFromFileForm";
 import ProfileItemBlockContainer from "../../generic/profile-view-item/profile-item-blocks/ProfileItemBlockContainer";
+import Icon from "@material-ui/core/Icon";
+import ListItem from "@material-ui/core/ListItem";
+import List from "@material-ui/core/List";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 
 export default class ManageUsersView extends React.Component {
 
@@ -33,21 +38,39 @@ export default class ManageUsersView extends React.Component {
     };
 
     buttons = [
-        {name: "Create Users", onClick: this.showSimpleForm},
-        {name: "Create Users From File", onClick: this.showFileUploadForm}
+        {name: "Add user", onClick: this.showSimpleForm},
+        {name: "Upload File", onClick: this.showFileUploadForm}
     ];
 
     render() {
         return (
             <div>
                 <ProfileSectionTitle>Manage Users</ProfileSectionTitle>
-                <ProfileSectionButtons buttons={this.buttons}/>
+
+                <ProfileSectionButtons buttons={this.buttons} />
 
                 <CreateUserForm open={this.state.showSimpleForm} onClose={this.hideSimpleForm}/>
                 <CreateUsersUsingFileForm open={this.state.showFileUploadForm} onClose={this.hideFileUploadForm}/>
 
-                <ProfileItemBlockContainer title="Create Users Using File Drop">
+                <ProfileItemBlockContainer title="Create new Users Using Form or File Drop">
 
+                    <List
+                        component="nav"
+                        aria-labelledby="nested-list-subheader">
+                        <ListItem onClick={this.showSimpleForm} button>
+                            <ListItemIcon>
+                                <Icon>add</Icon>
+                            </ListItemIcon>
+                            <ListItemText primary="Upload User data using form" />
+                        </ListItem>
+                        <ListItem onClick={this.showFileUploadForm} button>
+                            <ListItemIcon>
+                                <Icon>cloud_upload</Icon>
+                            </ListItemIcon>
+                            <ListItemText primary="Upload User Data from File" />
+                        </ListItem>
+
+                    </List>
 
                 </ProfileItemBlockContainer>
 

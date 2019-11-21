@@ -14,13 +14,11 @@ export default function AdvisingSignUpItem(props) {
     };
 
     const deleteSlot = () => {
-
+        calendarPopupContext.showDeleteDialog("Delete Advising Slot", "Are you sure you want to delete your advising slot?", onDeleteButtonClick);
     };
 
     const addSlot = () => {
-        calendarPopupContext.showDeleteDialog("Delete Advising Slot", "Are you sure you want to delete your advising slot?", onDeleteButtonClick);
-        alert("hey");
-        // props.onSelect(props.event);
+        props.onSelect(props.event);
     };
 
     let buttons = [];

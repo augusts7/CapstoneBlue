@@ -1,7 +1,8 @@
 import React from "react";
 import Popover from '@material-ui/core/Popover';
 import NotificationsPopupItem from "./NotificationsPopupItem";
-import Progress from "../../../../Views/CalenderView/components/generic/Progress";
+import Progress from "../../../../Views/GenericViews/Progress/Progress";
+import {Typography} from "@material-ui/core";
 
 
 const anchorOrigin = {
@@ -21,9 +22,13 @@ const containerStyle = {
     maxHeight: window.innerHeight * 0.7
 };
 
+const titleStyle = {
+    padding: "16px"
+};
+
 export default class NotificationsPopup extends React.Component {
 
-    constructor (props) {
+    constructor(props) {
         super(props);
 
         this.state = {
@@ -36,10 +41,6 @@ export default class NotificationsPopup extends React.Component {
         this.props.onClose();
     };
 
-
-    handleClose = () => {
-        this.props.onClose();
-    };
 
     handleRemoveItem = (id) => {
         this.props.onDeleteItem(id);
@@ -62,11 +63,17 @@ export default class NotificationsPopup extends React.Component {
                     anchorOrigin={anchorOrigin}
                     transformOrigin={transformOrigin}>
 
-                    <div className="mdl-color--grey-50 styleScroll" style={containerStyle}>
+                    <div>
+                        <div className="maroon mdl-color-text--white" style={titleStyle}>
+                            <Typography variant="h6">Event Invites</Typography>
+                        </div>
 
-                        <Progress show={this.state.isLoading}/>
-                        {invitedEvents}
+                        <div className="mdl-color--grey-50 styleScroll" style={containerStyle}>
 
+                            <Progress show={this.state.isLoading}/>
+                            {invitedEvents}
+
+                        </div>
                     </div>
 
                 </Popover>

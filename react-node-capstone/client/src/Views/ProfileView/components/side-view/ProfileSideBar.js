@@ -21,7 +21,7 @@ export default class ProfileSideBar extends React.Component {
 
     layoutInfo = () => {
 
-        const user = this.context.getUser();
+        const user = this.context.user;
 
         let profileItems = [];
 

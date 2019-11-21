@@ -1,6 +1,6 @@
 import React from "react";
 import GroupedSelect from "./GroupedSelect";
-import {get} from "../../../../../ApiHelper/ApiHelper";
+import {get} from "../../../ApiHelper/ApiHelper";
 
 export default class SelectCalendar extends React.Component {
 
