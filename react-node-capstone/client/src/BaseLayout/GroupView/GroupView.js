@@ -49,9 +49,9 @@ class GroupView extends React.Component {
   }
 
   getUser() {
-    fetch("user_info/")
+    fetch("/user_info/")
       .then(res => res.json())
-      .then(user => this.setState({ user: user[0].user_id }));
+      .then(user => this.setState({ user: user.user_id }));
   }
   getMyGroups() {
     var myGroupsURL = "/my_groups";
