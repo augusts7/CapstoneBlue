@@ -197,26 +197,24 @@ export default class EventForm extends React.Component {
                 <MessageBox noPadding message={this.state.message} hideMessage={this.hideMessage}/>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <div>
-                        <div className="grid-2">
-                            <DateTimePicker
-                                fullWidth
-                                autoOk
-                                inputVariant="outlined"
-                                margin="normal"
-                                label="Start Time"
-                                value={this.state.start}
-                                onChange={(value) => this.handleChange("start", value)}
-                            />
-                            <DateTimePicker
-                                fullWidth
-                                autoOk
-                                inputVariant="outlined"
-                                margin="normal"
-                                label="End Time"
-                                value={this.state.end}
-                                onChange={(value) => this.handleChange("end", value)}
-                            />
-                        </div>
+                        <DateTimePicker
+                            fullWidth
+                            autoOk
+                            inputVariant="outlined"
+                            margin="normal"
+                            label="Start Time"
+                            value={this.state.start}
+                            onChange={(value) => this.handleChange("start", value)}
+                        />
+                        <DateTimePicker
+                            fullWidth
+                            autoOk
+                            inputVariant="outlined"
+                            margin="normal"
+                            label="End Time"
+                            value={this.state.end}
+                            onChange={(value) => this.handleChange("end", value)}
+                        />
 
 
                         <TextField

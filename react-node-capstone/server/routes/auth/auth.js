@@ -229,6 +229,36 @@ router.post('/forgotPassword', function (req, res, next) {
 
 });
 
+
+router.get('/sendPasswordResetEmail', function (req, res, next) {
+
+    pool.query("SELECT campusEmail, user_id FROM user_info WHERE user_id = ?", req.user.user_id, function (error, results, fields) {
+        if (error) {
+            return next("Couldn't connect to the database. " + error);
+        }
+        if (results.length > 0) {
+            const email = results[0].campusEmail;
+            sendPasswordResetEmail(email, res, next);
+        }
+    });
+
+});
+
+router.post('/resetPassword', function (req, res, next) {
+
+    pool.query("SELECT campusEmail, user_id FROM user_info WHERE user_id = ?", req.user.user_id, function (error, results, fields) {
+        if (error) {
+            return next("Couldn't connect to the database. " + error);
+        }
+        if (results.length > 0) {
+            const email = results[0].campusEmail;
+            sendPasswordResetEmail(email, res, next);
+        }
+    });
+
+});
+
+
 function sendPasswordResetEmail(email, res, next) {
     let subject = "Password Reset Email";
     let text = "Hi, Reset password will be implemented very soon. Stay tuned.";
