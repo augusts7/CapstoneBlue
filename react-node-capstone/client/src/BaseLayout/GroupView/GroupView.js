@@ -9,11 +9,11 @@ import Select from "@material-ui/core/Select";
 import "./GroupView.css";
 
 import CreateGroupEvent from "./CreateGroupEvent";
-import AddGroupMember from "./AddGroupMember";
 import GroupOptions from "./GroupOptionsMenu";
 import AddMultipleUsersFromList from "../../Views/GroupView/AddMultipleUsersFromList";
 import UserContext from "../../Context/UserContext";
 import AddMultipleUsersFromFile from "../../Views/GroupView/AddMultipleUsersFromFile";
+import get from "../../ApiHelper/ApiHelper";
 
 //Mockup: https://www.figma.com/file/r5yEpMlG5SzIAkONOOAWc0/Groups-faculty-%26-student?node-id=0%3A1
 
@@ -49,12 +49,15 @@ class GroupView extends React.Component {
   }
 
   getUser() {
-    fetch("/user_info/")
+    const getUserURL = "/user_info/user";
+    fetch(getUserURL)
       .then(res => res.json())
-      .then(user => this.setState({ user: user.user_id }));
+      .then(userInfo => {
+        console.log(userInfo);
+      });
   }
   getMyGroups() {
-    var myGroupsURL = "/my_groups";
+    const myGroupsURL = "/my_groups";
     fetch(myGroupsURL)
       .then(res => res.json())
       .then(myGroups =>
