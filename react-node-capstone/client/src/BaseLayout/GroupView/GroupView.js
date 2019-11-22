@@ -29,7 +29,8 @@ class GroupView extends React.Component {
       groupName: "",
       creator_id: 0,
       eventListItems: [],
-      groupMembers: []
+      groupMembers: [],
+      progress: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.refreshGroup = this.refreshGroup.bind(this);
@@ -45,27 +46,30 @@ class GroupView extends React.Component {
     this.getGroupEvents(group);
     this.getGroupMembers(group);
     this.getGroupInfo(group);
-    this.getUser();
   }
 
   getUser() {
-    const getUserURL = "/user_info/user";
-    fetch(getUserURL)
-      .then(res => res.json())
-      .then(userInfo => {
-        console.log(userInfo);
+    try {
+      this.setState({
+        user: this.context.user.user_id
       });
+    } catch (err) {
+      console.log("Error with Context");
+    }
   }
+
   getMyGroups() {
-    const myGroupsURL = "/my_groups";
+    var myGroupsURL = "/my_groups";
+    this.setState({ progress: true });
     fetch(myGroupsURL)
       .then(res => res.json())
-      .then(myGroups =>
+      .then(myGroups => {
         this.setState({ group_id: myGroups[0].group_id }, () => {
           this.setState({ my_groups: myGroups });
           this.refreshGroup(myGroups[0].group_id);
-        })
-      );
+        });
+        this.setState({ progress: false });
+      });
   }
 
   getGroupInfo(groupID) {
@@ -110,6 +114,8 @@ class GroupView extends React.Component {
 
     return (
       <div className="group-view">
+        <ProgressBar show={this.state.progress} size="large" />
+
         <div className="group-header">
           <div className="my-groups-select">
             <FormControl variant="standard">
@@ -133,6 +139,7 @@ class GroupView extends React.Component {
             />
           </div>
         </div>
+
         <hr />
         <div className="group-body">
           <div className="group-events">
@@ -148,6 +155,7 @@ class GroupView extends React.Component {
             <div className="group-event-list">
               <hr />
               <EventList
+                user={this.state.user}
                 creator_id={this.state.creator_id}
                 action={() => this.refreshGroup(this.state.group_id)}
                 events={this.state.eventListItems}
@@ -157,14 +165,18 @@ class GroupView extends React.Component {
           <div className="group-members">
             <h3 className="list-header">Group Members</h3>
             <div className="mem-buttons">
-              <AddMultipleUsersFromList className="buttons-group-members" />
-              <AddMultipleUsersFromFile className="buttons-group-members" />
+              <AddMultipleUsersFromList
+                groupId={this.state.group_id}
+                className="buttons-group-members"
+              />
+              <AddMultipleUsersFromFile
+                groupId={this.state.group_id}
+                className="buttons-group-members"
+              />
             </div>
             <div className="group-member-list">
               <hr />
               <GroupMemberList
-                user_id={this.state.user_id}
-                creator_id={this.state.creator_id}
                 group_id={this.state.group_id}
                 groupMembers={this.state.groupMembers}
               />

@@ -1,9 +1,11 @@
 import React from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import LengthValidator from "../../../utils/length-utils/LengthValidator";
 
-const styles = {width: "100%"};
+let containerStyles = {width: "100%"};
 
 export default function ProgressBar(props) {
+
 
     const progress = [];
 
@@ -12,7 +14,7 @@ export default function ProgressBar(props) {
     }
 
     return (
-        <div style={styles}>
+        <div style={containerStyles}>
             {progress}
         </div>
     );
