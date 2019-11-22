@@ -17,8 +17,7 @@ router.get("/advisors", function(req, res, next) {
   sqlHandler.handleSelectAndRespond(sql, res);
 });
 
-router.get("/userList", function(req, res, next) {
-  console.log("get all users");
+
 
 router.get("/userList", function (req, res, next) {
 
