@@ -31,6 +31,15 @@ router.get("/userList", function (req, res, next) {
 
 });
 
+router.get("/", function (req, res, next) {
+
+    console.log("get user info");
+
+    let sql = "SELECT * FROM user_info";
+
+    sqlHandler.handleSelectAndRespond(sql, res);
+
+});
 
 
 module.exports = router;

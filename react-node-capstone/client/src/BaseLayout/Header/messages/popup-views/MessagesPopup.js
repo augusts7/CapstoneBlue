@@ -19,12 +19,14 @@ const transformOrigin = {
 const containerStyle = {
     backgroundColor: "white",
     "padding": "8px",
-    width: window.innerWidth * 0.4,
+    width: window.innerWidth * 0.3,
     maxHeight: window.innerHeight * 0.7
 };
 
+
 const titleStyle = {
-    padding: "16px"
+    padding: "16px",
+    color: "white"
 };
 
 export default function MessagesPopup(props) {
@@ -47,8 +49,8 @@ export default function MessagesPopup(props) {
 
                 <div>
 
-                    <div className="maroon mdl-color-text--white" style={titleStyle}>
-                        <Typography variant="h6">Messages</Typography>
+                    <div className="maroon" style={titleStyle}>
+                        <Typography variant="h6">All Messages</Typography>
                     </div>
 
                 <div className="mdl-color--grey-50 styleScroll" style={containerStyle}>

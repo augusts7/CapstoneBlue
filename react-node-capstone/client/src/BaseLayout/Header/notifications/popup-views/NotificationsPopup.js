@@ -18,12 +18,13 @@ const transformOrigin = {
 const containerStyle = {
     backgroundColor: "white",
     "padding": "8px",
-    width: window.innerWidth * 0.4,
+    width: window.innerWidth * 0.3,
     maxHeight: window.innerHeight * 0.7
 };
 
 const titleStyle = {
-    padding: "16px"
+    padding: "16px",
+    color: "white"
 };
 
 export default class NotificationsPopup extends React.Component {
@@ -64,7 +65,7 @@ export default class NotificationsPopup extends React.Component {
                     transformOrigin={transformOrigin}>
 
                     <div>
-                        <div className="maroon mdl-color-text--white" style={titleStyle}>
+                        <div className="maroon" style={titleStyle}>
                             <Typography variant="h6">Event Invites</Typography>
                         </div>
 
