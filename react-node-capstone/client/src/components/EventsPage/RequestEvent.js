@@ -75,6 +75,10 @@ class RequestEvent extends React.Component {
             .then(function(body) {
                 console.log(body);
             });
+        this.setState({title: "",
+            description: "",
+            start: new Date(),
+            end: new Date()});
     };
 
     render() {

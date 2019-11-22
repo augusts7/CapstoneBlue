@@ -5,14 +5,35 @@ import ls from "local-storage";
 import Button from "@material-ui/core/Button";
 import CreateEvent from "../../components/EventsPage/CreateEvent";
 import RequestEvent from "../../components/EventsPage/RequestEvent";
+import UserContext from "../../Context/UserContext";
 
 class EventsView extends React.Component {
+    static contextType = UserContext;
+
     constructor(props) {
         super(props);
 
         this.state = {
-            user_type: ls.get("user_type")
+            user_type: ls.get("user_type"),
+            events: []
         };
+    }
+
+    componentDidMount() {
+        // const user = this.context.user;
+        // console.log(user.user_id);
+        // fetch("/events/allOnCalendar/" + user.user_id, {
+        //     headers : {
+        //         'Content-Type': 'application/json',
+        //         'Accept': 'application/json'
+        //     }
+        //
+        // }).then(res => res.json())
+        //     .then(eventData =>
+        //         this.setState({events: eventData}))
+        //     .then(responseJson => {
+        //         console.log(responseJson + "rip");
+        //     });
     }
 
     render() {
@@ -36,9 +57,9 @@ class EventsView extends React.Component {
                         </Button>
                     </div>
                     <h4 className="title">My Events</h4>
-                    <hr />
+                    <hr/>
                     <div>
-                        <EventList />
+                        <EventList events={this.state.events}/>
                     </div>
                 </div>
             );
@@ -74,8 +95,10 @@ class EventsView extends React.Component {
                         </Button>
                     </div>
                     <h4 className="title">My Events</h4>
-                    <hr />
-                    <div></div>
+                    <hr/>
+                    <div>
+                        <EventList events={this.state.events}/>
+                    </div>
                 </div>
             );
         }

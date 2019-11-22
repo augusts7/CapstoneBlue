@@ -57,12 +57,34 @@ router.get("/all", async (req, res) => {
   }
 });
 
+router.route("/allOnCalendar/:user_id").get((req, res) => {
+  try {
+    const user_id = req.param.user_id;
+    pool.query("SELECT title, description, start, end FROM event JOIN attending a on eventID = a.event_id WHERE event_type = 'global' AND a.attendee_id = ?", [user_id], function (error, results, fields) {
+
+      if (error) {
+        return next("Failed to connect to database");
+      }
+
+      if (results.length > 0) {
+
+        res.json(results);
+        console.log(JSON.stringify(results));
+
+      }
+    });
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
+
 //next 2 need work
 //allGlobal needs to be the global events that are not in the students attending table
 router.get("/allGlobal", async (req, res) => {
   try {
     let events = await pool.query(
-      "SELECT title, description, start, end FROM event WHERE event_type = 'global' AND status='approved'"
+      "SELECT * FROM event WHERE event_type = 'global' AND status='approved'"
     );
     res.json(events);
   } catch (e) {
@@ -74,13 +96,26 @@ router.get("/allGlobal", async (req, res) => {
 router.get("/approveEvent", async (req, res) => {
   try {
     let events = await pool.query(
-      "SELECT title, description, start, end FROM event WHERE event_type = 'global' AND status='pending'"
+      "SELECT * FROM event WHERE event_type = 'global' AND status='pending'"
     );
     res.json(events);
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
   }
+});
+
+router.put("/approveEvent/update", function(req, res){
+
+  let eventID = req.body.event_id;
+  console.log(eventID);
+  try{
+    pool.query("UPDATE event SET status = 'approved' WHERE eventID = " + eventID);
+  }
+  catch(e){
+    res.sendStatus(500);
+  }
+
 });
 
 router.get("/created/:calendarId", function(req, res) {

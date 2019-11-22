@@ -78,10 +78,6 @@ export default class extends Component {
             <i className="material-icons">delete</i>Delete Group
           </MenuItem>
         </Menu>
-        {/*<Modal open={open}*/}
-        {/*       onClose={handleClose}>*/}
-
-        {/*</Modal>*/}
       </div>
     );
   }
