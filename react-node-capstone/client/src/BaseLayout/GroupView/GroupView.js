@@ -5,6 +5,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import { MenuItem } from "@material-ui/core";
 import Select from "@material-ui/core/Select";
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import "./GroupView.css";
 
@@ -114,7 +115,7 @@ class GroupView extends React.Component {
 
     return (
       <div className="group-view">
-        <ProgressBar show={this.state.progress} size="large" />
+        <LinearProgress show={this.state.progress} size="large" />
 
         <div className="group-header">
           <div className="my-groups-select">
