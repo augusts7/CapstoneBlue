@@ -13,7 +13,6 @@ import AddGroupMember from "./AddGroupMember";
 import GroupOptions from "./GroupOptionsMenu";
 import AddMultipleUsersFromList from "../../Views/GroupView/AddMultipleUsersFromList";
 import UserContext from "../../Context/UserContext";
-import LengthValidator from "../../utils/length-utils/LengthValidator";
 import AddMultipleUsersFromFile from "../../Views/GroupView/AddMultipleUsersFromFile";
 
 //Mockup: https://www.figma.com/file/r5yEpMlG5SzIAkONOOAWc0/Groups-faculty-%26-student?node-id=0%3A1
@@ -46,16 +45,13 @@ class GroupView extends React.Component {
     this.getGroupEvents(group);
     this.getGroupMembers(group);
     this.getGroupInfo(group);
+    this.getUser();
   }
 
   getUser() {
-    try {
-      this.setState({
-        user: this.context.user.user_id
-      });
-    } catch (err) {
-      console.log("Error with Context");
-    }
+    fetch("user_info/")
+      .then(res => res.json())
+      .then(user => this.setState({ user: user[0].user_id }));
   }
   getMyGroups() {
     var myGroupsURL = "/my_groups";
@@ -149,7 +145,6 @@ class GroupView extends React.Component {
             <div className="group-event-list">
               <hr />
               <EventList
-                user={this.state.user}
                 creator_id={this.state.creator_id}
                 action={() => this.refreshGroup(this.state.group_id)}
                 events={this.state.eventListItems}
@@ -165,6 +160,8 @@ class GroupView extends React.Component {
             <div className="group-member-list">
               <hr />
               <GroupMemberList
+                user_id={this.state.user_id}
+                creator_id={this.state.creator_id}
                 group_id={this.state.group_id}
                 groupMembers={this.state.groupMembers}
               />

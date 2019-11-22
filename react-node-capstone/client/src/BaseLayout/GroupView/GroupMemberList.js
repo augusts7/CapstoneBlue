@@ -33,7 +33,8 @@ class GroupMemberList extends Component {
   }
 
   getDeleteButton(member_id) {
-    if (this.props.creator_id !== member_id) {
+    console.log(this.props.creator_id + "<- CID MID ->" + this.props.user_id);
+    if (this.props.creator_id === this.props.user_id) {
       return (
         <IconButton
           aria-label="delete"
