@@ -10,7 +10,7 @@ export default function ProfileItemBlockContainer(props) {
 
     return (
         <div className="container mdl-color--white">
-            <Typography className="subtitle" color="secondary" gutterBottom>
+            <Typography className="subtitle" color="primary" gutterBottom>
                 {title}
             </Typography>
             <Progress show={props.progress} />

@@ -5,15 +5,15 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Progress from "../../GenericViews/Progress/Progress";
+import Progress from "../../Progress/Progress";
 import Slide from "@material-ui/core/Slide";
-import {get, post} from "../../../ApiHelper/ApiHelper";
+import {get, post} from "../../../../ApiHelper/ApiHelper";
 import SingleItemInUserList from "./SingleItemInUserList";
 import UserListDialogTitle from "./UserListDialogTitle";
-import LengthValidator from "../../../utils/length-utils/LengthValidator";
-import ArrayToggleUtills from "../../../utils/array-utils/ArrayToggleHelper";
-import ArraySearchHelper from "../../../utils/array-utils/ArraySearchHelper";
-import ArrayLengthValidator from "../../../utils/length-utils/ArrayLengthValidator";
+import LengthValidator from "../../../../utils/length-utils/LengthValidator";
+import ArrayToggleUtills from "../../../../utils/array-utils/ArrayToggleHelper";
+import ArraySearchHelper from "../../../../utils/array-utils/ArraySearchHelper";
+import ArrayLengthValidator from "../../../../utils/length-utils/ArrayLengthValidator";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -57,12 +57,7 @@ export default class DialogForm extends React.Component {
 
         console.log(allSelectedUsers);
 
-        const data = {users: allSelectedUsers, group_id: this.props.groupId};
-
-        post("/my_groups/addMultipleUsers", data, res => {
-
-            this.props.onClose();
-        });
+        this.props.onSubmit(allSelectedUsers);
     };
 
     getAllUsersFromUids = (allUsers, uids) => {

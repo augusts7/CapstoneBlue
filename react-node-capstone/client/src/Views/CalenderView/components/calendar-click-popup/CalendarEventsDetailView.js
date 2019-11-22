@@ -128,7 +128,7 @@ export default class EventsList extends React.Component {
 
                     <DialogTitle className="dialog-title">
 
-                        <h4>{this.title}</h4>
+                        {this.title}
                     </DialogTitle>
 
                     <Progress show={this.state.progress}/>
