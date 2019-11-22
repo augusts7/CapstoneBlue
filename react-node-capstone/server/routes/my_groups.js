@@ -69,7 +69,7 @@ router.post("/addMultipleUsers", async function (req, res, next) {
             const user_in_group = {user_id: user.user_id, group_id: req.body.group_id};
             await pool.query("INSERT INTO my_groups SET ?", user_in_group, (error, results, fields) => {
                 if (error) {
-                    console.log("error");
+                    console.log(error);
                 }
                 console.log("User has been added using Uid " + results);
             });

@@ -1,6 +1,6 @@
 import React from "react";
-import UploadUsersFromFileForm from "../../GenericViews/forms/upload-users-form/UploadUsersFromFileForm";
-import {post} from "../../../ApiHelper/ApiHelper";
+import UploadUsersFromFileForm from "../../forms/upload-users-form/UploadUsersFromFileForm";
+import {post} from "../../../../ApiHelper/ApiHelper";
 
 
 const containerStyle = {paddingTop: "32px", paddingBottom: "32px"};

@@ -25,7 +25,7 @@ router.get("/userList", function (req, res, next) {
 
     console.log("get all users");
 
-    let sql = "SELECT first_name, last_name, user_id FROM user_info";
+    let sql = "SELECT first_name, last_name, user_id, campusEmail FROM user_info";
 
     sqlHandler.handleSelectAndRespond(sql, res);
 
