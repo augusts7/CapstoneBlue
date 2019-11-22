@@ -13,7 +13,6 @@ import AddGroupMember from "./AddGroupMember";
 import GroupOptions from "./GroupOptionsMenu";
 import AddMultipleUsersFromList from "../../Views/GroupView/AddMultipleUsersFromList";
 import UserContext from "../../Context/UserContext";
-import LengthValidator from "../../utils/length-utils/LengthValidator";
 import AddMultipleUsersFromFile from "../../Views/GroupView/AddMultipleUsersFromFile";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ProgressBar from "../../Views/GenericViews/Progress/Progress";
@@ -21,6 +20,7 @@ import ProgressBar from "../../Views/GenericViews/Progress/Progress";
 //Mockup: https://www.figma.com/file/r5yEpMlG5SzIAkONOOAWc0/Groups-faculty-%26-student?node-id=0%3A1
 
 class GroupView extends React.Component {
+<<<<<<< HEAD
     static contextType = UserContext;
 
     constructor(props) {
@@ -180,6 +180,155 @@ class GroupView extends React.Component {
                         </div>
                     </div>
                 </div>
+=======
+  static contextType = UserContext;
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: 0,
+      group_id: 0,
+      my_groups: [],
+      groupName: "",
+      creator_id: 0,
+      eventListItems: [],
+      groupMembers: []
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.refreshGroup = this.refreshGroup.bind(this);
+    this.getMyGroups = this.getMyGroups.bind(this);
+  }
+
+  componentDidMount() {
+    this.getMyGroups();
+    this.getUser();
+  }
+
+  refreshGroup(group) {
+    this.getGroupEvents(group);
+    this.getGroupMembers(group);
+    this.getGroupInfo(group);
+    this.getUser();
+  }
+
+  getUser() {
+    fetch("/user_info/")
+      .then(res => res.json())
+      .then(user => this.setState({ user: user.user_id }));
+  }
+  getMyGroups() {
+    var myGroupsURL = "/my_groups";
+    fetch(myGroupsURL)
+      .then(res => res.json())
+      .then(myGroups =>
+        this.setState({ group_id: myGroups[0].group_id }, () => {
+          this.setState({ my_groups: myGroups });
+          this.refreshGroup(myGroups[0].group_id);
+        })
+      );
+  }
+
+  getGroupInfo(groupID) {
+    var groupInfoURL = "/groups/groupInfo/" + groupID;
+    fetch(groupInfoURL)
+      .then(res => res.json())
+      .then(groupInfo => this.getGroupInfoHelper(...groupInfo));
+  }
+
+  getGroupInfoHelper(args) {
+    var info = { ...args };
+    this.setState({
+      groupName: info.group_name,
+      creator_id: info.creator_id
+    });
+  }
+
+  getGroupMembers(groupID) {
+    var groupMembersURL = "/groups/groupMembers/" + groupID;
+    fetch(groupMembersURL)
+      .then(res => res.json())
+      .then(group_members => this.setState({ groupMembers: group_members }));
+  }
+
+  getGroupEvents(groupID) {
+    var groupEventsURL = "/groups/groupEvents/" + groupID;
+    fetch(groupEventsURL)
+      .then(res => res.json())
+      .then(group_events => this.setState({ eventListItems: group_events }));
+  }
+
+  handleChange(event) {
+    this.setState({ group_id: event.target.value }, () => {
+      this.refreshGroup(event.target.value);
+    });
+  }
+
+  render() {
+    var groups = this.state.my_groups.map(g => {
+      return <MenuItem value={g.group_id}>{g.group_name}</MenuItem>;
+    });
+
+    return (
+      <div className="group-view">
+        <div className="group-header">
+          <div className="my-groups-select">
+            <FormControl variant="standard">
+              <InputLabel>My Groups</InputLabel>
+              <Select
+                displayEmpty
+                autoWidth={true}
+                value={this.state.group_id}
+                onChange={this.handleChange}
+                children={groups}
+              />
+            </FormControl>
+          </div>
+          <div className="group-name">
+            <h2>{this.state.groupName}</h2>
+          </div>
+          <div className="group-options">
+            <GroupOptions
+              creatorID={this.context.user}
+              groupID={this.state.group_id}
+            />
+          </div>
+        </div>
+        <hr />
+        <div className="group-body">
+          <div className="group-events">
+            <h3 className="group-events-list-header">Group Events</h3>
+            <div className="buttons-group-events">
+              <CreateGroupEvent
+                action={() => this.refreshGroup(this.state.group_id)}
+                user={this.state.user}
+                creator_id={this.state.creator_id}
+                groupID={this.state.group_id}
+              />
+            </div>
+            <div className="group-event-list">
+              <hr />
+              <EventList
+                creator_id={this.state.creator_id}
+                action={() => this.refreshGroup(this.state.group_id)}
+                events={this.state.eventListItems}
+              />
+            </div>
+          </div>
+          <div className="group-members">
+            <h3 className="list-header">Group Members</h3>
+            <div className="mem-buttons">
+              <AddMultipleUsersFromList className="buttons-group-members" />
+              <AddMultipleUsersFromFile className="buttons-group-members" />
+            </div>
+            <div className="group-member-list">
+              <hr />
+              <GroupMemberList
+                user_id={this.state.user_id}
+                creator_id={this.state.creator_id}
+                group_id={this.state.group_id}
+                groupMembers={this.state.groupMembers}
+              />
+>>>>>>> 53ae3176c940a08dbb6d93f5d1385da936220403
             </div>
         );
     }
