@@ -5,7 +5,6 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import { MenuItem } from "@material-ui/core";
 import Select from "@material-ui/core/Select";
-import LinearProgress from '@material-ui/core/LinearProgress';
 
 import "./GroupView.css";
 
@@ -14,7 +13,6 @@ import GroupOptions from "./GroupOptionsMenu";
 import AddMultipleUsersFromList from "../../Views/GroupView/AddMultipleUsersFromList";
 import UserContext from "../../Context/UserContext";
 import AddMultipleUsersFromFile from "../../Views/GroupView/AddMultipleUsersFromFile";
-import get from "../../ApiHelper/ApiHelper";
 
 //Mockup: https://www.figma.com/file/r5yEpMlG5SzIAkONOOAWc0/Groups-faculty-%26-student?node-id=0%3A1
 
@@ -30,8 +28,7 @@ class GroupView extends React.Component {
       groupName: "",
       creator_id: 0,
       eventListItems: [],
-      groupMembers: [],
-      progress: false
+      groupMembers: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.refreshGroup = this.refreshGroup.bind(this);
@@ -61,7 +58,6 @@ class GroupView extends React.Component {
 
   getMyGroups() {
     var myGroupsURL = "/my_groups";
-    this.setState({ progress: true });
     fetch(myGroupsURL)
       .then(res => res.json())
       .then(myGroups => {
@@ -69,9 +65,8 @@ class GroupView extends React.Component {
           this.setState({ my_groups: myGroups });
           this.refreshGroup(myGroups[0].group_id);
         });
-        this.setState({ progress: false });
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }
@@ -81,7 +76,7 @@ class GroupView extends React.Component {
     fetch(groupInfoURL)
       .then(res => res.json())
       .then(groupInfo => this.getGroupInfoHelper(...groupInfo))
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }
@@ -99,7 +94,7 @@ class GroupView extends React.Component {
     fetch(groupMembersURL)
       .then(res => res.json())
       .then(group_members => this.setState({ groupMembers: group_members }))
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }
@@ -109,7 +104,7 @@ class GroupView extends React.Component {
     fetch(groupEventsURL)
       .then(res => res.json())
       .then(group_events => this.setState({ eventListItems: group_events }))
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }
@@ -127,8 +122,6 @@ class GroupView extends React.Component {
 
     return (
       <div className="group-view">
-        <LinearProgress show={this.state.progress} size="large" />
-
         <div className="group-header">
           <div className="my-groups-select">
             <FormControl variant="standard">
