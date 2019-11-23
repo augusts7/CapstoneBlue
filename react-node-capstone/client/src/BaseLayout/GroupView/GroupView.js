@@ -183,20 +183,6 @@ class GroupView extends React.Component {
                 />
               </div>
             </div>
-            <div className="group-members">
-              <h3 className="list-header">Group Members</h3>
-              <div className="buttons-group-members">
-                <AddMultipleUsersFromList />
-                <AddMultipleUsersFromFile />
-              </div>
-              <hr />
-              <EventList
-                user={this.state.user}
-                creator_id={this.state.creator_id}
-                action={() => this.refreshGroup(this.state.group_id)}
-                events={this.state.eventListItems}
-              />
-            </div>
           </div>
           <div className="group-members">
             <h3 className="list-header">Group Members</h3>
