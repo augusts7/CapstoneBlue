@@ -15,6 +15,7 @@ router.route("/").get(async (req, res) => {
             ";"
         );
         console.log("check");
+        console.log(my_groups);
         res.json(my_groups);
     } catch (e) {
         console.log("Please restart Server");
@@ -22,7 +23,7 @@ router.route("/").get(async (req, res) => {
     }
 });
 
-router.route("/").post((req, res) => {
+router.route("/").post(async (req, res) => {
     const my_groups = {
         group_id: res.insertId,
         user_id: req.body.user_id

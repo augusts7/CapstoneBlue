@@ -1,6 +1,6 @@
 var router = require("express").Router();
 var pool = require("../db/database");
-var sqlHandler = require("../utils/sql-helper/sql-helper");
+var sqlHandler = require("../utils/sql-helper/sql-helper").default;
 var bodyParser = require("body-parser");
 let authMiddleware = require("../middlewares/auth-middleware").authMiddleware;
 
@@ -27,7 +27,6 @@ router.get("/userList", function (req, res, next) {
 
     sqlHandler.handleSelectAndRespond(sql, res);
 
-  sqlHandler.handleSelectAndRespond(sql, res);
 });
 
 router.get("/", function(req, res, next) {

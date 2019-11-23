@@ -70,6 +70,9 @@ class GroupView extends React.Component {
           this.refreshGroup(myGroups[0].group_id);
         });
         this.setState({ progress: false });
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }
 
@@ -77,7 +80,10 @@ class GroupView extends React.Component {
     var groupInfoURL = "/groups/groupInfo/" + groupID;
     fetch(groupInfoURL)
       .then(res => res.json())
-      .then(groupInfo => this.getGroupInfoHelper(...groupInfo));
+      .then(groupInfo => this.getGroupInfoHelper(...groupInfo))
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   getGroupInfoHelper(args) {
@@ -92,14 +98,20 @@ class GroupView extends React.Component {
     var groupMembersURL = "/groups/groupMembers/" + groupID;
     fetch(groupMembersURL)
       .then(res => res.json())
-      .then(group_members => this.setState({ groupMembers: group_members }));
+      .then(group_members => this.setState({ groupMembers: group_members }))
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   getGroupEvents(groupID) {
     var groupEventsURL = "/groups/groupEvents/" + groupID;
     fetch(groupEventsURL)
       .then(res => res.json())
-      .then(group_events => this.setState({ eventListItems: group_events }));
+      .then(group_events => this.setState({ eventListItems: group_events }))
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   handleChange(event) {
@@ -135,8 +147,10 @@ class GroupView extends React.Component {
           </div>
           <div className="group-options">
             <GroupOptions
-              creatorID={this.context.user}
+              userID={this.state.user}
               groupID={this.state.group_id}
+              creatorID={this.state.creator_id}
+              groupMembers={this.state.groupMembers}
             />
           </div>
         </div>

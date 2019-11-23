@@ -11,7 +11,6 @@ import RequestEvent from "../components/EventsPage/RequestEvent";
 import ViewAllEvents from "../components/EventsPage/ViewAllEvents";
 import CreateEvent from "../components/EventsPage/CreateEvent";
 import CreateGroupEvent from "../BaseLayout/GroupView/CreateGroupEvent";
-import CreateGroup from "../BaseLayout/GroupView/CreateGroup";
 import ApproveEvent from "../components/EventsPage/ApproveEvent";
 import ForgotPassword from "../Authentication/ForgotPassword/ForgotPassword";
 import Login from "../Authentication/Login/Login";
@@ -59,7 +58,6 @@ export default function ApplicationRouter(props) {
         routesHtml.push(<Route auth={props.auth} path="/viewAllEvents" component={ViewAllEvents}/>);
         routesHtml.push(<Route auth={props.auth} path="/createGroupEvent" component={CreateGroupEvent}/>);
         routesHtml.push(<Route auth={props.auth} path="/requestEvent" component={RequestEvent}/>);
-        routesHtml.push(<Route auth={props.auth} path="/createGroup" component={CreateGroup}/>);
         routesHtml.push(<Route auth={props.auth} path="/viewAllEvents" component={ViewAllEvents}/>);
         routesHtml.push(<Route auth={props.auth} path="/createEvent" component={CreateEvent}/>);
         routesHtml.push(<Route auth={props.auth} path="/profileView" component={ProfileView}/>);
