@@ -36,7 +36,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   overflow: auto;
-  background-color: #bd955a;
+  background-color: #8b6464;
   border-radius: 7px;
   margin: 20px;
 }
@@ -67,4 +67,11 @@
   overflow: auto;
   background-color: rgb(100, 101, 105);
   border-radius: 7px;
+}
+
+.no-groups {
+  margin: 15%;
+}
+.create-group {
+  border: black;
 }

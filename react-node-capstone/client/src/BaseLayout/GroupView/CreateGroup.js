@@ -75,7 +75,6 @@ class CreateGroup extends React.Component {
     this.createGroup();
   };
 
-
   createGroup() {
     if (this.state.data !== null) {
       fetch("/groups/createGroups", {
