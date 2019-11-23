@@ -66,6 +66,8 @@ router.route("/groupEvents/:group_id").get(async (req, res) => {
   }
 });
 
+//Change a group's name
+router.route("/editGroupName").post(async (req, res) => {
   try{
     let sql1 = "UPDATE groups SET group_name = '"+req.body.groupName+"' WHERE group_id = "+
     req.body.groupID+";";
