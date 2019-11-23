@@ -1,6 +1,6 @@
 import React from "react";
 import "./Container.css";
-import Progress from "../Progress/Progress";
+import Progress from "../../../Views/GenericViews/Progress/Progress";
 
 class Form extends React.Component {
 

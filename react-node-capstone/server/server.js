@@ -1,6 +1,6 @@
 const express = require("express"); //Imports express
 const app = express(); //Intializes an express app
-const port = process.env.PORT || 8080; //Creates a port varible to be used later in app.listen()
+const port = process.env.SERVER_PORT || 8080; //Creates a port varible to be used later in app.listen()
 const cookieParser = require("cookie-parser");
 const expressSession = require("express-session");
 const http = require("http").createServer(app);
@@ -26,7 +26,6 @@ const passportHelper = require("./auth/passport");
 passportHelper.initPassport(app);
 socket.initSocket(http);
 
-
 //Routes
 const eventRouter = require("./routes/events");
 const authRouter = require("./routes/auth/auth");
@@ -40,9 +39,9 @@ const classestakesRouter = require("./routes/classes_taken");
 const profileRouter = require("./routes/profile");
 const calRouter = require("./routes/calendar");
 
-const swagger = require('swagger-ui-express');
-const swag = require('./swagger.json');
-app.use('/docs', swagger.serve, swagger.setup(swag));
+const swagger = require("swagger-ui-express");
+const swag = require("./swagger.json");
+app.use("/docs", swagger.serve, swagger.setup(swag));
 //Connects Routes to there files.
 app.use("/events", eventRouter);
 app.use("/user_info", userInfoRouter);
@@ -56,17 +55,14 @@ app.use("/classes_taken", classestakesRouter);
 app.use("/profile", profileRouter);
 app.use("/calendar", calRouter);
 
-
-
 //Error Handler
 app.use((err, req, res, next) => {
-
-    console.log(err);
+  console.log(err);
 
   res.status(500).json({
-      success: false,
-      message: err
-    });
+    success: false,
+    message: err
+  });
 });
 
 // console.log that your server is up and running

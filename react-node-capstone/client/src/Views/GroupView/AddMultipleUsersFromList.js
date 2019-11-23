@@ -1,6 +1,7 @@
 import React, {Fragment} from "react";
 import Button from "@material-ui/core/Button";
-import UserListDialog from "./user-list/UserListDialog";
+import UserListDialog from "../GenericViews/users/user-list/UserListDialog";
+import {post} from "../../ApiHelper/ApiHelper";
 
 export default function AddMultipleUsersFromList (props) {
 
@@ -14,11 +15,21 @@ export default function AddMultipleUsersFromList (props) {
         setShow(true);
     };
 
+    const handleSubmit = (allSelectedUsers) => {
+        const data = {users: allSelectedUsers, group_id: props.groupId};
+
+        post("/my_groups/addMultipleUsers", data, res => {
+
+            alert(res.message);
+            handleClose();
+        });
+    };
+
     console.log(props.groupId);
 
     return (
         <Fragment>
-            <UserListDialog groupId={props.groupId} open={show} onClose={handleClose} />
+            <UserListDialog onSubmit={handleSubmit} groupId={props.groupId} open={show} onClose={handleClose} />
             <Button
                 variant="contained"
                 size="large"

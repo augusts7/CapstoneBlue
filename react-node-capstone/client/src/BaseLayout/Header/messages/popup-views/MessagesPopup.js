@@ -1,7 +1,9 @@
 import React from "react";
 import Popover from '@material-ui/core/Popover';
-import NotificationsPopupItem from "./NotificationsPopupItem";
-import Progress from "../../../../Views/CalenderView/components/generic/Progress";
+import Progress from "../../../../Views/GenericViews/Progress/Progress";
+import MessagesPopupItem from "./MessagesPopupSingleItem";
+import LengthValidator from "../../../../utils/length-utils/LengthValidator";
+import {Typography} from "@material-ui/core";
 
 
 const anchorOrigin = {
@@ -17,60 +19,49 @@ const transformOrigin = {
 const containerStyle = {
     backgroundColor: "white",
     "padding": "8px",
-    width: window.innerWidth * 0.4,
+    width: window.innerWidth * 0.3,
     maxHeight: window.innerHeight * 0.7
 };
 
-export default class NotificationsPopup extends React.Component {
 
-    constructor (props) {
-        super(props);
+const titleStyle = {
+    padding: "16px",
+    color: "white"
+};
 
-        this.state = {
-            isLoading: false
-        };
+export default function MessagesPopup(props) {
+
+
+    let allMessages = [];
+    if (LengthValidator.isNotEmpty(props.allMessages)) {
+        props.allMessages.forEach((message) => {
+            allMessages.push(<MessagesPopupItem onRemoveItem={props.onDeleteItem} message={message}/>);
+        });
     }
+    return (
+        <div>
+            <Popover
+                open={Boolean(props.anchor)}
+                anchorEl={props.anchor}
+                onClose={props.onClose}
+                anchorOrigin={anchorOrigin}
+                transformOrigin={transformOrigin}>
 
+                <div>
 
-    handleClose = () => {
-        this.props.onClose();
-    };
-
-
-    handleClose = () => {
-        this.props.onClose();
-    };
-
-    handleRemoveItem = (id) => {
-        this.props.onDeleteItem(id);
-    };
-
-
-    render() {
-        let invitedEvents = [];
-        if (this.props.invitedEvents != null && this.props.invitedEvents.length > 0) {
-            this.props.invitedEvents.forEach((iE) => {
-                invitedEvents.push(<NotificationsPopupItem onRemoveItem={this.handleRemoveItem} event={iE}/>);
-            });
-        }
-        return (
-            <div>
-                <Popover
-                    open={Boolean(this.props.anchor)}
-                    anchorEl={this.props.anchor}
-                    onClose={this.handleClose}
-                    anchorOrigin={anchorOrigin}
-                    transformOrigin={transformOrigin}>
-
-                    <div className="mdl-color--grey-50 styleScroll" style={containerStyle}>
-
-                        <Progress show={this.state.isLoading}/>
-                        {invitedEvents}
-
+                    <div className="maroon" style={titleStyle}>
+                        <Typography variant="h6">All Messages</Typography>
                     </div>
 
-                </Popover>
-            </div>
-        );
-    }
+                <div className="mdl-color--grey-50 styleScroll" style={containerStyle}>
+
+                    <Progress show={props.progress}/>
+                    {allMessages}
+                </div>
+                </div>
+
+            </Popover>
+        </div>
+    );
+
 }

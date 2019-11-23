@@ -1,10 +1,10 @@
 import React from "react";
-import Calendar from "../generic/calendar/Calendar";
+import Calendar from "../../../GenericViews/calendar/Calendar";
 import CalendarOptions from "../side-view/CalendarOptions"
 import ls from "local-storage"
 import {get} from "../../../../ApiHelper/ApiHelper"
 import DetailView from "../calendar-click-popup/CalendarEventsDetailView";
-import Progress from "../generic/Progress";
+import Progress from "../../../GenericViews/Progress/Progress";
 import FloatingAddButton from "../floating-button/FloatingAddButton";
 import SocketContext from "../../../../Context/SocketContext";
 
@@ -34,7 +34,6 @@ class CalenderViewLayout extends React.Component {
         this.getProcessedEventsToDisplay = this.getProcessedEventsToDisplay.bind(this);
         this.handlePopupClose = this.handlePopupClose.bind(this);
 
-        this.isSocketConnected = false;
     }
 
     onChangeCalendarData(action, values) {
@@ -153,12 +152,13 @@ class CalenderViewLayout extends React.Component {
     connectToSocket = () => {
         const socket = this.context.socket;
 
-        if (socket !== null && !this.isSocketConnected) {
-            this.isSocketConnected = true;
-            socket.on('newAttendingEventAdded', (data) => {
+        if (socket !== null) {
+            socket.on('newAttendingEvent', (data) => {
+                console.log("Socket: New event added");
+                console.log(data);
                 this.onNewEventAddedToCalendar(data);
             });
-            socket.on('newAttendingEventAddedInSharedCalendar', (data) => {
+            socket.on('newAttendingEventInSharedCalendar', (data) => {
                 this.onNewEventAddedToSharedCalendar(data);
             });
         }

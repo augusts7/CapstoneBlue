@@ -5,7 +5,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Progress from "../../../../components/Container/Progress/Progress";
+import Progress from "../../../GenericViews/Progress/Progress";
 import EventListItem from "./single-event-layout/EventListItem";
 import Slide from "@material-ui/core/Slide";
 import DateTimeFormatter from "../../utils/date-time-utils/DateTimeFormatter";
@@ -128,7 +128,7 @@ export default class EventsList extends React.Component {
 
                     <DialogTitle className="dialog-title">
 
-                        <h4>{this.title}</h4>
+                        {this.title}
                     </DialogTitle>
 
                     <Progress show={this.state.progress}/>

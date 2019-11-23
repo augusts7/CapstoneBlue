@@ -1,5 +1,5 @@
 import React, {Fragment} from "react";
-import UserListDialog from "./user-list/UserListDialog";
+import UserListDialog from "../GenericViews/users/user-list/UserListDialog";
 import Button from "@material-ui/core/Button";
 
 export default function SendGroupMessage (props) {

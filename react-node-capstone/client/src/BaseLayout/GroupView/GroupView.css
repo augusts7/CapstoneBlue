@@ -41,8 +41,7 @@
   margin: 20px;
 }
 
-.group-events-list-header,
-.list-header {
+.group-events-list-header {
   flex-basis: 80%;
   margin-left: 20px;
   font-weight: bold;
@@ -50,23 +49,45 @@
   text-shadow: 2px 2px black;
 }
 
-.buttons-group-events,
-.buttons-group-members {
+.buttons-group-events {
   flex-basis: 10%;
   min-width: 15%;
   padding-top: 24px;
   margin-right: auto;
 }
 
-.group-event-list {
+.list-header {
+  flex-basis: 70%;
+  margin-left: 20px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 2px 2px black;
+}
+
+.mem-buttons {
+  padding: 24px;
+}
+
+.mem-buttons > .buttons-group-members {
+  flex-basis: 20%;
+  padding: 5px;
+  text-align: right;
+}
+
+.group-event-list,
+.group-member-list {
   flex-basis: 100%;
 }
 
 .group-members {
-  margin: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   overflow: auto;
-  background-color: rgb(100, 101, 105);
+  background-color: #bd955a;
   border-radius: 7px;
+  margin: 20px;
+  background-color: rgb(100, 101, 105);
 }
 
 .no-groups {

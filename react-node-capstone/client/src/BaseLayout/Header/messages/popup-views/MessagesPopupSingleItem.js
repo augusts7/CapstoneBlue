@@ -1,56 +1,72 @@
 import React from 'react';
-import "../notifications.css"
-import EventLayoutButton from "../../../../Views/CalenderView/components/calendar-click-popup/single-event-layout/base-layout/EventLayoutButton";
-import {post} from "../../../../ApiHelper/ApiHelper";
-import EventLayout from "../../../../Views/CalenderView/components/calendar-click-popup/single-event-layout/base-layout/EventLayout";
+import Typography from "@material-ui/core/Typography";
+import CardActions from "@material-ui/core/CardActions";
+import Button from "@material-ui/core/Button";
+import CustomMenu from "../../../../Views/GenericViews/menu/Menu";
+import CustomIconButton from "../../../../Views/GenericViews/IconButton";
+import Icon from "@material-ui/core/Icon";
+import DateTimeFormatter from "../../../../Views/CalenderView/utils/date-time-utils/DateTimeFormatter";
 
-export default function NotificationsPopupItem(props) {
+const containerStyle = {margin: "8px"};
+const boldStyle = {fontWeight: "600"};
 
-    const [progress, setProgress] = React.useState(false);
+export default function MessagesPopupItem(props) {
 
-    if (props.event == null) {
-        return (<div />);
-    }
+    const [anchor, setAnchor] = React.useState(null);
 
-    const onMenuClick = (key) => {
-        handleAction(key);
-    };
-
-    const handleAction = (key) => {
-        key = "" + key;
+    const handleMenuClick = (key) => {
         if (key === "delete") {
-            handleDeleteAppointmentRequest();
-        } else if (key === "accept") {
-            handleAcceptAppointment();
+            props.onDelete();
+            handleMenuClose();
         }
     };
 
-    const handleAcceptAppointment = () => {
-        setProgress(true);
-        post("/appointments/attend/", {"eventId": props.event.eventID}, (res) => {
-            setProgress(false);
-            props.onRemoveItem(props.event.eventID);
-        });
+    const handleMenuClose = () => {
+        setAnchor(null);
     };
 
-    const handleDeleteAppointmentRequest = () => {
-        setProgress(true);
-        post("/appointments/delete/", {"eventId": props.event.eventID}, (res) => {
-            setProgress(false);
-            props.onRemoveItem(props.event.eventID);
-        });
+    const handleMenuButtonClick = (event) => {
+        setAnchor(event.currentTarget);
     };
 
     const menuOptions = [
-        {"name": "Accept Invite", "key": "accept"},
-        {"name": "Delete Invite", "key": "delete"},
+        {name: "Delete Calendar", key: "delete"}
     ];
 
-    const buttons = [];
+    let date = DateTimeFormatter.formatDate(new Date());
 
-    buttons.push(<EventLayoutButton onClick={handleAcceptAppointment} icon="done">Accept Invite</EventLayoutButton>);
-    buttons.push(<EventLayoutButton onClick={handleDeleteAppointmentRequest} icon="delete">Delete</EventLayoutButton>);
+
     return (
-        <EventLayout progress={progress} buttons={buttons} menuOptions={menuOptions} onMenuClick={onMenuClick} event={props.event}/>
+        <div style={containerStyle}>
+            <div className="flex">
+                <div className="flex-main">
+                    <div className="flex">
+                        <Typography className="flex-main" gutterBottom>
+                            Lon Smith
+                        </Typography>
+                        <Typography className="flex-sub" style={boldStyle} gutterBottom>
+                            {date}
+                        </Typography>
+                    </div>
+
+                    <Typography className="flex-main" gutterBottom>
+                        About this group
+                    </Typography>
+                    <Typography color="textSecondary">
+                        This group needs to have a meeting very soon
+                    </Typography>
+                </div>
+                <div className="flex-sub">
+                    <div>
+                        <CustomIconButton onClick={handleMenuButtonClick}><Icon>more_vert</Icon></CustomIconButton>
+                        <CustomMenu anchor={anchor} menuOptions={menuOptions} onClick={handleMenuClick} onClose={handleMenuClose} />
+                    </div>
+                </div>
+            </div>
+            <CardActions>
+                <Button variant="outlined" color="primary">Delete</Button>
+            </CardActions>
+        </div>
     );
+
 }

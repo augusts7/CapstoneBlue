@@ -4,6 +4,8 @@ const pool = require("../db/database");
 const bodyParser = require("body-parser");
 const authMiddleware = require("../middlewares/auth-middleware").authMiddleware;
 const emailUtils = require("../utils/email/email-utils");
+const socket = require("../utils/socket/socket");
+
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
 router.use(authMiddleware);
@@ -50,6 +52,9 @@ router.post("/", (req, res, next) => {
 
                     console.log(inviteData);
 
+                    appointment.eventID = eventId;
+                    socket.broadcastToUser(inviteData.invited_user_id, "newEventInvite", appointment);
+
                     pool.query("INSERT INTO event_invite SET ?", inviteData, (err, results, fields) => {
                         if (err) {
                             return next(err);
@@ -90,16 +95,23 @@ router.post("/attend", function (req, res, next) {
         calendar_id: null
     };
 
-    pool.query("SELECT creator_id FROM event WHERE eventID = ?", attendeeData.event_id, function (error, results, fields) {
+    pool.query("SELECT * FROM event WHERE eventID = ?", attendeeData.event_id, function (error, results, fields) {
 
         if (error) {
             return next(error);
         }
+
+        const attendingEvent = results[0];
+
         const creatorData = {
             event_id: req.body.eventId,
             attendee_id: results[0].creator_id,
         };
         console.log("Creator data " + creatorData);
+
+        socket.broadcastToUser(creatorData.attendee_id, "newAttendingEvent", attendingEvent);
+        socket.broadcastToUser(attendeeData.attendee_id, "newAttendingEvent", attendingEvent);
+
         pool.query("INSERT INTO attending SET ?", attendeeData, function (error, results, fields) {
 
             if (error) {

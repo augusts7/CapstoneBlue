@@ -9,12 +9,10 @@ import Select from "@material-ui/core/Select";
 import "./GroupView.css";
 
 import CreateGroupEvent from "./CreateGroupEvent";
-import AddGroupMember from "./AddGroupMember";
 import GroupOptions from "./GroupOptionsMenu";
 import CreateGroup from "./CreateGroup";
 import AddMultipleUsersFromList from "../../Views/GroupView/AddMultipleUsersFromList";
 import UserContext from "../../Context/UserContext";
-import LengthValidator from "../../utils/length-utils/LengthValidator";
 import AddMultipleUsersFromFile from "../../Views/GroupView/AddMultipleUsersFromFile";
 import { isNullOrUndefined } from "util";
 
@@ -26,6 +24,7 @@ class GroupView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: 0,
       group_id: 0,
       my_groups: [],
       groupName: "",
@@ -40,12 +39,23 @@ class GroupView extends React.Component {
 
   componentDidMount() {
     this.getMyGroups();
+    this.getUser();
   }
 
   refreshGroup(group) {
     this.getGroupEvents(group);
     this.getGroupMembers(group);
     this.getGroupInfo(group);
+  }
+
+  getUser() {
+    try {
+      this.setState({
+        user: this.context.user.user_id
+      });
+    } catch (err) {
+      console.log("Error with Context");
+    }
   }
 
   getMyGroups() {
@@ -67,7 +77,10 @@ class GroupView extends React.Component {
     var groupInfoURL = "/groups/groupInfo/" + groupID;
     fetch(groupInfoURL)
       .then(res => res.json())
-      .then(groupInfo => this.getGroupInfoHelper(...groupInfo));
+      .then(groupInfo => this.getGroupInfoHelper(...groupInfo))
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   getGroupInfoHelper(args) {
@@ -82,14 +95,20 @@ class GroupView extends React.Component {
     var groupMembersURL = "/groups/groupMembers/" + groupID;
     fetch(groupMembersURL)
       .then(res => res.json())
-      .then(group_members => this.setState({ groupMembers: group_members }));
+      .then(group_members => this.setState({ groupMembers: group_members }))
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   getGroupEvents(groupID) {
     var groupEventsURL = "/groups/groupEvents/" + groupID;
     fetch(groupEventsURL)
       .then(res => res.json())
-      .then(group_events => this.setState({ eventListItems: group_events }));
+      .then(group_events => this.setState({ eventListItems: group_events }))
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   handleChange(event) {
@@ -167,10 +186,31 @@ class GroupView extends React.Component {
             <div className="group-members">
               <h3 className="list-header">Group Members</h3>
               <div className="buttons-group-members">
-                <AddGroupMember />
                 <AddMultipleUsersFromList />
                 <AddMultipleUsersFromFile />
               </div>
+              <hr />
+              <EventList
+                user={this.state.user}
+                creator_id={this.state.creator_id}
+                action={() => this.refreshGroup(this.state.group_id)}
+                events={this.state.eventListItems}
+              />
+            </div>
+          </div>
+          <div className="group-members">
+            <h3 className="list-header">Group Members</h3>
+            <div className="mem-buttons">
+              <AddMultipleUsersFromList
+                groupId={this.state.group_id}
+                className="buttons-group-members"
+              />
+              <AddMultipleUsersFromFile
+                groupId={this.state.group_id}
+                className="buttons-group-members"
+              />
+            </div>
+            <div className="group-member-list">
               <hr />
               <GroupMemberList
                 group_id={this.state.group_id}

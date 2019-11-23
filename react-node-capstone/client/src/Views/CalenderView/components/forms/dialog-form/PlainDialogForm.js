@@ -4,7 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Progress from "../../../../../components/Container/Progress/Progress";
+import Progress from "../../../../GenericViews/Progress/Progress";
 import Slide from "@material-ui/core/Slide";
 import DialogFormContentText from "./DialogFormContentText";
 

@@ -60,19 +60,20 @@ router.get("/all", async (req, res) => {
 router.route("/allOnCalendar/:user_id").get((req, res) => {
   try {
     const user_id = req.param.user_id;
-    pool.query("SELECT title, description, start, end FROM event JOIN attending a on eventID = a.event_id WHERE event_type = 'global' AND a.attendee_id = ?", [user_id], function (error, results, fields) {
+    pool.query(
+      "SELECT title, description, start, end FROM event JOIN attending a on eventID = a.event_id WHERE event_type = 'global' AND a.attendee_id = ?",
+      [user_id],
+      function(error, results, fields) {
+        if (error) {
+          return next("Failed to connect to database");
+        }
 
-      if (error) {
-        return next("Failed to connect to database");
+        if (results.length > 0) {
+          res.json(results);
+          console.log(JSON.stringify(results));
+        }
       }
-
-      if (results.length > 0) {
-
-        res.json(results);
-        console.log(JSON.stringify(results));
-
-      }
-    });
+    );
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
@@ -81,12 +82,26 @@ router.route("/allOnCalendar/:user_id").get((req, res) => {
 
 //next 2 need work
 //allGlobal needs to be the global events that are not in the students attending table
-router.get("/allGlobal", async (req, res) => {
+router.get("/notattendingGlobal", async (req, res) => {
   try {
     let events = await pool.query(
       "SELECT * FROM event WHERE event_type = 'global' AND status='approved'"
     );
     res.json(events);
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
+
+router.get("/attendingGlobal", async (req, res) => {
+  try {
+    let globalEvents = await pool.query(
+      "SELECT e.title, e.description, e.start, e.end, e.eventID FROM event e inner join attending a on e.eventID = a.event_id WHERE a.attendee_id = '" +
+        req.user.user_id +
+        "' AND e.event_type = 'global';"
+    );
+    res.json(globalEvents);
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
@@ -105,17 +120,16 @@ router.get("/approveEvent", async (req, res) => {
   }
 });
 
-router.put("/approveEvent/update", function(req, res){
-
+router.put("/approveEvent/update", function(req, res) {
   let eventID = req.body.event_id;
   console.log(eventID);
-  try{
-    pool.query("UPDATE event SET status = 'approved' WHERE eventID = " + eventID);
-  }
-  catch(e){
+  try {
+    pool.query(
+      "UPDATE event SET status = 'approved' WHERE eventID = " + eventID
+    );
+  } catch (e) {
     res.sendStatus(500);
   }
-
 });
 
 router.get("/created/:calendarId", function(req, res) {

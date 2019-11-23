@@ -1,5 +1,4 @@
 import React, { Fragment } from "react";
-import "./CreateGroup.css";
 import { TextField, Menu, MenuItem } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";

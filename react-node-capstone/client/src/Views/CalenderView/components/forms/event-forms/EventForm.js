@@ -13,6 +13,9 @@ import DialogForm from "../dialog-form/DialogForm";
 
 import "../../../../../Application/styles/grid/grids.css";
 import {post, get} from "../../../../../ApiHelper/ApiHelper";
+import AllUsersList from "./AllUsersList";
+import AttendeeList from "./AttendeeList";
+import LengthValidator from "../../../../../utils/length-utils/LengthValidator";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -32,11 +35,11 @@ export default class EventForm extends React.Component {
             "title": "",
             "description": "",
             "event_type": "",
-            "attendeeEmails": "",
+            "attendees": [],
             "isLoading": false,
             "calendarId": "main",
             "calendarOptions": [],
-            "formTitle": "Add Event"
+            "formTitle": "Add Event",
         };
 
         this.handleSave = this.handleSave.bind(this);
@@ -139,7 +142,13 @@ export default class EventForm extends React.Component {
         }
 
         data["calendarId"] = this.state.calendarId === "main" ? "" : this.state.calendarId;
-        data["attendeeEmails"] = this.state.attendeeEmails;
+        let attendeeEmails = [];
+        if (LengthValidator.isNotEmpty(this.state.attendees)) {
+            this.state.attendees.forEach((attendee) => {
+               attendeeEmails.push(attendee.campusEmail);
+            });
+        }
+        data["attendeeEmails"] = attendeeEmails;
 
         post(postUrl, data, (res) => {
 
@@ -161,6 +170,11 @@ export default class EventForm extends React.Component {
             case "editAppointment":
                 return "Enter details to edit them in the database";
         }
+    };
+
+    handleUsersSelected = (selectedUsers) => {
+        console.log(selectedUsers);
+        this.setState({attendees: selectedUsers});
     };
 
     render() {
@@ -187,7 +201,7 @@ export default class EventForm extends React.Component {
         ];
 
         return (
-            <DialogForm open={this.props.open}
+            <DialogForm size="large" open={this.props.open}
                         buttons={buttons}
                         onClose={this.props.onClose}
                         progress={this.state.isLoading}
@@ -197,26 +211,24 @@ export default class EventForm extends React.Component {
                 <MessageBox noPadding message={this.state.message} hideMessage={this.hideMessage}/>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <div>
-                        <div className="grid-2">
-                            <DateTimePicker
-                                fullWidth
-                                autoOk
-                                inputVariant="outlined"
-                                margin="normal"
-                                label="Start Time"
-                                value={this.state.start}
-                                onChange={(value) => this.handleChange("start", value)}
-                            />
-                            <DateTimePicker
-                                fullWidth
-                                autoOk
-                                inputVariant="outlined"
-                                margin="normal"
-                                label="End Time"
-                                value={this.state.end}
-                                onChange={(value) => this.handleChange("end", value)}
-                            />
-                        </div>
+                        <DateTimePicker
+                            fullWidth
+                            autoOk
+                            inputVariant="outlined"
+                            margin="normal"
+                            label="Start Time"
+                            value={this.state.start}
+                            onChange={(value) => this.handleChange("start", value)}
+                        />
+                        <DateTimePicker
+                            fullWidth
+                            autoOk
+                            inputVariant="outlined"
+                            margin="normal"
+                            label="End Time"
+                            value={this.state.end}
+                            onChange={(value) => this.handleChange("end", value)}
+                        />
 
 
                         <TextField
@@ -239,13 +251,10 @@ export default class EventForm extends React.Component {
 
                         {eventTypeHtml}
 
-                        <TextField
-                            fullWidth
-                            type="text"
-                            onChange={(event) => this.handleChange("attendeeEmails", event.target.value)}
-                            value={this.state.attendeeEmails}
-                            label={"Emails of invited users"}
-                            margin="normal"/>
+                        <AllUsersList onSubmit={this.handleUsersSelected}/>
+
+                        <AttendeeList attendees={this.state.attendees}/>
+
 
                         <Select
                             label="Calendar"

@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import UserContext from "../../Context/UserContext";
 
 import "./EventList.css";
 
 class EventList extends Component {
+  static contextType = UserContext;
+
   getMonth(month, type) {
     var monthName = "";
     var monthAbrv = "";
@@ -87,6 +90,19 @@ class EventList extends Component {
       });
     this.props.action();
   }
+  getDeleteButton(eventID) {
+    if (this.props.creator_id === this.props.user) {
+      return (
+        <IconButton
+          aria-label="delete"
+          className="delete-event-button"
+          onClick={() => this.deleteEvent(eventID)}
+        >
+          <DeleteIcon />
+        </IconButton>
+      );
+    }
+  }
 
   render() {
     var eventsList;
@@ -114,17 +130,16 @@ class EventList extends Component {
               </div>
               {event.description}
             </div>
-            <IconButton
-              aria-label="delete"
-              className="delete-event-button"
-              onClick={() => this.deleteEvent(event.eventID)}
-            >
-              <DeleteIcon />
-            </IconButton>
+            {this.getDeleteButton(event.eventID)}
           </div>
         );
       });
     } else {
+      eventsList = (
+        <div className="emptyEventList">
+          <h5>No Events Scheduled</h5>
+        </div>
+      );
     }
     return <div className="eventList">{eventsList}</div>;
   }

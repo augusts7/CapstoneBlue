@@ -1,0 +1,16 @@
+.calendar-item-container, .calendar-item-title-row {
+    display: grid;
+    grid-template-columns: 30% 30% 30% 10%;
+}
+.calendar-item-title-row {
+    padding: 8px 4px 8px 4px;
+}
+.calendar-item-container {
+    padding: 12px 4px 12px 4px;
+}
+.calendar-item-wrapper:hover {
+    background-color: #ECEFF1;
+}
+.calendar-item-title-row {
+    margin-bottom: 8px;
+}
