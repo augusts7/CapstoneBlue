@@ -106,7 +106,7 @@ class EditGroup extends React.Component {
       selectEmpty: {
         marginTop: theme.spacing(2)
       }
-    }));
+    })); 
 
     const { open } = this.state;
     let name = "";
@@ -116,7 +116,7 @@ class EditGroup extends React.Component {
           type="submit"
           size="large"
           className="msgBtn2"
-          onclick={this.handleToggle}
+          onClick={this.handleToggle}
         >
           <i className="material-icons">edit</i>Edit Group
         </MenuItem>
@@ -128,25 +128,23 @@ class EditGroup extends React.Component {
           <DialogTitle id="form-dialog-title">Edit Group</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Enter a new group name below, leave blank if wanted unchanged.
-              {/* </DialogContentText> */}
-              <TextField
-                className="groupTitle"
-                title="Group Name"
-                placeholder="New Group Name"
-                fullWidth
-                variant="outlined"
-                type="text"
-                onChange={this.handleGroupName}
-              />
-              {/* <DialogContentText> */}
-              Change the current group owner.
+              Enter a new group name or a select a new owner. Leave fields blank if no change
+              is wanted.
             </DialogContentText>
-          </DialogContent>
-          <DialogTitle id="form-dialog-title">Select New Owner</DialogTitle>
-          <DialogContent>
+            <br/>
+            <TextField
+              className="groupTitle"
+              title="Group Name"
+              placeholder="New Group Name"
+              fullWidth
+              variant="outlined"
+              type="text"
+              onChange={this.handleGroupName}
+            />
+            <hr/>
+          {/* <DialogTitle id="form-dialog-title">Select New Owner</DialogTitle> */}
             <FormControl classes={useStyles.formControl}>
-              <InputLabel>Select Group Owner</InputLabel>
+              <InputLabel>New Group Owner</InputLabel>
               <Select
                 id="selectowner"
                 value={this.state.value}

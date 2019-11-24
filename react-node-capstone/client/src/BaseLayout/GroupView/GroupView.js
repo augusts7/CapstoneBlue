@@ -55,7 +55,9 @@ class GroupView extends React.Component {
       .then(userInfo => {
         if (userInfo === isNullOrUndefined || userInfo.length <= 0) {
         } else {
+          try{
           this.setState({ user: userInfo[0].user_id });
+          } catch(e) {}
         }
       });
   }

@@ -81,6 +81,29 @@ router.get("/all", async (req, res) => {
   }
 });
 
+//get all carousel events
+router.get("/carouselEvents", async (req, res) => {
+  try{
+    const userid = req.user.user_id;
+    let sql1 = "SELECT e.title, e.description, e.start, e.end, e.creator_id FROM event e "+
+     "WHERE e.carousel = 1 AND e.status != 'pending' AND  (e.event_type = 'global' OR e.group_id IN" +
+     "(SELECT m.group_id FROM my_groups m WHERE m.user_id = "+userid+"));";
+      pool.query(sql1, function(error, results, fields) {
+      if (error) {
+        return res.json({ success: false, message: error });
+      }
+
+      if (results.length > 0) {
+        res.json(results);
+        console.log(results);
+      }
+    });
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
+
 router.route("/allOnCalendar/:user_id").get((req, res) => {
   try {
     const user_id = req.param.user_id;

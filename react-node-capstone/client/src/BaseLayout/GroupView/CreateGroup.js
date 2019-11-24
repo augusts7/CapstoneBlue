@@ -32,11 +32,16 @@ class CreateGroup extends React.Component {
 
   handleChange(e) {
     const files = e.target.files;
-    if (files && files[0]) this.setState({ file: files[0] });
+    if (files && files[0])
+      this.setState({ 
+        file: files[0] 
+      });
   }
 
   handleGroupName(e) {
-    this.setState({ groupName: e.target.value });
+    this.setState({ 
+      groupName: e.target.value 
+    });
   }
 
   handleFile() {
@@ -151,6 +156,7 @@ class CreateGroup extends React.Component {
               onChange={this.handleGroupName}
               value={this.state.groupName}
             />
+            
             <Button component="label">
               <i className="material-icons">attachment</i>Upload File
               <Input
@@ -163,7 +169,7 @@ class CreateGroup extends React.Component {
 
             <Button type="submit" value="Upload" onClick={this.handleFile}>
               Submit
-            </Button>
+            </Button> 
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleToggle} color="primary">
