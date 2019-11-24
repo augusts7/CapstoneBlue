@@ -4,7 +4,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import CreateGroup from "./CreateGroup";
 import EditGroup from "./EditGroup";
-import CreateGroupEvent from "./CreateGroupEvent";
+import ApproveGroupEvent from "./ApproveGroupEvent";
 // import Modal from '@material-ui/core/Modal';
 
 export default class extends Component {
@@ -35,7 +35,6 @@ export default class extends Component {
   }
 
   handleDelete() {
-    console.log(this.props.groupID + " groupid");
     this.setState({ anchorEl: null });
     fetch("/groups/delete/" + this.props.groupID, {
       method: "DELETE",
@@ -57,8 +56,6 @@ export default class extends Component {
   }
 
   checkOwner() {
-    console.log(this.props.creatorID + "CID");
-    console.log(this.props.userID + "UID");
     if (this.props.creatorID === this.props.userID) {
       return (
         <Fragment>
@@ -67,7 +64,10 @@ export default class extends Component {
             groupID={this.props.groupID}
             groupMembers={this.props.groupMembers}
           />
-
+          <ApproveGroupEvent
+            creator_id={this.props.creatorID}
+            groupID={this.props.groupID}
+          />
           <MenuItem onClick={this.handleDelete}>
             <i className="material-icons">delete</i>Delete Group
           </MenuItem>
@@ -94,7 +94,7 @@ export default class extends Component {
           open={this.state.anchorEl !== null}
           onClose={this.handleClose}
         >
-          <CreateGroup creator_id={this.props.userID} />
+          <CreateGroup creator_id={this.props.creatorID} />
           {this.checkOwner()}
         </Menu>
       </div>

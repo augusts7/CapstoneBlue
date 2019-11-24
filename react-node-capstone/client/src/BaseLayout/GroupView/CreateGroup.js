@@ -85,7 +85,8 @@ class CreateGroup extends React.Component {
         body: JSON.stringify({
           data: this.state.data,
           title: this.state.groupName,
-          creator_id: this.context.user_id
+          creator_id: this.context.user_id,
+          status: "Member"
         })
       })
         .then(function(response) {
