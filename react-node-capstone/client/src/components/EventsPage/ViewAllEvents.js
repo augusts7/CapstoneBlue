@@ -1,8 +1,9 @@
 import React from "react";
-import EventsList from "./EventsList";
+import ApproveEventsList from "./ApproveEventsList";
 import "./ViewAll.css";
 
 class ViewAllEvents extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -11,7 +12,7 @@ class ViewAllEvents extends React.Component {
     }
 
     componentDidMount() {
-        fetch("/single-event-layout/allGlobal")
+        fetch("/events/allGlobal")
             .then(res => res.json())
             .then(eventData =>
                 this.setState({events: eventData}));
@@ -25,7 +26,7 @@ class ViewAllEvents extends React.Component {
                     <h4>All Events</h4>
                 </div>
                 <hr/>
-                <EventsList events={this.state.events}/>
+                <ApproveEventsList events={this.state.events}/>
             </div>
         );
     }

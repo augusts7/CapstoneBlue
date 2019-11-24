@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import CreateGroup from "./CreateGroup";
+import EditGroup from "./EditGroup";
 import CreateGroupEvent from "./CreateGroupEvent";
 // import Modal from '@material-ui/core/Modal';
 
@@ -55,6 +55,27 @@ export default class extends Component {
       });
     window.alert("group deleted");
   }
+
+  checkOwner() {
+    console.log(this.props.creatorID + "CID");
+    console.log(this.props.userID + "UID");
+    if (this.props.creatorID === this.props.userID) {
+      return (
+        <Fragment>
+          <EditGroup
+            user_id={this.props.userID}
+            groupID={this.props.groupID}
+            groupMembers={this.props.groupMembers}
+          />
+
+          <MenuItem onClick={this.handleDelete}>
+            <i className="material-icons">delete</i>Delete Group
+          </MenuItem>
+        </Fragment>
+      );
+    }
+  }
+
   render() {
     return (
       <div>
@@ -73,16 +94,9 @@ export default class extends Component {
           open={this.state.anchorEl !== null}
           onClose={this.handleClose}
         >
-          <CreateGroup creator_id={this.props.creator_id} />
-
-          <MenuItem onClick={this.handleDelete}>
-            <i className="material-icons">delete</i>Delete Group
-          </MenuItem>
+          <CreateGroup creator_id={this.props.userID} />
+          {this.checkOwner()}
         </Menu>
-        {/*<Modal open={open}*/}
-        {/*       onClose={handleClose}>*/}
-
-        {/*</Modal>*/}
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import React from "react";
 import "./ApproveEvent.css";
-import EventsList from "./EventsList";
+import ApproveEventsList from "./ApproveEventsList";
 
 class ApproveEvent extends React.Component{
 
@@ -12,7 +12,7 @@ class ApproveEvent extends React.Component{
     }
 
     componentDidMount() {
-        fetch("/single-event-layout/approveEvent")
+        fetch("/events/approveEvent")
             .then(res => res.json())
             .then(eventData =>
                 this.setState({events: eventData}));
@@ -25,7 +25,7 @@ class ApproveEvent extends React.Component{
                     <h4>Approve Events</h4>
                 </div>
                 <hr/>
-                <EventsList events={this.state.events}/>
+                <ApproveEventsList events={this.state.events}/>
             </div>
         );
     }

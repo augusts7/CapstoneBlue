@@ -66,6 +66,65 @@ router.route("/groupEvents/:group_id").get(async (req, res) => {
   }
 });
 
+//Change a group's name
+router.route("/editGroupName").post(async (req, res) => {
+  try{
+    let sql1 = "UPDATE groups SET group_name = '"+req.body.groupName+"' WHERE group_id = "+
+    req.body.groupID+";";
+    pool.query(sql1, function(error, results, fields) {
+      if (error) {
+        return res.json({
+          success: false,
+          message: "Error while changing group name"
+        });
+      }
+    });
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
+
+//Change a group's owner
+router.route("/editGroupOwner").post(async (req, res) => {
+  try{
+    let sql1 ="UPDATE my_groups SET status = 'Member' WHERE group_id = "+req.body.groupID+";";
+    console.log(req.body.groupID);
+    console.log(req.body.newOwnerID);
+    pool.query(sql1, function(error, results, fields) {
+      if (error) {
+        return res.json({
+          success: false,
+          message: "Error while changing status"
+        });
+      }
+      let sql2 = "UPDATE my_groups SET status = 'Owner' WHERE group_id = "+
+        req.body.groupID+" AND user_id = "+req.body.newOwnerID+";";
+      pool.query(sql2, function(error, results, fields) {
+        if (error) {
+          return res.json({
+            success: false,
+            message: "Error while changing ownership"
+          });
+        }
+        let sql3 = "UPDATE groups SET creator_id = "+req.body.newOwnerID+" WHERE group_id = "+
+          req.body.groupID+";";
+        pool.query(sql3, function(error, results, fields) {
+          if (error) {
+            return res.json({
+              success: false,
+              message: "Error while changing creator_id"
+            });
+          }
+        });
+      });
+    });
+  }catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
+
 //Create a group with moodle dump
 router.route("/createGroups").post(async (req, res) => {
   try {
@@ -123,7 +182,7 @@ router.route("/createGroups").post(async (req, res) => {
 });
 
 //Create a group with the user logged in
-router.route("/").post((req, res) => {
+router.route("/").post(async (req, res) => {
   const groups = {
     group_name: req.body.group_name,
     creator_id: req.user.user_id
