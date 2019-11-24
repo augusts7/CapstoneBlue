@@ -8,7 +8,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import EventListPending from "./EventListPending";
 
-class CreateGroup extends React.Component {
+class ApproveGroupEvent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,12 +36,6 @@ class CreateGroup extends React.Component {
   }
 
   handleToggle = () => {
-    this.setState({
-      open: !this.state.open
-    });
-  };
-
-  handleSubmit = () => {
     this.setState({
       open: !this.state.open
     });
@@ -86,4 +80,4 @@ class CreateGroup extends React.Component {
   }
 }
 
-export default CreateGroup;
+export default ApproveGroupEvent;

@@ -7,6 +7,8 @@ import CreateEvent from "../../components/EventsPage/CreateEvent";
 import RequestEvent from "../../components/EventsPage/RequestEvent";
 import UserContext from "../../Context/UserContext";
 import { Link } from "react-router-dom";
+import ApproveEvent from "../../components/EventsPage/ApproveEvent";
+import { isNullOrUndefined } from "util";
 
 class EventsView extends React.Component {
   static contextType = UserContext;
@@ -15,6 +17,7 @@ class EventsView extends React.Component {
     super(props);
 
     this.state = {
+      user: 0,
       user_type: ls.get("user_type"),
       events: []
     };
@@ -22,6 +25,19 @@ class EventsView extends React.Component {
 
   componentDidMount() {
     this.getEvents();
+    this.getUser();
+  }
+
+  getUser() {
+    var getUserURL = "/user_info/user";
+    fetch(getUserURL)
+      .then(res => res.json())
+      .then(userInfo => {
+        if (userInfo === isNullOrUndefined || userInfo.length <= 0) {
+        } else {
+          this.setState({ user: userInfo[0].user_id });
+        }
+      });
   }
 
   getEvents() {
@@ -63,17 +79,7 @@ class EventsView extends React.Component {
             <CreateEvent user={this.state.creator_id} />
           </div>
           <div className="inner">
-            <Button
-              type="submit"
-              variant="contained"
-              size="large"
-              className="msgBtn"
-              href="/approveEvent"
-            >
-              <Link to="/approveEvent" />
-              <i className="material-icons">check_circle_outline</i>Approve
-              Events
-            </Button>
+            <ApproveEvent />
           </div>
           <div className="inner">
             <Button
