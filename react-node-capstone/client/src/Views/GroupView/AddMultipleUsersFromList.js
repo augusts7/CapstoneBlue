@@ -20,7 +20,6 @@ export default function AddMultipleUsersFromList (props) {
 
         post("/my_groups/addMultipleUsers", data, res => {
 
-            alert(res.message);
             handleClose();
         });
     };
