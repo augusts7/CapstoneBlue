@@ -3,6 +3,7 @@ import Popover from '@material-ui/core/Popover';
 import NotificationsPopupItem from "./NotificationsPopupItem";
 import Progress from "../../../../Views/GenericViews/Progress/Progress";
 import {Typography} from "@material-ui/core";
+import EmptyListView from "../../../../Views/GenericViews/empty-view/EmptyListView";
 
 
 const anchorOrigin = {
@@ -54,7 +55,10 @@ export default class NotificationsPopup extends React.Component {
             this.props.invitedEvents.forEach((iE) => {
                 invitedEvents.push(<NotificationsPopupItem onRemoveItem={this.handleRemoveItem} event={iE}/>);
             });
+        } else {
+            invitedEvents.push(<EmptyListView message="There are no notifications" />);
         }
+
         return (
             <div>
                 <Popover

@@ -5,7 +5,7 @@ import CalendarActionsContext from "../../../../../context/CalendarActionsContex
 
 const menuOptions = [
     {"name": "Share calendar", "key": "share"},
-    {"name": "Delete calendar", "key": "delete"}
+    { "name": "Select Color", "key": "color" },
 ];
 
 
@@ -29,7 +29,7 @@ export default class GroupCalendars extends React.Component {
         const name = "id-" + id;
 
         this.setState({[name]: checked}, () => {
-            this.props.onChangeCalendarData("sharedCal", {"id": id, "show": checked});
+            this.props.onChangeCalendarData("groupCal", {"id": id, "show": checked});
         });
     };
 
@@ -49,7 +49,7 @@ export default class GroupCalendars extends React.Component {
             if (res.success) {
 
                 res.results.forEach((cal) => {
-                    cals.push({"calendarId": cal.id, "calendarName": cal.sharedCalendarName});
+                    cals.push({"calendarId": cal.group_id, "calendarName": cal.group_name});
                 });
             }
 
@@ -63,8 +63,8 @@ export default class GroupCalendars extends React.Component {
         if (actionKey === "share") {
             this.context.showShareCalendarForm(calendarId);
 
-        } else if (actionKey === "delete") {
-            alert("imeplement");
+        } else if (actionKey === "color") {
+            this.context.showColorDialog({scope: "group", id: calendarId});
         }
     };
 

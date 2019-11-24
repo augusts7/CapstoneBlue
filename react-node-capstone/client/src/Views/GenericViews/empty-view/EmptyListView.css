@@ -1,0 +1,13 @@
+.empty-image {
+    background: url("empty_list_image.jpg") no-repeat;
+    background-size: cover;
+}
+
+.empty-list-view-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 32px;
+    width: 100%;
+    margin: 4px;
+}

@@ -1,10 +1,11 @@
 import React from "react";
 import ProfileItemBlockContainer
     from "../../../generic/profile-view-item/profile-item-blocks/ProfileItemBlockContainer";
-import {get} from "../../../../../ApiHelper/ApiHelper";
+import {get, post} from "../../../../../ApiHelper/ApiHelper";
 import LengthValidator from "../../../../../utils/length-utils/LengthValidator";
 import CalendarItem from "../components/CalendarItem";
 import CalendarTitleRow from "../components/CalendarTitleRow";
+import EmptyListView from "../../../../GenericViews/empty-view/EmptyListView";
 
 const calendarTitles = ["Shared Calendar Name", "Shared To", "Email of Shared to user"];
 
@@ -46,6 +47,15 @@ export default class CalendarsSharedByMe extends React.Component {
         });
     };
 
+    handleDelete = (id) => {
+        const data = {id};
+        this.setState({progress: true});
+        post("/calendar/sharedByUser/", data, (res) => {
+            const calendars = this.state.calendars.filter((cal) => cal.id !== id);
+            this.setState({progress: false, calendars});
+        });
+    };
+
     render () {
 
         let calendars = [];
@@ -53,10 +63,9 @@ export default class CalendarsSharedByMe extends React.Component {
         if (LengthValidator.isNotEmpty(this.state.calendars)) {
             calendars.push(<CalendarTitleRow titles={calendarTitles}/>);
             this.state.calendars.forEach((calendar) => {
-                calendars.push(<CalendarItem data={calendar}/>);
+                calendars.push(<CalendarItem onDelete={this.handleDelete} data={calendar}/>);
             });
         }
-
 
         return (
 

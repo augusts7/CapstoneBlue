@@ -29,7 +29,12 @@ function ListItem(props) {
 
     const cal = props.cal;
 
-    const [checked, setChecked] = React.useState(false);
+    let isChecked = false;
+    if (("" + cal.calendarId) === "main") {
+        isChecked = true;
+    }
+
+    const [checked, setChecked] = React.useState(isChecked);
 
     const onMenuOptionClick = (key) => {
         props.onMenuClick(key, cal.calendarId);

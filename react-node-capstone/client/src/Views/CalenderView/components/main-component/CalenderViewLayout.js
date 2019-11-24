@@ -10,6 +10,12 @@ import SocketContext from "../../../../Context/SocketContext";
 
 import "../../styles/scroll-bar/scroll-bar.css";
 import "./styles/calendar-view-layout.css";
+import CalendarEventsDataStore from "./CalendarEventsDataStore";
+import SharedCalendarEventsDataStore from "./SharedCalendarEventsDataStore";
+import GroupCalendarEventsDataStore from "./GroupEventsDataStore";
+import ColorDialog from "../../../GenericViews/colors/ColorDialog";
+import CalendarColorHandler from "./CalendarColorHandler";
+import LengthValidator from "../../../../utils/length-utils/LengthValidator";
 
 
 class CalenderViewLayout extends React.Component {
@@ -21,8 +27,9 @@ class CalenderViewLayout extends React.Component {
         "isLoading": false,
         "formMode": "event",
         "advisingSlotForm": false,
-        "cals": ["main"],
+        "cals": [],
         "sharedCals": [],
+        groupCals: [],
         "eventsDetailView": false,
         "eventsDetailViewData": {},
     };
@@ -33,7 +40,6 @@ class CalenderViewLayout extends React.Component {
         this.onChangeCalendarData = this.onChangeCalendarData.bind(this);
         this.getProcessedEventsToDisplay = this.getProcessedEventsToDisplay.bind(this);
         this.handlePopupClose = this.handlePopupClose.bind(this);
-
     }
 
     onChangeCalendarData(action, values) {
@@ -42,47 +48,21 @@ class CalenderViewLayout extends React.Component {
             this.onChangeCalendarOptions(values);
         } else if (action === "sharedCal") {
             this.onChangeSharedCalendarOptions(values);
+        } else if (action === "groupCal") {
+            this.onGroupCalendarOptionsChange(values);
         }
     }
 
     onChangeCalendarOptions = (values) => {
+        this.calDataStore.setSelectedCalendar(values);
+    };
 
-        const calId = values.id;
-        const name = "calData-" + calId;
-
-        if (values.show) {
-            if (this.state[name] == null || this.state[name].length === 0) {
-                this.loadData(calId);
-                this.setState({cals: [...this.state.cals, calId]})
-            }
-        } else {
-            let newCalIds = this.state.cals.filter((id) => {
-                return id !== calId
-            });
-            this.setState({[name]: [], cals: newCalIds});
-        }
+    onGroupCalendarOptionsChange = (values) => {
+        this.groupCalDataStore.setSelectedCalendar(values);
     };
 
     onChangeSharedCalendarOptions(values) {
-
-        const calId = values.id;
-        const name = "sharedCalData-" + calId;
-
-        if (values.show) {
-
-            if (this.state[name] == null || this.state[name].length === 0) {
-                this.loadSharedCalendarData(calId);
-                this.setState({"sharedCals": [...this.state.sharedCals, calId]})
-            }
-
-        } else {
-
-            let newSharedCals = this.state.sharedCals.filter((id) => {
-                return id !== calId
-            });
-            this.setState({[name]: [], sharedCals: newSharedCals});
-        }
-        console.log(values);
+        this.sharedCalDataStore.setSelectedCalendar(values);
     }
 
 
@@ -92,120 +72,29 @@ class CalenderViewLayout extends React.Component {
     }
 
 
-    loadData = (calId) => {
-
-        if (calId == null || calId.length === 0) {
-            calId = "main";
-        }
-
-        let url = "/events/attending/" + calId;
-
-        this.loadEvents(url, "calData-" + calId, "#880E4F");
-
-    };
-
-    loadEvents = (url, nameInState, backgroundColor) => {
-
-        if (this.state.isLoading) {
-            return;
-        } else {
-            this.setState({isLoading: true});
-        }
-
-        get(url, (res) => {
-
-            let data = [];
-
-            if (res.success) {
-
-                res.results.forEach(d => {
-                    data.push(this.processSingleEvent(d, backgroundColor));
-                });
-
-            } else {
-                console.log("ERROR");
-                console.log(res.message);
-                console.log("ERROR");
-
-            }
-            this.setState({[nameInState]: data, "isLoading": false});
-        });
-    };
-
-    processSingleEvent = (eventData, backgroundColor) => {
-        let event = eventData;
-        event["key"] = eventData.eventID;
-        event["color"] = "white";
-        event["id"] = eventData.eventID;
-        event["backgroundColor"] = backgroundColor;
-        return event;
-    };
-
-    getStateNameForCalendarEvents = (calendarId) => {
-        return "calData-" + calendarId;
-    };
-
-    getStateNameForSharedCalendarEvents = (sharedCalendarId) => {
-        const name = "sharedCalData-" + sharedCalendarId;
-    };
-
-    connectToSocket = () => {
-        const socket = this.context.socket;
-
-        if (socket !== null) {
-            socket.on('newAttendingEvent', (data) => {
-                console.log("Socket: New event added");
-                console.log(data);
-                this.onNewEventAddedToCalendar(data);
-            });
-            socket.on('newAttendingEventInSharedCalendar', (data) => {
-                this.onNewEventAddedToSharedCalendar(data);
-            });
-        }
-    };
-
-    onNewEventAddedToCalendar = (data) => {
-        if (data === undefined || data === null) {
-            return;
-        }
-        let event = this.processSingleEvent(data, "#880E4F");
-
-        const calId = event.calendar_id || "main";
-        const name = this.getStateNameForCalendarEvents(calId);
-
-        this.addNewEventToState(name, event);
-    };
-
-    onNewEventAddedToSharedCalendar = (data) => {
-        if (data === undefined || data === null) {
-            return;
-        }
-        let event = this.processSingleEvent(data, "#E65100");
-
-        const calId = event.calendar_id || "main";
-        const name = this.getStateNameForSharedCalendarEvents(calId);
-
-        this.addNewEventToState(name, event);
-    };
-
-    addNewEventToState = (stateName, event) => {
-        const currentEvents = this.state[stateName].concat(event);
-        this.setState({[stateName]: currentEvents});
-    };
-
-    loadSharedCalendarData(calId) {
-
-        let url = "/events/sharedCalendar/" + calId;
-
-        this.loadEvents(url, "sharedCalData-" + calId, "#E65100");
-    }
-
-
     componentDidMount() {
-
-        this.loadData("main");
-        this.connectToSocket();
+        this.groupCalDataStore = new GroupCalendarEventsDataStore(this.context.socket, this.onDataChange, this.onProgressChange);
+        this.sharedCalDataStore = new SharedCalendarEventsDataStore(this.context.socket, this.onDataChange, this.onProgressChange);
+        this.calDataStore = new CalendarEventsDataStore(this.context.socket, this.onDataChange, this.onProgressChange);
     }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (nextProps.hasOwnProperty("colorScope") && nextProps.hasOwnProperty("colorData")) {
+            const scope = nextProps.colorScope;
+            const color = nextProps.colorData;
+            if (LengthValidator.isNotEmpty(scope) && LengthValidator.isNotEmpty(color)) {
+                CalendarColorHandler.setColor(scope, color, this.calDataStore, this.sharedCalDataStore, this.groupCalDataStore);
+            }
+        }
+    }
+
+    onProgressChange = (showProgress) => {
+        this.setState({isLoading: showProgress});
+    };
+
+    onDataChange = (newState) => {
+        this.setState(newState);
+    };
 
     getProcessedEventsToDisplay() {
         let events = [];
@@ -227,6 +116,15 @@ class CalenderViewLayout extends React.Component {
             }
 
         });
+        this.state.groupCals.forEach((sCal) => {
+
+            const name = "groupCalData-" + sCal;
+            const list = this.state[name];
+            if (list != null && list.length > 0) {
+                events = events.concat(list);
+            }
+
+        });
         return events;
     }
 
@@ -239,6 +137,9 @@ class CalenderViewLayout extends React.Component {
     };
 
     render() {
+
+        console.log("State");
+        console.log(this.state);
 
         let events = this.getProcessedEventsToDisplay();
 

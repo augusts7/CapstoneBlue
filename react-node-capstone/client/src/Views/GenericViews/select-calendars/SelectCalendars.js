@@ -37,6 +37,43 @@ export default class SelectCalendar extends React.Component {
                 this.setState({"progress": false, message: res.message});
             }
         });
+
+        get("calendar/sharedToUser", (res) => {
+            if (res.success) {
+
+                let calendarOptions = [];
+
+                if (res.results) {
+                    res.results.forEach((item) => {
+                        calendarOptions.push({"name": item.sharedCalendarName, "value": item.sharedCalendarId});
+                    });
+                }
+
+                this.setState({"progress": false, "sharedCalendarOptions": calendarOptions});
+
+            } else {
+                this.setState({"progress": false, message: res.message});
+            }
+        });
+
+        get("calendar/groupCalendars", (res) => {
+            if (res.success) {
+
+                let calendarOptions = [];
+
+                if (res.results) {
+                    res.results.forEach((item) => {
+                        calendarOptions.push({"name": item.group_name, "value": item.group_id});
+                    });
+                }
+
+                this.setState({"progress": false, "groupCalendarOptions": calendarOptions});
+
+            } else {
+                this.setState({"progress": false, message: res.message});
+            }
+        });
+
     };
 
     componentWillReceiveProps() {
@@ -44,8 +81,17 @@ export default class SelectCalendar extends React.Component {
     }
 
     render() {
+
+        const calendarOptions = this.state.calendarOptions;
+        const sharedCalendars = this.state.sharedCalendarOptions;
+
+        let options = [
+            {name: "Your Calendars", options: calendarOptions},
+            {name: "Shared Calendars", options: sharedCalendars},
+        ];
+
         return (
-            <GroupedSelect options={this.state.calendarOptions}/>
+            <GroupedSelect onChange={this.props.onChange} helperText="Select the Calendar to associate this event in" title="Select Calendar" options={options}/>
         );
     }
 }

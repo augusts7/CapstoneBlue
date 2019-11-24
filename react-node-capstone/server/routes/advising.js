@@ -27,7 +27,7 @@ router.get("/all", function (req, res, next) {
 
             if (results.length > 0) {
 
-                let sql = "SELECT * FROM event WHERE event_type = 'advising' AND creator_id = " + results[0].advisor_id;
+                let sql = "SELECT * FROM event WHERE event_type = 'advising' AND available != 'n' AND creator_id = " + results[0].advisor_id;
 
                 sqlHelper.handleSelectAndRespond(sql, res);
 
@@ -72,12 +72,20 @@ router.post("/attend", function (req, res, next) {
             await pool.query("SELECT * FROM event WHERE eventID = ?", studentData.event_id, (error, results, fields) => {
                 if (error) {
                     console.log(error);
-                    return;
+                    return next(error);
                 }
                 if (results.length > 0) {
                     socket.broadcastToUser(studentData.attendee_id, "newAttendingEvent", results[0]);
                     socket.broadcastToUser(facultyData.attendee_id, "newAttendingEvent", results[0]);
                 }
+            });
+
+            await pool.query("UPDATE event SET available = 'n' WHERE eventID = " + facultyData.event_id, (error, results, fields) => {
+                if (error) {
+                    console.log(error);
+                    return next(error);
+                }
+
             });
 
             return res.json({"success": true});

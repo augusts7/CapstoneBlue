@@ -1,5 +1,6 @@
 import React from "react";
 import ListItemWithCheckbox from "../../list/list-items/ListItemWithCheckbox";
+import DetailedListItemWithCheckbox from "../../list/list-items/DetailedListItemWithCheckbox";
 
 export default function SingleItemInUserList(props) {
 
@@ -10,7 +11,7 @@ export default function SingleItemInUserList(props) {
     const title = props.user.first_name + " " + props.user.last_name;
 
     return (
-        <ListItemWithCheckbox onCheckBoxClick={handleToggle}>{title}</ListItemWithCheckbox>
+        <DetailedListItemWithCheckbox primary={title} secondary={props.user.campusEmail} onCheckBoxClick={handleToggle}/>
     );
 
 }

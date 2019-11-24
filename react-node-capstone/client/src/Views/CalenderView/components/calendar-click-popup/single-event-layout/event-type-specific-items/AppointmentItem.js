@@ -6,8 +6,6 @@ import CalendarActionsContext from "../../../../context/CalendarActionsContext";
 import CalendarEventsListContext from "../../calendar-popup-context/CalendarEventsListContext";
 
 
-
-
 export default function AppointmentItem(props) {
 
     const calendarActionsContext = React.useContext(CalendarActionsContext);
@@ -19,7 +17,7 @@ export default function AppointmentItem(props) {
         calendarPopupContext.showDeleteDialog("Delete Advising Slot", "Are you sure you want to delete your advising slot?", deleteAppointment);
     };
 
-    const deleteAppointment = (onCompleteCallback) => {
+    const deleteAppointment = () => {
         setProgress(true);
         const data = {
             eventId: props.event.id
@@ -33,7 +31,6 @@ export default function AppointmentItem(props) {
                 console.log(res.message);
             }
             setProgress(false);
-            onCompleteCallback();
         });
     };
 

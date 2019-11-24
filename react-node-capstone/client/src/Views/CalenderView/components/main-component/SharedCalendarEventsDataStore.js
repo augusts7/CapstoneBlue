@@ -1,7 +1,7 @@
 import {get} from "../../../../ApiHelper/ApiHelper";
 import LengthValidator from "../../../../utils/length-utils/LengthValidator";
 
-export default class CalendarEventsDataStore {
+export default class SharedCalendarEventsDataStore {
 
     constructor(socket, dataChangeListener, progressListener) {
         this.socket = socket;
@@ -19,47 +19,43 @@ export default class CalendarEventsDataStore {
     }
 
     init = () => {
-        this.loadData();
-        this.selectedCalendars.push("main");
-        this.onDataChange("cals", this.selectedCalendars);
         this.connectToSocket();
     };
 
     setCalendarColor (calendarId, color) {
-        if (LengthValidator.isEmpty(calendarId) || LengthValidator.isEmpty(color)) {
-            return false;
-        }
-        const calendarName = this.getStateNameForCalendarEvents(calendarId);
-        this.calendarColors[calendarName] = color;
-        console.log(this.calendarColors);
+        const calendarName = this.getStateNameForSharedCalendarEvents(calendarId);
+        this.calendarColors[calendarId] = color;
         const newEvents = [];
         const calEvents = this.stateData[calendarName];
         if (LengthValidator.isNotEmpty(calEvents)) {
             calEvents.forEach ((event) => {
                 newEvents.push(this.processSingleEvent(event));
             });
-            console.log(newEvents);
             this.onDataChange(calendarName, newEvents);
         }
     }
 
     setSelectedCalendar (values) {
         const calId = values.id;
-        const name = this.getStateNameForCalendarEvents(calId);
+        const name = this.getStateNameForSharedCalendarEvents(calId);
 
         if (values.show) {
-            if (this.stateData[name] == null || this.stateData[name].length === 0) {
+
+            if (!this.selectedCalendars.includes(calId)) {
                 this.selectedCalendars.push(calId);
-                this.onDataChange("cals", this.selectedCalendars);
-                this.loadData(calId);
+                this.onDataChange("sharedCals", this.selectedCalendars);
+                this.loadSharedCalendarData(calId);
             }
+
         } else {
+
             this.selectedCalendars = this.selectedCalendars.filter((id) => {
                 return id !== calId
             });
-            this.onDataChange("cals", this.selectedCalendars);
+            this.onDataChange("sharedCals", this.selectedCalendars);
             this.onDataChange(name, []);
         }
+        console.log(values);
     }
 
     onDataChange = (nameInState, data) => {
@@ -71,15 +67,15 @@ export default class CalendarEventsDataStore {
         this.onProgress(loading);
     };
 
-    loadData = (calId) => {
+    loadSharedCalendarData = (calId) => {
 
         if (calId == null || calId.length === 0) {
             calId = "main";
         }
 
-        let url = "/events/attending/" + calId;
+        let url = "/events/sharedCalendar/" + calId;
 
-        this.loadEvents(url, this.getStateNameForCalendarEvents(calId));
+        this.loadEvents(url, this.getStateNameForSharedCalendarEvents(calId));
     };
 
     loadEvents = (url, nameInState) => {
@@ -112,29 +108,23 @@ export default class CalendarEventsDataStore {
         event["key"] = eventData.eventID;
         event["color"] = "white";
         event["id"] = eventData.eventID;
-        const backgroundColor = this.getBackgroundColorForCalendar(eventData.calendar_id);
-        console.log(backgroundColor);
-        event["backgroundColor"] = backgroundColor;
+        event["backgroundColor"] = this.getBackgroundColorForSharedCalendar(eventData.calendar_id);
         return event;
     };
 
-    getBackgroundColorForCalendar = (calendarId) => {
-        if (LengthValidator.isEmpty(calendarId)) {
-            calendarId = "main";
-        }
-        const name = this.getStateNameForCalendarEvents(calendarId);
-        if (LengthValidator.isNotEmpty(calendarId) && this.calendarColors.hasOwnProperty(name)) {
-            return this.calendarColors[name];
+    getBackgroundColorForSharedCalendar = (calendarId) => {
+        if (LengthValidator.isNotEmpty(calendarId) && this.calendarColors.hasOwnProperty(calendarId)) {
+            return this.calendarColors[calendarId];
         } else {
-            return "#880E4F";
+            return "#E65100";
         }
     };
 
-    getStateNameForCalendarEvents = (calendarId) => {
+    getStateNameForSharedCalendarEvents = (calendarId) => {
         if (LengthValidator.isEmpty(calendarId)) {
             calendarId = "main";
         }
-        return "calData-" + calendarId;
+        return "sharedCalData-" + calendarId;
     };
 
     connectToSocket = () => {
@@ -159,7 +149,7 @@ export default class CalendarEventsDataStore {
         if (calendarId === null || calendarId.length === 0) {
             calendarId = "main";
         }
-        const name = this.getStateNameForCalendarEvents(calendarId);
+        const name = this.getStateNameForSharedCalendarEvents(calendarId);
         const newEvents = this.stateData[name].filter((event) => event.eventID !== deletedEvent.eventID);
         this.callback({[name] : newEvents});
     };
@@ -171,7 +161,7 @@ export default class CalendarEventsDataStore {
         let event = this.processSingleEvent(data);
 
         const calId = event.calendar_id || "main";
-        const name = this.getStateNameForCalendarEvents(calId);
+        const name = this.getStateNameForSharedCalendarEvents(calId);
 
         this.addNewEventToState(name, event);
     };

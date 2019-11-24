@@ -1,6 +1,5 @@
-
-
 var nodemailer = require('nodemailer');
+
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -33,6 +32,8 @@ function sendEmail (toEmail, subject, text, callback) {
 
     sendEmailThroughTransporter(mailOptions, callback);
 }
+
+
  
 function sendHtmlEmail (toEmail, subject, html, callback) {
 
@@ -40,7 +41,7 @@ function sendHtmlEmail (toEmail, subject, html, callback) {
         from: 'ulm-scheduling.application@gmail.com',
         to: toEmail,
         subject: subject,
-        html: html
+        html: {path: path}
     };
      
     sendEmailThroughTransporter(mailOptions, callback);

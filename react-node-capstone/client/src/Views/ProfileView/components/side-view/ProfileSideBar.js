@@ -23,7 +23,11 @@ export default class ProfileSideBar extends React.Component {
     }
 
     handleResetPassword = () => {
-
+        this.setState({progress: true});
+        get("auth/sendPasswordResetEmail", (res) => {
+            console.log(res);
+            this.setState({progress: false})
+        });
     };
 
     componentDidMount() {

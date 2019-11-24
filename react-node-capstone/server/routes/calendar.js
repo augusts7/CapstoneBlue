@@ -24,11 +24,47 @@ router.get("/sharedToUser", (req, res, next) => {
     sqlHelper.handleSelectAndRespond(sql, res);
 });
 
+router.post("/sharedToUser/delete", (req, res, next) => {
+
+    const calendarId = req.body.id;
+
+    let sql = "DELETE FROM shared_calendars WHERE sharedToUserId = " + req.user.user_id + " AND id = " + calendarId;
+
+    sqlHelper.handleDeleteAndRespond(sql, res);
+});
+
 router.get("/sharedByUser", (req, res, next) => {
 
     let sql = "SELECT * FROM shared_calendars INNER JOIN calendar ON sharedCalendarId = calendarId INNER JOIN user_info ON sharedToUserId = user_info.user_id WHERE sharedByUserId = " + req.user.user_id;
 
     sqlHelper.handleSelectAndRespond(sql, res);
+});
+
+router.post("/sharedByUser/delete", (req, res, next) => {
+
+    const calendarId = req.body.id;
+
+    let sql = "DELETE FROM shared_calendars WHERE sharedByUserId = " + req.user.user_id + " AND id = " + calendarId;
+
+    sqlHelper.handleDeleteAndRespond(sql, res);
+});
+
+router.get("/groupCalendars", (req, res, next) => {
+
+    let sql = "SELECT my_groups.group_id , groups.group_name FROM my_groups,groups WHERE groups.group_id = my_groups.group_id AND user_id=" +
+        req.user.user_id +
+        ";";
+
+    pool.query(sql, (error, results, fields) => {
+        if (error) {
+            console.log(error);
+            return next(error);
+        }
+
+        return res.json({success: true, results});
+    });
+
+
 });
 
 router.post("/", (req, res) => {

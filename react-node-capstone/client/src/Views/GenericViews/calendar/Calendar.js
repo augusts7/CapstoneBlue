@@ -15,7 +15,25 @@ const calendarContainerStyle = {  };
 
 const calendarAppStyle = {"padding": "16px 8px"};
 
+let years = [];
+for (let i = 2017; i < 2025; i++) {
+    years.push({"value": i, "name": i});
+}
 
+let months = [
+    {"value": 0, "name": "January"},
+    {"value": 1, "name": "February"},
+    {"value": 2, "name": "March"},
+    {"value": 3, "name": "April"},
+    {"value": 4, "name": "May"},
+    {"value": 5, "name": "June"},
+    {"value": 6, "name": "July"},
+    {"value": 7, "name": "August"},
+    {"value": 8, "name": "September"},
+    {"value": 9, "name": "October"},
+    {"value": 10, "name": "November"},
+    {"value": 11, "name": "December"},
+];
 
 export default class Calendar extends React.Component {
 
@@ -27,7 +45,7 @@ export default class Calendar extends React.Component {
 
         this.state = {
             "showWeekends": true,
-        }
+        };
 
         this.handleDateClick = this.handleDateClick.bind(this);
         this.handleEventClick = this.handleEventClick.bind(this);
@@ -36,32 +54,8 @@ export default class Calendar extends React.Component {
 
     render() {
 
-        let years = [];
-        for (var i = 2017; i < 2025; i++) {
-            years.push({"value": i, "name": i});
-        }
-        // eslint-disable-next-line
-        let months = [
-            {"value": 0, "name": "January"},
-            {"value": 1, "name": "February"},
-            {"value": 2, "name": "March"},
-            {"value": 3, "name": "April"},
-            {"value": 4, "name": "May"},
-            {"value": 5, "name": "June"},
-            {"value": 6, "name": "July"},
-            {"value": 7, "name": "August"},
-            {"value": 8, "name": "September"},
-            {"value": 9, "name": "October"},
-            {"value": 10, "name": "November"},
-            {"value": 11, "name": "December"},
-        ];
-
-        let appNavOptions = <div className='demo-app-top'>
-
-            <Select style={selectStyle} helperText="Select Year to view" fullWidth={false} name="months" label="Month" value={this.selectedMonth} options={months} onChange={(value) => this.changeDate("month", value)} />
-            <Select style={selectStyle} helperText="Select Month to view" fullWidth={false} name="year" label="Year" value={this.selectedYear} options={years} onChange={(value) => this.changeDate("year", value)} />
-
-        </div>;
+        console.log("Calendar");
+        console.log(this.props.events);
 
         return (
             <div style={calendarContainerStyle} className='center full'>

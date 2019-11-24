@@ -11,8 +11,10 @@ import Slide from "@material-ui/core/Slide";
 import DateTimeFormatter from "../../utils/date-time-utils/DateTimeFormatter";
 import DeleteDialog from "../calendar-dialogs/delete-dialog/DeleteDialog";
 import CalendarEventsListContext from "./calendar-popup-context/CalendarEventsListContext";
+import EmptyListView from "../../../GenericViews/empty-view/EmptyListView";
+import LengthValidator from "../../../../utils/length-utils/LengthValidator";
 
-const dialogStyle = {padding: "0px"};
+const dialogStyle = {padding: "0px 4px"};
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -42,6 +44,12 @@ export default class EventsList extends React.Component {
 
     eventsLayout = (events) => {
 
+        if (LengthValidator.isEmpty(events)) {
+            return (
+                <EmptyListView message="No events available to display!" />
+            );
+        }
+
         let slots = [];
 
         if (events !== null && events.length > 0) {
@@ -60,6 +68,7 @@ export default class EventsList extends React.Component {
     getEvents() {
 
         let items = [];
+
         if (this.props.data.sortBy === "date") {
 
             let selectedDate = this.props.data.date;
@@ -84,12 +93,12 @@ export default class EventsList extends React.Component {
             let id = this.props.data.id;
 
             this.props.events.forEach((item) => {
-
                 if (("" + item.id) === id) {
                     items.push(item);
                 }
             });
         }
+
         return items;
     };
 
@@ -127,7 +136,6 @@ export default class EventsList extends React.Component {
                         aria-labelledby="form-dialog-title">
 
                     <DialogTitle className="dialog-title">
-
                         {this.title}
                     </DialogTitle>
 

@@ -5,7 +5,7 @@ import AuthContext from "../Context/AuthContext";
 import ApplicationRouter from "./ApplicationRouter";
 import {connectSocket} from "../ApiHelper/Socket";
 import SocketContext from "../Context/SocketContext";
-
+import {get} from "../ApiHelper/ApiHelper";
 
 class Application extends React.Component {
 
@@ -36,11 +36,12 @@ class Application extends React.Component {
             ls.set("user_type", "");
             ls.set("isLoggedIn", false);
             ls.set("token", "");
+            get("/auth/logout", (res) => {
+
+            });
         };
 
-
         return authCtx;
-
     };
 
     getSocket = () => {
