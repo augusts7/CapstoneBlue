@@ -49,13 +49,10 @@ class GroupView extends React.Component {
   }
 
   getUser() {
-    try {
-      this.setState({
-        user: this.context.user.user_id
-      });
-    } catch (err) {
-      console.log("Error with Context");
-    }
+    var getUserURL = "/user_info/user";
+    fetch(getUserURL)
+      .then(res => res.json())
+      .then(data => console.log("I have user id : " + data.user_id));
   }
 
   getMyGroups() {
@@ -121,7 +118,7 @@ class GroupView extends React.Component {
     var groups = this.state.my_groups.map(g => {
       return <MenuItem value={g.group_id}>{g.group_name}</MenuItem>;
     });
-    console.log(this.state.my_groups);
+
     if (
       this.state.my_groups === isNullOrUndefined ||
       this.state.my_groups.length <= 0
