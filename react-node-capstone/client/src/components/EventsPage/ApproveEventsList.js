@@ -6,7 +6,7 @@ import "./Event.css";
 import InputLabel from "@material-ui/core/InputLabel";
 import { isNullOrUndefined } from "util";
 
-class EventsList extends Component {
+class ApproveEventsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -219,4 +219,4 @@ class EventsList extends Component {
   }
 }
 
-export default EventsList;
+export default ApproveEventsList;

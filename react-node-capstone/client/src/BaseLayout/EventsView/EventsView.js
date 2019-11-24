@@ -41,7 +41,7 @@ class EventsView extends React.Component {
   }
 
   getEvents() {
-    var eventsURL = "/events/allOnCalendar/";
+    var eventsURL = "/events/attendingGlobal";
     fetch(eventsURL)
       .then(res => res.json())
       .then(global_events => this.setState({ events: global_events }));
@@ -52,7 +52,7 @@ class EventsView extends React.Component {
       return (
         <div className="flex-full">
           <div className="inner">
-            <RequestEvent user={this.state.creator_id} />
+            <RequestEvent user={this.state.user} />
           </div>
           <div className="inner">
             <Button
@@ -76,7 +76,7 @@ class EventsView extends React.Component {
       return (
         <div className="flex-full">
           <div className="inner">
-            <CreateEvent user={this.state.creator_id} />
+            <CreateEvent user={this.state.user} />
           </div>
           <div className="inner">
             <ApproveEvent />

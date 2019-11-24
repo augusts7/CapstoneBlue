@@ -130,7 +130,8 @@ router.route("/allOnCalendar/:user_id").get((req, res) => {
 router.get("/notattendingGlobal", async (req, res) => {
   try {
     let events = await pool.query(
-      "SELECT * FROM event WHERE event_type = 'global' AND status='approved'"
+      "SELECT e.title, e.description, e.start, e.end, e.eventID FROM event e WHERE e.event_type ='global' AND e.status = 'approved' AND e.eventID NOT IN (SELECT e.eventID FROM event e inner join attending a on e.eventID = a.event_id WHERE a.attendee_id = "
+        + req.user.user_id +  " AND e.event_type = 'global')"
     );
     res.json(events);
   } catch (e) {
@@ -201,7 +202,7 @@ router.post("/", (req, res) => {
     end: req.body.end,
     event_type: req.body.event_type,
     creator_id: req.user.user_id,
-    calendar_id: req.body.calendar_id,
+    creator_calendar_id: req.body.creator_calendar_id,
     carousel: req.body.carousel || "1",
     status: req.body.status
   };

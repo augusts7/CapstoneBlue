@@ -6,7 +6,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Notifications from "./notifications/Notifications";
 import AppBarWithTabs from "./AppBar";
 import Messages from "./messages/Messages";
-
+import logo from "../../Application/images/logo.svg";
 
 export default function Header(props) {
 
@@ -15,14 +15,10 @@ export default function Header(props) {
     return (
         <header className="mdl-layout__header">
             <div className="mdl-layout__header-row">
-
-                <span className="mdl-layout__drawer-button">
-                    <i className="material-icons">menu</i>
-                </span>
+                <span className="logo"><img src ={logo} width="100em" height="80em"/></span>
                 <span className="mdl-layout-title white">
                     ULM Scheduling Application
                         </span>
-
                 <div className="mdl-layout-spacer"/>
 
                 <div>

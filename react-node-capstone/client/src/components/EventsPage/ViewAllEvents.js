@@ -12,7 +12,7 @@ class ViewAllEvents extends React.Component {
     }
 
     componentDidMount() {
-        fetch("/events/allGlobal")
+        fetch("/events/notattendingGlobal")
             .then(res => res.json())
             .then(eventData =>
                 this.setState({events: eventData}));

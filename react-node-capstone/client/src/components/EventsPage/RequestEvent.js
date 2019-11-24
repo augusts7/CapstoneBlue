@@ -66,6 +66,8 @@ class RequestEvent extends React.Component {
                 description: this.state.description,
                 user_id: this.context.user_id,
                 event_type: "global",
+                carousel: 0,
+                creator_calendar_id: this.context.user_id,
                 status: "pending"
             })
         })
