@@ -75,7 +75,7 @@ class CalenderViewLayout extends React.Component {
     componentDidMount() {
         this.groupCalDataStore = new GroupCalendarEventsDataStore(this.context.socket, this.onDataChange, this.onProgressChange);
         this.sharedCalDataStore = new SharedCalendarEventsDataStore(this.context.socket, this.onDataChange, this.onProgressChange);
-        this.calDataStore = new CalendarEventsDataStore(this.context.socket, this.onDataChange, this.onProgressChange);
+        this.calDataStore = new CalendarEventsDataStore(this.context.socket, this.onDataChange, this.onProgressChange, this.reloadAllEvents);
     }
 
     componentWillReceiveProps(nextProps, nextContext) {

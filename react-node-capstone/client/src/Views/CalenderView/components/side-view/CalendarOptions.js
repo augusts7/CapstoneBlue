@@ -30,7 +30,6 @@ export default class Filters extends React.Component {
         return (
             <div className="CalendarViewOptions-Root styleScroll" style={commonData.containerStyle}>
 
-                <HeaderView/>
 
                 <Actions />
 

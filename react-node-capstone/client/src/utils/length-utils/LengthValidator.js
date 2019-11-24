@@ -8,6 +8,13 @@ export default class LengthValidator {
     }
 
     static isEmpty(jsonObject) {
-        return jsonObject === undefined || jsonObject === null || jsonObject.length === 0;
+        if (jsonObject === undefined) {
+            return true;
+        }
+        if (Number.isInteger(jsonObject)) {
+            return false;
+        }
+
+        return jsonObject === null || jsonObject.length === 0;
     }
 }

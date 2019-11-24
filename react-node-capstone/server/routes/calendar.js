@@ -33,6 +33,15 @@ router.post("/sharedToUser/delete", (req, res, next) => {
     sqlHelper.handleDeleteAndRespond(sql, res);
 });
 
+router.post("/delete", (req, res, next) => {
+
+    const calendarId = req.body.id;
+
+    let sql = "DELETE FROM calendar WHERE user_id = " + req.user.user_id + " AND calendarId = " + calendarId;
+
+    sqlHelper.handleDeleteAndRespond(sql, res);
+});
+
 router.get("/sharedByUser", (req, res, next) => {
 
     let sql = "SELECT * FROM shared_calendars INNER JOIN calendar ON sharedCalendarId = calendarId INNER JOIN user_info ON sharedToUserId = user_info.user_id WHERE sharedByUserId = " + req.user.user_id;

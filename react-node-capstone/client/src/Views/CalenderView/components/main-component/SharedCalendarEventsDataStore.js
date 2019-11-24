@@ -23,13 +23,16 @@ export default class SharedCalendarEventsDataStore {
     };
 
     setCalendarColor (calendarId, color) {
+        if (LengthValidator.isEmpty(calendarId) || LengthValidator.isEmpty(color)) {
+            return false;
+        }
         const calendarName = this.getStateNameForSharedCalendarEvents(calendarId);
-        this.calendarColors[calendarId] = color;
+        this.calendarColors[calendarName] = color;
         const newEvents = [];
         const calEvents = this.stateData[calendarName];
         if (LengthValidator.isNotEmpty(calEvents)) {
             calEvents.forEach ((event) => {
-                newEvents.push(this.processSingleEvent(event));
+                newEvents.push(this.processSingleEvent(event, calendarId));
             });
             this.onDataChange(calendarName, newEvents);
         }
@@ -75,10 +78,10 @@ export default class SharedCalendarEventsDataStore {
 
         let url = "/events/sharedCalendar/" + calId;
 
-        this.loadEvents(url, this.getStateNameForSharedCalendarEvents(calId));
+        this.loadEvents(url, this.getStateNameForSharedCalendarEvents(calId), calId);
     };
 
-    loadEvents = (url, nameInState) => {
+    loadEvents = (url, nameInState, calendarId) => {
 
         this.onLoading(true);
 
@@ -89,7 +92,7 @@ export default class SharedCalendarEventsDataStore {
             if (res.success) {
 
                 res.results.forEach(d => {
-                    data.push(this.processSingleEvent(d));
+                    data.push(this.processSingleEvent(d, calendarId));
                 });
 
             } else {
@@ -104,17 +107,19 @@ export default class SharedCalendarEventsDataStore {
     };
 
     processSingleEvent = (eventData) => {
-        let event = eventData;
-        event["key"] = eventData.eventID;
-        event["color"] = "white";
+        let event = {...eventData};
+        event["textColor"] = "white";
         event["id"] = eventData.eventID;
-        event["backgroundColor"] = this.getBackgroundColorForSharedCalendar(eventData.calendar_id);
+        event["key"] = eventData.eventID;
+        event["calScope"] = "shared";
+        event["color"] = this.getBackgroundColorForSharedCalendar(eventData.calendar_id);
         return event;
     };
 
     getBackgroundColorForSharedCalendar = (calendarId) => {
-        if (LengthValidator.isNotEmpty(calendarId) && this.calendarColors.hasOwnProperty(calendarId)) {
-            return this.calendarColors[calendarId];
+        const name = this.getStateNameForSharedCalendarEvents(calendarId);
+        if (this.calendarColors.hasOwnProperty(name)) {
+            return this.calendarColors[name];
         } else {
             return "#E65100";
         }

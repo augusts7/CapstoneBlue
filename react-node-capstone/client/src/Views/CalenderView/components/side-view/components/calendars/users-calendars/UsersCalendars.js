@@ -84,10 +84,19 @@ export default class CalendarFilter extends React.Component {
         if (actionKey === "share") {
             this.context.showShareCalendarForm(calendarId);
         } else if (actionKey === "delete") {
-            alert("imeplement");
+            this.handleDelete(calendarId);
         } else if (actionKey === "color") {
             this.context.showColorDialog({scope: "user", id: calendarId});
         }
+    };
+
+    handleDelete = (id) => {
+        const data = {id};
+        this.setState({isLoading: true});
+        post("/calendar/delete", data, (res) => {
+            const cals = this.state.cals.filter((cal) => cal.calendarId !== id);
+            this.setState({isLoading: false, cals});
+        });
     };
 
     handleAddCalendar = () => {

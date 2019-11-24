@@ -23,13 +23,17 @@ export default class GroupCalendarEventsDataStore {
     };
 
     setCalendarColor (calendarId, color) {
+        if (LengthValidator.isEmpty(calendarId) || LengthValidator.isEmpty(color)) {
+            return false;
+        }
         const calendarName = this.getStateNameForGroupEvents(calendarId);
-        this.calendarColors[calendarId] = color;
+        this.calendarColors[calendarName] = color;
+        console.log(this.calendarColors);
         const newEvents = [];
         const calEvents = this.stateData[calendarName];
         if (LengthValidator.isNotEmpty(calEvents)) {
             calEvents.forEach ((event) => {
-                newEvents.push(this.processSingleEvent(event));
+                newEvents.push(this.processSingleEvent(event, calendarId));
             });
             this.onDataChange(calendarName, newEvents);
         }
@@ -77,10 +81,10 @@ export default class GroupCalendarEventsDataStore {
 
         let url = "/groups/groupEvents/" + calId;
 
-        this.loadEvents(url, this.getStateNameForGroupEvents(calId));
+        this.loadEvents(url, this.getStateNameForGroupEvents(calId), calId);
     };
 
-    loadEvents = (url, nameInState) => {
+    loadEvents = (url, nameInState, calId) => {
 
         this.onLoading(true);
 
@@ -94,7 +98,7 @@ export default class GroupCalendarEventsDataStore {
             if (LengthValidator.isNotEmpty(res)) {
 
                 res.forEach(d => {
-                    data.push(this.processSingleEvent(d));
+                    data.push(this.processSingleEvent(d, calId));
                 });
                 this.onDataChange(nameInState, data);
 
@@ -105,18 +109,20 @@ export default class GroupCalendarEventsDataStore {
         });
     };
 
-    processSingleEvent = (eventData) => {
-        let event = eventData;
-        event["key"] = eventData.eventID;
-        event["color"] = "white";
+    processSingleEvent = (eventData, calendarId) => {
+        let event = {...eventData};
+        event["textColor"] = "white";
         event["id"] = eventData.eventID;
-        event["backgroundColor"] = this.getBackgroundColorForSharedCalendar(eventData.calendar_id);
+        event["key"] = eventData.eventID;
+        event["calScope"] = "group";
+        event["color"] = this.getBackgroundColorForGroupCalendar(calendarId);
         return event;
     };
 
-    getBackgroundColorForSharedCalendar = (calendarId) => {
-        if (LengthValidator.isNotEmpty(calendarId) && this.calendarColors.hasOwnProperty(calendarId)) {
-            return this.calendarColors[calendarId];
+    getBackgroundColorForGroupCalendar = (calendarId) => {
+        const name = this.getStateNameForGroupEvents(calendarId);
+        if (this.calendarColors.hasOwnProperty(name)) {
+            return this.calendarColors[name];
         } else {
             return "#4A148C";
         }

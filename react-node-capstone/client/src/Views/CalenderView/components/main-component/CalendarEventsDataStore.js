@@ -30,6 +30,7 @@ export default class CalendarEventsDataStore {
             return false;
         }
         const calendarName = this.getStateNameForCalendarEvents(calendarId);
+        console.log(color);
         this.calendarColors[calendarName] = color;
         console.log(this.calendarColors);
         const newEvents = [];
@@ -38,7 +39,6 @@ export default class CalendarEventsDataStore {
             calEvents.forEach ((event) => {
                 newEvents.push(this.processSingleEvent(event));
             });
-            console.log(newEvents);
             this.onDataChange(calendarName, newEvents);
         }
     }
@@ -108,22 +108,20 @@ export default class CalendarEventsDataStore {
     };
 
     processSingleEvent = (eventData) => {
-        let event = eventData;
-        event["key"] = eventData.eventID;
-        event["color"] = "white";
+        let event = {...eventData};
+        event["textColor"] = "white";
         event["id"] = eventData.eventID;
+        event["key"] = eventData.eventID;
+        event["calScope"] = "user";
         const backgroundColor = this.getBackgroundColorForCalendar(eventData.calendar_id);
         console.log(backgroundColor);
-        event["backgroundColor"] = backgroundColor;
+        event["color"] = backgroundColor;
         return event;
     };
 
     getBackgroundColorForCalendar = (calendarId) => {
-        if (LengthValidator.isEmpty(calendarId)) {
-            calendarId = "main";
-        }
         const name = this.getStateNameForCalendarEvents(calendarId);
-        if (LengthValidator.isNotEmpty(calendarId) && this.calendarColors.hasOwnProperty(name)) {
+        if (this.calendarColors.hasOwnProperty(name)) {
             return this.calendarColors[name];
         } else {
             return "#880E4F";

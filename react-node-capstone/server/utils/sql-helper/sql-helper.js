@@ -1,10 +1,4 @@
-
-
-
 var pool = require("../../db/database");
-
-
-
 
 function handleSelectAndRespond (sql, res) {
 

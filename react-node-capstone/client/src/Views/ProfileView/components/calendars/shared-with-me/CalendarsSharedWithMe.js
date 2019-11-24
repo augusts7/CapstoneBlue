@@ -49,7 +49,7 @@ export default class CalendarsSharedWithMe extends React.Component {
     handleDelete = (id) => {
         const data = {id};
         this.setState({progress: true});
-        post("/calendar/sharedToUser/", data, (res) => {
+        post("/calendar/sharedToUser/delete", data, (res) => {
             const calendars = this.state.calendars.filter((cal) => cal.id !== id);
             this.setState({progress: false, calendars});
         });

@@ -42,8 +42,7 @@ export default class CalendarFilter extends React.Component {
         this.connectToSocket();
     }
 
-    componentWillUnmount() {
-    }
+
 
     connectToSocket = () => {
         const socket = this.context.getSocket();
@@ -87,8 +86,8 @@ export default class CalendarFilter extends React.Component {
     handleDelete = (id) => {
         const data = {id};
         this.setState({isLoading: true});
-        post("/calendar/sharedToUser/", data, (res) => {
-            const cals = this.state.calendars.filter((cal) => cal.id !== id);
+        post("/calendar/sharedToUser/delete", data, (res) => {
+            const cals = this.state.cals.filter((cal) => cal.calendarId !== id);
             this.setState({isLoading: false, cals});
         });
     };

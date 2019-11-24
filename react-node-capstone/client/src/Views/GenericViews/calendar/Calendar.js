@@ -7,6 +7,7 @@ import "@fullcalendar/core/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
 import Select from "../../../components/Select/Select";
+import LengthValidator from "../../../utils/length-utils/LengthValidator";
 
 
 
@@ -37,6 +38,8 @@ let months = [
 
 export default class Calendar extends React.Component {
 
+    calendarRef = React.createRef();
+
     selectedMonth = new Date().getMonth();
     selectedYear = new Date().getFullYear();
 
@@ -45,12 +48,27 @@ export default class Calendar extends React.Component {
 
         this.state = {
             "showWeekends": true,
+            events: []
         };
 
         this.handleDateClick = this.handleDateClick.bind(this);
         this.handleEventClick = this.handleEventClick.bind(this);
 
     }
+
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const api = this.calendarRef.current.getApi();
+        if (LengthValidator.isNotEmpty(prevProps.events)) {
+            prevProps.events.forEach((e) => {
+                const element = api.getEventById(e);
+                if (element !== null) {
+                    element.setProp("color", e.color);
+                }
+            });
+        }
+    }
+
 
     render() {
 
@@ -71,6 +89,7 @@ export default class Calendar extends React.Component {
                         displayEventTime={false}
                         displayEventEnd={false}
                         eventOrder="start"
+                        ref={this.calendarRef}
                         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                         contentHeight={window.innerHeight * 0.77}
                         weekends={this.state.showWeekends}
