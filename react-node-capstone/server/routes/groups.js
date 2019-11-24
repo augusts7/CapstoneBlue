@@ -66,11 +66,30 @@ router.route("/groupEvents/:group_id").get(async (req, res) => {
   }
 });
 
+router.route("/pendingGroupEvents/:group_id").get(async (req, res) => {
+  try {
+    let groupid = req.params.group_id;
+    let group_events = await pool.query(
+      'SELECT eventID, title, description, start, end FROM event WHERE status="pending" AND group_id =' +
+        groupid +
+        ";"
+    );
+    res.json(group_events);
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
+
 //Change a group's name
 router.route("/editGroupName").post(async (req, res) => {
-  try{
-    let sql1 = "UPDATE groups SET group_name = '"+req.body.groupName+"' WHERE group_id = "+
-    req.body.groupID+";";
+  try {
+    let sql1 =
+      "UPDATE groups SET group_name = '" +
+      req.body.groupName +
+      "' WHERE group_id = " +
+      req.body.groupID +
+      ";";
     pool.query(sql1, function(error, results, fields) {
       if (error) {
         return res.json({
@@ -87,8 +106,11 @@ router.route("/editGroupName").post(async (req, res) => {
 
 //Change a group's owner
 router.route("/editGroupOwner").post(async (req, res) => {
-  try{
-    let sql1 ="UPDATE my_groups SET status = 'Member' WHERE group_id = "+req.body.groupID+";";
+  try {
+    let sql1 =
+      "UPDATE my_groups SET status = 'Member' WHERE group_id = " +
+      req.body.groupID +
+      ";";
     console.log(req.body.groupID);
     console.log(req.body.newOwnerID);
     pool.query(sql1, function(error, results, fields) {
@@ -98,8 +120,12 @@ router.route("/editGroupOwner").post(async (req, res) => {
           message: "Error while changing status"
         });
       }
-      let sql2 = "UPDATE my_groups SET status = 'Owner' WHERE group_id = "+
-        req.body.groupID+" AND user_id = "+req.body.newOwnerID+";";
+      let sql2 =
+        "UPDATE my_groups SET status = 'Owner' WHERE group_id = " +
+        req.body.groupID +
+        " AND user_id = " +
+        req.body.newOwnerID +
+        ";";
       pool.query(sql2, function(error, results, fields) {
         if (error) {
           return res.json({
@@ -107,8 +133,12 @@ router.route("/editGroupOwner").post(async (req, res) => {
             message: "Error while changing ownership"
           });
         }
-        let sql3 = "UPDATE groups SET creator_id = "+req.body.newOwnerID+" WHERE group_id = "+
-          req.body.groupID+";";
+        let sql3 =
+          "UPDATE groups SET creator_id = " +
+          req.body.newOwnerID +
+          " WHERE group_id = " +
+          req.body.groupID +
+          ";";
         pool.query(sql3, function(error, results, fields) {
           if (error) {
             return res.json({
@@ -119,7 +149,7 @@ router.route("/editGroupOwner").post(async (req, res) => {
         });
       });
     });
-  }catch (e) {
+  } catch (e) {
     console.log(e);
     res.sendStatus(500);
   }
@@ -242,7 +272,7 @@ router.route("/delete/:group_id").delete(async (req, res) => {
   }
 });
 //Delete a user from a group
-router.route("/deleteUser/:user_id").delete(async (req, res) => {
+router.route("/deleteUser/:user_id").delete((req, res) => {
   try {
     let user_id = req.params.user_id;
     let group_id = req.body.group_id;

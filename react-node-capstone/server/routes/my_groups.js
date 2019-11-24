@@ -58,7 +58,11 @@ router.post("/addMultipleUsers", async function(req, res, next) {
             if (results.length > 0) {
               console.log(5);
               const user_id = results[0].user_id;
-              const user_in_group = { user_id, group_id: req.body.group_id };
+              const user_in_group = {
+                user_id,
+                group_id: req.body.group_id,
+                status: "Member"
+              };
               await pool.query(
                 "INSERT INTO my_groups SET ?",
                 user_in_group,
@@ -72,7 +76,8 @@ router.post("/addMultipleUsers", async function(req, res, next) {
       console.log("Adding user using UId");
       const user_in_group = {
         user_id: user.user_id,
-        group_id: req.body.group_id
+        group_id: req.body.group_id,
+        status: "Member"
       };
       await pool.query(
         "INSERT INTO my_groups SET ?",
