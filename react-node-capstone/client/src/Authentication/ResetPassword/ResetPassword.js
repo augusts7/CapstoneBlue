@@ -7,7 +7,7 @@ import AuthFormContainer from "../AuthenticationFormLayout/AuthFormContainer";
 import AuthFormSubmitButton from "../AuthenticationFormLayout/AuthFormSubmitButton";
 import LengthValidator from "../../utils/length-utils/LengthValidator";
 import PasswordUtils from "../../utils/password/PasswordUtils";
-import {post} from "../../ApiHelper/ApiHelper";
+import {get, post} from "../../ApiHelper/ApiHelper";
 
 
 export default class ResetPassword extends React.Component {
@@ -15,7 +15,8 @@ export default class ResetPassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            "message": ""
+            "message": "",
+            isTokenValid: false
         };
 
         this.onSubmit = this.onSubmit.bind(this);
@@ -26,7 +27,23 @@ export default class ResetPassword extends React.Component {
         this.setState({"message": ""});
     }
 
+    componentDidMount() {
+        get("auth/isResetPasswordTokenValid/" + this.props.match.params.token, (res) => {
+            if (res.success) {
+                const isValid = res.results.isValid;
+                this.setState({isTokenValid: isValid});
+            } else {
+                this.setState({message: "Invalid Token", isTokenValid: false});
+            }
+        });
+    }
+
     onSubmit(target) {
+
+        if (!this.state.isTokenValid) {
+            this.setState({message: "Invalid Token. Please request another password reset email."});
+            return;
+        }
 
         const password = target.password.value;
         const confirmPassword = target.confirmPassword.value;
@@ -59,7 +76,7 @@ export default class ResetPassword extends React.Component {
                 <MessageBox message={this.state.message} hideMessage={this.hideMessage}/>
                 <Form customSubmitButton={true} id="reset_password" onSubmit={this.onSubmit} title="Reset Password"
                       fields={fields}>
-                    <AuthFormSubmitButton icon="done">Confirm New Password</AuthFormSubmitButton>
+                    <AuthFormSubmitButton disabled={!this.state.isTokenValid} icon="done">Confirm New Password</AuthFormSubmitButton>
 
                 </Form>
                 <AuthFormAlternateButton link="/login" text="Sign In Instead?">

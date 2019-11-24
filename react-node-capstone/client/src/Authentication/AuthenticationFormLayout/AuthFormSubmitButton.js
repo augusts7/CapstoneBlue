@@ -15,7 +15,7 @@ export default function AuthFormSubmitButton (props) {
 
     return (
         <div>
-            <Button role="main" type="submit" style={buttonStyle}>{icon}{props.children}</Button>
+            <Button disabled={props.disabled} role="main" type="submit" style={buttonStyle}>{icon}{props.children}</Button>
         </div>
     );
 }

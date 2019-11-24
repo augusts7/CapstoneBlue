@@ -1,6 +1,6 @@
 var router = require("express").Router();
 var pool = require("../db/database");
-var sqlHandler = require("../utils/sql-helper/sql-helper").default;
+var sqlHandler = require("../utils/sql-helper/sql-helper");
 var bodyParser = require("body-parser");
 let authMiddleware = require("../middlewares/auth-middleware").authMiddleware;
 

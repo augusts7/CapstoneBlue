@@ -2,11 +2,10 @@ const router = require("express").Router();
 const pool = require("../../db/database");
 const passport = require("passport");
 const bodyParser = require("body-parser");
-const emailHelper = require("../../utils/email/email-sender");
 const tokens = require("../../utils/tokens/tokens");
 const sqlHelper = require("../../utils/sql-helper/sql-helper");
 const expressFileUpload = require("express-fileupload");
-const HOST_IP_ADDRESS = "localhost";
+const passwordResetHelper = require("../auth/reset-password-helper");
 
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
@@ -212,7 +211,7 @@ router.post('/forgotPassword', function (req, res, next) {
                 const idsAreEqual = ("" + req.body.user_id) === ("" + results[0].user_id);
 
                 if (idsAreEqual) {
-                    sendPasswordResetEmail(req.body.campusEmail, res, next);
+                    passwordResetHelper.sendPasswordResetEmail(req.body.campusEmail, res, next);
                 } else {
                     return res.json({"success": false, "message": "Your campus Id was incorrect"});
                 }
@@ -239,10 +238,19 @@ router.get('/sendPasswordResetEmail', function (req, res, next) {
         }
         if (results.length > 0) {
             const user = results[0];
-            sendPasswordResetEmail(user, res, next);
+            passwordResetHelper.sendPasswordResetEmail(user, res, next);
         }
     });
 
+});
+
+router.get('/isResetPasswordTokenValid/:token', function (req, res, next) {
+
+    const decodedToken = tokens.decodeTokenWithExpiration(req.params.token);
+
+    const isValid = decodedToken !== null;
+
+    res.json({success: true, results: {isValid}});
 });
 
 router.post('/resetPassword', function (req, res, next) {
@@ -283,30 +291,5 @@ router.post('/resetPassword', function (req, res, next) {
 });
 
 
-function sendPasswordResetEmail(user, res, next) {
-
-    console.log("START Sending email");
-    console.log(user);
-
-    const token = tokens.encodeWithExpiration(user.campusEmail, '1h');
-
-    console.log("TOKEN => " + token);
-
-    let subject = "Password Reset Email";
-    const name = user.first_name + " " + user.last_name;
-    const link = HOST_IP_ADDRESS + ":3000/resetPassword/" + token;
-
-    let text = "Hi " + name + ",\n\nTo reset your password please follow this link:\n\n" + link + "\n\nSincerely,\nULM Scheduling application team";
-
-    let callback = (error, info) => {
-        if (error) {
-            return next("Password reset email couldn't be sent. " + error);
-        } else {
-            return res.json({"success": true, "message": "Password reset email sent. " + info.response})
-        }
-    };
-
-    emailHelper.sendEmail(user.campusEmail, subject, text, callback);
-}
 
 module.exports = router;
