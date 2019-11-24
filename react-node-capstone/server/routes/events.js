@@ -85,7 +85,7 @@ router.get("/all", async (req, res) => {
 router.get("/carouselEvents", async (req, res) => {
   try{
     const userid = req.user.user_id;
-    let sql1 = "SELECT e.title, e.description, e.start, e.end, e.creator_id FROM event e "+
+    let sql1 = "SELECT e.title, e.description, e.start, e.end, e.creator_id, e.eventID FROM event e "+
      "WHERE e.carousel = 1 AND e.status != 'pending' AND  (e.event_type = 'global' OR e.group_id IN" +
      "(SELECT m.group_id FROM my_groups m WHERE m.user_id = "+userid+"));";
       pool.query(sql1, function(error, results, fields) {
@@ -94,8 +94,8 @@ router.get("/carouselEvents", async (req, res) => {
       }
 
       if (results.length > 0) {
-        res.json(results);
-        console.log(results);
+        res.json(JSON.stringify(results));
+        console.log(JSON.stringify(results));
       }
     });
   } catch (e) {

@@ -1,41 +1,55 @@
+/* Container holding the image and the text */
 .container {
-    position: relative;
-    text-align: center;
-    color: white;
-  }
-  
-  /* Bottom left text */
-  .bottom-left {
-    position: absolute;
-    bottom: 8px;
-    left: 16px;
-  }
-  
-  /* Top left text */
-  .top-left {
-    position: absolute;
-    top: 8px;
-    left: 16px;
-  }
-  
-  /* Top right text */
-  .top-right {
-    position: absolute;
-    top: 8px;
-    right: 16px;
-  }
-  
-  /* Bottom right text */
-  .bottom-right {
-    position: absolute;
-    bottom: 8px;
-    right: 16px;
-  }
-  
-  /* Centered text */
-  .centered {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+  bottom: 0%;
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.responsive{
+  width: 100%;
+  height: auto;
+}
+
+/* Bottom right text */
+.text-block {
+  display: grid;
+  grid-template-columns:  0.2fr 1.7fr;
+  grid-template-areas: "date description";
+  position: left;
+  bottom: 20%;
+  left: 40px;
+  background: rgb(0, 0, 0); /* Fallback color */
+  background: rgba(0, 0, 0, 0.5); /* Black background with 0.5 opacity */
+  color: white;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 30%;
+  text-align: left;
+}
+
+.description {
+  grid-area: description;
+  margin: 10px !important;
+  overflow: visible;
+}
+
+.date {
+  grid-area: date;
+  text-align: left;
+  padding: 5px;
+}
+
+.date-number {
+  font-size: 26pt;
+  margin: 10px;
+}
+
+.date-name {
+  margin: 10px;
+  font-size: 20pt;
+}
+
+.event-title {
+  font-size: 20pt;
+}

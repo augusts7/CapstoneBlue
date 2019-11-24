@@ -17,7 +17,7 @@ class HomeCarousel extends React.Component {
       my_groups: []
     };
     this.getMyGroups = this.getMyGroups.bind(this);
-    //this.getCarouselEvents = this.getCarouselEvents.bind(this);
+    this.getCarouselEvents = this.getCarouselEvents.bind(this);
   }
 
   componentDidMount() {
@@ -26,14 +26,79 @@ class HomeCarousel extends React.Component {
     this.getCarouselEvents();
   }
 
+  getMonth(month, type) {
+    var monthName = "";
+    var monthAbrv = "";
+    switch (month) {
+      case 1:
+        monthName = "January";
+        monthAbrv = "Jan";
+        break;
+      case 2:
+        monthName = "Febuary";
+        monthAbrv = "Feb";
+        break;
+      case 3:
+        monthName = "March";
+        monthAbrv = "Mar";
+        break;
+      case 4:
+        monthName = "April";
+        monthAbrv = "Apr";
+        break;
+      case 5:
+        monthName = "May";
+        monthAbrv = "May";
+        break;
+      case 6:
+        monthName = "June";
+        monthAbrv = "Jun";
+        break;
+      case 7:
+        monthName = "July";
+        monthAbrv = "Jul";
+        break;
+      case 8:
+        monthName = "August";
+        monthAbrv = "Aug";
+        break;
+      case 9:
+        monthName = "September";
+        monthAbrv = "Sept";
+        break;
+      case 10:
+        monthName = "October";
+        monthAbrv = "Oct";
+        break;
+      case 11:
+        monthName = "November";
+        monthAbrv = "Nov";
+        break;
+      case 12:
+        monthName = "December";
+        monthAbrv = "Dec";
+        break;
+      default:
+        monthName = "Error: Not a valid month.";
+        monthAbrv = "Error: Not a valid month.";
+    }
+    if (type === "name") {
+      return monthName;
+    } else if (type === "abrv") {
+      return monthAbrv;
+    }
+  }
+
   getCarouselEvents() {
     fetch("/events/carouselEvents")
       .then(res => res.json())
       .then(carouselEs => {
         if (carouselEs === isNullOrUndefined || carouselEs <= 0) {
         } else {
-          console.log(carouselEs);
-          this.setState({ carouselEvents: carouselEs });
+          try {
+            console.log(carouselEs);
+            this.setState({ carouselEvents: JSON.parse(carouselEs) });
+          } catch (e) {}
         }
       });
   }
@@ -66,33 +131,37 @@ class HomeCarousel extends React.Component {
 
   fillCarousel() {
     if(this.state.carouselEvents !== isNullOrUndefined) {
-
-      // return ( 
-      // <React.Fragment>
-      //   {this.state.carouselEvents.map(
-      //     event => (
-      //       <div>
-      //         <p class="container">
-      //           <img src="https://www.wallpaperup.com/uploads/wallpapers/2014/11/12/514433/474ec055f0eaf86e7e91637bbaa05ce6-500.jpg"
-      //           alt=""/>
-      //             <div class="bottom-left">{console.log(event)}</div>
-      //             <div class="top-left">{console.log(event)}</div>
-      //             <div class="top-right">{event.start}</div>
-      //             <div class="bottom-right">{event.end}</div>
-      //             <div class="centered">{event.creator_id}</div>
-      //         </p>
-      //       </div>
-      //     )
-      //   )}
-      // </React.Fragment>
-      // );
-    }
-  }
-
-  render() {
-    console.log(this.state.carouselEvents);
-    return (
-      <Carousel
+     const carouselItems = this.state.carouselEvents.map(
+        event => (
+          <div class="container" key={event.eventID}>
+          <img src="https://www.ulm.edu/omc/home-rotators/schedule_a_tour2019.jpg" class="responsive"/>
+          <div class="text-block">
+          <div className="date">
+              <div className="date-number">
+                {new Date(event.start).getDate()}
+              </div>
+              <div className="date-name">
+                {this.getMonth(new Date(event.start).getMonth() + 1, "name")}{" "}
+              </div>
+            </div>
+            <div className="description">
+              <div className="event-title">{event.title}</div>
+              <div className="time">
+                {new Date(event.start).toLocaleTimeString("en-US")} -{" "}
+                {new Date(event.end).toLocaleTimeString("en-US")}
+              </div>
+              {event.description}
+            </div>
+            </div>
+            {/* <div>{event.creator_id}</div> */}
+          </div>
+        )
+      );
+      console.log(carouselItems);
+    
+    return ( 
+        <Fragment>
+         <Carousel
         infiniteLoop
         autoPlay
         interval={6500}
@@ -100,45 +169,20 @@ class HomeCarousel extends React.Component {
         width="1650px"
         showThumbs={false}
         showStatus = {false}
-        className="presentation-mode"
-        
       >
-        <div className="my-slide primary">
-          <p class="container">
-            <img src="https://www.wallpaperup.com/uploads/wallpapers/2014/11/12/514433/474ec055f0eaf86e7e91637bbaa05ce6-500.jpg"
-            alt=""/>
-              <div class="bottom-left">Bottom Left</div>
-              <div class="top-left">Top Left</div>
-              <div class="top-right">Top Right</div>
-              <div class="bottom-right">Bottom Right</div>
-              <div class="centered">Centered</div>
-          </p>
-        </div>
-        {/*this.fillCarousel()*/}
-        <div>
-          <img
-            src="https://www.wallpaperup.com/uploads/wallpapers/2014/11/12/514433/474ec055f0eaf86e7e91637bbaa05ce6-500.jpg"
-            alt=""
-          />
-          <h1>
-            Test
-          </h1>
-          <p className="legend">Writing whatever I want</p>
-        </div>
-        <div>
-          <img
-            src="https://www.wallpaperup.com/uploads/wallpapers/2014/11/12/514433/474ec055f0eaf86e7e91637bbaa05ce6-500.jpg"
-            alt=""
-          />
-        </div>
-        <div>
-          <img
-            src="https://www.wallpaperup.com/uploads/wallpapers/2014/11/12/514433/474ec055f0eaf86e7e91637bbaa05ce6-500.jpg"
-            alt=""
-          />
-          <p className="legend">Legend</p>
-        </div>
-      </Carousel>
+          {carouselItems}
+          </Carousel>
+        </Fragment>
+        
+      );
+    }
+  }
+  render() {
+    console.log(this.state.carouselEvents);
+    return (
+      <Fragment>
+      {this.fillCarousel()}
+      </Fragment>
     );
   }
 }
