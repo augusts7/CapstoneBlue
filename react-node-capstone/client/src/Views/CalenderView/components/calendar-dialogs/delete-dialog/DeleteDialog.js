@@ -16,12 +16,10 @@ export default function AlertDialogSlide(props) {
         props.onClose();
     };
 
-    const onDeleteFinishedCallback = () => {
-        props.onClose();
-    };
 
     const handleDeleteButtonClick = () => {
-        props.onDelete(onDeleteFinishedCallback);
+        props.onClose();
+        props.onDelete();
     };
 
     return (

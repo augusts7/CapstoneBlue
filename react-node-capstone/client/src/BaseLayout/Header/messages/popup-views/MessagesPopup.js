@@ -4,6 +4,7 @@ import Progress from "../../../../Views/GenericViews/Progress/Progress";
 import MessagesPopupItem from "./MessagesPopupSingleItem";
 import LengthValidator from "../../../../utils/length-utils/LengthValidator";
 import {Typography} from "@material-ui/core";
+import EmptyListView from "../../../../Views/GenericViews/empty-view/EmptyListView";
 
 
 const anchorOrigin = {
@@ -37,6 +38,8 @@ export default function MessagesPopup(props) {
         props.allMessages.forEach((message) => {
             allMessages.push(<MessagesPopupItem onRemoveItem={props.onDeleteItem} message={message}/>);
         });
+    } else {
+        allMessages.push(<EmptyListView message="There are no messages" />);
     }
     return (
         <div>

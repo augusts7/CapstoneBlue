@@ -13,7 +13,7 @@ exports.get = (url, callback) => {
     }).then((res) => {
         callback(res);
     }).catch((err) => { 
-        callback({"success": false, "err": err})
+        callback({"success": false, "err": "CATCH ERROR: " + err})
     });
 };
 

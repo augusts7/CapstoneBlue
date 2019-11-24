@@ -1,7 +1,6 @@
 import React from "react";
 import SocketClient from "socket.io-client";
 
-
 export function connectSocket(token) {
 
     if (token === undefined || token === null) {

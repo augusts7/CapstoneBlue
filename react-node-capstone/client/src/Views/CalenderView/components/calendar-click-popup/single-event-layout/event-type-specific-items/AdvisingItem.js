@@ -9,7 +9,6 @@ export default function AdvisingItem(props) {
     const calendarPopupContext = React.useContext(CalendarEventsListContext);
 
     const onDeleteButtonClick = (onFinishCallback) => {
-        alert("delete slot");
         onFinishCallback();
     };
 

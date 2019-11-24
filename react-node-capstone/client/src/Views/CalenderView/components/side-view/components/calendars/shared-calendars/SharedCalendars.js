@@ -1,17 +1,18 @@
 import React from "react";
 import BaseCalendarsLayout from "../base-layout/BaseCalendarsLayout";
-import {get} from "../../../../../../../ApiHelper/ApiHelper";
+import {get, post} from "../../../../../../../ApiHelper/ApiHelper";
 import SocketContext from "../../../../../../../Context/SocketContext";
+import CalendarActionsContext from "../../../../../context/CalendarActionsContext";
 
 const menuOptions = [
-    {"name": "Share calendar", "key": "share"},
-    {"name": "Delete calendar", "key": "delete"}
+    {"name": "Delete calendar", "key": "delete"},
+    { "name": "Select Color", "key": "color" },
 ];
 
 
 export default class CalendarFilter extends React.Component {
 
-    static contextType = SocketContext;
+    static contextType = CalendarActionsContext;
 
     constructor(props) {
         super(props);
@@ -45,7 +46,7 @@ export default class CalendarFilter extends React.Component {
     }
 
     connectToSocket = () => {
-        const socket = this.context.socket;
+        const socket = this.context.getSocket();
 
         console.log("Socket");
         console.log(socket);
@@ -62,6 +63,7 @@ export default class CalendarFilter extends React.Component {
             });
         }
     };
+
 
     loadCalendars = () => {
 
@@ -82,14 +84,22 @@ export default class CalendarFilter extends React.Component {
         });
     };
 
+    handleDelete = (id) => {
+        const data = {id};
+        this.setState({isLoading: true});
+        post("/calendar/sharedToUser/", data, (res) => {
+            const cals = this.state.calendars.filter((cal) => cal.id !== id);
+            this.setState({isLoading: false, cals});
+        });
+    };
+
 
     handleListMenuClick = (actionKey, calendarId) => {
 
-        if (actionKey === "share") {
-            this.props.context.showShareCalendarForm(calendarId);
-
-        } else if (actionKey === "delete") {
-            alert("imeplement");
+        if (actionKey === "delete") {
+            this.handleDelete(calendarId);
+        } else if (actionKey === "color") {
+            this.context.showColorDialog({scope: "shared", id: calendarId});
         }
     };
 

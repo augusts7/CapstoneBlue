@@ -16,7 +16,6 @@ export default class AdvisingSignUpForm extends React.Component {
             "selectedSlotId": -1,
         };
 
-        this.handleSave = this.handleSave.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.hideMessage = this.hideMessage.bind(this);
     }
@@ -57,26 +56,6 @@ export default class AdvisingSignUpForm extends React.Component {
         this.setState({[name] : value});
     }
 
-    handleSave() {
-
-        if (this.state.selectedSlotId === -1) {
-            this.setState({"message": "Please select a slot."});
-            return;
-        }
-        if (this.state.calendarId === -1) {
-            this.setState({"message": "Please select a calendar id."});
-            return;
-        }
-
-        let data = {"calendarId": this.state.calendarId, "selectedSlotId": this.state.selectedSlotId};
-        post("/advising/main", data, (res => {
-            this.setState({isLoading: false, "message": res.message});
-            if (res.success) {
-
-            }
-            this.props.onClose();
-        }))        
-    }
 
     dialogButtons = [
         {name: "Cancel", onClick: this.props.onClose},
@@ -84,6 +63,16 @@ export default class AdvisingSignUpForm extends React.Component {
 
     handleSlotSelected = (selectedEvent) => {
 
+        let data = {eventID: selectedEvent.eventID};
+        post("advising/attend", data, (res => {
+            this.setState({isLoading: false, "message": res.message});
+            if (res.success) {
+                this.setState({message: "Slots has been added"});
+            } else {
+                this.setState({message: res.message || "Advising slot couldn't be added"});
+            }
+            this.props.onClose();
+        }))
     };
 
     render() {

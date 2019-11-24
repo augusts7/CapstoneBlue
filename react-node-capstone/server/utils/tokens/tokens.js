@@ -6,6 +6,21 @@ function encode(value) {
      return jwt.sign(value, secret);
 }
 
+function encodeWithExpiration(value, expirationTime, callback) {
+
+    return jwt.sign({value}, secret, {expiresIn: expirationTime});
+}
+
+function decodeTokenWithExpiration (token) {
+    try {
+        let decodedToken = jwt.verify(token, secret);
+        return decodedToken.value;
+    } catch (error) {
+        return null;
+    }
+}
+
+
 function decode (encodedToken) {
     try {
          return jwt.verify(encodedToken, secret);
@@ -16,5 +31,7 @@ function decode (encodedToken) {
 
 module.exports = {
     encode,
-    decode
+    decode,
+    encodeWithExpiration,
+    decodeTokenWithExpiration
 };

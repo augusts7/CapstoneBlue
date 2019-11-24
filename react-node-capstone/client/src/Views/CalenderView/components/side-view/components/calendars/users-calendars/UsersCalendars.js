@@ -4,15 +4,17 @@ import BaseCalendarsLayout from "../base-layout/BaseCalendarsLayout";
 import CustomIconButton from "../../../../../../GenericViews/IconButton";
 import Icon from "@material-ui/core/Icon";
 import SocketContext from "../../../../../../../Context/SocketContext";
+import CalendarActionsContext from "../../../../../context/CalendarActionsContext";
 
 const menuOptions = [
     { "name": "Share calendar", "key": "share" },
-    { "name": "Delete calendar", "key": "delete" }
+    { "name": "Delete calendar", "key": "delete" },
+    { "name": "Select Color", "key": "color" },
 ];
 
 export default class CalendarFilter extends React.Component {
 
-    static contextType = SocketContext;
+    static contextType = CalendarActionsContext;
 
     constructor(props) {
         super(props);
@@ -30,7 +32,7 @@ export default class CalendarFilter extends React.Component {
         const name = "id-" + id;
 
         this.setState({[name]: checked}, () => {
-            this.props.onChangeCalendarData("sharedCal", {"id": id, "show": checked});
+            this.props.onChangeCalendarData("cal", {"id": id, "show": checked});
         });
     };
 
@@ -42,7 +44,7 @@ export default class CalendarFilter extends React.Component {
     }
 
     connectToSocket = () => {
-        const socket = this.context.socket;
+        const socket = this.context.getSocket();
         if (socket !== null) {
             socket.on('newCalendarAdded', (data) => {
                 if (data === undefined || data === null) {
@@ -65,6 +67,7 @@ export default class CalendarFilter extends React.Component {
             let cals = [];
 
             if (res.success) {
+                cals.push({"calendarId": "main", calendarName: "Default"});
 
                 res.results.forEach((cal) => {
                     cals.push({"calendarId": cal.calendarId, "calendarName": cal.calendarName});
@@ -80,9 +83,10 @@ export default class CalendarFilter extends React.Component {
 
         if (actionKey === "share") {
             this.context.showShareCalendarForm(calendarId);
-
         } else if (actionKey === "delete") {
             alert("imeplement");
+        } else if (actionKey === "color") {
+            this.context.showColorDialog({scope: "user", id: calendarId});
         }
     };
 

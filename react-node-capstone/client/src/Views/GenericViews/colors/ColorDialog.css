@@ -1,0 +1,7 @@
+.color-dialog-item:hover {
+    background-color: #EEEEEE;
+}
+.selected {
+    border: 1px solid #BDBDBD;
+    margin-bottom: 16px;
+}

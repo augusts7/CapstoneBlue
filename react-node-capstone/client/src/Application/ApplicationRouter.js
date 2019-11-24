@@ -24,6 +24,7 @@ import "./styles/application-styles.css";
 import "./styles/flex/flex.css";
 import "./styles/colors/colors.css";
 import "./styles/images/background-images.css";
+import ResetPassword from "../Authentication/ResetPassword/ResetPassword";
 
 
 export default function ApplicationRouter(props) {
@@ -72,6 +73,7 @@ export default function ApplicationRouter(props) {
         routesHtml.push(<AuthRoute auth={props.auth} path="/login" component={Login}/>);
         routesHtml.push(<AuthRoute auth={props.auth} path="/register" component={Register}/>);
         routesHtml.push(<AuthRoute auth={props.auth} path="/forgotPassword" component={ForgotPassword}/>);
+        routesHtml.push(<AuthRoute auth={props.auth} path="/resetPassword/:token" component={ResetPassword}/>);
         routesHtml.push(<AuthRoute auth={props.auth} path="/" component={Login}/>);
     }
 

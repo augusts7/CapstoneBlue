@@ -35,7 +35,7 @@ router.get("/", function (req, res, next) {
 
     console.log("get user info");
 
-    let sql = "SELECT * FROM user_info";
+    let sql = "SELECT * FROM user_info WHERE user_id = " + req.user.user_id;
 
     sqlHandler.handleSelectAndRespond(sql, res);
 

@@ -6,6 +6,7 @@ const emailHelper = require("../../utils/email/email-sender");
 const tokens = require("../../utils/tokens/tokens");
 const sqlHelper = require("../../utils/sql-helper/sql-helper");
 const expressFileUpload = require("express-fileupload");
+const HOST_IP_ADDRESS = "localhost";
 
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
@@ -232,13 +233,13 @@ router.post('/forgotPassword', function (req, res, next) {
 
 router.get('/sendPasswordResetEmail', function (req, res, next) {
 
-    pool.query("SELECT campusEmail, user_id FROM user_info WHERE user_id = ?", req.user.user_id, function (error, results, fields) {
+    pool.query("SELECT * FROM user_info WHERE user_id = ?", req.user.user_id, function (error, results, fields) {
         if (error) {
             return next("Couldn't connect to the database. " + error);
         }
         if (results.length > 0) {
-            const email = results[0].campusEmail;
-            sendPasswordResetEmail(email, res, next);
+            const user = results[0];
+            sendPasswordResetEmail(user, res, next);
         }
     });
 
@@ -246,22 +247,56 @@ router.get('/sendPasswordResetEmail', function (req, res, next) {
 
 router.post('/resetPassword', function (req, res, next) {
 
-    pool.query("SELECT campusEmail, user_id FROM user_info WHERE user_id = ?", req.user.user_id, function (error, results, fields) {
-        if (error) {
-            return next("Couldn't connect to the database. " + error);
-        }
-        if (results.length > 0) {
-            const email = results[0].campusEmail;
-            sendPasswordResetEmail(email, res, next);
-        }
-    });
+    const token = req.body.token;
+    const password = "" + req.body.password;
 
+    if (password.length <= 0) {
+        return res.json({success: false, message: "The minimum length of password is 5!"});
+    }
+
+    const campusEmail = tokens.decodeTokenWithExpiration(token);
+
+    if (campusEmail === null) {
+        return res.json({success: false, message: "Password reset token is not valid. Please try again!"});
+    }
+
+    console.log("RESET PASSWORD: => " + campusEmail);
+    console.log(campusEmail);
+
+    try {
+        pool.query("SELECT * FROM user_info WHERE campusEmail = ?", campusEmail, async function (error, results, fields) {
+            if (error) {
+                console.log(error);
+                return res.json({success: false, message: "Couldn't connect to the database. " + error});
+            }
+            if (results.length > 0) {
+                await pool.query("UPDATE user_info SET password = ? WHERE campusEmail = ?", [password, campusEmail], function (error, results, fields) {
+                    return res.json({success: true, message: "Password updated"});
+                });
+            } else {
+                return res.json({success: false, message: "Your account doesn't exists. Please try again later!"});
+            }
+        });
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 
-function sendPasswordResetEmail(email, res, next) {
+function sendPasswordResetEmail(user, res, next) {
+
+    console.log("START Sending email");
+    console.log(user);
+
+    const token = tokens.encodeWithExpiration(user.campusEmail, '1h');
+
+    console.log("TOKEN => " + token);
+
     let subject = "Password Reset Email";
-    let text = "Hi, Reset password will be implemented very soon. Stay tuned.";
+    const name = user.first_name + " " + user.last_name;
+    const link = HOST_IP_ADDRESS + ":3000/resetPassword/" + token;
+
+    let text = "Hi " + name + ",\n\nTo reset your password please follow this link:\n\n" + link + "\n\nSincerely,\nULM Scheduling application team";
 
     let callback = (error, info) => {
         if (error) {
@@ -271,8 +306,7 @@ function sendPasswordResetEmail(email, res, next) {
         }
     };
 
-    emailHelper.sendEmail(email, subject, text, callback);
+    emailHelper.sendEmail(user.campusEmail, subject, text, callback);
 }
-
 
 module.exports = router;

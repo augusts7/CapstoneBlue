@@ -41,7 +41,7 @@ export default class DialogForm extends React.Component {
         let url = "user_info/userList";
         this.setState({progress: true});
         get(url, (res) => {
-            this.setState({"allUsers": res.results, "displayedUsers": res.results, "progress": false});
+            this.setState({"allUsers": res.results, selectedUsers: [], displayedUsers: res.results, progress: false});
             console.log(res.results);
         });
     };
@@ -61,6 +61,7 @@ export default class DialogForm extends React.Component {
     };
 
     getAllUsersFromUids = (allUsers, uids) => {
+        console.log(uids);
         let results = [];
         allUsers.forEach((user) => {
             if (uids.includes(user.user_id)) {
@@ -71,6 +72,7 @@ export default class DialogForm extends React.Component {
     };
 
     toggleUserChecked = (userId) => {
+        console.log(userId);
         let newSelectedUsers = ArrayToggleUtills.toggleStringValue(this.state.selectedUsers, userId);
         this.setState({selectedUsers: newSelectedUsers});
     };

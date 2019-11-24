@@ -7,6 +7,7 @@ const CalendarActionsContext = React.createContext({
     "showShareCalendarForm": (calendarId) => { },
     "showAddCalendarForm": () => { },
     "showAddEventForm": () => { },
+    "getSocket": () => {},
     "showAddAppointmentForm": () => { },
     "showEditAppointmentForm": (eventData) => {}
 });

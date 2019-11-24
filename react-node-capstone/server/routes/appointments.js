@@ -36,7 +36,7 @@ router.post("/", (req, res, next) => {
 
         if (req.body.attendeeEmails) {
 
-            const emailList = emailUtils.getEmailList(req.body.attendeeEmails);
+            const emailList = req.body.attendeeEmails;
 
             emailList.forEach((email) => {
 

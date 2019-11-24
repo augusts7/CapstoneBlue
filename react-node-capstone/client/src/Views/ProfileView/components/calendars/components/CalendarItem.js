@@ -11,7 +11,7 @@ export default function CalendarItem(props) {
 
     const handleMenuClick = (key) => {
         if (key === "delete") {
-            props.onDelete();
+            props.onDelete(props.data.id);
             handleMenuClose();
         }
     };
