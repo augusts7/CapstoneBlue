@@ -2,21 +2,47 @@ const tokens = require("../../utils/tokens/tokens");
 const HOST_IP_ADDRESS = "localhost";
 const emailHelper = require("../../utils/email/email-sender");
 
+function sendHtmlBasedResetEmail (user, res, next) {
+    console.log("START Sending email");
+    console.log(user);
 
-function getHtmlEmail (link) {
+    const token = tokens.encodeWithExpiration(user.campusEmail, '1h');
 
-    let greeting = "Hi " + name;
+    console.log("TOKEN => " + token);
 
-    let description = ",\n\nTo reset your password please follow this link:\n\n";
+    let subject = "Password Reset Email";
+    const name = user.first_name + " " + user.last_name;
+    const link = HOST_IP_ADDRESS + ":3000/resetPassword/" + token;
 
-    let linkHtml = link;
+    let text = _getResetEmailHtml(name, link);
 
-    let ending = "\n\nSincerely,\nULM Scheduling application team";
+    let callback = (error, info) => {
+        if (error) {
+            return next("Password reset email couldn't be sent. " + error);
+        } else {
+            return res.json({"success": true, "message": "Password reset email sent. " + info.response})
+        }
+    };
 
+    emailHelper.sendHtmlEmail(user.campusEmail, "Reset Password", text, callback);
 }
 
+function _getResetEmailHtml (name, link) {
 
-function sendPasswordResetEmail(user, res, next) {
+    let header = "<div style='margin-bottom: 24px; color: #800029;'>Hi " + name + ",</div>";
+
+    let text = "<div style='margin-top: 8px; margin-bottom: 16px;'>To reset your password please follow this link:</div>";
+
+    let linkHtml = "<div style='color: #800029; margin-bottom: 16px;'><a href='http://" + link + "'>" + link + "</a></div>";
+
+    let endNote = "<div style='color: #800029;'>Sincerely,<br />ULM Scheduling application team</div>";
+
+    let html = header + text + linkHtml + endNote;
+
+    return html;
+}
+
+function sendTemplateResetEmail () {
 
     console.log("START Sending email");
     console.log(user);
@@ -39,9 +65,13 @@ function sendPasswordResetEmail(user, res, next) {
         }
     };
 
-    emailHelper.sendEmail(user.campusEmail, subject, text, callback);
+    emailHelper.sendHtmlTemplateEmail("reset-password", {to: user.campusEmail, from: "ULM Scheduling Website <no-reply>"}, {first_name: user.first_name, link: token}, callback);
 }
 
-exports = {
+function sendPasswordResetEmail(user, res, next) {
+    sendHtmlBasedResetEmail(user, res, next);
+}
+
+module.exports = {
     sendPasswordResetEmail,
 };

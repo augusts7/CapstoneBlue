@@ -136,14 +136,16 @@ export default class Calendar extends React.Component {
     handleDateClick = (args) => {
         console.log(args);
         if (this.props.onDateClick) {
-            this.props.onDateClick(args.date);
+            let date = "" + args.date;
+            this.props.onDateClick(date);
         }   
-    }
+    };
 
     handleEventClick(args) {
         console.log(args);
         if (this.props.onEventClick) {
-            this.props.onEventClick(args.event);
+            const id = "" + args.event.id;
+            this.props.onEventClick(id);
         }
     }
 

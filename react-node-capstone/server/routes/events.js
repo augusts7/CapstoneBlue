@@ -19,7 +19,7 @@ router.get("/attending/:calendarId", function (req, res) {
     if (calendarId.length === 0 || calendarId === "main") {
         select =
             "SELECT * FROM attending INNER JOIN event ON event.eventID = attending.event_id WHERE attendee_id = " +
-            req.user.user_id + " AND calendar_id = 'main' OR calendar_id = '' OR calendar_id is NULL";
+            req.user.user_id + " AND (calendar_id = 'main' OR calendar_id = '' OR calendar_id is NULL)";
 
     } else {
         select =
@@ -51,10 +51,11 @@ router.get("/sharedCalendar/:sharedCalId", function (req, res, next) {
 
         if (results.length > 0) {
             let sharingUserId = results[0].sharedByUserId;
+            let sharedCalendarId = results[0].sharedCalendarId;
 
             let select =
                 "SELECT * FROM event INNER JOIN attending ON eventID = event_id WHERE attendee_id = " +
-                sharingUserId;
+                sharingUserId + " AND calendar_id = " + sharedCalendarId;
 
             sqlHelper.handleSelectAndRespond(select, res);
         } else {
@@ -173,7 +174,7 @@ router.post("/", (req, res) => {
         end: req.body.end,
         event_type: req.body.event_type,
         creator_id: req.user.user_id,
-        calendar_id: req.body.calendar_id,
+        creator_calendar_id: req.body.calendar_id,
         carousel: req.body.carousel || "1",
         status: req.body.status
     };

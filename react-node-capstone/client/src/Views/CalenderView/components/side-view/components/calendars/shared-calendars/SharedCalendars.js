@@ -3,6 +3,7 @@ import BaseCalendarsLayout from "../base-layout/BaseCalendarsLayout";
 import {get, post} from "../../../../../../../ApiHelper/ApiHelper";
 import SocketContext from "../../../../../../../Context/SocketContext";
 import CalendarActionsContext from "../../../../../context/CalendarActionsContext";
+import SocketHelper from "../../../../../../../ApiHelper/Socket";
 
 const menuOptions = [
     {"name": "Delete calendar", "key": "delete"},
@@ -45,7 +46,7 @@ export default class CalendarFilter extends React.Component {
 
 
     connectToSocket = () => {
-        const socket = this.context.getSocket();
+        const socket = SocketHelper.getSocket();
 
         console.log("Socket");
         console.log(socket);

@@ -7,11 +7,9 @@ import CalendarActionsContext from "./context/CalendarActionsContext";
 import CalendarViewLayout from "./components/main-component/CalenderViewLayout";
 import AddNewCalendarForm from "./components/forms/calendar-forms/AddNewCalendarForm";
 import ColorDialog from "../GenericViews/colors/ColorDialog";
-import SocketContext from "../../Context/SocketContext";
 
 export default class CalenderView extends React.Component {
 
-    static contextType = SocketContext;
 
     constructor(props) {
         super(props);
@@ -63,10 +61,6 @@ export default class CalenderView extends React.Component {
 
     calendarActionsContext = () => {
 
-        const socket = this.context.socket;
-
-        console.log(socket);
-
         return {
 
             "showShareCalendarForm": (sharedCalendarId) => {
@@ -80,9 +74,6 @@ export default class CalenderView extends React.Component {
             },
             "showAddAppointmentForm": () => {
                 this.setState({"eventForm": true, "formMode": "appointment"});
-            },
-            "getSocket": () => {
-                return socket;
             },
             "showEditAppointmentForm": (eventData) => {
                 this.setState({"eventForm": true, "formMode": "editAppointment", "eventFormData": eventData});

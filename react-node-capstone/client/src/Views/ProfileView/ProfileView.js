@@ -9,6 +9,8 @@ import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import TabPanel from "../GenericViews/tabs/TabPanel";
 import TabHelper from "../GenericViews/tabs/TabHelper";
+import ls from "local-storage";
+import CreatedUsersList from "./components/created-users/CreatedUsersList";
 
 const tabContainerStyle = {marginBottom: "8px"};
 
@@ -18,7 +20,8 @@ export default class ProfileView extends React.Component {
         super(props);
 
         this.state = {
-            tabValue: 0
+            tabValue: 0,
+            user_type: ls.get("user_type", "")
         };
     }
 
@@ -29,6 +32,16 @@ export default class ProfileView extends React.Component {
     render() {
 
         let title = "Profile";
+
+        let createdUsersTab = [];
+        let createdUsersTabPanel = [];
+
+        if (this.state.user_type === "faculty") {
+            createdUsersTab.push(<Tab label="Created Users" {...TabHelper.getTabProps(3)} />);
+            createdUsersTabPanel.push(<TabPanel value={this.state.tabValue} index={3}>
+                <CreatedUsersList/>
+            </TabPanel>);
+        }
 
         return (
             <div className="flex-full ulm-library-image">
@@ -49,6 +62,7 @@ export default class ProfileView extends React.Component {
                                     <Tab label="Calendars Shared With Me" {...TabHelper.getTabProps(0)} />
                                     <Tab label="Calendars Shared By Me" {...TabHelper.getTabProps(1)} />
                                     <Tab label="Courses Taken" {...TabHelper.getTabProps(2)} />
+                                    {createdUsersTab}
                                 </Tabs>
                             </div>
 
@@ -61,7 +75,7 @@ export default class ProfileView extends React.Component {
                             <TabPanel value={this.state.tabValue} index={2}>
                                 <ClassesTaken/>
                             </TabPanel>
-
+                            {createdUsersTabPanel}
                         </ProfileSectionContainer>
 
 

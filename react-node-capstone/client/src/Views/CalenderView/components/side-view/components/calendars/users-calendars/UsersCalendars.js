@@ -5,6 +5,7 @@ import CustomIconButton from "../../../../../../GenericViews/IconButton";
 import Icon from "@material-ui/core/Icon";
 import SocketContext from "../../../../../../../Context/SocketContext";
 import CalendarActionsContext from "../../../../../context/CalendarActionsContext";
+import SocketHelper from "../../../../../../../ApiHelper/Socket";
 
 const menuOptions = [
     { "name": "Share calendar", "key": "share" },
@@ -44,7 +45,7 @@ export default class CalendarFilter extends React.Component {
     }
 
     connectToSocket = () => {
-        const socket = this.context.getSocket();
+        const socket = SocketHelper.getSocket();
         if (socket !== null) {
             socket.on('newCalendarAdded', (data) => {
                 if (data === undefined || data === null) {

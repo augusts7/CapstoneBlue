@@ -17,7 +17,8 @@ import AllUsersList from "./AllUsersList";
 import AttendeeList from "./AttendeeList";
 import LengthValidator from "../../../../../utils/length-utils/LengthValidator";
 import ArraySearchHelper from "../../../../../utils/array-utils/ArraySearchHelper";
-import SelectCalendar from "../../../../GenericViews/select-calendars/SelectCalendars";
+import SelectCalendar from "../../../../GenericViews/select/calendars/SelectCalendars";
+import SelectUsersCalendars from "../../../../GenericViews/select/calendars/SelectUsersCalendars";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -142,7 +143,7 @@ export default class EventForm extends React.Component {
             postUrl = "/single-event-layout/edit";
             data["eventId"] = this.props.eventFormData.event.id;
         }
-
+        alert(this.state.calendarId);
         data["calendarId"] = this.state.calendarId === "main" ? "" : this.state.calendarId;
         let attendeeEmails = [];
         if (LengthValidator.isNotEmpty(this.state.attendees)) {
@@ -265,7 +266,7 @@ export default class EventForm extends React.Component {
 
                         <AttendeeList onDelete={this.handleDeleteAttendees} attendees={this.state.attendees}/>
 
-                        <SelectCalendar value={this.state.calendarId} onChange={(value) => this.handleChange("calendarId", value)} />
+                        <SelectUsersCalendars value={this.state.calendarId} onChange={(value) => this.handleChange("calendarId", value)} />
 
                     </div>
                 </MuiPickersUtilsProvider>

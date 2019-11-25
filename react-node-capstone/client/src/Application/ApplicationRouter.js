@@ -17,12 +17,12 @@ import Login from "../Authentication/Login/Login";
 import Register from "../Authentication/Register/Register";
 import AuthRoute from "../Route/AuthRoute";
 import ProfileView from "../Views/ProfileView/ProfileView";
-import "./images/background.jpg";
+import backgroundImage from "./styles/image-styles/background.jpg";
 
 import "./styles/application-styles.css";
 import "./styles/flex/flex.css";
 import "./styles/colors/colors.css";
-import "./styles/images/background-images.css";
+import "./styles/image-styles/background-images.css";
 import ResetPassword from "../Authentication/ResetPassword/ResetPassword";
 
 
@@ -32,7 +32,6 @@ export default function ApplicationRouter(props) {
     let footer = <div/>;
     let wrapperClassName = "mdl-layout mdl-js-layout flex-column mdl-layout--fixed-header full";
     let contentClassName = "mdl-layout__content";
-
 
     if (props.auth) {
 

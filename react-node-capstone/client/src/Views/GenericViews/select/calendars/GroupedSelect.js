@@ -6,17 +6,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import ListSubheader from "@material-ui/core/ListSubheader";
-import LengthValidator from "../../../utils/length-utils/LengthValidator";
+import LengthValidator from "../../../../utils/length-utils/LengthValidator";
+import TextField from "@material-ui/core/TextField";
 
-const useStyles = makeStyles(theme => ({
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
-    },
-}));
+
 
 export default function GroupedSelect(props) {
-    const classes = useStyles();
 
     const menuOptions = [];
 
@@ -32,13 +27,23 @@ export default function GroupedSelect(props) {
         }
     });
 
+    const handleChange = (event) => {
+        props.onChange(event.target.value);
+    };
+
     return (
-        <div>
-            <FormControl fullWidth className={classes.formControl}>
-                <Select onChange={props.onChange} helperText={props.helperText} defaultValue="" input={<Input id="grouped-select" />}>
-                    {menuOptions}
-                </Select>
-            </FormControl>
-        </div>
+        <TextField
+            select
+            style={props.style}
+            name={props.name}
+            fullWidth={true}
+            label={props.label}
+            value={props.value}
+            onChange={handleChange}
+            helperText={props.helperText || props.label}
+            margin="normal">
+
+            {menuOptions}
+        </TextField>
     );
 }

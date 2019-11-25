@@ -75,7 +75,7 @@ export default class GroupCalendarEventsDataStore {
 
     loadGroupCalendarData = (calId) => {
 
-        if (calId == null || calId.length === 0) {
+        if (LengthValidator.isEmpty(calId)) {
             calId = "main";
         }
 
@@ -154,7 +154,7 @@ export default class GroupCalendarEventsDataStore {
 
     onEventDeleted = (deletedEvent) => {
         let calendarId = deletedEvent.calendar_id;
-        if (calendarId === null || calendarId.length === 0) {
+        if (LengthValidator.isEmpty(calendarId)) {
             calendarId = "main";
         }
         const name = this.getStateNameForGroupEvents(calendarId);
@@ -163,7 +163,7 @@ export default class GroupCalendarEventsDataStore {
     };
 
     onNewEventAddedToCalendar = (data) => {
-        if (data === undefined || data === null) {
+        if (LengthValidator.isEmpty(data)) {
             return;
         }
         let event = this.processSingleEvent(data);
@@ -175,8 +175,11 @@ export default class GroupCalendarEventsDataStore {
     };
 
     addNewEventToState = (stateName, event) => {
-        const currentEvents = this.stateData[stateName].concat(event);
-        this.onDataChange(stateName, currentEvents);
+        if (!this.stateData.hasOwnProperty(stateName)) {
+            this.stateData[stateName] = [];
+        }
+        this.stateData[stateName].push(event);
+        this.onDataChange(stateName, this.stateData[stateName]);
     };
 
 

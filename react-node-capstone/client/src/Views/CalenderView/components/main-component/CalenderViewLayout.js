@@ -16,6 +16,8 @@ import GroupCalendarEventsDataStore from "./GroupEventsDataStore";
 import ColorDialog from "../../../GenericViews/colors/ColorDialog";
 import CalendarColorHandler from "./CalendarColorHandler";
 import LengthValidator from "../../../../utils/length-utils/LengthValidator";
+import CalendarViewContext from "../../context/CalendarViewContext";
+import IcsGenerator from "../../../../utils/ics/IcsGenerator";
 
 
 class CalenderViewLayout extends React.Component {
@@ -132,8 +134,18 @@ class CalenderViewLayout extends React.Component {
         this.setState({"eventsDetailView": true, "eventsDetailViewData": {"sortBy": "date", "date": date}});
     };
 
-    onEventClick = (event) => {
-        this.setState({"eventsDetailView": true, "eventsDetailViewData": {"sortBy": "id", "id": event.id}});
+    onEventClick = (id) => {
+        this.setState({"eventsDetailView": true, "eventsDetailViewData": {"sortBy": "id", "id": id}});
+    };
+
+    calendarViewContext = () => {
+        return {
+            exportCalendar: this.exportCalendar
+        };
+    };
+
+    exportCalendar = () => {
+        IcsGenerator.generateIcs(this.getProcessedEventsToDisplay());
     };
 
     render() {
@@ -144,25 +156,27 @@ class CalenderViewLayout extends React.Component {
         let events = this.getProcessedEventsToDisplay();
 
         return (
-            <div className="flex-full mdl-color--white">
+            <CalendarViewContext.Provider value={this.calendarViewContext()}>
+                <div className="flex-full mdl-color--white">
 
-                <DetailView data={this.state.eventsDetailViewData} events={events}
-                            onCancel={() => this.handlePopupClose("eventsDetailView")}
-                            onClose={() => this.handlePopupClose("eventsDetailView")}
-                            open={this.state.eventsDetailView}/>
+                    <DetailView data={this.state.eventsDetailViewData} events={events}
+                                onCancel={() => this.handlePopupClose("eventsDetailView")}
+                                onClose={() => this.handlePopupClose("eventsDetailView")}
+                                open={this.state.eventsDetailView}/>
 
-                <div className="CalendarViewContentContainer">
-                    <CalendarOptions isLoading={this.state.isLoading}
-                                     onChangeCalendarData={this.onChangeCalendarData}
-                                     events={events} userType={this.state.userType}/>
+                    <div className="CalendarViewContentContainer">
+                        <CalendarOptions isLoading={this.state.isLoading}
+                                         onChangeCalendarData={this.onChangeCalendarData}
+                                         events={events} userType={this.state.userType}/>
 
-                    <div>
-                        <Progress show={this.state.isLoading}/>
-                        <Calendar onEventClick={this.onEventClick} onDateClick={this.onDateClick} events={events}/>
-                        <FloatingAddButton/>
+                        <div>
+                            <Progress show={this.state.isLoading}/>
+                            <Calendar onEventClick={this.onEventClick} onDateClick={this.onDateClick} events={events}/>
+                            <FloatingAddButton/>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </CalendarViewContext.Provider>
         );
     }
 }

@@ -1,64 +1,52 @@
 import React from "react";
 import ActionLayout from "./ActionLayout";
 import CalendarActionsContext from "../../../../context/CalendarActionsContext";
+import CalendarViewContext from "../../../../context/CalendarViewContext";
 
-export default class Actions extends React.Component {
+export default function Actions (props) {
 
-    static contextType = CalendarActionsContext;
+    const calendarActionsContext = React.useContext(CalendarActionsContext);
+    const calendarViewContext = React.useContext(CalendarViewContext);
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-
-        };
-
-        this.handleAction = this.handleAction.bind(this);
-    }
-
-
-
-    handleAction(id, data) {
+    const handleAction = (id, data) => {
 
         const action = "" + id;
 
         if (action === "addAppointment") {
 
-            this.context.showAddAppointmentForm();
+            calendarActionsContext.showAddAppointmentForm();
 
         } else if (action === "shareCalendar") {
 
-            this.context.showShareCalendarForm();
+            calendarActionsContext.showShareCalendarForm();
 
         } else if (action === "modifyAppointment") {
 
-            this.context.showEditAppointmentForm(data);
+            calendarActionsContext.showEditAppointmentForm(data);
 
         } else if (action === "exportCalendar") {
 
+            calendarViewContext.exportCalendar();
 
         } else if (action === "addAdvising") {
 
-            this.context.showAdvisingSlotForm();
+            calendarActionsContext.showAdvisingSlotForm();
 
         } else if (action === "selectAdvising") {
 
-            this.context.showAdvisingSignUpForm();
+            calendarActionsContext.showAdvisingSignUpForm();
 
         } else if (action === "editAppointment") {
 
-            this.context.showEditAppointmentForm(data);
+            calendarActionsContext.showEditAppointmentForm(data);
 
         } else {
 
         }
-    }
+    };
 
-    render() {
-
-        return (
-            <ActionLayout handleAction={this.handleAction}/>
-        );
-    }
+    return (
+        <ActionLayout handleAction={handleAction}/>
+    );
 
 }

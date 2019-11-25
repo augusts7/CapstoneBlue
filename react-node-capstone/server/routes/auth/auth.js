@@ -175,9 +175,48 @@ router.post("/createUser", function (req, res, next) {
     });
 });
 
+router.post("/updateUser", function (req, res, next) {
+
+    const user = {
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        campusEmail: req.body.campusEmail,
+        password: req.body.password,
+        user_type: req.body.user_type,
+        user_id: req.body.user_id
+    };
+
+    let student = {};
+
+    if (user.user_type === "student") {
+        student = {
+            user_id: req.body.user_id,
+            classification: req.body.classification,
+            major: req.body.major,
+            advisor_id: req.body.advisor_id
+        };
+    }
+
+    pool.query("UPDATE user_info SET ? WHERE user_id = " + user.user_id, user, function (error, results, fields) {
+        if (error) {
+            return next("Couldn't connect to the database. " + error);
+        }
+
+        if (user.user_type === "student") {
+
+            sqlHelper.handleSetObjectAndRespond("UPDATE student_info SET ? WHERE user_id = " + student.user_id, student, res);
+
+
+        } else {
+            return res.json({"success": false, "message": "User has been already been registered"});
+        }
+    });
+});
+
 router.post("/createMultipleUsers", async function (req, res, next) {
 
     const users = req.body.users;
+    const creatorId = req.user.user_id;
 
     users.forEach(async (user) => {
         if (!user.hasOwnProperty("password")) {
@@ -186,22 +225,38 @@ router.post("/createMultipleUsers", async function (req, res, next) {
         if (!user.hasOwnProperty("user_type")) {
             user.user_type = "student";
         }
+        user.creator_user_id = creatorId;
+
         console.log(user);
-        await pool.query("INSERT INTO user_info SET ?", user, (error, results, fields) => {
+        await pool.query("INSERT INTO user_info SET ?", user, async (error, results, fields) => {
             if (error) {
                 console.log(error);
             }
             console.log("Another user has been created " + results);
+            if (user.user_type === "student") {
+                const student = {
+                    user_id: results.insertId,
+                    classification: req.body.classification || "None specified",
+                    major: req.body.major || "None specified",
+                    advisor_id: req.body.advisor_id || user.creator_user_id
+                };
+                await pool.query("INSERT INTO student_info SET ?", student, (error, results, fields) => {
+                    if (error) {
+                        console.log(error);
+                    }
+                    console.log("Another student has been created " + results);
+                });
+            }
         });
+
     });
 
     return res.json({success: true});
-
 });
 
 router.post('/forgotPassword', function (req, res, next) {
 
-    pool.query("SELECT campusEmail, user_id FROM user_info WHERE campusEmail = ?", req.body.campusEmail, function (error, results, fields) {
+    pool.query("SELECT * FROM user_info WHERE campusEmail = ?", req.body.campusEmail, function (error, results, fields) {
         if (error) {
             return res.json({"success": false, "message": "Couldn't connect to the database. " + error});
         }
@@ -211,7 +266,7 @@ router.post('/forgotPassword', function (req, res, next) {
                 const idsAreEqual = ("" + req.body.user_id) === ("" + results[0].user_id);
 
                 if (idsAreEqual) {
-                    passwordResetHelper.sendPasswordResetEmail(req.body.campusEmail, res, next);
+                    passwordResetHelper.sendPasswordResetEmail(results[0], res, next);
                 } else {
                     return res.json({"success": false, "message": "Your campus Id was incorrect"});
                 }

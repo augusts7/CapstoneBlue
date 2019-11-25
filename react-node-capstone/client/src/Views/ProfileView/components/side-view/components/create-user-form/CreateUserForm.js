@@ -4,6 +4,7 @@ import {post, get} from "../../../../../../ApiHelper/ApiHelper";
 import DialogForm from "../../../../../CalenderView/components/forms/dialog-form/DialogForm";
 import FormInputFields from "../../../../../../components/Form/FormInputFields";
 import LengthValidatorForMultipleValues from "../../../../../../utils/length-utils/LengthValidatorForMultipleValues";
+import LengthValidator from "../../../../../../utils/length-utils/LengthValidator";
 
 
 class CreateUserForm extends React.Component {
@@ -15,14 +16,46 @@ class CreateUserForm extends React.Component {
             "isLoading": false,
             "user_type": "",
             "advisors": [],
+            scope: "create"
         };
-
     }
 
     hideMessage = () => {
         this.setState({"message": ""});
     };
 
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (LengthValidator.isNotEmpty(nextProps.scope) && LengthValidator.isNotEmpty(nextProps.userData)) {
+            this.populateFields(nextProps.userData);
+            this.loadStudentFields(nextProps.userData);
+        }
+    }
+
+    loadStudentFields = (userData) => {
+        get("user_info/studentInfo/" + userData.user_id, (res) => {
+            const data = res.results[0];
+            if (LengthValidator.isNotEmpty(data)) {
+                this.populateStudentFields(data);
+            }
+        });
+    };
+
+    populateFields = (userData) => {
+        let {user_type, first_name, last_name} = userData;
+
+        this.setState({user_type, first_name, last_name});
+    };
+
+    populateStudentFields = (studentData) => {
+        let {advisor_id, major, classification} = studentData;
+
+        this.setState({advisor_id, major, classification});
+    };
+
+    areFieldsRequired = () => {
+        const scope = this.props.scope;
+        return !(LengthValidator.isNotEmpty(scope) && scope === "update");
+    };
 
     commonData = () => {
         return {
@@ -31,27 +64,27 @@ class CreateUserForm extends React.Component {
                     "name": "user_type",
                     "type": "select",
                     "label": "User Type",
-                    "require": true,
+                    "require": this.areFieldsRequired(),
                     "onChange": this.handleChangeInUserType,
                     "options": [{"name": "Student", "value": "student"}, {"name": "Faculty", "value": "faculty"}]
                 },
-                {"name": "first_name", "type": "text", "label": "First Name", "required": true},
-                {"name": "last_name", "type": "text", "label": "Last Name", "required": true},
-                {"name": "campusEmail", "type": "email", "label": "Campus Email", "required": true, fullWidth: true},
+                {"name": "first_name", "type": "text", "label": "First Name", "required": this.areFieldsRequired()},
+                {"name": "last_name", "type": "text", "label": "Last Name", "required": this.areFieldsRequired()},
+                {"name": "campusEmail", "type": "email", "label": "Campus Email", "required": this.areFieldsRequired(), fullWidth: true},
 
             ],
 
             passwordFields: [
-                {"name": "password", "type": "password", "label": "Password", "required": true},
-                {"name": "confirmPassword", "type": "password", "label": "Confirm Password", "required": true},
+                {"name": "password", "type": "password", "label": "Password", "required": this.areFieldsRequired()},
+                {"name": "confirmPassword", "type": "password", "label": "Confirm Password", "required": this.areFieldsRequired()},
             ],
             studentFields: [
-                {"name": "major", "type": "text", "label": "Major", "required": true},
+                {"name": "major", "type": "text", "label": "Major", "required": this.areFieldsRequired()},
                 {
                     "name": "advisor_id",
                     "type": "select",
                     "label": "Select Advisor",
-                    "require": true,
+                    "require": this.areFieldsRequired(),
                     onChange: this.handleChangeInAdvisors,
                     "options": this.state.advisors
                 },
@@ -59,7 +92,7 @@ class CreateUserForm extends React.Component {
                     "name": "classification",
                     "label": "Classification",
                     "type": "select",
-                    "required": true,
+                    "required": this.areFieldsRequired(),
                     "options": [{"name": "Freshman", "value": "freshman"}, {
                         "name": "Sophomore",
                         "value": "sophomore"
@@ -133,6 +166,15 @@ class CreateUserForm extends React.Component {
             data["major"] = this.state.major;
         }
 
+        if (LengthValidator.isNotEmpty(this.props.scope) && this.props.scope === "update") {
+            post("/auth/updateUser", data, (res) => {
+                this.setState({
+                    "message": res.message,
+                    "isLoading": false
+                });
+            });
+            return;
+        }
         post("/auth/createUser", data, (res) => {
             this.setState({
                 "message": res.message,

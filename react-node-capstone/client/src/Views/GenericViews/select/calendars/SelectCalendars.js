@@ -1,6 +1,6 @@
 import React from "react";
 import GroupedSelect from "./GroupedSelect";
-import {get} from "../../../ApiHelper/ApiHelper";
+import {get} from "../../../../ApiHelper/ApiHelper";
 
 export default class SelectCalendar extends React.Component {
 
@@ -91,7 +91,7 @@ export default class SelectCalendar extends React.Component {
         ];
 
         return (
-            <GroupedSelect onChange={this.props.onChange} helperText="Select the Calendar to associate this event in" title="Select Calendar" options={options}/>
+            <GroupedSelect value={this.props.value} onChange={this.props.onChange} helperText="Select the Calendar to associate this event in" label="Select Calendar" options={options}/>
         );
     }
 }

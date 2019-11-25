@@ -82,9 +82,10 @@ export default class EventsList extends React.Component {
             nextDate.setMinutes(0);
 
             this.props.events.forEach((item) => {
-                let start = new Date(item.start);
+                let event = {...item};
+                let start = new Date(event.start);
                 if (start > date && start < nextDate) {
-                    items.push(item);
+                    items.push(event);
                 }
             });
 
@@ -93,8 +94,9 @@ export default class EventsList extends React.Component {
             let id = this.props.data.id;
 
             this.props.events.forEach((item) => {
-                if (("" + item.id) === id) {
-                    items.push(item);
+                let event = {...item};
+                if (("" + event.id) === id) {
+                    items.push(event);
                 }
             });
         }

@@ -25,10 +25,31 @@ router.get("/userList", function (req, res, next) {
     sqlHandler.handleSelectAndRespond(sql, res);
 });
 
-router.get("/", function (req, res, next) {
-    console.log("get user info");
+router.get("/createdUsers", function (req, res, next) {
 
+    let sql = "SELECT * FROM user_info WHERE creator_user_id = " + req.user.user_id;
+
+    sqlHandler.handleSelectAndRespond(sql, res);
+});
+
+router.get("/studentInfo/:userId", function (req, res, next) {
+
+    let sql = "SELECT * FROM student_info WHERE user_id = " + req.params.userId;
+
+    sqlHandler.handleSelectAndRespond(sql, res);
+});
+
+router.post("/createdUsers/delete", function (req, res, next) {
+    const deletedUserId = req.body.user_id;
+
+    let sql = "DELETE FROM user_info WHERE creator_user_id = " + req.user.user_id + " AND user_id = " + deletedUserId;
+
+    sqlHandler.handleDeleteAndRespond(sql, res);
+});
+
+router.get("/", function (req, res, next) {
     let sql = "SELECT * FROM user_info WHERE user_id = " + req.user.user_id;
+
     sqlHandler.handleSelectAndRespond(sql, res);
 });
 

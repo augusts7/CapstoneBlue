@@ -1,9 +1,9 @@
 import React from "react";
-import "./CalendarItem.css";
+import "./ProfileItemGridRow.css";
 import {Typography} from "@material-ui/core";
-import LengthValidator from "../../../../../utils/length-utils/LengthValidator";
+import LengthValidator from "../../../../utils/length-utils/LengthValidator";
 
-export default function CalendarTitleRow (props) {
+export default function ProfileItemGridTitle (props) {
 
     let titles = [];
 
@@ -16,7 +16,7 @@ export default function CalendarTitleRow (props) {
     });
 
     return (
-        <div className="calendar-item-title-row">
+        <div className="profile-item-title-row">
             {titles}
         </div>
     );

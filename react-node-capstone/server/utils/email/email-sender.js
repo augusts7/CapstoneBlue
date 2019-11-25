@@ -1,16 +1,17 @@
-var nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
+const Email = require("email-templates");
 
 
-var transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'ulm.scheduling.application@gmail.com',
-    pass: 'CapstoneBlueProject'
-  }
+let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'ulm.scheduling.application@gmail.com',
+        pass: 'CapstoneBlueProject'
+    }
 });
 
 
-function sendEmailThroughTransporter(mailOptions, callback) {
+function _sendEmailThroughTransporter(mailOptions, callback) {
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.log("Error while attempting to send email.\n" + error);
@@ -21,33 +22,49 @@ function sendEmailThroughTransporter(mailOptions, callback) {
     });
 }
 
-function sendEmail (toEmail, subject, text, callback) {
+function sendHtmlEmail(toEmail, subject, html, callback) {
 
     var mailOptions = {
         from: 'ulm-scheduling.application@gmail.com',
+        to: toEmail,
+        subject: subject,
+        html: html
+    };
+
+    _sendEmailThroughTransporter(mailOptions, callback);
+}
+
+function sendEmail(toEmail, subject, text, callback) {
+
+    var mailOptions = {
+        from: 'ULM Scheduling Website',
         to: toEmail,
         subject: subject,
         text: text
     };
 
-    sendEmailThroughTransporter(mailOptions, callback);
+    _sendEmailThroughTransporter(mailOptions, callback);
 }
 
+function sendHtmlTemplateEmail(template, message, locals, callback) {
+    const email = new Email({
+        transport: transporter,
+        send: true,
+        preview: false,
+    });
 
- 
-function sendHtmlEmail (toEmail, subject, html, callback) {
-
-    var mailOptions = {
-        from: 'ulm-scheduling.application@gmail.com',
-        to: toEmail,
-        subject: subject,
-        html: {path: path}
-    };
-     
-    sendEmailThroughTransporter(mailOptions, callback);
+    email.send({
+        template: template,
+        message: message,
+        locals: locals
+    }).then(() => {
+        console.log('email has been sent!');
+        callback();
+    });
 }
 
 module.exports = {
     sendEmail,
-    sendHtmlEmail
-}
+    sendHtmlEmail,
+    sendHtmlTemplateEmail
+};

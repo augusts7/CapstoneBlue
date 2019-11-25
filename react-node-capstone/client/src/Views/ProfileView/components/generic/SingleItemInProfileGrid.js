@@ -1,7 +1,7 @@
 import React from "react";
 import {Typography} from "@material-ui/core";
 
-export default function CalendarRowItem(props) {
+export default function SingleItemInProfileGrid(props) {
 
     return (
         <Typography variant="subtitle2">

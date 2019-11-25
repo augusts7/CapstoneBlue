@@ -19,6 +19,7 @@ router.post("/", (req, res, next) => {
         start: req.body.start,
         end: req.body.end,
         event_type: "appointment",
+        creator_calendar_id: req.body.calendarId,
         creator_id: req.user.user_id,
         carousel: req.body.carousel || "1",
     };
@@ -106,6 +107,7 @@ router.post("/attend", function (req, res, next) {
         const creatorData = {
             event_id: req.body.eventId,
             attendee_id: results[0].creator_id,
+            calendar_id: results[0].creator_calendar_id
         };
         console.log("Creator data " + creatorData);
 
@@ -134,12 +136,8 @@ router.post("/attend", function (req, res, next) {
                     return res.json({success: true});
                 });
             });
-
-
         });
-
     });
-
 });
 
 router.get("/receivedInvite", function (req, res) {

@@ -83,7 +83,19 @@ router.post("/", (req, res) => {
         calendarName: req.body.calendarName
     };
 
-    sqlHelper.handleSetObjectAndRespond("INSERT INTO calendar SET ?", calendar, res);
+    pool.query("INSERT INTO calendar SET ?", calendar, (error, results, fields) => {
+        if (error) {
+            console.log(error);
+            return false;
+        }
+        if (results.length > 0) {
+            calendar.calendarId = results[0].insertId;
+
+            socket.broadcastToUser(calendar.user_id, "newCalendarAdded", calendar);
+
+            res.json({success: true, message: "Calendar has been added"});
+        }
+    });
 
 });
 
@@ -105,12 +117,21 @@ router.post("/share", (req, res, next) => {
             sharedCalendarName: req.body.sharedCalendarName
         };
 
-        socket.broadcastToUser(calendar.sharedToUserId, "newCalendarShared", calendar);
-
         console.log(calendar);
 
-        sqlHelper.handleSetObjectAndRespond("INSERT INTO shared_calendars SET ?", calendar, res);
+        pool.query("INSERT INTO shared_calendars SET ?", calendar, (error, results, fields) => {
+            if (error) {
+                console.log(error);
+                return false;
+            }
+            if (results.length > 0) {
+                calendar.id = results[0].insertId;
 
+                socket.broadcastToUser(calendar.sharedToUserId, "newCalendarShared", calendar);
+
+                res.json({success: true, message: "Calendar has been added"});
+            }
+        });
     });
 
 

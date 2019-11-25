@@ -5,7 +5,7 @@ import ProfileSectionContainer from "../../generic/profile-view-section/ProfileS
 import ManageUsersView from "./ManageUsersView";
 import AuthContext from "../../../../Context/AuthContext";
 import LengthValidator from "../../../../utils/length-utils/LengthValidator";
-
+import ls from "local-storage";
 import {get} from "../../../../ApiHelper/ApiHelper";
 
 
@@ -18,7 +18,8 @@ export default class ProfileSideBar extends React.Component {
 
         this.state = {
             user: null,
-            progress: false
+            progress: false,
+            user_type: ls.get("user_type", "")
         };
     }
 
@@ -71,7 +72,12 @@ export default class ProfileSideBar extends React.Component {
 
         console.log(this.state.user);
 
+        let manageUsersHtml = [];
 
+
+        if (this.state.user_type === "faculty") {
+            manageUsersHtml.push(<ManageUsersView/>);
+        }
 
         return (
             <ProfileSectionContainer title="Profile" buttons={buttons}>
@@ -86,8 +92,7 @@ export default class ProfileSideBar extends React.Component {
 
                 </ProfileItemBlockContainer>
 
-                <ManageUsersView/>
-
+                {manageUsersHtml}
             </ProfileSectionContainer>
         );
     }
