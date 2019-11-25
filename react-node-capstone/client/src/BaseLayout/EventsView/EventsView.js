@@ -67,7 +67,10 @@ class EventsView extends React.Component {
           <h4 className="title">My Events</h4>
           <hr />
           <div>
-            <ApproveEventsList events={this.state.events} />
+            <ApproveEventsList
+              action={() => this.getEvents()}
+              events={this.state.events}
+            />
           </div>
         </div>
       );
@@ -94,7 +97,10 @@ class EventsView extends React.Component {
           <h4 className="title">My Events</h4>
           <hr />
           <div>
-            <ApproveEventsList events={this.state.events} />
+            <ApproveEventsList
+              action={() => this.getEvents()}
+              events={this.state.events}
+            />
           </div>
         </div>
       );

@@ -70,10 +70,10 @@ class EventList extends Component {
   }
 
   addToCalender(event) {
-    console.log(event);
-    fetch("/events/", {
+    fetch("/events/attending", {
       method: "POST",
       headers: {
+        Accept: "application/json",
         "Content-Type": "application/json"
       },
       body: JSON.stringify({

@@ -66,7 +66,7 @@ class ApproveEvent extends React.Component {
             <hr />
             <EventListPending
               events={this.state.events}
-              action={this.getPendingEvents}
+              action={() => this.getPendingEvents()}
             />
           </DialogContent>
           <DialogActions>

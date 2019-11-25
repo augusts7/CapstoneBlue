@@ -29,7 +29,7 @@
 }
 
 .eventItem {
-  background-color: #8b6464;
+  background-color: rgba(203, 203, 204, 0.822);
 }
 
 .eventItem > .description {

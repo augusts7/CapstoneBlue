@@ -150,6 +150,7 @@ class EditGroup extends React.Component {
                 onChange={this.handleChange}
                 autoWidth
                 placeholder="New Group Owner"
+                displayEmpty
               >
                 {options}
               </Select>
