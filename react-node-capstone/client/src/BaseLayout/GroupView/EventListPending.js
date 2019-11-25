@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EventAvailableIcon from "@material-ui/icons/EventAvailable";
-import Tooltip from "@material-ui/core/Tooltip";
-import "./EventList.css";
+import CloseIcon from "@material-ui/icons/Close";
+import CheckIcon from "@material-ui/icons/Check";
 
-class EventList extends Component {
+import "./EventListPending.css";
+
+class EventListPending extends Component {
   getMonth(month, type) {
     var monthName = "";
     var monthAbrv = "";
@@ -69,27 +69,7 @@ class EventList extends Component {
     }
   }
 
-  addToCalendar(event) {
-    fetch("/events/attending", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        event_id: event
-      })
-    })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(body) {
-        console.log(body);
-      });
-    this.props.action();
-  }
-
-  deleteEvent(event) {
+  denyEvent(event) {
     console.log(event);
     fetch("/events/delete", {
       method: "POST",
@@ -108,19 +88,25 @@ class EventList extends Component {
       });
     this.props.action();
   }
-  getDeleteButton(eventID) {
-    if (this.props.creator_id === this.props.user) {
-      return (
-        <Tooltip title="Delete from Calendar">
-          <IconButton
-            aria-label="delete"
-            onClick={() => this.deleteEvent(eventID)}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      );
-    }
+
+  approveEvent(event) {
+    console.log(event);
+    fetch("/events/approveEvent/update", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        event_id: event
+      })
+    })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(body) {
+        console.log(body);
+      });
+    this.props.action();
   }
 
   render() {
@@ -149,21 +135,21 @@ class EventList extends Component {
               </div>
               {event.description}
             </div>
-            <div className="buttons">
-              <div className="addToCal">
-                <Tooltip title="Add to Calendar">
-                  <IconButton
-                    size="medium"
-                    aria-label="addToCal"
-                    onClick={() => this.addToCalendar(event.eventID)}
-                  >
-                    <EventAvailableIcon />
-                  </IconButton>
-                </Tooltip>
-              </div>
-              <div className="delete">
-                {() => this.getDeleteButton(event.eventID)}
-              </div>
+            <div>
+              <IconButton
+                aria-label="deny"
+                className="delete-event-button"
+                onClick={() => this.denyEvent(event.eventID)}
+              >
+                <CloseIcon />
+              </IconButton>
+              <IconButton
+                aria-label="approve"
+                className="delete-event-button"
+                onClick={() => this.approveEvent(event.eventID)}
+              >
+                <CheckIcon />
+              </IconButton>
             </div>
           </div>
         );
@@ -171,7 +157,7 @@ class EventList extends Component {
     } else {
       eventsList = (
         <div className="emptyEventList">
-          <h5>No Events Scheduled</h5>
+          <h5>No Events Requested</h5>
         </div>
       );
     }
@@ -179,4 +165,4 @@ class EventList extends Component {
   }
 }
 
-export default EventList;
+export default EventListPending;

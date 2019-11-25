@@ -65,7 +65,8 @@
 }
 
 .mem-buttons {
-  padding: 24px;
+  margin-left: auto;
+  margin-right: 0;
 }
 
 .mem-buttons > .buttons-group-members {
@@ -95,4 +96,8 @@
 }
 .create-group {
   border: black;
+}
+
+.inner{
+  float: right;
 }

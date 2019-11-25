@@ -15,16 +15,16 @@ router.use(authMiddleware);
 router.get("/attending/:calendarId", function (req, res) {
     const calendarId = "" + req.params.calendarId;
     let select;
-
     if (calendarId.length === 0 || calendarId === "main") {
         select =
             "SELECT * FROM attending INNER JOIN event ON event.eventID = attending.event_id WHERE attendee_id = " +
             req.user.user_id + " AND (calendar_id = 'main' OR calendar_id = '' OR calendar_id is NULL)";
-
     } else {
         select =
             "SELECT * FROM attending INNER JOIN event ON event.eventID = attending.event_id WHERE attendee_id = " +
-            req.user.user_id + " AND calendar_id = " + calendarId;
+            req.user.user_id +
+            " AND calendar_id = " +
+            calendarId;
     }
 
     sqlHelper.handleSelectAndRespond(select, res);
@@ -33,8 +33,11 @@ router.get("/attending/:calendarId", function (req, res) {
 router.get("/attendingUsers/", function (req, res) {
     const eventId = req.body.eventID;
 
-    const select = "SELECT * FROM attending INNER JOIN user_info ON attendee_id = user_id WHERE eventID = " + eventId
-        + " user_id != " + req.user.user_id;
+    const select =
+        "SELECT * FROM attending INNER JOIN user_info ON attendee_id = user_id WHERE eventID = " +
+        eventId +
+        " user_id != " +
+        req.user.user_id;
 
     sqlHelper.handleSelectAndRespond(select, res);
 });
@@ -48,7 +51,6 @@ router.get("/sharedCalendar/:sharedCalId", function (req, res, next) {
         if (error) {
             return next(error);
         }
-
         if (results.length > 0) {
             let sharingUserId = results[0].sharedByUserId;
             let sharedCalendarId = results[0].sharedCalendarId;
@@ -71,6 +73,29 @@ router.get("/all", async (req, res) => {
     try {
         let events = await pool.query("SELECT * FROM event");
         res.json(events);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
+//get all carousel events
+router.get("/carouselEvents", async (req, res) => {
+    try {
+        const userid = req.user.user_id;
+        let sql1 = "SELECT e.title, e.description, e.start, e.end, e.creator_id, e.eventID FROM event e " +
+            "WHERE e.carousel = 1 AND e.status != 'pending' AND  (e.event_type = 'global' OR e.group_id IN" +
+            "(SELECT m.group_id FROM my_groups m WHERE m.user_id = " + userid + "));";
+        pool.query(sql1, function (error, results, fields) {
+            if (error) {
+                return res.json({success: false, message: error});
+            }
+
+            if (results.length > 0) {
+                res.json(JSON.stringify(results));
+                console.log(JSON.stringify(results));
+            }
+        });
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
@@ -103,7 +128,8 @@ router.route("/allOnCalendar/:user_id").get((req, res) => {
 router.get("/notattendingGlobal", async (req, res) => {
     try {
         let events = await pool.query(
-            "SELECT * FROM event WHERE event_type = 'global' AND status='approved'"
+            "SELECT e.title, e.description, e.start, e.end, e.eventID FROM event e WHERE e.event_type ='global' AND e.status = 'approved' AND e.eventID NOT IN (SELECT e.eventID FROM event e inner join attending a on e.eventID = a.event_id WHERE a.attendee_id = "
+            + req.user.user_id + " AND e.event_type = 'global')"
         );
         res.json(events);
     } catch (e) {
@@ -126,6 +152,20 @@ router.get("/attendingGlobal", async (req, res) => {
     }
 });
 
+router.get("/allattending", async (req, res) => {
+    try {
+        let globalEvents = await pool.query(
+            "SELECT e.title, e.description, e.start, e.end, e.eventID FROM event e inner join attending a on e.eventID = a.event_id WHERE a.attendee_id = '" +
+            req.user.user_id +
+            "' AND e.event_type = 'global' OR e.event_type = 'advising' OR e.event_type = 'appointment';"
+        );
+        res.json(globalEvents);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
 router.get("/approveEvent", async (req, res) => {
     try {
         let events = await pool.query(
@@ -138,9 +178,9 @@ router.get("/approveEvent", async (req, res) => {
     }
 });
 
-router.put("/approveEvent/update", function (req, res) {
+router.route("/approveEvent/update").put((req, res) => {
     let eventID = req.body.event_id;
-    console.log(eventID);
+    console.log("ESEFSF" + eventID);
     try {
         pool.query(
             "UPDATE event SET status = 'approved' WHERE eventID = " + eventID
@@ -174,7 +214,7 @@ router.post("/", (req, res) => {
         end: req.body.end,
         event_type: req.body.event_type,
         creator_id: req.user.user_id,
-        creator_calendar_id: req.body.calendar_id,
+        creator_calendar_id: req.body.creator_calendar_id,
         carousel: req.body.carousel || "1",
         status: req.body.status
     };
@@ -182,24 +222,29 @@ router.post("/", (req, res) => {
     sqlHelper.handleSetObjectAndRespond("INSERT INTO event SET ?", event, res);
 });
 
-router.post("/edit", (req, res) => {
-    pool.query(
-        "SELECT creator_id FROM event WHERE eventID = ?",
-        req.body.eventId,
-        function (error, results, fields) {
-            if (error) {
-                return res.json({
-                    success: false,
-                    message: error
-                });
-            }
+router.post("/attending", (req, res) => {
+    let event_id = req.body.event_id;
+    let attendee_id = req.user.user_id;
+    try {
+        pool.query("INSERT INTO attending (event_id, attendee_id) VALUES (" + event_id + "," + attendee_id + ")");
+    } catch (e) {
+        res.sendStatus(500);
+    }
 
+});
+
+router.post("/edit", (req, res) => {
+    pool.query("SELECT creator_id FROM event WHERE eventID = ?", req.body.eventId, function (error, results, fields) {
+            if (error) {
+                return res.json({success: false, message: error});
+            }
             const event = {
                 title: req.body.title,
                 description: req.body.description,
                 start: req.body.start,
                 end: req.body.end,
                 event_type: req.body.event_type,
+                creator_calendar_id: req.body.calendar_id,
                 creator_id: results[0].creator_id,
                 carousel: req.body.carousel || "1",
                 eventID: req.body.eventId
@@ -212,6 +257,22 @@ router.post("/edit", (req, res) => {
             );
         }
     );
+});
+
+router.post("/remove", (req, res) => {
+    let attendee_id = req.user.user_id;
+    let event_id = req.body.event_id;
+
+    try {
+        var sql = "DELETE FROM attending WHERE event_id = ? AND attendee_id = ?";
+        pool.query(sql, [event_id, attendee_id], function (err, result) {
+            if (err) {
+                console.log(result);
+            }
+        });
+    } catch (e) {
+        res.sendStatus(500);
+    }
 });
 
 router.post("/delete", (req, res) => {

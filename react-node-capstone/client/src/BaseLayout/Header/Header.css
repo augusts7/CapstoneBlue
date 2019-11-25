@@ -3,6 +3,10 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.mdl-layout__header-row{
+  padding: 0 0 0 0;
+}
+
 .mdl-layout__header > .material-icons {
   margin-right: 8px;
   color: white;
@@ -33,4 +37,8 @@
 .mdl-navigation__link:hover {
   text-decoration: underline;
   transition: text-decoration 1s;
+}
+
+.logo {
+  alignment: left;
 }

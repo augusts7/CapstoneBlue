@@ -1,32 +1,35 @@
 import React, { Fragment } from "react";
+import { MenuItem } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
-import EventListPending from "../../BaseLayout/GroupView/EventListPending";
+import EventListPending from "./EventListPending";
 
-class ApproveEvent extends React.Component {
+class ApproveGroupEvent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      groupName: "",
       events: [],
+      creator_id: this.props.creator_id,
       open: false
     };
     this.handleToggle = this.handleToggle.bind(this);
-    this.getPendingEvents = this.getPendingEvents.bind(this);
+    this.getGroupEvents = this.getGroupEvents.bind(this);
   }
 
   componentDidMount() {
-    this.getPendingEvents();
+    this.getGroupEvents();
   }
 
-  getPendingEvents() {
-    var eventsURL = "/events/approveEvent";
-    fetch(eventsURL)
+  getGroupEvents() {
+    var groupEventsURL = "/groups/pendingGroupEvents/" + this.props.groupID;
+    fetch(groupEventsURL)
       .then(res => res.json())
-      .then(pending_events => this.setState({ events: pending_events }))
+      .then(group_events => this.setState({ events: group_events }))
       .catch(err => {
         console.log(err);
       });
@@ -42,23 +45,20 @@ class ApproveEvent extends React.Component {
     const { open } = this.state;
     return (
       <Fragment>
-        <Button
+        <MenuItem
           type="submit"
-          variant="contained"
           size="large"
-          className="msgBtn"
+          className="msgBtn2"
           onClick={this.handleToggle}
         >
-          <i className="material-icons">check_circle_outline</i>Approve Events
-        </Button>
+          <i className="material-icons">done_all</i>Approve Events
+        </MenuItem>
         <Dialog
           open={open}
           onClose={this.handleToggle}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">
-            Approve Global Events
-          </DialogTitle>
+          <DialogTitle id="form-dialog-title">Approve Group Events</DialogTitle>
           <DialogContent>
             <DialogContentText>
               Choose which events to approve and deny.
@@ -66,7 +66,7 @@ class ApproveEvent extends React.Component {
             <hr />
             <EventListPending
               events={this.state.events}
-              action={() => this.getPendingEvents()}
+              action={this.getGroupEvents}
             />
           </DialogContent>
           <DialogActions>
@@ -80,4 +80,4 @@ class ApproveEvent extends React.Component {
   }
 }
 
-export default ApproveEvent;
+export default ApproveGroupEvent;

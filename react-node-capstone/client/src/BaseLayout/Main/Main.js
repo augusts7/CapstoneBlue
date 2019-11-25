@@ -1,22 +1,17 @@
 import React from "react";
 import Carosel from "../../components/Carousel/HomeCarousel";
-import Calender from "../../components/Calendar/MyCalendar";
-import EventList from "../../components/EventList/EventList";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin from '@fullcalendar/interaction' 
-import "@fullcalendar/core/main.css";
-import "@fullcalendar/daygrid/main.css";
-import "@fullcalendar/timegrid/main.css";
-import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
-
+import CalendarView from "../../Views/CalenderView/HomeCalenderView";
+import ApproveEventsList from "../../components/EventsPage/ApproveEventsList";
 import "./Main.css";
+import { isNullOrUndefined } from "util";
 
 class Main extends React.Component {
+
+
   constructor(props) {
     super(props);
     this.state = {
+        user: 0,
       events: [{
         eventID: 1,
         start: new Date(),
@@ -27,40 +22,45 @@ class Main extends React.Component {
     };
   }
 
+    getUser() {
+        var getUserURL = "/user_info/user";
+        fetch(getUserURL)
+            .then(res => res.json())
+            .then(userInfo => {
+                if (userInfo === isNullOrUndefined || userInfo.length <= 0) {
+                } else {
+                    try{
+                        this.setState({ user: userInfo[0].user_id });
+                    } catch(e) {}
+                }
+            });
+    }
+
+    getEvents() {
+        fetch("/events/allattending")
+            .then(res => res.json())
+            .then(eventData => this.setState({ events: eventData }));
+    }
+
+    componentDidMount() {
+      this.getUser();
+      this.getEvents();
+    }
 
 
-  componentDidMount() {
-    fetch("/single-event-layout")
-      .then(res => res.json())
-      .then(eventData => this.setState({ events: eventData }));
-  }
-
-  render() {
+    render() {
     return (
       <div class="main">
         <div class="main-carousel">
           <Carosel />
         </div>
         <div class="main-calendar">
-          <FullCalendar
-            className="calender"
-            defaultView="dayGridMonth"
-            header = {{
-                left: 'prev, next today',
-                center: 'title',
-                right: 'dayGridMonth, timeGridWeek, timeGridDay, listWeek'
-            }}
-            schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
-            events={this.state.events}
-            dateClick={this.handleDateClick}
-            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, resourceTimelinePlugin]}
-            height={700}
-          />
+        <CalendarView/>
         </div>
         <div class="main-events">
           <div className="events">
             <h3>My Events</h3>
-            <EventList events={this.state.eventListItems} />
+            <ApproveEventsList events={this.state.events} />
           </div>
         </div>
       </div>

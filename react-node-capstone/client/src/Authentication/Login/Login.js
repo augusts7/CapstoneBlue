@@ -4,8 +4,8 @@ import MessageBox from "../../components/Form/MessageBox/MessageBox"
 import { Link } from "react-router-dom"
 import AuthContext from "../../Context/AuthContext";
 import AuthFormContainer from "../AuthenticationFormLayout/AuthFormContainer";
-import AuthFormAlternateButton from "../AuthenticationFormLayout/AuthFormAlternateButton";
 import AuthFormSubmitButton from "../AuthenticationFormLayout/AuthFormSubmitButton";
+import AuthFormAlternateButton from "../AuthenticationFormLayout/AuthFormAlternateButton";
 
 
 const fields = [
@@ -75,8 +75,8 @@ class Login extends React.Component {
                     <div><Link to="/forgotPassword">Forgot password?</Link></div>
                     <AuthFormSubmitButton icon="accessibility">Sign In</AuthFormSubmitButton>
                 </Form>
-                <AuthFormAlternateButton link="/register" text="Create a new Account instead">
-                    <i className="material-icons">how_to_reg</i>Register
+                <AuthFormAlternateButton link="/forgotPassword" text="Reset your account password?">
+                    <i className="material-icons">accessibility</i>Reset your password
                 </AuthFormAlternateButton>
             </AuthFormContainer>
         );

@@ -1,4 +1,3 @@
-import React from "react";
 import SocketClient from "socket.io-client";
 import ls from "local-storage";
 import EnvironmentConstants from "../Environment/EnvironmentConstants";

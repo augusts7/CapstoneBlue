@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import "./GroupMemberList.css";
 
@@ -27,22 +28,21 @@ class GroupMemberList extends Component {
       .then(function(body) {
         console.log(body);
       });
-    window.alert(
-      member_id + "user deleted and group id is " + this.props.group_id
-    );
+    this.props.action();
   }
 
-  getDeleteButton(member_id) {
-    console.log(this.props.creator_id + "<- CID MID ->" + this.props.user_id);
-    if (this.props.creator_id === this.props.user_id) {
+  getDeleteButton(member_id, status) {
+    if (this.props.creator_id === this.props.user_id && status !== "Owner") {
       return (
-        <IconButton
-          aria-label="delete"
-          className="delete-user-button"
-          onClick={() => this.onSubmit(member_id)}
-        >
-          <DeleteIcon />
-        </IconButton>
+        <Tooltip title="Delete Member from Group">
+          <IconButton
+            aria-label="delete"
+            className="delete-user-button"
+            onClick={() => this.onSubmit(member_id)}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
       );
     }
   }
@@ -55,7 +55,7 @@ class GroupMemberList extends Component {
             {member.first_name + " " + member.last_name}
           </div>
           <div className="member-status">{member.status}</div>
-          {this.getDeleteButton(member.member_id)}
+          {this.getDeleteButton(member.user_id, member.status)}
         </div>
       );
     });

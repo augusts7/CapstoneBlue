@@ -30,7 +30,6 @@ export default class ProfileView extends React.Component {
     };
 
     render() {
-
         let title = "Profile";
 
         let createdUsersTab = [];
@@ -56,7 +55,8 @@ export default class ProfileView extends React.Component {
                         <ProfileSectionContainer title="Profile Information">
 
                             <div style={tabContainerStyle}>
-                                <Tabs indicatorColor="primary" textColor="primary" variant="scrollable" scrollButtons="auto" name="tabValue"
+                                <Tabs indicatorColor="primary" textColor="primary" variant="scrollable"
+                                      scrollButtons="auto" name="tabValue"
                                       value={this.state.tabValue}
                                       onChange={this.handleTabChange} aria-label="simple tabs example">
                                     <Tab label="Calendars Shared With Me" {...TabHelper.getTabProps(0)} />

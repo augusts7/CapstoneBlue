@@ -4,7 +4,6 @@ import "./empty_list_image.jpg";
 import "./EmptyListView.css";
 
 const containerStyle = {height: 0.4 * window.innerHeight};
-const messageStyle = {color: "#fff"};
 
 export default function EmptyListView (props) {
 

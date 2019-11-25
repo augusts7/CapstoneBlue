@@ -1,9 +1,7 @@
 import React from "react";
-import {Typography} from "@material-ui/core";
 import ListItemWithCheckbox from "../../list/list-items/ListItemWithCheckbox";
 
 const containerStyle = {display: "grid", "grid-template-columns": "40% 40%", padding: "8px 0px"};
-const nameContainerStyle = {fontWeight: "600"};
 
 export default function UploadUsersFromFileListSingleRow(props) {
 

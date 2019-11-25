@@ -1,11 +1,5 @@
 import React, { Fragment } from "react";
-import {
-  TextField,
-  Menu,
-  MenuItem,
-  InputLabel,
-  makeStyles
-} from "@material-ui/core";
+import { TextField, MenuItem, InputLabel, makeStyles } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -109,14 +103,19 @@ class EditGroup extends React.Component {
     }));
 
     const { open } = this.state;
-    let name = "";
+    var options = this.props.groupMembers.map(member => (
+      <MenuItem value={member.user_id}>
+        {member.first_name + "" + member.last_name}
+      </MenuItem>
+    ));
+
     return (
       <Fragment>
         <MenuItem
           type="submit"
           size="large"
           className="msgBtn2"
-          onclick={this.handleToggle}
+          onClick={this.handleToggle}
         >
           <i className="material-icons">edit</i>Edit Group
         </MenuItem>
@@ -128,38 +127,32 @@ class EditGroup extends React.Component {
           <DialogTitle id="form-dialog-title">Edit Group</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Enter a new group name below, leave blank if wanted unchanged.
-              {/* </DialogContentText> */}
-              <TextField
-                className="groupTitle"
-                title="Group Name"
-                placeholder="New Group Name"
-                fullWidth
-                variant="outlined"
-                type="text"
-                onChange={this.handleGroupName}
-              />
-              {/* <DialogContentText> */}
-              Change the current group owner.
+              Enter a new group name or a select a new owner. Leave fields blank
+              if no change is wanted.
             </DialogContentText>
-          </DialogContent>
-          <DialogTitle id="form-dialog-title">Select New Owner</DialogTitle>
-          <DialogContent>
+            <br />
+            <TextField
+              className="groupTitle"
+              title="Group Name"
+              placeholder="New Group Name"
+              fullWidth
+              variant="outlined"
+              type="text"
+              onChange={this.handleGroupName}
+            />
+            <hr />
+            {/* <DialogTitle id="form-dialog-title">Select New Owner</DialogTitle> */}
             <FormControl classes={useStyles.formControl}>
-              <InputLabel>Select Group Owner</InputLabel>
+              <InputLabel>New Group Owner</InputLabel>
               <Select
                 id="selectowner"
                 value={this.state.value}
                 onChange={this.handleChange}
                 autoWidth
                 placeholder="New Group Owner"
+                displayEmpty
               >
-                {this.props.groupMembers.map(
-                  member => (
-                    (name = member.first_name + " " + member.last_name),
-                    (<MenuItem value={member.user_id}>{name}</MenuItem>)
-                  )
-                )}
+                {options}
               </Select>
             </FormControl>
           </DialogContent>

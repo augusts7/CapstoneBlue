@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -66,6 +66,8 @@ class RequestEvent extends React.Component {
                 description: this.state.description,
                 user_id: this.context.user_id,
                 event_type: "global",
+                carousel: 0,
+                creator_calendar_id: this.context.user_id,
                 status: "pending"
             })
         })

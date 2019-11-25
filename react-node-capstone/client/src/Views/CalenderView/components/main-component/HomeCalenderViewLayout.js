@@ -1,12 +1,9 @@
 import React from "react";
 import Calendar from "../../../GenericViews/calendar/Calendar";
-import CalendarOptions from "../side-view/CalendarOptions"
 import ls from "local-storage"
 import DetailView from "../calendar-click-popup/CalendarEventsDetailView";
 import Progress from "../../../GenericViews/Progress/Progress";
-import FloatingAddButton from "../floating-button/FloatingAddButton";
 import SocketContext from "../../../../Context/SocketContext";
-
 import "../../styles/scroll-bar/scroll-bar.css";
 import "./styles/calendar-view-layout.css";
 import CalendarEventsDataStore from "./CalendarEventsDataStore";
@@ -14,11 +11,9 @@ import SharedCalendarEventsDataStore from "./SharedCalendarEventsDataStore";
 import GroupCalendarEventsDataStore from "./GroupEventsDataStore";
 import CalendarColorHandler from "./CalendarColorHandler";
 import LengthValidator from "../../../../utils/length-utils/LengthValidator";
-import CalendarViewContext from "../../context/CalendarViewContext";
-import IcsGenerator from "../../../../utils/ics/IcsGenerator";
 
 
-class CalenderViewLayout extends React.Component {
+class HomeCalenderViewLayout extends React.Component {
 
     static contextType = SocketContext;
 
@@ -132,18 +127,8 @@ class CalenderViewLayout extends React.Component {
         this.setState({"eventsDetailView": true, "eventsDetailViewData": {"sortBy": "date", "date": date}});
     };
 
-    onEventClick = (id) => {
-        this.setState({"eventsDetailView": true, "eventsDetailViewData": {"sortBy": "id", "id": id}});
-    };
-
-    calendarViewContext = () => {
-        return {
-            exportCalendar: this.exportCalendar
-        };
-    };
-
-    exportCalendar = () => {
-        IcsGenerator.generateIcs(this.getProcessedEventsToDisplay());
+    onEventClick = (event) => {
+        this.setState({"eventsDetailView": true, "eventsDetailViewData": {"sortBy": "id", "id": event.id}});
     };
 
     render() {
@@ -154,30 +139,22 @@ class CalenderViewLayout extends React.Component {
         let events = this.getProcessedEventsToDisplay();
 
         return (
-            <CalendarViewContext.Provider value={this.calendarViewContext()}>
-                <div className="flex-full mdl-color--white">
+            <div className="flex-full mdl-color--white">
 
-                    <DetailView data={this.state.eventsDetailViewData} events={events}
-                                onCancel={() => this.handlePopupClose("eventsDetailView")}
-                                onClose={() => this.handlePopupClose("eventsDetailView")}
-                                open={this.state.eventsDetailView}/>
+                <DetailView data={this.state.eventsDetailViewData} events={events}
+                    onCancel={() => this.handlePopupClose("eventsDetailView")}
+                    onClose={() => this.handlePopupClose("eventsDetailView")}
+                    open={this.state.eventsDetailView}/>
 
-                    <div className="CalendarViewContentContainer">
-                        <CalendarOptions isLoading={this.state.isLoading}
-                                         onChangeCalendarData={this.onChangeCalendarData}
-                                         events={events} userType={this.state.userType}/>
-
-                        <div>
-                            <Progress show={this.state.isLoading}/>
-                            <Calendar onEventClick={this.onEventClick} onDateClick={this.onDateClick} events={events}/>
-                            <FloatingAddButton/>
-                        </div>
-                    </div>
+                <div>
+                    <Progress show={this.state.isLoading}/>
+                    <Calendar onEventClick={this.onEventClick} onDateClick={this.onDateClick} events={events}/>
+                
                 </div>
-            </CalendarViewContext.Provider>
+            </div>
         );
     }
 }
 
 
-export default CalenderViewLayout;
+export default HomeCalenderViewLayout;

@@ -1,12 +1,13 @@
 import React from "react";
-import EventList from "../../components/EventList/EventList";
 import "./EventsView.css";
 import ls from "local-storage";
 import Button from "@material-ui/core/Button";
 import CreateEvent from "../../components/EventsPage/CreateEvent";
 import RequestEvent from "../../components/EventsPage/RequestEvent";
 import UserContext from "../../Context/UserContext";
-import { Link } from "react-router-dom";
+import ApproveEventsList from "../../components/EventsPage/ApproveEventsList";
+import ApproveEvent from "../../components/EventsPage/ApproveEvent";
+import { isNullOrUndefined } from "util";
 
 class EventsView extends React.Component {
   static contextType = UserContext;
@@ -15,6 +16,7 @@ class EventsView extends React.Component {
     super(props);
 
     this.state = {
+      user: 0,
       user_type: ls.get("user_type"),
       events: []
     };
@@ -22,10 +24,23 @@ class EventsView extends React.Component {
 
   componentDidMount() {
     this.getEvents();
+    this.getUser();
+  }
+
+  getUser() {
+    var getUserURL = "/user_info/user";
+    fetch(getUserURL)
+      .then(res => res.json())
+      .then(userInfo => {
+        if (userInfo === isNullOrUndefined || userInfo.length <= 0) {
+        } else {
+          this.setState({ user: userInfo[0].user_id });
+        }
+      });
   }
 
   getEvents() {
-    var eventsURL = "/events/allOnCalendar/";
+    var eventsURL = "/events/attendingGlobal";
     fetch(eventsURL)
       .then(res => res.json())
       .then(global_events => this.setState({ events: global_events }));
@@ -36,7 +51,7 @@ class EventsView extends React.Component {
       return (
         <div className="flex-full">
           <div className="inner">
-            <RequestEvent user={this.state.creator_id} />
+            <RequestEvent user={this.state.user} />
           </div>
           <div className="inner">
             <Button
@@ -52,7 +67,10 @@ class EventsView extends React.Component {
           <h4 className="title">My Events</h4>
           <hr />
           <div>
-            <EventList events={this.state.events} />
+            <ApproveEventsList
+              action={() => this.getEvents()}
+              events={this.state.events}
+            />
           </div>
         </div>
       );
@@ -60,20 +78,10 @@ class EventsView extends React.Component {
       return (
         <div className="flex-full">
           <div className="inner">
-            <CreateEvent user={this.state.creator_id} />
+            <CreateEvent user={this.state.user} />
           </div>
           <div className="inner">
-            <Button
-              type="submit"
-              variant="contained"
-              size="large"
-              className="msgBtn"
-              href="/approveEvent"
-            >
-              <Link to="/approveEvent" />
-              <i className="material-icons">check_circle_outline</i>Approve
-              Events
-            </Button>
+            <ApproveEvent />
           </div>
           <div className="inner">
             <Button
@@ -89,7 +97,10 @@ class EventsView extends React.Component {
           <h4 className="title">My Events</h4>
           <hr />
           <div>
-            <EventList events={this.state.events} />
+            <ApproveEventsList
+              action={() => this.getEvents()}
+              events={this.state.events}
+            />
           </div>
         </div>
       );

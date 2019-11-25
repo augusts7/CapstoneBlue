@@ -3,7 +3,6 @@ import {get, post} from "../../../../../../../ApiHelper/ApiHelper"
 import BaseCalendarsLayout from "../base-layout/BaseCalendarsLayout";
 import CustomIconButton from "../../../../../../GenericViews/IconButton";
 import Icon from "@material-ui/core/Icon";
-import SocketContext from "../../../../../../../Context/SocketContext";
 import CalendarActionsContext from "../../../../../context/CalendarActionsContext";
 import SocketHelper from "../../../../../../../ApiHelper/Socket";
 

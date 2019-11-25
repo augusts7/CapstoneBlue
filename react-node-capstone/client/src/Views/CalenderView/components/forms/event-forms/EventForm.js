@@ -7,7 +7,6 @@ import {
     DateTimePicker,
 } from '@material-ui/pickers'
 import TextField from "@material-ui/core/TextField"
-import Select from "../../../../../components/Select/Select"
 import Slide from "@material-ui/core/Slide";
 import DialogForm from "../dialog-form/DialogForm";
 
@@ -19,10 +18,6 @@ import LengthValidator from "../../../../../utils/length-utils/LengthValidator";
 import ArraySearchHelper from "../../../../../utils/array-utils/ArraySearchHelper";
 import SelectCalendar from "../../../../GenericViews/select/calendars/SelectCalendars";
 import SelectUsersCalendars from "../../../../GenericViews/select/calendars/SelectUsersCalendars";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const textFieldStyles = {marginRight: "16px"};
 
@@ -156,7 +151,7 @@ export default class EventForm extends React.Component {
         post(postUrl, data, (res) => {
 
             if (res.success) {
-                this.setState({"isLoading": false})
+                this.setState({"isLoading": false});
                 this.props.onClose();
             } else {
                 this.setState({"isLoading": false, "message": res.message})
@@ -204,7 +199,6 @@ export default class EventForm extends React.Component {
 
         }
 
-        let formHelperText = this.getEventFormHelperText();
 
         const buttons = [
             {name: "Cancel", onClick: this.props.onClose},

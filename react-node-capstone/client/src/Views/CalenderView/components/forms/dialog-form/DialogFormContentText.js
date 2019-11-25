@@ -1,5 +1,4 @@
 import React from "react";
-import {Typography} from "@material-ui/core";
 import DialogContentText from "@material-ui/core/DialogContentText";
 
 const styles = {

@@ -2,11 +2,9 @@ import React, {useContext} from "react";
 import {Link} from "react-router-dom";
 import "./Header.css";
 import AuthContext from "../../Context/AuthContext";
-import Avatar from "@material-ui/core/Avatar";
 import Notifications from "./notifications/Notifications";
-import AppBarWithTabs from "./AppBar";
 import Messages from "./messages/Messages";
-
+import logo from "../../Application/images/logo.svg";
 
 export default function Header(props) {
 
@@ -15,14 +13,10 @@ export default function Header(props) {
     return (
         <header className="mdl-layout__header">
             <div className="mdl-layout__header-row">
-
-                <span className="mdl-layout__drawer-button">
-                    <i className="material-icons">menu</i>
-                </span>
+                <span className="logo"><img src ={logo} width="100em" height="80em" alt="logo"/></span>
                 <span className="mdl-layout-title white">
                     ULM Scheduling Application
                         </span>
-
                 <div className="mdl-layout-spacer"/>
 
                 <div>
@@ -42,11 +36,8 @@ export default function Header(props) {
                         <Link className="mdl-navigation__link" to="/profileView">
                             Profile
                         </Link>
-                        <Link onClick={authContext.logout} className="mdl-navigation__link">
+                        <Link onClick={authContext.logout} className="mdl-navigation__link" to="/login">
                             Logout
-                        </Link>
-                        <Link className="mdl-navigation__link">
-                            <Messages />
                         </Link>
                         <Link className="mdl-navigation__link">
                             <Notifications/>
@@ -55,11 +46,11 @@ export default function Header(props) {
 
                     <button
                         className="mdl-layout--small-screen-only mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon large-icon-button"
-                        id="hdrbtn">
+                        id="menu-lower-right">
                         <i className="material-icons large-icon">more_vert</i>
                     </button>
 
-                    <ul className="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" htmlFor="hdrbtn">
+                    <ul className="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" htmlFor="menu-lower-right">
                         <Link to="/">
                             <li className="mdl-menu__item">
                                 <i className="material-icons">home</i>Home
