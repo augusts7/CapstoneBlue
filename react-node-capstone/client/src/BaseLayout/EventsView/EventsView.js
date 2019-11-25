@@ -1,11 +1,11 @@
 import React from "react";
-import EventList from "../../components/EventList/EventList";
 import "./EventsView.css";
 import ls from "local-storage";
 import Button from "@material-ui/core/Button";
 import CreateEvent from "../../components/EventsPage/CreateEvent";
 import RequestEvent from "../../components/EventsPage/RequestEvent";
 import UserContext from "../../Context/UserContext";
+import ApproveEventsList from "../../components/EventsPage/ApproveEventsList";
 import { Link } from "react-router-dom";
 import ApproveEvent from "../../components/EventsPage/ApproveEvent";
 import { isNullOrUndefined } from "util";
@@ -68,7 +68,7 @@ class EventsView extends React.Component {
           <h4 className="title">My Events</h4>
           <hr />
           <div>
-            <EventList events={this.state.events} />
+            <ApproveEventsList events={this.state.events} />
           </div>
         </div>
       );
@@ -95,7 +95,7 @@ class EventsView extends React.Component {
           <h4 className="title">My Events</h4>
           <hr />
           <div>
-            <EventList events={this.state.events} />
+            <ApproveEventsList events={this.state.events} />
           </div>
         </div>
       );

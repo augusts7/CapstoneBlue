@@ -210,6 +210,18 @@ router.post("/", (req, res) => {
   sqlHelper.handleSetObjectAndRespond("INSERT INTO event SET ?", event, res);
 });
 
+router.post("/attending", (req, res) => {
+    let event_id = req.body.event_id;
+    let attendee_id = req.user.user_id;
+  try{
+    pool.query("INSERT INTO attending (event_id, attendee_id) VALUES (" + event_id + "," + attendee_id + ")");
+  }
+  catch(e){
+    res.sendStatus(500);
+  }
+
+});
+
 router.post("/edit", (req, res) => {
   pool.query(
     "SELECT creator_id FROM event WHERE eventID = ?",
@@ -240,6 +252,23 @@ router.post("/edit", (req, res) => {
       );
     }
   );
+});
+
+router.post("/remove", (req, res) => {
+  let attendee_id = req.user.user_id;
+  let event_id = req.body.event_id;
+
+  try{
+    var sql = "DELETE FROM attending WHERE event_id = ? AND attendee_id = ?";
+    pool.query(sql, [event_id, attendee_id], function (err, result){
+      if (err){
+        console.log(result);
+      }
+    });
+  }
+  catch(e){
+    res.sendStatus(500);
+  }
 });
 
 router.post("/delete", (req, res) => {
