@@ -55,9 +55,9 @@ class GroupView extends React.Component {
       .then(userInfo => {
         if (userInfo === isNullOrUndefined || userInfo.length <= 0) {
         } else {
-          try{
-          this.setState({ user: userInfo[0].user_id });
-          } catch(e) {}
+          try {
+            this.setState({ user: userInfo[0].user_id });
+          } catch (e) {}
         }
       });
   }
@@ -134,8 +134,8 @@ class GroupView extends React.Component {
         <div className="no-groups">
           <h4>
             Looks like you are not in any groups. That's no fun. Create a group
-            to invite others or ask a faculty member or classmate to invite you to their
-            group.
+            to invite others or ask a faculty member or classmate to invite you
+            to their group.
           </h4>
           <div className="create-group">
             <CreateGroup />
@@ -185,6 +185,8 @@ class GroupView extends React.Component {
               <div className="group-event-list">
                 <hr />
                 <EventList
+                  user_id={this.state.user}
+                  creator_id={this.state.creator_id}
                   action={() => this.refreshGroup(this.state.group_id)}
                   events={this.state.eventListItems}
                 />
@@ -195,16 +197,16 @@ class GroupView extends React.Component {
             <h3 className="list-header">Group Members</h3>
             <div className="mem-buttons">
               <div className="inner">
-              <AddMultipleUsersFromList
-                groupId={this.state.group_id}
-                className="buttons-group-members"
-              />
+                <AddMultipleUsersFromList
+                  groupId={this.state.group_id}
+                  className="buttons-group-members"
+                />
               </div>
               <div className="inner">
-              <AddMultipleUsersFromFile
-                groupId={this.state.group_id}
-                className="buttons-group-members"
-              />
+                <AddMultipleUsersFromFile
+                  groupId={this.state.group_id}
+                  className="buttons-group-members"
+                />
               </div>
             </div>
             <div className="group-member-list">
