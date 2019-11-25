@@ -69,7 +69,7 @@ class Form extends React.Component {
                             onSubmit={this.onFormSubmit}
                             method="post"
                             encType={encType}>
-                            <FormInputFields fullwidth={true} fields={this.props.fields}/>
+                            <FormInputFields fullWidth={true} fields={this.props.fields}/>
                             {submitButton}
                             {this.props.children}
 
