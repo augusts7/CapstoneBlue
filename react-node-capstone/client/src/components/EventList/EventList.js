@@ -162,7 +162,7 @@ class EventList extends Component {
                 </Tooltip>
               </div>
               <div className="delete">
-                {this.getDeleteButton(event.eventID)}
+                {() => this.getDeleteButton(event.eventID)}
               </div>
             </div>
           </div>

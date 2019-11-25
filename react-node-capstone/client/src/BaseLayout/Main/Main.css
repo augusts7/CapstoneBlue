@@ -5,7 +5,6 @@
   grid-template-areas:
     "main-carousel main-carousel"
     "main-calendar main-events";
-  background-color: rgb(189,149,90);
 }
 
 .main-carousel {
@@ -17,7 +16,8 @@
   background-color: white;
   border-top: groove;
   grid-area: main-events;
-  
+  overflow: scroll;
+  height: 72.5em;
 }
 
 .events > h3 {
@@ -33,6 +33,7 @@
   border-right: groove;
   border-top: groove;
   grid-area: main-calendar;
+  height: 72.5em;
 }
 
 .calender {

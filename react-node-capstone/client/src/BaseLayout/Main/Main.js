@@ -1,8 +1,9 @@
 import React from "react";
 import Carosel from "../../components/Carousel/HomeCarousel";
 import CalendarView from "../../Views/CalenderView/HomeCalenderView";
-import EventList from "../../components/EventList/EventList";
+import ApproveEventsList from "../../components/EventsPage/ApproveEventsList";
 import "./Main.css";
+import { isNullOrUndefined } from "util";
 
 class Main extends React.Component {
 
@@ -10,6 +11,7 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+        user: 0,
       events: [{
         eventID: 1,
         start: new Date(),
@@ -20,9 +22,33 @@ class Main extends React.Component {
     };
   }
 
+    getUser() {
+        var getUserURL = "/user_info/user";
+        fetch(getUserURL)
+            .then(res => res.json())
+            .then(userInfo => {
+                if (userInfo === isNullOrUndefined || userInfo.length <= 0) {
+                } else {
+                    try{
+                        this.setState({ user: userInfo[0].user_id });
+                    } catch(e) {}
+                }
+            });
+    }
+
+    getEvents() {
+        fetch("/events/allattending")
+            .then(res => res.json())
+            .then(eventData => this.setState({ events: eventData }));
+    }
+
+    componentDidMount() {
+      this.getUser();
+      this.getEvents();
+    }
 
 
-  render() {
+    render() {
     return (
       <div class="main">
         <div class="main-carousel">
@@ -34,7 +60,7 @@ class Main extends React.Component {
         <div class="main-events">
           <div className="events">
             <h3>My Events</h3>
-            <EventList events={this.state.eventListItems} />
+            <ApproveEventsList events={this.state.events} />
           </div>
         </div>
       </div>

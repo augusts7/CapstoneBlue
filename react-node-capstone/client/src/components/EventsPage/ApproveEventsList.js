@@ -177,6 +177,29 @@ class ApproveEventsList extends Component {
             </div>
           );
         });
+      } if(window.location.pathname === "/"){
+        eventList = this.props.events.map(event => {
+          return (
+              <div className="eventItem" key={event.eventID}>
+                <div className="date">
+                  <div className="date-number">
+                    {new Date(event.start).getDate()}
+                  </div>
+                  <div className="date-name">
+                    {this.getMonth(new Date(event.start).getMonth() + 1, "abrv")}{" "}
+                  </div>
+                </div>
+                <div className="description">
+                  <div className="event-title">{event.title}</div>
+                  <div className="time">
+                    {new Date(event.start).toLocaleTimeString("en-US")} -{" "}
+                    {new Date(event.end).toLocaleTimeString("en-US")}
+                  </div>
+                  {event.description}
+                </div>
+              </div>
+          );
+        });
       } else {
         eventList = this.props.events.map(event => {
           return (

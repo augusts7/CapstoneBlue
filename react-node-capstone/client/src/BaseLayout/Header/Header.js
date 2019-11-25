@@ -40,9 +40,6 @@ export default function Header(props) {
                             Logout
                         </Link>
                         <Link className="mdl-navigation__link">
-                            <Messages />
-                        </Link>
-                        <Link className="mdl-navigation__link">
                             <Notifications/>
                         </Link>
                     </nav>
