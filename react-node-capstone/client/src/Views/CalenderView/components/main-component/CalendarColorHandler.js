@@ -1,5 +1,3 @@
-
-
 export default class CalendarColorHandler {
 
     static setColor (colorScope, colorData, userCalendarHandler, sharedCalendarHandler, groupCalendarHandler) {

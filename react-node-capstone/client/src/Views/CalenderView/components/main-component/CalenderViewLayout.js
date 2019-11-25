@@ -2,7 +2,6 @@ import React from "react";
 import Calendar from "../../../GenericViews/calendar/Calendar";
 import CalendarOptions from "../side-view/CalendarOptions"
 import ls from "local-storage"
-import {get} from "../../../../ApiHelper/ApiHelper"
 import DetailView from "../calendar-click-popup/CalendarEventsDetailView";
 import Progress from "../../../GenericViews/Progress/Progress";
 import FloatingAddButton from "../floating-button/FloatingAddButton";
@@ -13,7 +12,6 @@ import "./styles/calendar-view-layout.css";
 import CalendarEventsDataStore from "./CalendarEventsDataStore";
 import SharedCalendarEventsDataStore from "./SharedCalendarEventsDataStore";
 import GroupCalendarEventsDataStore from "./GroupEventsDataStore";
-import ColorDialog from "../../../GenericViews/colors/ColorDialog";
 import CalendarColorHandler from "./CalendarColorHandler";
 import LengthValidator from "../../../../utils/length-utils/LengthValidator";
 

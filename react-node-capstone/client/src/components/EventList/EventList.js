@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import UserContext from "../../Context/UserContext";
-
+import EventAvailableIcon from "@material-ui/icons/EventAvailable";
+import Tooltip from "@material-ui/core/Tooltip";
 import "./EventList.css";
 
 class EventList extends Component {
-  static contextType = UserContext;
-
   getMonth(month, type) {
     var monthName = "";
     var monthAbrv = "";
@@ -71,6 +69,26 @@ class EventList extends Component {
     }
   }
 
+  addToCalender(event) {
+    console.log(event);
+    fetch("/events/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        event_id: event
+      })
+    })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(body) {
+        console.log(body);
+      });
+    this.props.action();
+  }
+
   deleteEvent(event) {
     console.log(event);
     fetch("/events/delete", {
@@ -93,13 +111,14 @@ class EventList extends Component {
   getDeleteButton(eventID) {
     if (this.props.creator_id === this.props.user) {
       return (
-        <IconButton
-          aria-label="delete"
-          className="delete-event-button"
-          onClick={() => this.deleteEvent(eventID)}
-        >
-          <DeleteIcon />
-        </IconButton>
+        <Tooltip title="Delete from Calender">
+          <IconButton
+            aria-label="delete"
+            onClick={() => this.deleteEvent(eventID)}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
       );
     }
   }
@@ -130,7 +149,22 @@ class EventList extends Component {
               </div>
               {event.description}
             </div>
-            {this.getDeleteButton(event.eventID)}
+            <div className="buttons">
+              <div className="addToCal">
+                <Tooltip title="Add to Calender">
+                  <IconButton
+                    size="medium"
+                    aria-label="addToCal"
+                    onClick={() => this.addToCalender(event.eventID)}
+                  >
+                    <EventAvailableIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+              <div className="delete">
+                {this.getDeleteButton(event.eventID)}
+              </div>
+            </div>
           </div>
         );
       });

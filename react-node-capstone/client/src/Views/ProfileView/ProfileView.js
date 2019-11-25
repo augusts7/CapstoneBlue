@@ -28,8 +28,6 @@ export default class ProfileView extends React.Component {
 
     render() {
 
-        let title = "Profile";
-
         return (
             <div className="flex-full ulm-library-image">
 

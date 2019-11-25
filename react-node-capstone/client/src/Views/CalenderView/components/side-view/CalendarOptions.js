@@ -5,7 +5,6 @@ import Actions from "./components/actions/Actions";
 import GroupCalendars from "./components/calendars/group-calendars/GroupCalendars";
 
 import "./CalendarOptions.css";
-import HeaderView from "./components/header-view/HeaderView";
 import CalendarActionsContext from "../../context/CalendarActionsContext";
 
 const commonData = {

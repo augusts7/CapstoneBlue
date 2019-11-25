@@ -1,5 +1,5 @@
 import React from "react";
-import {get, post} from "../../../../../../../ApiHelper/ApiHelper"
+import {get} from "../../../../../../../ApiHelper/ApiHelper"
 import BaseCalendarsLayout from "../base-layout/BaseCalendarsLayout";
 import CalendarActionsContext from "../../../../../context/CalendarActionsContext";
 

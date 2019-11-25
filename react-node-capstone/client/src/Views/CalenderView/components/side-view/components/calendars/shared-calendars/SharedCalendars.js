@@ -1,7 +1,6 @@
 import React from "react";
 import BaseCalendarsLayout from "../base-layout/BaseCalendarsLayout";
 import {get, post} from "../../../../../../../ApiHelper/ApiHelper";
-import SocketContext from "../../../../../../../Context/SocketContext";
 import CalendarActionsContext from "../../../../../context/CalendarActionsContext";
 
 const menuOptions = [
