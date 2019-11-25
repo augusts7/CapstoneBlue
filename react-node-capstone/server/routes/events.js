@@ -154,6 +154,20 @@ router.get("/attendingGlobal", async (req, res) => {
   }
 });
 
+router.get("/allattending", async (req, res) => {
+  try {
+    let globalEvents = await pool.query(
+      "SELECT e.title, e.description, e.start, e.end, e.eventID FROM event e inner join attending a on e.eventID = a.event_id WHERE a.attendee_id = '" +
+        req.user.user_id +
+        "' AND e.event_type = 'global' OR e.event_type = 'advising' OR e.event_type = 'appointment';"
+    );
+    res.json(globalEvents);
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
+
 router.get("/approveEvent", async (req, res) => {
   try {
     let events = await pool.query(
