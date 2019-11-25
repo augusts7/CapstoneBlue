@@ -3,7 +3,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import CheckIcon from "@material-ui/icons/Check";
 
-import "../../components/EventList/EventList.css";
+import "./EventListPending.css";
 
 class EventListPending extends Component {
   getMonth(month, type) {

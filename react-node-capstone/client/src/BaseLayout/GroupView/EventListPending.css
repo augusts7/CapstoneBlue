@@ -1,9 +1,9 @@
 .eventListItem {
   display: grid;
-  grid-template-columns: 0.2fr 1.2fr 0.6fr;
+  grid-template-columns: 0.2fr 1.7fr 0.1fr;
   grid-template-areas: "date description delete";
   background-color: rgba(203, 203, 204, 0.822);
-  box-shadow: 0 4px 6px 0 #00000033, 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
   margin: 15px;
   border-radius: 5px;
 }
@@ -28,13 +28,8 @@
   font-size: 12pt;
 }
 
-.buttons {
+.delete-event-button {
   grid-area: delete;
-}
-
-.addToCal,
-.delete {
-  width: 50%;
 }
 
 .eventListItem > .description {
