@@ -17,7 +17,7 @@ import Login from "../Authentication/Login/Login";
 import Register from "../Authentication/Register/Register";
 import AuthRoute from "../Route/AuthRoute";
 import ProfileView from "../Views/ProfileView/ProfileView";
-import "./images/background.jpg";
+import "./images/library.jpg";
 
 import "./styles/application-styles.css";
 import "./styles/flex/flex.css";

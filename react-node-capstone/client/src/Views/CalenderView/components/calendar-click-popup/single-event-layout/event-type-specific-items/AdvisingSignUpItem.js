@@ -13,6 +13,7 @@ export default function AdvisingSignUpItem(props) {
         onFinishCallback();
     };
 
+    // eslint-disable-next-line
     const deleteSlot = () => {
         calendarPopupContext.showDeleteDialog("Delete Advising Slot", "Are you sure you want to delete your advising slot?", onDeleteButtonClick);
     };

@@ -1,19 +1,12 @@
 import React from "react";
 import Carosel from "../../components/Carousel/HomeCarousel";
-import Calender from "../../components/Calendar/MyCalendar";
+import CalendarView from "../../Views/CalenderView/HomeCalenderView";
 import EventList from "../../components/EventList/EventList";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin from '@fullcalendar/interaction' 
-import "@fullcalendar/core/main.css";
-import "@fullcalendar/daygrid/main.css";
-import "@fullcalendar/timegrid/main.css";
-import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
-
 import "./Main.css";
 
 class Main extends React.Component {
+
+
   constructor(props) {
     super(props);
     this.state = {
@@ -29,12 +22,6 @@ class Main extends React.Component {
 
 
 
-  componentDidMount() {
-    fetch("/single-event-layout")
-      .then(res => res.json())
-      .then(eventData => this.setState({ events: eventData }));
-  }
-
   render() {
     return (
       <div class="main">
@@ -42,20 +29,7 @@ class Main extends React.Component {
           <Carosel />
         </div>
         <div class="main-calendar">
-          <FullCalendar
-            className="calender"
-            defaultView="dayGridMonth"
-            header = {{
-                left: 'prev, next today',
-                center: 'title',
-                right: 'dayGridMonth, timeGridWeek, timeGridDay, listWeek'
-            }}
-            schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
-            events={this.state.events}
-            dateClick={this.handleDateClick}
-            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, resourceTimelinePlugin]}
-            height={700}
-          />
+        <CalendarView/>
         </div>
         <div class="main-events">
           <div className="events">

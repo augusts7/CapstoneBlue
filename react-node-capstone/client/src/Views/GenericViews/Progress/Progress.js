@@ -1,6 +1,5 @@
 import React from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import LengthValidator from "../../../utils/length-utils/LengthValidator";
 
 let containerStyles = {width: "100%"};
 

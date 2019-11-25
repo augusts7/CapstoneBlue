@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { TextField, Menu, MenuItem } from "@material-ui/core";
+import { TextField, MenuItem } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -9,7 +9,6 @@ import Button from "@material-ui/core/Button";
 import { Input } from "@material-ui/core";
 import XLSX from "xlsx";
 import UserContext from "../../Context/UserContext";
-import { isNull } from "util";
 
 class CreateGroup extends React.Component {
   static contextType = UserContext;
@@ -32,11 +31,16 @@ class CreateGroup extends React.Component {
 
   handleChange(e) {
     const files = e.target.files;
-    if (files && files[0]) this.setState({ file: files[0] });
+    if (files && files[0])
+      this.setState({ 
+        file: files[0] 
+      });
   }
 
   handleGroupName(e) {
-    this.setState({ groupName: e.target.value });
+    this.setState({ 
+      groupName: e.target.value 
+    });
   }
 
   handleFile() {
@@ -145,12 +149,13 @@ class CreateGroup extends React.Component {
               name="title"
               title="Group Name"
               placeholder="Group Name"
-              fullWidth
+              fullwidth
               variant="outlined"
               type="text"
               onChange={this.handleGroupName}
               value={this.state.groupName}
             />
+            
             <Button component="label">
               <i className="material-icons">attachment</i>Upload File
               <Input
@@ -163,7 +168,7 @@ class CreateGroup extends React.Component {
 
             <Button type="submit" value="Upload" onClick={this.handleFile}>
               Submit
-            </Button>
+            </Button> 
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleToggle} color="primary">

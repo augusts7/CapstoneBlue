@@ -6,12 +6,10 @@ import interactionPlugin from '@fullcalendar/interaction' // needed for dayClick
 import "@fullcalendar/core/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
-import Select from "../../../components/Select/Select";
 import LengthValidator from "../../../utils/length-utils/LengthValidator";
 
 
 
-const selectStyle = { "margin": "8px", "padding": "4px", "width": "47%" };
 const calendarContainerStyle = {  };
 
 const calendarAppStyle = {"padding": "16px 8px"};
@@ -20,21 +18,6 @@ let years = [];
 for (let i = 2017; i < 2025; i++) {
     years.push({"value": i, "name": i});
 }
-
-let months = [
-    {"value": 0, "name": "January"},
-    {"value": 1, "name": "February"},
-    {"value": 2, "name": "March"},
-    {"value": 3, "name": "April"},
-    {"value": 4, "name": "May"},
-    {"value": 5, "name": "June"},
-    {"value": 6, "name": "July"},
-    {"value": 7, "name": "August"},
-    {"value": 8, "name": "September"},
-    {"value": 9, "name": "October"},
-    {"value": 10, "name": "November"},
-    {"value": 11, "name": "December"},
-];
 
 export default class Calendar extends React.Component {
 

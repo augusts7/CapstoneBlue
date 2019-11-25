@@ -7,7 +7,7 @@ import DialogForm from "../dialog-form/DialogForm";
 export default function AddNewCalendarForm(props) {
 
     const [calName, setCalName] = React.useState('');
-    const [progress, setProgress] = React.useState(false);
+    const [progress] = React.useState(false);
 
     const handleChange = (event) => {
         setCalName(event.target.value);

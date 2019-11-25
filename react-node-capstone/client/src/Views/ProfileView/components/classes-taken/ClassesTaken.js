@@ -1,5 +1,4 @@
 import React from "react";
-import ProfileSectionContainer from "../../generic/profile-view-section/ProfileSectionContainer";
 import ProfileItemBlockContainer from "../../generic/profile-view-item/profile-item-blocks/ProfileItemBlockContainer";
 
 

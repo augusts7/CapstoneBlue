@@ -47,3 +47,16 @@
   display: inline-block;
   margin-right: 2em;
 }
+
+.emptyEventList {
+  background-color: rgba(203, 203, 204, 0.822);
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  margin: 15px;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+}
+
+.delete-event-button {
+  grid-area: delete;
+}

@@ -1,4 +1,3 @@
-import React from "react";
 
 const dateOptions = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
 const timeOptions = {minute: '2-digit', hour: "2-digit"};

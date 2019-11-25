@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { Button } from "@material-ui/core";
-import FormControl from "@material-ui/core/FormControl";
 
 import "./Event.css";
-import InputLabel from "@material-ui/core/InputLabel";
-import { isNullOrUndefined } from "util";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 
-class EventsList extends Component {
+class ApproveEventsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,8 +13,7 @@ class EventsList extends Component {
       attendee_id: 0
     };
     this.addToCalendar = this.addToCalendar.bind(this);
-    this.approveEvent = this.approveEvent.bind(this);
-    this.deleteEvent = this.deleteEvent.bind(this);
+    this.removeEvent = this.removeEvent.bind(this);
   }
 
   getMonth(month, type) {
@@ -81,31 +79,28 @@ class EventsList extends Component {
     }
   }
 
-  addToCalendar(e) {
-    // e.preventDefault();
-    // fetch("/attending", {
-    //     method: "POST",
-    //     headers: {
-    //         Accept: 'application/json',
-    //         "Content-Type": "application/json"
-    //     },
-    //     body: JSON.stringify({
-    //         event_id: this.state.event_id,
-    //         attendee_id: this.state.attendee_id
-    //     }),
-    // })
-    //     .then(function(response) {
-    //         return response.json();
-    //     })
-    //     .then(function(body) {
-    //         console.log(body);
-    //     });
-    window.alert("added to calendar");
+  addToCalendar(event) {
+    fetch("/events/attending", {
+        method: "POST",
+        headers: {
+            "Accept": 'application/json',
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            event_id: event,
+        }),
+    })
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(body) {
+            console.log(body);
+        });
   }
 
-  approveEvent(event) {
-    fetch("/events/approveEvent/update", {
-      method: "PUT",
+  removeEvent(event) {
+    fetch("/events/remove", {
+      method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
@@ -120,33 +115,29 @@ class EventsList extends Component {
       .then(function(body) {
         console.log(body);
       });
-    window.alert("approved");
   }
 
-  deleteEvent(event) {
-    fetch("/events/delete", {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        event_id: event
-      })
-    })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(body) {
-        console.log(body);
-      });
-    window.alert("denied");
+  getDeleteButton(eventID) {
+    if (this.props.creator_id === this.props.user) {
+      return (
+          <IconButton
+              aria-label="delete"
+              className="delete-event-button"
+              onClick={() => this.removeEvent(eventID)}
+          >
+            <DeleteIcon />
+          </IconButton>
+      );
+    }
   }
 
   render() {
     var eventList = <div>Error</div>;
-    if (this.props.events === isNullOrUndefined) {
-    } else {
+    if (
+        this.props.events !== undefined &&
+        this.props.events !== null &&
+        this.props.events.length > 0
+    ){
       if (window.location.pathname === "/viewAllEvents") {
         eventList = this.props.events.map(event => {
           return (
@@ -172,7 +163,7 @@ class EventsList extends Component {
                     variant="contained"
                     size="large"
                     className="addButton"
-                    onClick={this.addToCalendar}
+                    onClick={() => this.addToCalendar(event.eventID)}
                   >
                     <i className="material-icons">check_circle_outline</i> Add
                     Event to Calendar
@@ -185,38 +176,37 @@ class EventsList extends Component {
       } else {
         eventList = this.props.events.map(event => {
           return (
-            <div className="eventItem" key={event.eventID}>
-              <div className="date">
-                <div className="date-number">
-                  {new Date(event.start).getDate()}
+              <div className="eventListItem" key={event.eventID}>
+                <div className="date">
+                  <div className="date-number">
+                    {new Date(event.start).getDate()}
+                  </div>
+                  <div className="date-name">
+                    {this.getMonth(new Date(event.start).getMonth() + 1, "abrv")}{" "}
+                  </div>
                 </div>
-                <div className="date-name">
-                  {this.getMonth(new Date(event.start).getMonth() + 1, "abrv")}{" "}
+                <div className="description">
+                  <div className="event-title">{event.title}</div>
+                  <div className="time">
+                    {new Date(event.start).toLocaleTimeString("en-US")} -{" "}
+                    {new Date(event.end).toLocaleTimeString("en-US")}
+                  </div>
+                  {event.description}
                 </div>
+                {this.getDeleteButton(event.eventID)}
               </div>
-              <div className="description">
-                <div className="event-title">{event.title}</div>
-                <div className="time">
-                  {new Date(event.start).toLocaleTimeString("en-US")} -{" "}
-                  {new Date(event.end).toLocaleTimeString("en-US")}
-                </div>
-                {event.description}
-                <div>
-                  <Button onClick={() => this.approveEvent(event.eventID)}>
-                    Approve
-                  </Button>
-                  <Button onClick={() => this.deleteEvent(event.eventID)}>
-                    Deny
-                  </Button>
-                </div>
-              </div>
-            </div>
           );
         });
       }
+    }else {
+      eventList = (
+          <div className="emptyEventList">
+            <h5>No Events Scheduled</h5>
+          </div>
+      );
     }
     return <div className="event">{eventList}</div>;
   }
 }
 
-export default EventsList;
+export default ApproveEventsList;

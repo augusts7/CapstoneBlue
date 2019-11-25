@@ -24,6 +24,7 @@ function getLayout(props) {
   
 }
 
+// eslint-disable-next-line
 const authRoute = ({ component: Component, auth, ...rest }) => (
     <Route {...rest} render={(props) => (
         auth === false

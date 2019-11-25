@@ -1,12 +1,9 @@
 import React from "react";
 import Calendar from "../../../GenericViews/calendar/Calendar";
-import CalendarOptions from "../side-view/CalendarOptions"
 import ls from "local-storage"
 import DetailView from "../calendar-click-popup/CalendarEventsDetailView";
 import Progress from "../../../GenericViews/Progress/Progress";
-import FloatingAddButton from "../floating-button/FloatingAddButton";
 import SocketContext from "../../../../Context/SocketContext";
-
 import "../../styles/scroll-bar/scroll-bar.css";
 import "./styles/calendar-view-layout.css";
 import CalendarEventsDataStore from "./CalendarEventsDataStore";
@@ -16,7 +13,7 @@ import CalendarColorHandler from "./CalendarColorHandler";
 import LengthValidator from "../../../../utils/length-utils/LengthValidator";
 
 
-class CalenderViewLayout extends React.Component {
+class HomeCalenderViewLayout extends React.Component {
 
     static contextType = SocketContext;
 
@@ -145,20 +142,14 @@ class CalenderViewLayout extends React.Component {
             <div className="flex-full mdl-color--white">
 
                 <DetailView data={this.state.eventsDetailViewData} events={events}
-                            onCancel={() => this.handlePopupClose("eventsDetailView")}
-                            onClose={() => this.handlePopupClose("eventsDetailView")}
-                            open={this.state.eventsDetailView}/>
+                    onCancel={() => this.handlePopupClose("eventsDetailView")}
+                    onClose={() => this.handlePopupClose("eventsDetailView")}
+                    open={this.state.eventsDetailView}/>
 
-                <div className="CalendarViewContentContainer">
-                    <CalendarOptions isLoading={this.state.isLoading}
-                                     onChangeCalendarData={this.onChangeCalendarData}
-                                     events={events} userType={this.state.userType}/>
-
-                    <div>
-                        <Progress show={this.state.isLoading}/>
-                        <Calendar onEventClick={this.onEventClick} onDateClick={this.onDateClick} events={events}/>
-                        <FloatingAddButton/>
-                    </div>
+                <div>
+                    <Progress show={this.state.isLoading}/>
+                    <Calendar onEventClick={this.onEventClick} onDateClick={this.onDateClick} events={events}/>
+                
                 </div>
             </div>
         );
@@ -166,4 +157,4 @@ class CalenderViewLayout extends React.Component {
 }
 
 
-export default CalenderViewLayout;
+export default HomeCalenderViewLayout;

@@ -1,12 +1,11 @@
 import React from "react";
-import EventList from "../../components/EventList/EventList";
 import "./EventsView.css";
 import ls from "local-storage";
 import Button from "@material-ui/core/Button";
 import CreateEvent from "../../components/EventsPage/CreateEvent";
 import RequestEvent from "../../components/EventsPage/RequestEvent";
 import UserContext from "../../Context/UserContext";
-import { Link } from "react-router-dom";
+import ApproveEventsList from "../../components/EventsPage/ApproveEventsList";
 import ApproveEvent from "../../components/EventsPage/ApproveEvent";
 import { isNullOrUndefined } from "util";
 
@@ -41,7 +40,7 @@ class EventsView extends React.Component {
   }
 
   getEvents() {
-    var eventsURL = "/events/allOnCalendar/";
+    var eventsURL = "/events/attendingGlobal";
     fetch(eventsURL)
       .then(res => res.json())
       .then(global_events => this.setState({ events: global_events }));
@@ -52,7 +51,7 @@ class EventsView extends React.Component {
       return (
         <div className="flex-full">
           <div className="inner">
-            <RequestEvent user={this.state.creator_id} />
+            <RequestEvent user={this.state.user} />
           </div>
           <div className="inner">
             <Button
@@ -68,7 +67,7 @@ class EventsView extends React.Component {
           <h4 className="title">My Events</h4>
           <hr />
           <div>
-            <EventList events={this.state.events} />
+            <ApproveEventsList events={this.state.events} />
           </div>
         </div>
       );
@@ -76,7 +75,7 @@ class EventsView extends React.Component {
       return (
         <div className="flex-full">
           <div className="inner">
-            <CreateEvent user={this.state.creator_id} />
+            <CreateEvent user={this.state.user} />
           </div>
           <div className="inner">
             <ApproveEvent />
@@ -95,7 +94,7 @@ class EventsView extends React.Component {
           <h4 className="title">My Events</h4>
           <hr />
           <div>
-            <EventList events={this.state.events} />
+            <ApproveEventsList events={this.state.events} />
           </div>
         </div>
       );

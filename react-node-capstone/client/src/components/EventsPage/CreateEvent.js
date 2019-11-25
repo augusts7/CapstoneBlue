@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -8,10 +8,8 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import UserContext from "../../Context/UserContext";
 
 class CreateEvent extends React.Component {
-    static contextType = UserContext;
 
     constructor(props) {
         super(props);
@@ -21,6 +19,7 @@ class CreateEvent extends React.Component {
             description: "",
             start: new Date(),
             end: new Date(),
+            creator_calendar_id: null,
             event_type: "global",
             status: "approved"
         };
@@ -65,7 +64,9 @@ class CreateEvent extends React.Component {
                 title: this.state.title,
                 description: this.state.description,
                 user_id: this.context.user_id,
+                creator_calendar_id: this.context.user_id,
                 event_type: "global",
+                carousel: 0,
                 status: "approved"
             })
         })
@@ -140,7 +141,8 @@ class CreateEvent extends React.Component {
                                     label="Start Time"
                                     value={this.state.start}
                                     onChange={this.handleStartTimeChange}
-                                ></DateTimePicker>
+                                >
+                                </DateTimePicker>
                             </div>
                             <div className="datePicker">
                                 <DateTimePicker
@@ -150,7 +152,8 @@ class CreateEvent extends React.Component {
                                     label="End Time"
                                     value={this.state.end}
                                     onChange={this.handleEndTimeChange}
-                                ></DateTimePicker>
+                                >
+                                </DateTimePicker>
                             </div>
                         </MuiPickersUtilsProvider>
                     </DialogContent>

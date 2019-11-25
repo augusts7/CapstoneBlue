@@ -31,7 +31,7 @@ export default class SelectCalendar extends React.Component {
                     });
                 }
 
-                this.setState({"progress": false, "calendarOptions": calendarOptions});
+                this.setState({"progress": false, "calendarOptions": calendarOptions});//
 
             } else {
                 this.setState({"progress": false, message: res.message});

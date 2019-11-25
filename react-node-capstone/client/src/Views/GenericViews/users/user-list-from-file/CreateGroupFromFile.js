@@ -3,14 +3,12 @@ import UploadUsersFromFileForm from "../../forms/upload-users-form/UploadUsersFr
 import {post} from "../../../../ApiHelper/ApiHelper";
 
 
-const containerStyle = {paddingTop: "32px", paddingBottom: "32px"};
 
 export default class CreateGroupFromFile extends React.Component {
 
+    // eslint-disable-next-line
     constructor(props) {
         super(props);
-
-
     }
 
     handleSubmit = (allSelectedUsers) => {
