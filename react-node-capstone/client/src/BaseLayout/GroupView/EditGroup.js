@@ -1,10 +1,5 @@
 import React, { Fragment } from "react";
-import {
-  TextField,
-  MenuItem,
-  InputLabel,
-  makeStyles
-} from "@material-ui/core";
+import { TextField, MenuItem, InputLabel, makeStyles } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -105,10 +100,15 @@ class EditGroup extends React.Component {
       selectEmpty: {
         marginTop: theme.spacing(2)
       }
-    })); 
+    }));
 
     const { open } = this.state;
-    let name = "";
+    var options = this.props.groupMembers.map(member => (
+      <MenuItem value={member.user_id}>
+        {member.first_name + "" + member.last_name}
+      </MenuItem>
+    ));
+
     return (
       <Fragment>
         <MenuItem
@@ -127,10 +127,10 @@ class EditGroup extends React.Component {
           <DialogTitle id="form-dialog-title">Edit Group</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Enter a new group name or a select a new owner. Leave fields blank if no change
-              is wanted.
+              Enter a new group name or a select a new owner. Leave fields blank
+              if no change is wanted.
             </DialogContentText>
-            <br/>
+            <br />
             <TextField
               className="groupTitle"
               title="Group Name"
@@ -140,8 +140,8 @@ class EditGroup extends React.Component {
               type="text"
               onChange={this.handleGroupName}
             />
-            <hr/>
-          {/* <DialogTitle id="form-dialog-title">Select New Owner</DialogTitle> */}
+            <hr />
+            {/* <DialogTitle id="form-dialog-title">Select New Owner</DialogTitle> */}
             <FormControl classes={useStyles.formControl}>
               <InputLabel>New Group Owner</InputLabel>
               <Select
@@ -151,11 +151,7 @@ class EditGroup extends React.Component {
                 autoWidth
                 placeholder="New Group Owner"
               >
-                {this.props.groupMembers.map(
-                  member => (
-                    (name = member.first_name + " " + member.last_name)(<MenuItem value={member.user_id}>{name}</MenuItem>)
-                  )
-                )}
+                {options}
               </Select>
             </FormControl>
           </DialogContent>
