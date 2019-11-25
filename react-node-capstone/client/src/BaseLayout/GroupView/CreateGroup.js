@@ -149,7 +149,7 @@ class CreateGroup extends React.Component {
               name="title"
               title="Group Name"
               placeholder="Group Name"
-              fullwidth
+              fullWidth
               variant="outlined"
               type="text"
               onChange={this.handleGroupName}
