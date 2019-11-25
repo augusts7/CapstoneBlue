@@ -28,9 +28,9 @@ class Select extends React.Component {
 
     render() {
 
-        let fullWidth = true;
-        if (this.props.fullWidth === false) {
-            fullWidth = false;
+        let fullwidth = true;
+        if (this.props.fullwidth === false) {
+            fullwidth = false;
         }
 
 
@@ -40,7 +40,7 @@ class Select extends React.Component {
                 select
                 style={this.props.style}
                 name={this.props.name}
-                fullWidth={fullWidth}
+                fullwidth={fullwidth}
                 label={this.props.label}
                 value={this.state.value}
                 onChange={this.onChange}

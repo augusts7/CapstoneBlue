@@ -6,7 +6,6 @@ import CreateEvent from "../../components/EventsPage/CreateEvent";
 import RequestEvent from "../../components/EventsPage/RequestEvent";
 import UserContext from "../../Context/UserContext";
 import ApproveEventsList from "../../components/EventsPage/ApproveEventsList";
-import { Link } from "react-router-dom";
 import ApproveEvent from "../../components/EventsPage/ApproveEvent";
 import { isNullOrUndefined } from "util";
 

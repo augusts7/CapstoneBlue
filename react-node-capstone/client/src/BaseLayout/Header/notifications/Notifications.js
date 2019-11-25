@@ -4,7 +4,6 @@ import NotificationsPopup from "./popup-views/NotificationsPopup";
 import Badge from "@material-ui/core/Badge";
 import CustomIconButton from "../../../Views/GenericViews/IconButton";
 import SocketContext from "../../../Context/SocketContext";
-import {get} from "../../../ApiHelper/ApiHelper";
 import NotificationsDataStore from "./NotificationsDataStore";
 import LengthValidator from "../../../utils/length-utils/LengthValidator";
 

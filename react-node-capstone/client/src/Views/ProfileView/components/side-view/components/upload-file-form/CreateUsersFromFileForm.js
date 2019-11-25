@@ -1,11 +1,7 @@
 import React from "react";
 import UploadUsersFromFileForm from "../../../../../GenericViews/forms/upload-users-form/UploadUsersFromFileForm";
 import {post} from "../../../../../../ApiHelper/ApiHelper";
-import LengthValidatorForMultipleValues from "../../../../../../utils/length-utils/LengthValidatorForMultipleValues";
 import ArrayLengthValidator from "../../../../../../utils/length-utils/ArrayLengthValidator";
-
-
-const containerStyle = {paddingTop: "32px", paddingBottom: "32px"};
 
 export default class CreateUsersFromFileForm extends React.Component {
 

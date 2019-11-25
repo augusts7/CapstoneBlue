@@ -63,7 +63,7 @@ export default class extends Component {
               type="text"
               onChange={this.handleChange}
               value={this.state.new_member}
-              fullWidth
+              fullwidth
             />
           </DialogContent>
           <DialogActions>

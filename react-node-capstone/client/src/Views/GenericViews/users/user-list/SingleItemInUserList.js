@@ -1,5 +1,4 @@
 import React from "react";
-import ListItemWithCheckbox from "../../list/list-items/ListItemWithCheckbox";
 import DetailedListItemWithCheckbox from "../../list/list-items/DetailedListItemWithCheckbox";
 
 export default function SingleItemInUserList(props) {

@@ -5,7 +5,6 @@ import {get, post} from "../../../../../ApiHelper/ApiHelper";
 import LengthValidator from "../../../../../utils/length-utils/LengthValidator";
 import CalendarItem from "../components/CalendarItem";
 import CalendarTitleRow from "../components/CalendarTitleRow";
-import EmptyListView from "../../../../GenericViews/empty-view/EmptyListView";
 
 const calendarTitles = ["Shared Calendar Name", "Shared To", "Email of Shared to user"];
 

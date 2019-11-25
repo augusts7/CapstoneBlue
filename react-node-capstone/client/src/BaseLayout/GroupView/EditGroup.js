@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import {
   TextField,
-  Menu,
   MenuItem,
   InputLabel,
   makeStyles
@@ -154,8 +153,7 @@ class EditGroup extends React.Component {
               >
                 {this.props.groupMembers.map(
                   member => (
-                    (name = member.first_name + " " + member.last_name),
-                    (<MenuItem value={member.user_id}>{name}</MenuItem>)
+                    (name = member.first_name + " " + member.last_name)(<MenuItem value={member.user_id}>{name}</MenuItem>)
                   )
                 )}
               </Select>

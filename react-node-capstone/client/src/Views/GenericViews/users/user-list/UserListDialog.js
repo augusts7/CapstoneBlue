@@ -7,7 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Progress from "../../Progress/Progress";
 import Slide from "@material-ui/core/Slide";
-import {get, post} from "../../../../ApiHelper/ApiHelper";
+import {get} from "../../../../ApiHelper/ApiHelper";
 import SingleItemInUserList from "./SingleItemInUserList";
 import UserListDialogTitle from "./UserListDialogTitle";
 import LengthValidator from "../../../../utils/length-utils/LengthValidator";

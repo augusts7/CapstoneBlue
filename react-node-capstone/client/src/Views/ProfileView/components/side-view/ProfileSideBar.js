@@ -60,7 +60,6 @@ export default class ProfileSideBar extends React.Component {
 
 
     render() {
-        let title = "Profile";
 
         let buttons = [
             {name: "Log Out", onClick: () => this.context.logout()},

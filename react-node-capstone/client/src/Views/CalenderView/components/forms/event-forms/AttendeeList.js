@@ -2,7 +2,6 @@ import React from "react";
 import LengthValidator from "../../../../../utils/length-utils/LengthValidator";
 import Chip from "@material-ui/core/Chip";
 import Icon from "@material-ui/core/Icon";
-import Tooltip from "@material-ui/core/Tooltip";
 import {Typography} from "@material-ui/core";
 
 const chipStyle = {marginBottom: "2px", marginRight: "2px"};

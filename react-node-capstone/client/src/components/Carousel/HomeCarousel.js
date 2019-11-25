@@ -1,4 +1,4 @@
-import React, {Component, Fragment } from "react";
+import React, { Fragment } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./HomeCarousel.css";
 import { Carousel } from "react-responsive-carousel";
@@ -134,7 +134,7 @@ class HomeCarousel extends React.Component {
      const carouselItems = this.state.carouselEvents.map(
         event => (
           <div class="container" key={event.eventID}>
-          <img src="https://www.ulm.edu/omc/home-rotators/schedule_a_tour2019.jpg" class="responsive"/>
+          <img src="https://www.ulm.edu/omc/home-rotators/schedule_a_tour2019.jpg" class="responsive" alt="background"/>
           <div class="text-block">
           <div className="date">
               <div className="date-number">

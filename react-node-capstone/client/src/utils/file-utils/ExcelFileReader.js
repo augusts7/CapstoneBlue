@@ -5,7 +5,6 @@ export default class ExcelFileReader {
 
     static readFile = (fileToRead, callback, ) => {
 
-        let name = fileToRead.name;
         const reader = new FileReader();
         const rABS = !!reader.readAsBinaryString;
 
@@ -16,7 +15,6 @@ export default class ExcelFileReader {
             const workbook = XLSX.read(fileDataAsBinaryString, {type: rABS ? 'binary' : 'array'});
 
             let allWorksheetsData = [];
-            let jsonData;
 
             /* Get all worksheets */
             workbook.SheetNames.forEach((worksheetName) => {
