@@ -69,7 +69,7 @@ class EventList extends Component {
     }
   }
 
-  addToCalender(event) {
+  addToCalendar(event) {
     fetch("/events/attending", {
       method: "POST",
       headers: {
@@ -111,7 +111,7 @@ class EventList extends Component {
   getDeleteButton(eventID) {
     if (this.props.creator_id === this.props.user) {
       return (
-        <Tooltip title="Delete from Calender">
+        <Tooltip title="Delete from Calendar">
           <IconButton
             aria-label="delete"
             onClick={() => this.deleteEvent(eventID)}
@@ -151,11 +151,11 @@ class EventList extends Component {
             </div>
             <div className="buttons">
               <div className="addToCal">
-                <Tooltip title="Add to Calender">
+                <Tooltip title="Add to Calendar">
                   <IconButton
                     size="medium"
                     aria-label="addToCal"
-                    onClick={() => this.addToCalender(event.eventID)}
+                    onClick={() => this.addToCalendar(event.eventID)}
                   >
                     <EventAvailableIcon />
                   </IconButton>

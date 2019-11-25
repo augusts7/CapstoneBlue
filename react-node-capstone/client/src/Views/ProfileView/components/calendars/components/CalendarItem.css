@@ -4,9 +4,11 @@
 }
 .calendar-item-title-row {
     padding: 8px 4px 8px 4px;
+    color: #800029 !important;
 }
 .calendar-item-container {
     padding: 12px 4px 12px 4px;
+    color:black;
 }
 .calendar-item-wrapper:hover {
     background-color: #ECEFF1;

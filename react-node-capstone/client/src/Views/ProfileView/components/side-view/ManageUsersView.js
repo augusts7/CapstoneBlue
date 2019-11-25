@@ -52,7 +52,7 @@ export default class ManageUsersView extends React.Component {
                 <CreateUserForm open={this.state.showSimpleForm} onClose={this.hideSimpleForm}/>
                 <CreateUsersUsingFileForm open={this.state.showFileUploadForm} onClose={this.hideFileUploadForm}/>
 
-                <ProfileItemBlockContainer title="Create new Users Using Form or File Drop">
+                <ProfileItemBlockContainer title="Create New Users">
 
                     <List
                         component="nav"
@@ -61,13 +61,13 @@ export default class ManageUsersView extends React.Component {
                             <ListItemIcon>
                                 <Icon>add</Icon>
                             </ListItemIcon>
-                            <ListItemText primary="Upload User data using form" />
+                            <ListItemText primary="Create User From Form" style={{color: "black"}}/>
                         </ListItem>
                         <ListItem onClick={this.showFileUploadForm} button>
                             <ListItemIcon>
                                 <Icon>cloud_upload</Icon>
                             </ListItemIcon>
-                            <ListItemText primary="Upload User Data from File" />
+                            <ListItemText primary="Create Users From File" style={{color: "black"}}/>
                         </ListItem>
 
                     </List>

@@ -4,6 +4,7 @@ import { Button } from "@material-ui/core";
 import "./Event.css";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import Tooltip from "@material-ui/core/Tooltip";
 
 class ApproveEventsList extends Component {
   constructor(props) {
@@ -122,13 +123,14 @@ class ApproveEventsList extends Component {
   getDeleteButton(eventID) {
     if (this.props.creator_id === this.props.user) {
       return (
-        <IconButton
-          aria-label="delete"
-          className="delete-event-button"
-          onClick={() => this.removeEvent(eventID)}
-        >
-          <DeleteIcon />
-        </IconButton>
+          <Tooltip title="Delete from Calendar">
+            <IconButton
+                aria-label="delete"
+                onClick={() => this.removeEvent(eventID)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
       );
     }
   }

@@ -133,8 +133,8 @@ class GroupView extends React.Component {
       return (
         <div className="no-groups">
           <h4>
-            Looks like you are not in any groups. That is no fun. Create a group
-            to invite others or ask a friend or classmate to invite you to their
+            Looks like you are not in any groups. That's no fun. Create a group
+            to invite others or ask a faculty member or classmate to invite you to their
             group.
           </h4>
           <div className="create-group">
@@ -194,14 +194,18 @@ class GroupView extends React.Component {
           <div className="group-members">
             <h3 className="list-header">Group Members</h3>
             <div className="mem-buttons">
+              <div className="inner">
               <AddMultipleUsersFromList
                 groupId={this.state.group_id}
                 className="buttons-group-members"
               />
+              </div>
+              <div className="inner">
               <AddMultipleUsersFromFile
                 groupId={this.state.group_id}
                 className="buttons-group-members"
               />
+              </div>
             </div>
             <div className="group-member-list">
               <hr />
