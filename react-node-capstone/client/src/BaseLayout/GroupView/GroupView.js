@@ -54,7 +54,7 @@ class GroupView extends React.Component {
       .then(res => res.json())
       .then(userInfo => {
         if (userInfo === isNullOrUndefined || userInfo.length <= 0) {
-          console.log("User ID not found");
+          console.log("User ID not");
         } else {
           try {
             console.log("UID" + userInfo[0].user_id);

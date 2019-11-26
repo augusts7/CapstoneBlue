@@ -7,7 +7,7 @@ import DialogForm from "../dialog-form/DialogForm";
 export default function AddNewCalendarForm(props) {
 
     const [calName, setCalName] = React.useState('');
-    const [progress] = React.useState(false);
+    const [progress, setProgress] = React.useState(false);
 
     const handleChange = (event) => {
         setCalName(event.target.value);
@@ -20,9 +20,11 @@ export default function AddNewCalendarForm(props) {
     const handleSave = () => {
         if (calName.length > 0) {
 
+            setProgress(true);
             let data = {"calendarName": calName};
 
             post("/calendar", data, (res) => {
+                setProgress(false);
                 handleClose();
             });
         }

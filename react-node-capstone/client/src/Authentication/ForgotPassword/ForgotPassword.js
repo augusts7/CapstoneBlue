@@ -26,7 +26,6 @@ class ForgotPassword extends React.Component {
         this.setState({"isLoading": true});
         let data = {
             "campusEmail": target.email.value,
-            "user_id": target.username.value
         };
 
         fetch("/auth/forgotPassword", {
@@ -51,7 +50,6 @@ class ForgotPassword extends React.Component {
 
         let fields = [
             {"name": "email", "type": "email", "label": "Campus Email", "required": true},
-            {"name": "username", "type": "number", "label": "Campus Wide ID Number", "required": true},
         ];
 
         return (
