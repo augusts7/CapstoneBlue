@@ -21,7 +21,6 @@ if (app.get("env") === "production") {
   session.cookie.secure = true; // Serve secure cookies, requires HTTPS
 }
 
-
 app.use(cookieParser());
 app.use(require("body-parser").urlencoded({ extended: true }));
 
