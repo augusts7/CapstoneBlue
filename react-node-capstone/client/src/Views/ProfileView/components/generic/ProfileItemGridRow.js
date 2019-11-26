@@ -29,7 +29,7 @@ export default function ProfileItemGridRow (props) {
     };
 
     let menuOptions = [
-        {name: "Delete Calendar", key: "delete"}
+        {name: "Delete List Item", key: "delete"}
     ];
 
     if (LengthValidator.isNotEmpty(props.menuOptions)) {

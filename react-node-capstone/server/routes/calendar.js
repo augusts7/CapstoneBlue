@@ -19,7 +19,7 @@ router.get("/", (req, res, next) => {
 
 router.get("/sharedToUser", (req, res, next) => {
 
-    let sql = "SELECT * FROM shared_calendars INNER JOIN calendar ON sharedCalendarId = calendarId INNER JOIN user_info ON sharedByUserId = user_info.user_id WHERE sharedToUserId = " + req.user.user_id;
+    let sql = "SELECT * FROM shared_calendars LEFT OUTER JOIN calendar ON sharedCalendarId = calendarId INNER JOIN user_info ON sharedByUserId = user_info.user_id WHERE sharedToUserId = " + req.user.user_id;
 
     sqlHelper.handleSelectAndRespond(sql, res);
 });
@@ -44,7 +44,7 @@ router.post("/delete", (req, res, next) => {
 
 router.get("/sharedByUser", (req, res, next) => {
 
-    let sql = "SELECT * FROM shared_calendars INNER JOIN calendar ON sharedCalendarId = calendarId INNER JOIN user_info ON sharedToUserId = user_info.user_id WHERE sharedByUserId = " + req.user.user_id;
+    let sql = "SELECT * FROM shared_calendars LEFT OUTER JOIN calendar ON sharedCalendarId = calendarId INNER JOIN user_info ON sharedToUserId = user_info.user_id WHERE sharedByUserId = " + req.user.user_id;
 
     sqlHelper.handleSelectAndRespond(sql, res);
 });

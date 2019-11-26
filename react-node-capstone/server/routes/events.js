@@ -55,9 +55,17 @@ router.get("/sharedCalendar/:sharedCalId", function (req, res, next) {
             let sharingUserId = results[0].sharedByUserId;
             let sharedCalendarId = results[0].sharedCalendarId;
 
-            let select =
-                "SELECT * FROM event INNER JOIN attending ON eventID = event_id WHERE attendee_id = " +
-                sharingUserId + " AND calendar_id = " + sharedCalendarId;
+            let select;
+
+            if (sharedCalendarId === 0) {
+                select =
+                    "SELECT * FROM event INNER JOIN attending ON eventID = event_id WHERE attendee_id = " +
+                    sharingUserId + " AND (calendar_id = 'main' OR calendar_id = '' OR calendar_id is NULL)";
+            } else {
+                select =
+                    "SELECT * FROM event INNER JOIN attending ON eventID = event_id WHERE attendee_id = " +
+                    sharingUserId + " AND calendar_id = " + sharedCalendarId;
+            }
 
             sqlHelper.handleSelectAndRespond(select, res);
         } else {

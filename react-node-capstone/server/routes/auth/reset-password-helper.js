@@ -7,7 +7,7 @@ function sendHtmlBasedResetEmail (user, res, next) {
 
     let subject = "Password Reset Email";
     const name = user.first_name + " " + user.last_name;
-    const link = HOST_IP_ADDRESS + ":3000/resetPassword/" + token;
+    const link = HOST_IP_ADDRESS + "/resetPassword/" + token;
 
     let text = _getResetEmailHtml(name, link);
 
@@ -37,26 +37,6 @@ function _getResetEmailHtml (name, link) {
     return html;
 }
 
-function sendTemplateResetEmail () {
-
-    const token = tokens.encodeWithExpiration(user.campusEmail, '1h');
-
-    let subject = "Password Reset Email";
-    const name = user.first_name + " " + user.last_name;
-    const link = HOST_IP_ADDRESS + ":3000/resetPassword/" + token;
-
-    let text = "Hi " + name + ",\n\nTo reset your password please follow this link:\n\n" + link + "\n\nSincerely,\nULM Scheduling application team";
-
-    let callback = (error, info) => {
-        if (error) {
-            return next("Password reset email couldn't be sent. " + error);
-        } else {
-            return res.json({"success": true, "message": "Password reset email sent. " + info.response})
-        }
-    };
-
-    emailHelper.sendHtmlTemplateEmail("reset-password", {to: user.campusEmail, from: "ULM Scheduling Website <no-reply>"}, {first_name: user.first_name, link: token}, callback);
-}
 
 function sendPasswordResetEmail(user, res, next) {
     sendHtmlBasedResetEmail(user, res, next);

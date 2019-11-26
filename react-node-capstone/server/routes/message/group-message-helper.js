@@ -24,15 +24,15 @@ function _getResetGroupHtml (name, message) {
 
     let text = "<div style='margin-top: 8px; margin-bottom: 16px;'>" + message.message + "</div>";
 
-    let webLink = "<div style='color: #800029; margin-bottom: 16px;'><a href='http://" + HOST_IP_ADDRESS + "'>" + "ULM Scheduling Application" + "</a></div>";
+    let webLink = "<div style='margin-bottom: 48px; text-decoration: none;'><a href='http://" + HOST_IP_ADDRESS + "'>" + "ULM Scheduling Application" + "</a></div>";
 
-    let endNote = "<div style='color: #800029;'>Sincerely,<br />" + webLink + "</div>";
+    let endNote = "<div style='color: #800029;'>Sincerely,<br />" + message.sentBy + "<br />Group Name: " + message.groupName + "</div>";
 
-    return header + text + endNote;
+    return header + groupInfo + text + endNote + webLink;
 }
 
 
-function sendGroupMessage(sendToUsers, message, res, next) {
+function sendGroupMessage(sendToUsers, message) {
 
     sendToUsers.forEach((user) => {
         sendHtmlBasedGroupEmail(user, message);
