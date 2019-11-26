@@ -96,7 +96,6 @@ class HomeCarousel extends React.Component {
         if (carouselEs === isNullOrUndefined || carouselEs <= 0) {
         } else {
           try {
-            console.log(carouselEs);
             this.setState({ carouselEvents: JSON.parse(carouselEs) });
           } catch (e) {}
         }

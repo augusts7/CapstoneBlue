@@ -111,8 +111,6 @@ router.route("/editGroupOwner").post(async (req, res) => {
       "UPDATE my_groups SET status = 'Member' WHERE group_id = " +
       req.body.groupID +
       ";";
-    console.log(req.body.groupID);
-    console.log(req.body.newOwnerID);
     pool.query(sql1, function(error, results, fields) {
       if (error) {
         return res.json({

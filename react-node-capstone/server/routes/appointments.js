@@ -29,9 +29,6 @@ router.post("/", (req, res, next) => {
         appointment.creator_calendar_id = calendarId;
     }
 
-    console.log("appointment ");
-
-
     pool.query("INSERT INTO event SET ?", appointment, async function (error, results, fields) {
 
         if (error) {
@@ -56,7 +53,6 @@ router.post("/", (req, res, next) => {
                         invited_user_id: results[0].user_id
                     };
 
-                    console.log(inviteData);
 
                     appointment.eventID = eventId;
                     socket.broadcastToUser(inviteData.invited_user_id, "newEventInvite", appointment);

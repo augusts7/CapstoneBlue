@@ -93,7 +93,6 @@ router.get("/carouselEvents", async (req, res) => {
 
             if (results.length > 0) {
                 res.json(JSON.stringify(results));
-                console.log(JSON.stringify(results));
             }
         });
     } catch (e) {
@@ -115,7 +114,6 @@ router.route("/allOnCalendar/:user_id").get((req, res) => {
 
                 if (results.length > 0) {
                     res.json(results);
-                    console.log(JSON.stringify(results));
                 }
             }
         );
@@ -180,7 +178,6 @@ router.get("/approveEvent", async (req, res) => {
 
 router.route("/approveEvent/update").put((req, res) => {
     let eventID = req.body.event_id;
-    console.log("ESEFSF" + eventID);
     try {
         pool.query(
             "UPDATE event SET status = 'approved' WHERE eventID = " + eventID

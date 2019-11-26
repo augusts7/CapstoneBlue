@@ -55,9 +55,7 @@ router.get("/", function (req, res, next) {
 
 router.route("/user").get(async (req, res) => {
   try {
-    console.log("get specific user info");
     let user_id = req.user.user_id;
-    console.log("UID ->" + user_id);
     let user_info = await pool.query(
       "SELECT user_id FROM user_info WHERE user_id = " + user_id + ";"
     );

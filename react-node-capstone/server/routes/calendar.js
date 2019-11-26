@@ -117,8 +117,6 @@ router.post("/share", (req, res, next) => {
             sharedCalendarName: req.body.sharedCalendarName
         };
 
-        console.log(calendar);
-
         pool.query("INSERT INTO shared_calendars SET ?", calendar, (error, results, fields) => {
             if (error) {
                 console.log(error);

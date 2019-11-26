@@ -15,7 +15,6 @@ router.get("/all", function (req, res, next) {
 
     let userType = "" + req.user.user_type;
 
-    console.log(userType);
 
     if (userType === "student") {
 
