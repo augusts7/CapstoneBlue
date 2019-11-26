@@ -12,6 +12,7 @@ import {post} from "../../../../../ApiHelper/ApiHelper"
 import {getSlots} from "../../../utils/advising-slots/AdvisingSlotsHelper";
 import CalendarFormBaseLayout from "../dialog-form/DialogForm";
 import AdvisingSlotShowAdvisingItem from "./AdvisingSlotShowAdvisingItem";
+import LengthValidator from "../../../../../utils/length-utils/LengthValidator";
 
 
 export default class AdvisingSlotForm extends React.Component {
@@ -82,7 +83,7 @@ export default class AdvisingSlotForm extends React.Component {
 
             let key = requiredKeys[i];
 
-            if (!this.state[key] || ("" + this.state[key]).length === 0) {
+            if (LengthValidator.isEmpty(this.state[key])) {
                 this.setState({progress: false, "message": "Please enter all fields. Don't forget to add " + key});
                 return false;
             } else {
