@@ -67,7 +67,7 @@ export default class AdvisingSignUpForm extends React.Component {
         post("advising/attend", data, (res => {
             this.setState({isLoading: false, "message": res.message});
             if (res.success) {
-                this.setState({message: "Slots has been added"});
+
             } else {
                 this.setState({message: res.message || "Advising slot couldn't be added"});
             }

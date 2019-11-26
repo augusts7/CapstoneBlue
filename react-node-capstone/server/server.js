@@ -1,7 +1,6 @@
 const express = require("express"); //Imports express
 const result = require("dotenv").config();
-console.log(result.error);
-console.log(result);
+
 const app = express(); //Intializes an express app
 //const port = process.env.SERVER_PORT || 8080; //Creates a port varible to be used later in app.listen()
 const {port} = require('../config');
@@ -10,7 +9,6 @@ const cookieParser = require("cookie-parser");
 const expressSession = require("express-session");
 const http = require("http").createServer(app);
 const socket = require("./utils/socket/socket");
-console.log(process.env.NAME);
 
 const session = {
   secret: "LoxodontaElephasMammuthusPalaeoloxodonPrimelephas",

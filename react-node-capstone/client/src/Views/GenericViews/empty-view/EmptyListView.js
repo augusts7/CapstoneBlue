@@ -1,6 +1,6 @@
 import React from "react";
 import {Typography} from "@material-ui/core";
-import "./empty_list_image.jpg";
+import "./logo.svg";
 import "./EmptyListView.css";
 
 const containerStyle = {height: 0.4 * window.innerHeight};

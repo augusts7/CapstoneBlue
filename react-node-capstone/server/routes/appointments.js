@@ -29,9 +29,6 @@ router.post("/", (req, res, next) => {
         appointment.creator_calendar_id = calendarId;
     }
 
-    console.log("appointment ");
-
-
     pool.query("INSERT INTO event SET ?", appointment, async function (error, results, fields) {
 
         if (error) {
@@ -56,8 +53,6 @@ router.post("/", (req, res, next) => {
                         invited_user_id: results[0].user_id
                     };
 
-                    console.log(inviteData);
-
                     appointment.eventID = eventId;
                     socket.broadcastToUser(inviteData.invited_user_id, "newEventInvite", appointment);
 
@@ -75,8 +70,6 @@ router.post("/", (req, res, next) => {
 
 
 router.post("/delete", (req, res, next) => {
-
-    console.log("Delete appointment ");
 
     pool.query("DELETE FROM event WHERE eventID = ?", req.body.eventId, function (error, results, fields) {
 
@@ -116,7 +109,6 @@ router.post("/attend", function (req, res, next) {
         if (("" + calendarId) !== "main" && ("" + calendarId).length > 0) {
             creatorData.calendar_id = calendarId;
         }
-        console.log("Creator data " + creatorData);
 
         socket.broadcastToUser(creatorData.attendee_id, "newAttendingEvent", attendingEvent);
         socket.broadcastToUser(attendeeData.attendee_id, "newAttendingEvent", attendingEvent);
@@ -126,20 +118,16 @@ router.post("/attend", function (req, res, next) {
             if (error) {
                 return next(error);
             }
-            console.log("Inserted attending " + results);
 
             pool.query("DELETE FROM event_invite WHERE event_id = ?", req.body.eventId, function (error, results, fields) {
                 if (error) {
                     return next(error);
                 }
-                console.log("Deleted " + results);
 
                 pool.query("INSERT INTO attending SET ?", creatorData, function (error, results, fields) {
                     if (error) {
-                        console.log(error);
                         return next(error);
                     }
-                    console.log("inserted creator");
                     return res.json({success: true});
                 });
             });

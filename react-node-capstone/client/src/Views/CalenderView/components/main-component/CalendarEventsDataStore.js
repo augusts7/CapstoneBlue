@@ -147,12 +147,12 @@ export default class CalendarEventsDataStore {
             socket.on('removedAttendingEvent', (data) => {
                 console.log("Socket: Attending event removed");
                 console.log(data);
-                this.onEventDeleted(data);
+                this.delete(data);
             });
         }
     };
 
-    onEventDeleted = (deletedEvent) => {
+    delete = (deletedEvent) => {
         let calendarId = deletedEvent.calendar_id;
         if (LengthValidator.isEmpty(calendarId)) {
             calendarId = "main";

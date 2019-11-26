@@ -51,7 +51,7 @@ exports.post = (url, jsonData, callback) => {
     }).then(res => {
         return res.json();
     }).then((res) => {
-            callback(res);
+        callback(res);
     }).catch((err) => {
         callback({"success": false, "err": err})
     });

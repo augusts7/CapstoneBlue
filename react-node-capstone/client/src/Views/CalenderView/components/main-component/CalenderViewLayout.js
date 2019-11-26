@@ -142,6 +142,10 @@ class CalenderViewLayout extends React.Component {
         };
     };
 
+    handleEventDeleted = (deletedEvent) => {
+        this.calDataStore.delete(deletedEvent);
+    };
+
     exportCalendar = () => {
         IcsGenerator.generateIcs(this.getProcessedEventsToDisplay());
     };
@@ -157,7 +161,7 @@ class CalenderViewLayout extends React.Component {
             <CalendarViewContext.Provider value={this.calendarViewContext()}>
                 <div className="flex-full mdl-color--white">
 
-                    <DetailView data={this.state.eventsDetailViewData} events={events}
+                    <DetailView onEventDeleted={this.handleEventDeleted} data={this.state.eventsDetailViewData} events={events}
                                 onCancel={() => this.handlePopupClose("eventsDetailView")}
                                 onClose={() => this.handlePopupClose("eventsDetailView")}
                                 open={this.state.eventsDetailView}/>

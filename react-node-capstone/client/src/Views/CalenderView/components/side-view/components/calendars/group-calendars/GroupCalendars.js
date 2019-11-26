@@ -4,8 +4,7 @@ import BaseCalendarsLayout from "../base-layout/BaseCalendarsLayout";
 import CalendarActionsContext from "../../../../../context/CalendarActionsContext";
 
 const menuOptions = [
-    {"name": "Share calendar", "key": "share"},
-    { "name": "Select Color", "key": "color" },
+    {"name": "Select Color", "key": "color"},
 ];
 
 
@@ -60,10 +59,7 @@ export default class GroupCalendars extends React.Component {
 
     handleListMenuClick = (actionKey, calendarId) => {
 
-        if (actionKey === "share") {
-            this.context.showShareCalendarForm(calendarId);
-
-        } else if (actionKey === "color") {
+        if (actionKey === "color") {
             this.context.showColorDialog({scope: "group", id: calendarId});
         }
     };

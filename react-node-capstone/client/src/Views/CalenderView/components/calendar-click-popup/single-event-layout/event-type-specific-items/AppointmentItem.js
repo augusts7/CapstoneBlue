@@ -17,7 +17,7 @@ export default function AppointmentItem(props) {
         calendarPopupContext.showDeleteDialog("Delete Appointment", "Are you sure you want to delete your appointment?", deleteAppointment);
     };
 
-    const deleteAppointment = () => {
+    const deleteAppointment = (callback) => {
         setProgress(true);
         const data = {
             eventId: props.event.id
@@ -26,11 +26,12 @@ export default function AppointmentItem(props) {
         post("/appointments/delete", data, (res) => {
 
             if (res.success) {
-                alert("deleted");
+
             } else {
                 console.log(res.message);
             }
             setProgress(false);
+            callback({...props.event});
         });
     };
 

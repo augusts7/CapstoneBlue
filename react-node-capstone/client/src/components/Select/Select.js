@@ -3,6 +3,7 @@ import React from 'react';
 import "./Select.css";
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
+import LengthValidator from "../../utils/length-utils/LengthValidator";
 
 
 class Select extends React.Component {
@@ -20,10 +21,20 @@ class Select extends React.Component {
     }
 
     onChange(event) {
-        this.setState({ "value": event.target.value });
+        this.onValueChange(event.target.value);
+    }
+
+    onValueChange (value) {
+        this.setState({ value });
         if (this.props.onChange != null) {
-            this.props.onChange(event.target.value);  
-        }        
+            this.props.onChange(value);
+        }
+    }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (LengthValidator.isNotEmpty(nextProps.value)) {
+            this.setState({value: nextProps.value});
+        }
     }
 
     render() {

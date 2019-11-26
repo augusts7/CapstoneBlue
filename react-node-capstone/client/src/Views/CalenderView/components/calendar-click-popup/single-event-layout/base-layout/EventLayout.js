@@ -8,12 +8,6 @@ import Progress from "../../../../../GenericViews/Progress/Progress";
 import DateTimeFormatter from "../../../../utils/date-time-utils/DateTimeFormatter";
 import {makeUppercase} from "../../../../utils/string/StringUtils";
 
-const GENERIC_MENU_OPTIONS = [
-    {"name": "Delete Appointment", "key": "delete"},
-    {"name": "Share Appointment", "key": "share"},
-    {"name": "Edit Appointment", "key": "edit"},
-];
-
 
 export default class EventLayout extends React.Component {
 
@@ -62,12 +56,19 @@ export default class EventLayout extends React.Component {
         let data = this.getEventData();
 
         if (data === null) {
-            return (<div />);
+            return (<div/>);
         }
 
-        let menuOptions = GENERIC_MENU_OPTIONS;
+        let menu = [];
         if (this.props.menuOptions) {
-            menuOptions = this.props.menuOptions;
+            menu.push(
+                <div className="flex-sub">
+                    <CustomIconButton onClick={this.onMenuButtonClick}
+                                      onClose={this.onMenuClose}><Icon>more_vert</Icon></CustomIconButton>
+                    <CustomMenu fullWidth={true} anchor={this.state.anchor} menuOptions={this.props.menuOptions}
+                                onClick={this.onMenuClick} onClose={this.onMenuClose}/>
+                </div>
+            );
         }
 
         return (
@@ -82,14 +83,10 @@ export default class EventLayout extends React.Component {
                             <div className="end-time">{data.endTime}</div>
                         </div>
                     </div>
-                    <div className="flex-sub">
-                        <CustomIconButton onClick={this.onMenuButtonClick}
-                                          onClose={this.onMenuClose}><Icon>more_vert</Icon></CustomIconButton>
-                    </div>
 
+                    {menu}
                 </Typography>
-                <CustomMenu fullWidth={true} anchor={this.state.anchor} menuOptions={menuOptions}
-                            onClick={this.onMenuClick} onClose={this.onMenuClose}/>
+
                 <div className="event-layout-contents">
                     <div className="flex">
                         <Typography className="flex-main" variant="subtitle2">

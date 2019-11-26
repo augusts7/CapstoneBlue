@@ -16,7 +16,7 @@ class CreateUserForm extends React.Component {
             "isLoading": false,
             "user_type": "",
             "advisors": [],
-            scope: "create"
+            major: ""
         };
     }
 
@@ -25,9 +25,9 @@ class CreateUserForm extends React.Component {
     };
 
     componentWillReceiveProps(nextProps, nextContext) {
-        if (LengthValidator.isNotEmpty(nextProps.scope) && LengthValidator.isNotEmpty(nextProps.userData)) {
-            this.populateFields(nextProps.userData);
-            this.loadStudentFields(nextProps.userData);
+        if (LengthValidator.isNotEmpty(nextProps.scope) && LengthValidator.isNotEmpty(nextProps.user)) {
+            this.populateFields(nextProps.user);
+            this.loadStudentFields(nextProps.user);
         }
     }
 
@@ -41,20 +41,24 @@ class CreateUserForm extends React.Component {
     };
 
     populateFields = (userData) => {
-        let {user_type, first_name, last_name} = userData;
+        console.log("USER");
+        console.log(userData);
+        let {user_type, first_name, last_name, campusEmail, password} = userData;
 
-        this.setState({user_type, first_name, last_name});
+        this.handleChangeInUserType(user_type);
+
+        this.setState({user_type, first_name, last_name, campusEmail, password, confirmPassword: password});
     };
 
     populateStudentFields = (studentData) => {
+        console.log(studentData);
         let {advisor_id, major, classification} = studentData;
-
+        this.handleChangeInAdvisors(advisor_id);
         this.setState({advisor_id, major, classification});
     };
 
     areFieldsRequired = () => {
-        const scope = this.props.scope;
-        return !(LengthValidator.isNotEmpty(scope) && scope === "update");
+        return true;
     };
 
     commonData = () => {
@@ -63,27 +67,29 @@ class CreateUserForm extends React.Component {
                 {
                     "name": "user_type",
                     "type": "select",
+                    value: this.state.user_type,
                     "label": "User Type",
                     "require": this.areFieldsRequired(),
                     "onChange": this.handleChangeInUserType,
                     "options": [{"name": "Student", "value": "student"}, {"name": "Faculty", "value": "faculty"}]
                 },
-                {"name": "first_name", "type": "text", "label": "First Name", "required": this.areFieldsRequired()},
-                {"name": "last_name", "type": "text", "label": "Last Name", "required": this.areFieldsRequired()},
-                {"name": "campusEmail", "type": "email", "label": "Campus Email", "required": this.areFieldsRequired(), fullWidth: true},
+                {"name": "first_name", value: this.state.first_name, "type": "text", "label": "First Name", "required": this.areFieldsRequired()},
+                {"name": "last_name", value: this.state.last_name, "type": "text", "label": "Last Name", "required": this.areFieldsRequired()},
+                {"name": "campusEmail", value: this.state.campusEmail, "type": "email", "label": "Campus Email", "required": this.areFieldsRequired(), fullWidth: true},
 
             ],
 
             passwordFields: [
-                {"name": "password", "type": "password", "label": "Password", "required": this.areFieldsRequired()},
-                {"name": "confirmPassword", "type": "password", "label": "Confirm Password", "required": this.areFieldsRequired()},
+                {"name": "password", value: this.state.password, "type": "password", "label": "Password", "required": this.areFieldsRequired()},
+                {"name": "confirmPassword", value: this.state.confirmPassword, "type": "password", "label": "Confirm Password", "required": this.areFieldsRequired()},
             ],
             studentFields: [
-                {"name": "major", "type": "text", "label": "Major", "required": this.areFieldsRequired()},
+                {"name": "major", "type": "text", value: this.state.major, "label": "Major", "required": this.areFieldsRequired()},
                 {
                     "name": "advisor_id",
                     "type": "select",
                     "label": "Select Advisor",
+                    value: this.state.advisor_id,
                     "require": this.areFieldsRequired(),
                     onChange: this.handleChangeInAdvisors,
                     "options": this.state.advisors
@@ -92,6 +98,8 @@ class CreateUserForm extends React.Component {
                     "name": "classification",
                     "label": "Classification",
                     "type": "select",
+                    value: this.state.classification,
+                    "onChange": this.handleChangeInClassification,
                     "required": this.areFieldsRequired(),
                     "options": [{"name": "Freshman", "value": "freshman"}, {
                         "name": "Sophomore",
@@ -104,6 +112,10 @@ class CreateUserForm extends React.Component {
 
     handleChangeInAdvisors = (value) => {
         this.setState({advisor_id: value});
+    };
+
+    handleChangeInClassification = (value) => {
+        this.setState({classification: value});
     };
 
     handleChangeInUserType = (value) => {
@@ -141,6 +153,8 @@ class CreateUserForm extends React.Component {
 
     handleSubmit = () => {
         this.setState({"isLoading": true});
+        console.log("State");
+        console.log(this.state);
         if (LengthValidatorForMultipleValues.containsEmptyValue([this.state.first_name, this.state.last_name,
             this.state.campusEmail, this.state.password, this.state.confirmPassword, this.state.user_type])) {
             this.setState({message: "Please enter all required values"});
@@ -167,11 +181,14 @@ class CreateUserForm extends React.Component {
         }
 
         if (LengthValidator.isNotEmpty(this.props.scope) && this.props.scope === "update") {
+            data.user_id = this.props.user.user_id;
             post("/auth/updateUser", data, (res) => {
                 this.setState({
                     "message": res.message,
                     "isLoading": false
                 });
+                this.props.onClose();
+                this.props.onUpdate();
             });
             return;
         }
@@ -180,6 +197,7 @@ class CreateUserForm extends React.Component {
                 "message": res.message,
                 "isLoading": false
             });
+            this.props.onClose();
         });
     };
 
@@ -195,6 +213,8 @@ class CreateUserForm extends React.Component {
     render() {
 
         let fields = this.getFields();
+
+        console.log(fields);
 
         return (
             <DialogForm open={this.props.open} buttons={this.buttons} onClose={this.props.onClose}

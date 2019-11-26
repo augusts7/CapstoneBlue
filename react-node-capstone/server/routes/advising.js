@@ -1,9 +1,9 @@
-let router = require("express").Router();
-let pool = require("../db/database");
-let bodyParser = require("body-parser");
-let { getSlots } = require('../utils/timeSlot');
-let sqlHelper = require("../utils/sql-helper/sql-helper");
-let authMiddleware = require("../middlewares/auth-middleware").authMiddleware;
+const router = require("express").Router();
+const pool = require("../db/database");
+const bodyParser = require("body-parser");
+const { getSlots } = require('../utils/timeSlot');
+const sqlHelper = require("../utils/sql-helper/sql-helper");
+const authMiddleware = require("../middlewares/auth-middleware").authMiddleware;
 const socket = require("../utils/socket/socket");
 
 router.use(bodyParser.urlencoded({extended: false}));
@@ -15,7 +15,6 @@ router.get("/all", function (req, res, next) {
 
     let userType = "" + req.user.user_type;
 
-    console.log(userType);
 
     if (userType === "student") {
 
@@ -27,7 +26,7 @@ router.get("/all", function (req, res, next) {
 
             if (results.length > 0) {
 
-                let sql = "SELECT * FROM event WHERE event_type = 'advising' AND available != 'n' AND creator_id = " + results[0].advisor_id;
+                let sql = "SELECT * FROM event WHERE event_type = 'advising' AND (available IS NULL OR available = '' OR available <> 'no') AND creator_id = " + results[0].advisor_id;
 
                 sqlHelper.handleSelectAndRespond(sql, res);
 
@@ -69,32 +68,38 @@ router.post("/attend", function (req, res, next) {
                 await pool.query("INSERT INTO attending SET ?", value);
             });
 
-            await pool.query("SELECT * FROM event WHERE eventID = ?", studentData.event_id, (error, results, fields) => {
+            pool.query("SELECT * FROM event WHERE eventID = ?", studentData.event_id, async (error, results, fields) => {
                 if (error) {
-                    console.log(error);
                     return next(error);
                 }
                 if (results.length > 0) {
                     socket.broadcastToUser(studentData.attendee_id, "newAttendingEvent", results[0]);
                     socket.broadcastToUser(facultyData.attendee_id, "newAttendingEvent", results[0]);
                 }
+
+                pool.query("UPDATE event SET available = 'no' WHERE eventID = " + facultyData.event_id, (error, results, fields) => {
+                    if (error) {
+                        return next(error);
+                    }
+                    return res.json({"success": true});
+                });
             });
-
-            await pool.query("UPDATE event SET available = 'n' WHERE eventID = " + facultyData.event_id, (error, results, fields) => {
-                if (error) {
-                    console.log(error);
-                    return next(error);
-                }
-
-            });
-
-            return res.json({"success": true});
 
         } else {
             return next("Couldn't add advising slot to the database");
         }
 
     });
+});
+
+router.post("/delete", async function (req, res, next) {
+
+    pool.query("DELETE FROM attending WHERE attendee_id = ? AND event_id = " + req.body.eventId, req.user.user_id, (error, results, fields) => {
+        pool.query("UPDATE event SET available = 'yes' WHERE eventID = " + req.body.eventId, (error, results, fields) => {
+            return res.json({success: true, message: "Deleted"})
+        });
+    });
+
 });
 
 

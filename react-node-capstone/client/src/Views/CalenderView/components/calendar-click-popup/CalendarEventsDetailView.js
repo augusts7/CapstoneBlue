@@ -118,12 +118,17 @@ export default class EventsList extends React.Component {
         showDeleteDialog: (title, text, onDeleteClick) => {
             this.deleteDialog.title = title;
             this.deleteDialog.text = text;
-            this.deleteDialog.onDelete = onDeleteClick;
+            this.deleteDialog.onDelete = () => onDeleteClick(this.onDeleteCallback);
             this.setState({openDeleteDialog: true});
         },
         hideDeleteDialog: () => {
             this.setState({openDeleteDialog: false});
         }
+    };
+
+    onDeleteCallback = (deletedEvent) => {
+        this.props.onClose();
+        this.props.onEventDeleted(deletedEvent);
     };
 
     render() {

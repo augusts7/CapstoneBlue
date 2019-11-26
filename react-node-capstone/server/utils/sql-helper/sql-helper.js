@@ -28,7 +28,6 @@ function handleSetObjectAndRespond(insertSql, dataObject, res) {
 	pool.query(insertSql, dataObject, function (error, results, fields) {
 
         if (error) {
-            console.log(error);
 			return res.json({ "success": false, "message": "Failed to connect to database. " + error });
         }
 
@@ -42,7 +41,6 @@ function handleDeleteAndRespond(deleteSql, res) {
 	pool.query(deleteSql, function (error, results, fields) {
 
 		if (error) {
-			console.log(error);
 			return res.json({ "success": false, "message": "Failed to connect to database. " + error });
 		}
 

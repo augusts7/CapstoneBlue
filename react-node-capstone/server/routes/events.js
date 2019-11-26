@@ -74,7 +74,6 @@ router.get("/all", async (req, res) => {
         let events = await pool.query("SELECT * FROM event");
         res.json(events);
     } catch (e) {
-        console.log(e);
         res.sendStatus(500);
     }
 });
@@ -93,11 +92,9 @@ router.get("/carouselEvents", async (req, res) => {
 
             if (results.length > 0) {
                 res.json(JSON.stringify(results));
-                console.log(JSON.stringify(results));
             }
         });
     } catch (e) {
-        console.log(e);
         res.sendStatus(500);
     }
 });
@@ -115,12 +112,10 @@ router.route("/allOnCalendar/:user_id").get((req, res) => {
 
                 if (results.length > 0) {
                     res.json(results);
-                    console.log(JSON.stringify(results));
                 }
             }
         );
     } catch (e) {
-        console.log(e);
         res.sendStatus(500);
     }
 });
@@ -133,7 +128,6 @@ router.get("/notattendingGlobal", async (req, res) => {
         );
         res.json(events);
     } catch (e) {
-        console.log(e);
         res.sendStatus(500);
     }
 });
@@ -147,7 +141,6 @@ router.get("/attendingGlobal", async (req, res) => {
         );
         res.json(globalEvents);
     } catch (e) {
-        console.log(e);
         res.sendStatus(500);
     }
 });
@@ -161,7 +154,6 @@ router.get("/allattending", async (req, res) => {
         );
         res.json(globalEvents);
     } catch (e) {
-        console.log(e);
         res.sendStatus(500);
     }
 });
@@ -173,14 +165,12 @@ router.get("/approveEvent", async (req, res) => {
         );
         res.json(events);
     } catch (e) {
-        console.log(e);
         res.sendStatus(500);
     }
 });
 
 router.route("/approveEvent/update").put((req, res) => {
     let eventID = req.body.event_id;
-    console.log("ESEFSF" + eventID);
     try {
         pool.query(
             "UPDATE event SET status = 'approved' WHERE eventID = " + eventID
@@ -274,7 +264,7 @@ router.post("/remove", (req, res) => {
         var sql = "DELETE FROM attending WHERE event_id = ? AND attendee_id = ?";
         pool.query(sql, [event_id, attendee_id], function (err, result) {
             if (err) {
-                console.log(result);
+
             }
         });
     } catch (e) {

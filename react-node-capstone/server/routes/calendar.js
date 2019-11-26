@@ -66,7 +66,6 @@ router.get("/groupCalendars", (req, res, next) => {
 
     pool.query(sql, (error, results, fields) => {
         if (error) {
-            console.log(error);
             return next(error);
         }
 
@@ -85,18 +84,12 @@ router.post("/", (req, res) => {
 
     pool.query("INSERT INTO calendar SET ?", calendar, (error, results, fields) => {
         if (error) {
-            console.log(error);
-            return false;
+            return res.json({success: false, message: error});
         }
-        if (results.length > 0) {
-            calendar.calendarId = results[0].insertId;
-
-            socket.broadcastToUser(calendar.user_id, "newCalendarAdded", calendar);
-
-            res.json({success: true, message: "Calendar has been added"});
-        }
+        calendar.calendarId = results.insertId;
+        socket.broadcastToUser(calendar.user_id, "newCalendarAdded", calendar);
+        return res.json({success: true, message: "Calendar has been added"});
     });
-
 });
 
 router.post("/share", (req, res, next) => {
@@ -104,8 +97,6 @@ router.post("/share", (req, res, next) => {
     let sql = "SELECT user_id FROM user_info WHERE campusEmail = ?";
 
     pool.query(sql, req.body.sharedToEmail, function (error, results, fields) {
-
-        console.log("Start share calendar");
 
         if (error) {
             return next("Failed to connect to the database. " + error);
@@ -117,24 +108,15 @@ router.post("/share", (req, res, next) => {
             sharedCalendarName: req.body.sharedCalendarName
         };
 
-        console.log(calendar);
-
         pool.query("INSERT INTO shared_calendars SET ?", calendar, (error, results, fields) => {
             if (error) {
-                console.log(error);
-                return false;
+                return res.json({success: false, message: error});
             }
-            if (results.length > 0) {
-                calendar.id = results[0].insertId;
-
-                socket.broadcastToUser(calendar.sharedToUserId, "newCalendarShared", calendar);
-
-                res.json({success: true, message: "Calendar has been added"});
-            }
+            calendar.id = results.insertId;
+            socket.broadcastToUser(calendar.sharedToUserId, "newCalendarShared", calendar);
+            return res.json({success: true, message: "Calendar has been added"});
         });
     });
-
-
 });
 
 module.exports = router;

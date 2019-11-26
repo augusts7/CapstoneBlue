@@ -1,6 +1,6 @@
-var router = require("express").Router();
-var pool = require("../db/database");
-var bodyParser = require("body-parser");
+const router = require("express").Router();
+const pool = require("../db/database");
+const bodyParser = require("body-parser");
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
@@ -8,7 +8,6 @@ router.use(bodyParser.json());
 router.route("/").get(async (req, res) => {
   try {
     let user_id = req.user.user_id;
-    console.log(user_id);
     let my_groups = await pool.query(
       "SELECT my_groups.group_id , groups.group_name FROM my_groups,groups WHERE groups.group_id = my_groups.group_id AND user_id=" +
         user_id +
@@ -39,24 +38,18 @@ router.route("/").post(async (req, res) => {
 router.post("/addMultipleUsers", async function(req, res, next) {
   const users = req.body.users;
 
-  console.log(users);
 
   await users.forEach(async user => {
-    console.log(2);
     if (!user.hasOwnProperty("user_id")) {
-      console.log(3);
       if (user.hasOwnProperty("campusEmail")) {
         await pool.query(
           "SELECT user_id FROM user_info WHERE campusEmail = ?",
           user.campusEmail,
           async (error, results, fields) => {
-            console.log(4);
             if (error) {
-              console.log(error);
+              return;
             }
-            console.log(results);
             if (results.length > 0) {
-              console.log(5);
               const user_id = results[0].user_id;
               const user_in_group = {
                 user_id,
@@ -73,7 +66,6 @@ router.post("/addMultipleUsers", async function(req, res, next) {
         );
       }
     } else {
-      console.log("Adding user using UId");
       const user_in_group = {
         user_id: user.user_id,
         group_id: req.body.group_id,
@@ -84,15 +76,11 @@ router.post("/addMultipleUsers", async function(req, res, next) {
         user_in_group,
         (error, results, fields) => {
           if (error) {
-            console.log(error);
           }
-          console.log("User has been added using Uid " + results);
         }
       );
     }
   });
-
-  console.log(1);
 
   return res.json({ success: true });
 });

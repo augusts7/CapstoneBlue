@@ -1,6 +1,6 @@
-var router = require("express").Router();
-var pool = require("../db/database");
-var bodyParser = require("body-parser");
+const router = require("express").Router();
+const pool = require("../db/database");
+const bodyParser = require("body-parser");
 
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
@@ -10,7 +10,6 @@ router.route("/all").get(async (req, res) => {
     let  class_info = await pool.query("SELECT * FROM class_info");
     res.json(class_info);
   } catch (e) {
-    console.log(e);
     res.sendStatus(500);
   }
 })

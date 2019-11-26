@@ -227,12 +227,10 @@ router.post("/createMultipleUsers", async function (req, res, next) {
         }
         user.creator_user_id = creatorId;
 
-        console.log(user);
         await pool.query("INSERT INTO user_info SET ?", user, async (error, results, fields) => {
             if (error) {
-                console.log(error);
+                return;
             }
-            console.log("Another user has been created " + results);
             if (user.user_type === "student") {
                 const student = {
                     user_id: results.insertId,
@@ -242,9 +240,8 @@ router.post("/createMultipleUsers", async function (req, res, next) {
                 };
                 await pool.query("INSERT INTO student_info SET ?", student, (error, results, fields) => {
                     if (error) {
-                        console.log(error);
+                        return;
                     }
-                    console.log("Another student has been created " + results);
                 });
             }
         });
@@ -323,26 +320,18 @@ router.post('/resetPassword', function (req, res, next) {
         return res.json({success: false, message: "Password reset token is not valid. Please try again!"});
     }
 
-    console.log("RESET PASSWORD: => " + campusEmail);
-    console.log(campusEmail);
-
-    try {
-        pool.query("SELECT * FROM user_info WHERE campusEmail = ?", campusEmail, async function (error, results, fields) {
-            if (error) {
-                console.log(error);
-                return res.json({success: false, message: "Couldn't connect to the database. " + error});
-            }
-            if (results.length > 0) {
-                await pool.query("UPDATE user_info SET password = ? WHERE campusEmail = ?", [password, campusEmail], function (error, results, fields) {
-                    return res.json({success: true, message: "Password updated"});
-                });
-            } else {
-                return res.json({success: false, message: "Your account doesn't exists. Please try again later!"});
-            }
-        });
-    } catch (error) {
-        console.log(error);
-    }
+    pool.query("SELECT * FROM user_info WHERE campusEmail = ?", campusEmail, async function (error, results, fields) {
+        if (error) {
+            return res.json({success: false, message: "Couldn't connect to the database. " + error});
+        }
+        if (results.length > 0) {
+            await pool.query("UPDATE user_info SET password = ? WHERE campusEmail = ?", [password, campusEmail], function (error, results, fields) {
+                return res.json({success: true, message: "Password updated"});
+            });
+        } else {
+            return res.json({success: false, message: "Your account doesn't exists. Please try again later!"});
+        }
+    });
 });
 
 

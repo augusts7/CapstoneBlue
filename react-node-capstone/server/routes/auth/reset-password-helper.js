@@ -1,14 +1,9 @@
 const tokens = require("../../utils/tokens/tokens");
-const HOST_IP_ADDRESS = "localhost";
+const HOST_IP_ADDRESS = process.env.API_HOST;
 const emailHelper = require("../../utils/email/email-sender");
 
 function sendHtmlBasedResetEmail (user, res, next) {
-    console.log("START Sending email");
-    console.log(user);
-
     const token = tokens.encodeWithExpiration(user.campusEmail, '1h');
-
-    console.log("TOKEN => " + token);
 
     let subject = "Password Reset Email";
     const name = user.first_name + " " + user.last_name;
@@ -44,12 +39,7 @@ function _getResetEmailHtml (name, link) {
 
 function sendTemplateResetEmail () {
 
-    console.log("START Sending email");
-    console.log(user);
-
     const token = tokens.encodeWithExpiration(user.campusEmail, '1h');
-
-    console.log("TOKEN => " + token);
 
     let subject = "Password Reset Email";
     const name = user.first_name + " " + user.last_name;

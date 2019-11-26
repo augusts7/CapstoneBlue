@@ -23,14 +23,7 @@ export default function AddNewCalendarForm(props) {
             let data = {"calendarName": calName};
 
             post("/calendar", data, (res) => {
-
-                if (res.success) {
-
-                    handleClose();
-
-                } else {
-                    alert("Couldn't add");
-                }
+                handleClose();
             });
         }
     };

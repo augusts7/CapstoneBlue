@@ -30,6 +30,7 @@ export default function FormInputFields(props) {
                     name={field.name}
                     label={field.label}
                     onChange={field.onChange}
+                    value={field.value}
                     options={field.options}
                     required={field.required}
                 />));

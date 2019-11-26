@@ -17,10 +17,8 @@ function initSocket(server) {
             });
         });
 
-        console.log("Socket has connected. Socket id = " + socket.id);
-
         socket.on('disconnect', function () {
-            console.log("Socket has disconnected. Socket id = " + socket.id);
+            // console.log("Socket has disconnected. Socket id = " + socket.id);
         });
     });
 }
@@ -30,9 +28,9 @@ function getIO () {
 }
 
 function broadcastToUser(userId, broadcastName, broadcastData) {
-    console.log("Broadcast");
     let roomId = tokens.encode(userId);
     io.to(roomId).emit(broadcastName, broadcastData);
+    return true;
 }
 
 module.exports = {

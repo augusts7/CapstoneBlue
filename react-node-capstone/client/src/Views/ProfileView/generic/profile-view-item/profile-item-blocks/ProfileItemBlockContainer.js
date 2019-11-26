@@ -9,7 +9,7 @@ export default function ProfileItemBlockContainer(props) {
     let title = props.title;
 
     return (
-        <div className="container mdl-color--white">
+        <div className="profile-item-block-container mdl-color--white">
             <Typography className="subtitle" color="primary" gutterBottom>
                 {title}
             </Typography>

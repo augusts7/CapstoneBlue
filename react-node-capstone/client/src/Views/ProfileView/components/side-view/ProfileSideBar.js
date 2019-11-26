@@ -33,16 +33,37 @@ export default class ProfileSideBar extends React.Component {
 
     componentDidMount() {
         this.setState({progress: true});
+        this.loadUserInfo();
+    }
+
+    loadUserInfo = () => {
         get("user_info/", (res) => {
             let user = null;
             if (res.success) {
                 if (LengthValidator.isNotEmpty(res.results)) {
                     user = res.results[0];
+                    if (user.user_type === "student") {
+                        this.loadStudentInfo(user.user_id);
+                    }
                 }
             }
             this.setState({progress: false, user: user});
         });
-    }
+    };
+
+    loadStudentInfo = (user_id) => {
+        this.setState({progress: true});
+        get("user_info/studentInfoWithAdvisor/" + user_id, (res) => {
+            let studentData = null;
+            if (res.success) {
+                if (LengthValidator.isNotEmpty(res.results)) {
+                    studentData = res.results[0];
+                    console.log(studentData);
+                }
+            }
+            this.setState({progress: false, studentData});
+        });
+    };
 
     getProfileItems = () => {
         let profileItems = [];
@@ -54,11 +75,26 @@ export default class ProfileSideBar extends React.Component {
             profileItems.push({name: "Last name", value: user.last_name});
             profileItems.push({name: "Email", value: user.campusEmail});
             profileItems.push({name: "User Type", value: user.user_type});
+
         }
         return profileItems;
     };
 
-
+    getStudentItems = () => {
+        const user = this.state.user;
+        let studentItems = [];
+        if (LengthValidator.isEmpty(user)) {
+            return studentItems;
+        }
+        if (user.user_type === "student" && LengthValidator.isNotEmpty(this.state.studentData)) {
+            const studentData = this.state.studentData;
+            const advisorName = studentData.first_name + " " + studentData.last_name;
+            studentItems.push({name: "Advisor", value: advisorName});
+            studentItems.push({name: "Classification", value: studentData.classification});
+            studentItems.push({name: "Major", value: studentData.major});
+        }
+        return studentItems;
+    };
 
     render() {
 
@@ -68,14 +104,24 @@ export default class ProfileSideBar extends React.Component {
         ];
 
         let profileItems = this.getProfileItems();
-
+        let studentItems = this.getStudentItems();
         console.log(this.state.user);
 
-        let manageUsersHtml = [];
-
-
+        let html = [];
         if (this.state.user_type === "faculty") {
-            manageUsersHtml.push(<ManageUsersView/>);
+            html.push(<ManageUsersView/>);
+        } else {
+            html.push(
+                <ProfileItemBlockContainer progress={this.state.progress} title="Your University Data">
+
+                    {studentItems.map((item) => {
+                        return (
+                            <ProfileListItemContents item={item}/>
+                        );
+                    })}
+
+                </ProfileItemBlockContainer>
+            );
         }
 
         return (
@@ -91,7 +137,7 @@ export default class ProfileSideBar extends React.Component {
 
                 </ProfileItemBlockContainer>
 
-                {manageUsersHtml}
+                {html}
             </ProfileSectionContainer>
         );
     }

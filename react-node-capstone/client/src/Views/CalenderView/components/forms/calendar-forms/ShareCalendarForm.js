@@ -39,7 +39,7 @@ export default class ShareCalendarForm extends React.Component {
                 calendarId = this.state.calendarId;
             }
             if (calendarId === null || calendarId <= 0) {
-                alert("invalid calendar");
+                this.handleClose();
                 return;
             }
             let data = {
@@ -50,13 +50,7 @@ export default class ShareCalendarForm extends React.Component {
 
             post("/calendar/share", data, (res) => {
 
-                if (res.success) {
-                    alert("shared");
-
-                    this.handleClose();
-                } else {
-                    alert("Couldn't share");
-                }
+                this.handleClose();
             });
         }
     };
