@@ -1,5 +1,5 @@
 const tokens = require("../../utils/tokens/tokens");
-const HOST_IP_ADDRESS = "http://18.222.150.216:443";
+const HOST_IP_ADDRESS = "18.222.150.216";
 const emailHelper = require("../../utils/email/email-sender");
 
 function sendHtmlBasedResetEmail (user, res, next) {
