@@ -86,12 +86,14 @@ router.get("/carouselEvents", async (req, res) => {
         let sql1 = "SELECT e.title, e.description, e.start, e.end, e.creator_id, e.eventID FROM event e " +
             "WHERE e.carousel = 1 AND e.status != 'pending' AND  (e.event_type = 'global' OR e.group_id IN" +
             "(SELECT m.group_id FROM my_groups m WHERE m.user_id = " + userid + "));";
+            
         pool.query(sql1, function (error, results, fields) {
             if (error) {
                 return res.json({success: false, message: error});
             }
 
             if (results.length > 0) {
+                results= compareEvent(results);
                 res.json(JSON.stringify(results));
             }
         });
@@ -129,6 +131,7 @@ router.get("/notattendingGlobal", async (req, res) => {
             "SELECT e.title, e.description, e.start, e.end, e.eventID FROM event e WHERE e.event_type ='global' AND e.status = 'approved' AND e.eventID NOT IN (SELECT e.eventID FROM event e inner join attending a on e.eventID = a.event_id WHERE a.attendee_id = "
             + req.user.user_id + " AND e.event_type = 'global')"
         );
+        events= compareEvent(events);
         res.json(events);
     } catch (e) {
         console.log(e);
@@ -143,6 +146,7 @@ router.get("/attendingGlobal", async (req, res) => {
             req.user.user_id +
             "' AND e.event_type = 'global';"
         );
+        globalEvents = compareEvent(globalEvents);
         res.json(globalEvents);
     } catch (e) {
         console.log(e);
@@ -157,6 +161,8 @@ router.get("/allattending", async (req, res) => {
             req.user.user_id +
             "' AND e.event_type = 'global' OR e.event_type = 'advising' OR e.event_type = 'appointment';"
         );
+
+       globalEvents = compareEvent(globalEvents);
         res.json(globalEvents);
     } catch (e) {
         console.log(e);
@@ -289,4 +295,7 @@ router.post("/delete", (req, res) => {
     }
 });
 
+function compareEvent(events){
+return events.filter(({ end })=> (end - new Date()) > 0);
+}
 module.exports = router;
