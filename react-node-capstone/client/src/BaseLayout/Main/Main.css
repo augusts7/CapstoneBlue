@@ -34,6 +34,7 @@
   border-top: groove;
   grid-area: main-calendar;
   height: 72.5em;
+  overflow: visible;
 }
 
 .calender {

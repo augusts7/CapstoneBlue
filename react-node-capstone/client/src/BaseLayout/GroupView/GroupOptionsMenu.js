@@ -52,7 +52,6 @@ export default class extends Component {
       .then(function(body) {
         console.log(body);
       });
-    window.alert("group deleted");
   }
 
   checkOwner() {

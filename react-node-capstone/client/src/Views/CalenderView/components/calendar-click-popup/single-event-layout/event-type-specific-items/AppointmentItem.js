@@ -14,7 +14,7 @@ export default function AppointmentItem(props) {
 
 
     const onDeleteButtonClick = () => {
-        calendarPopupContext.showDeleteDialog("Delete Advising Slot", "Are you sure you want to delete your advising slot?", deleteAppointment);
+        calendarPopupContext.showDeleteDialog("Delete Appointment", "Are you sure you want to delete your appointment?", deleteAppointment);
     };
 
     const deleteAppointment = () => {

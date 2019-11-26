@@ -60,7 +60,9 @@ class Main extends React.Component {
         <div class="main-events">
           <div className="events">
             <h3>My Events</h3>
-            <ApproveEventsList events={this.state.events} />
+            <ApproveEventsList
+                events={this.state.events}
+                action={() => this.getEvents()}/>
           </div>
         </div>
       </div>
