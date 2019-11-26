@@ -13,21 +13,26 @@ router.use(authMiddleware);
 
 router.post("/", (req, res, next) => {
 
+    let calendarId = req.body.calendarId;
+
     const appointment = {
         title: req.body.title,
         description: req.body.description,
         start: req.body.start,
         end: req.body.end,
         event_type: "appointment",
-        creator_calendar_id: req.body.calendarId,
         creator_id: req.user.user_id,
         carousel: req.body.carousel || "1",
     };
 
+    if (("" + calendarId) !== "main" && ("" + calendarId).length > 0) {
+        appointment.creator_calendar_id = calendarId;
+    }
+
     console.log("appointment ");
 
 
-    pool.query("INSERT INTO event SET ?", appointment, function (error, results, fields) {
+    pool.query("INSERT INTO event SET ?", appointment, async function (error, results, fields) {
 
         if (error) {
             return next(error);
@@ -39,9 +44,9 @@ router.post("/", (req, res, next) => {
 
             const emailList = req.body.attendeeEmails;
 
-            emailList.forEach((email) => {
+            await emailList.forEach(async (email) => {
 
-                pool.query("SELECT user_id FROM user_info WHERE campusEmail = ?", email, function (error, results, fields) {
+                await pool.query("SELECT user_id FROM user_info WHERE campusEmail = ?", email, function (error, results, fields) {
 
                     if (error) {
                         return next(error);
@@ -60,11 +65,10 @@ router.post("/", (req, res, next) => {
                         if (err) {
                             return next(err);
                         }
-                        return res.json({success: true});
                     });
                 });
-
             });
+            return res.json({success: true});
         }
     });
 });
@@ -107,8 +111,11 @@ router.post("/attend", function (req, res, next) {
         const creatorData = {
             event_id: req.body.eventId,
             attendee_id: results[0].creator_id,
-            calendar_id: results[0].creator_calendar_id
         };
+        let calendarId = results[0].creator_calendar_id;
+        if (("" + calendarId) !== "main" && ("" + calendarId).length > 0) {
+            creatorData.calendar_id = calendarId;
+        }
         console.log("Creator data " + creatorData);
 
         socket.broadcastToUser(creatorData.attendee_id, "newAttendingEvent", attendingEvent);

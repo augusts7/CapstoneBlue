@@ -214,10 +214,13 @@ router.post("/", (req, res) => {
         end: req.body.end,
         event_type: req.body.event_type,
         creator_id: req.user.user_id,
-        creator_calendar_id: req.body.creator_calendar_id,
         carousel: req.body.carousel || "1",
         status: req.body.status
     };
+    let calendarId = req.body.calendar_id;
+    if (("" + calendarId) !== "main" && ("" + calendarId).length > 0) {
+        event.creator_calendar_id = calendarId;
+    }
 
     sqlHelper.handleSetObjectAndRespond("INSERT INTO event SET ?", event, res);
 });
@@ -234,6 +237,7 @@ router.post("/attending", (req, res) => {
 });
 
 router.post("/edit", (req, res) => {
+
     pool.query("SELECT creator_id FROM event WHERE eventID = ?", req.body.eventId, function (error, results, fields) {
             if (error) {
                 return res.json({success: false, message: error});
@@ -244,11 +248,14 @@ router.post("/edit", (req, res) => {
                 start: req.body.start,
                 end: req.body.end,
                 event_type: req.body.event_type,
-                creator_calendar_id: req.body.calendar_id,
                 creator_id: results[0].creator_id,
                 carousel: req.body.carousel || "1",
                 eventID: req.body.eventId
             };
+            let calendarId = req.body.calendar_id;
+            if (("" + calendarId) !== "main" && ("" + calendarId).length > 0) {
+                event.creator_calendar_id = calendarId;
+            }
 
             sqlHelper.handleSetObjectAndRespond(
                 "UPDATE event SET ? WHERE eventID = " + event.eventID,

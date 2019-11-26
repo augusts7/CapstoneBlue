@@ -127,7 +127,7 @@ export default class EventForm extends React.Component {
             }
         }
 
-        let postUrl = "/single-event-layout";
+        let postUrl = "/events";
         let formMode = "" + this.props.formMode;
 
         if (formMode === "appointment") {
@@ -135,10 +135,9 @@ export default class EventForm extends React.Component {
             postUrl = "/appointments";
         } else if (("" + this.props.formMode) === "editAppointment") {
             data["event_type"] = "appointment";
-            postUrl = "/single-event-layout/edit";
+            postUrl = "/events/edit";
             data["eventId"] = this.props.eventFormData.event.id;
         }
-        alert(this.state.calendarId);
         data["calendarId"] = this.state.calendarId === "main" ? "" : this.state.calendarId;
         let attendeeEmails = [];
         if (LengthValidator.isNotEmpty(this.state.attendees)) {
@@ -147,7 +146,7 @@ export default class EventForm extends React.Component {
             });
         }
         data["attendeeEmails"] = attendeeEmails;
-
+        console.log(data);
         post(postUrl, data, (res) => {
 
             if (res.success) {
