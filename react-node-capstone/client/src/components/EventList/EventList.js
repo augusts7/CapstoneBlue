@@ -109,7 +109,7 @@ class EventList extends Component {
     this.props.action();
   }
   getDeleteButton(eventID) {
-    if (this.props.creator_id === this.props.user) {
+    if (this.props.creator_id === this.props.user_id) {
       return (
         <Tooltip title="Delete from Calendar">
           <IconButton
@@ -162,7 +162,7 @@ class EventList extends Component {
                 </Tooltip>
               </div>
               <div className="delete">
-                {() => this.getDeleteButton(event.eventID)}
+                {this.getDeleteButton(event.eventID)}
               </div>
             </div>
           </div>
