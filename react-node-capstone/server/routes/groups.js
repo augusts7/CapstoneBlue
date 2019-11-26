@@ -105,7 +105,7 @@ router.route("/editGroupOwner").post(async (req, res) => {
             "UPDATE my_groups SET status = 'Member' WHERE group_id = " +
             req.body.groupID +
             ";";
-        pool.query(sql1, function (error, results, fields) {
+        pool.query(sql1, function(error, results, fields) {
             if (error) {
                 return res.json({
                     success: false,
@@ -118,7 +118,7 @@ router.route("/editGroupOwner").post(async (req, res) => {
                 " AND user_id = " +
                 req.body.newOwnerID +
                 ";";
-            pool.query(sql2, function (error, results, fields) {
+            pool.query(sql2, function(error, results, fields) {
                 if (error) {
                     return res.json({
                         success: false,
@@ -131,7 +131,7 @@ router.route("/editGroupOwner").post(async (req, res) => {
                     " WHERE group_id = " +
                     req.body.groupID +
                     ";";
-                pool.query(sql3, function (error, results, fields) {
+                pool.query(sql3, function(error, results, fields) {
                     if (error) {
                         return res.json({
                             success: false,
@@ -142,6 +142,7 @@ router.route("/editGroupOwner").post(async (req, res) => {
             });
         });
     } catch (e) {
+        console.log(e);
         res.sendStatus(500);
     }
 });
