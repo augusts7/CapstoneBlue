@@ -5,6 +5,8 @@ import ApproveEventsList from "../../components/EventsPage/ApproveEventsList";
 import "./Main.css";
 import { isNullOrUndefined } from "util";
 
+const carouselStyle = {height: 0.9 * window.innerHeight, width: "100%"};
+
 class Main extends React.Component {
 
 
@@ -51,7 +53,7 @@ class Main extends React.Component {
     render() {
     return (
       <div class="main">
-        <div class="main-carousel">
+        <div class="main-carousel" style={carouselStyle}>
           <Carosel />
         </div>
         <div class="main-calendar">

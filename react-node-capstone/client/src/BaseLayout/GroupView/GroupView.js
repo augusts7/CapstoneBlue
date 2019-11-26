@@ -15,6 +15,7 @@ import AddMultipleUsersFromList from "../../Views/GroupView/AddMultipleUsersFrom
 import UserContext from "../../Context/UserContext";
 import AddMultipleUsersFromFile from "../../Views/GroupView/AddMultipleUsersFromFile";
 import { isNullOrUndefined } from "util";
+import SendGroupMessage from "../../Views/GroupView/SendGroupMessage";
 
 //Mockup: https://www.figma.com/file/r5yEpMlG5SzIAkONOOAWc0/Groups-faculty-%26-student?node-id=0%3A1
 
@@ -200,6 +201,12 @@ class GroupView extends React.Component {
           <div className="group-members">
             <h3 className="list-header">Group Members</h3>
             <div className="mem-buttons">
+              <div className="inner">
+                <SendGroupMessage
+                    groupId={this.state.group_id}
+                    className="buttons-group-members"
+                />
+              </div>
               <div className="inner">
                 <AddMultipleUsersFromList
                   groupId={this.state.group_id}
