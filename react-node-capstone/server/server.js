@@ -47,6 +47,8 @@ const classinfoRouter = require("./routes/class_info");
 const classestakesRouter = require("./routes/classes_taken");
 const profileRouter = require("./routes/profile");
 const calRouter = require("./routes/calendar");
+const messageRouter = require("./routes/message/message");
+
 
 const swagger = require("swagger-ui-express");
 const swag = require("./swagger.json");
@@ -63,14 +65,16 @@ app.use("/class_info", classinfoRouter);
 app.use("/classes_taken", classestakesRouter);
 app.use("/profile", profileRouter);
 app.use("/calendar", calRouter);
+app.use("/message", messageRouter);
+
 
 //Error Handler
 app.use((err, req, res, next) => {
-  console.log(err);
 
   res.status(500).json({
     success: false,
-    message: err
+    message: err,
+    error: err
   });
 });
 

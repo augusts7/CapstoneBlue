@@ -25,7 +25,7 @@ function _sendEmailThroughTransporter(mailOptions, callback) {
 function sendHtmlEmail(toEmail, subject, html, callback) {
 
     var mailOptions = {
-        from: 'ulm-scheduling.application@gmail.com',
+        from: 'ULM Scheduling Website',
         to: toEmail,
         subject: subject,
         html: html

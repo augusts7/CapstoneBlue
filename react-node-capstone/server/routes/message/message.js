@@ -14,11 +14,15 @@ router.use(authMiddleware);
 
 router.post("/sendGroupMessage", function (req, res, next) {
 
-    const groupId = req.body.group_id;
+    const groupId = req.body.groupId;
+
 
     pool.query("SELECT group_name from groups WHERE group_id = " + groupId, (error, results, fields) => {
         let select = "SELECT campusEmail, first_name, last_name FROM my_groups join user_info ON user_info.user_id = my_groups.user_id WHERE my_groups.group_id = " + groupId;
         const groupName = results[0].group_name;
+
+        console.log(results);
+
         pool.query(select, (error, results, fields) => {
             if (error) {
                 return next(error);
@@ -29,7 +33,8 @@ router.post("/sendGroupMessage", function (req, res, next) {
                 date: req.body.date,
                 groupName
             };
-            messageHelper.sendGroupMessage(results, message, res, next);
+            messageHelper.sendGroupMessage(results, message);
+            return res.json({success: true});
         });
     });
 

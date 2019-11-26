@@ -7,30 +7,32 @@ function sendHtmlBasedGroupEmail (user, message) {
 
     const name = user.first_name + " " + user.last_name;
 
-    let text = _getResetGroupHtml(name, message);
+    let html = _getResetGroupHtml(name, message);
 
     let callback = (error, info) => {
 
     };
 
-    emailHelper.sendHtmlEmail(user.campusEmail, "Reset Password", text, callback);
+    emailHelper.sendHtmlEmail(user.campusEmail, subject, html, callback);
 }
 
 function _getResetGroupHtml (name, message) {
 
     let header = "<div style='margin-bottom: 24px; color: #800029;'>Hi " + name + ",</div>";
 
+    let groupInfo = "<div style='margin-top: 8px; margin-bottom: 16px;'>You have a new message from the Group " + message.groupName + "</div>";
+
     let text = "<div style='margin-top: 8px; margin-bottom: 16px;'>" + message.message + "</div>";
 
-    let endLink = "<div style='color: #800029; margin-bottom: 16px;'><a href='http://" + HOST_IP_ADDRESS + "'>" + HOST_IP_ADDRESS + "</a></div>";
+    let webLink = "<div style='color: #800029; margin-bottom: 16px;'><a href='http://" + HOST_IP_ADDRESS + "'>" + "ULM Scheduling Application" + "</a></div>";
 
-    let endNote = "<div style='color: #800029;'>Sincerely,<br />ULM Scheduling application team</div>";
+    let endNote = "<div style='color: #800029;'>Sincerely,<br />" + webLink + "</div>";
 
-    return header + text + endNote + endLink;
+    return header + text + endNote;
 }
 
 
-async function sendGroupMessage(sendToUsers, message, res, next) {
+function sendGroupMessage(sendToUsers, message, res, next) {
 
     sendToUsers.forEach((user) => {
         sendHtmlBasedGroupEmail(user, message);

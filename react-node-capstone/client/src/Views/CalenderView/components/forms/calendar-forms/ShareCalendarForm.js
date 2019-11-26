@@ -47,9 +47,9 @@ export default class ShareCalendarForm extends React.Component {
                 "sharedCalendarId": calendarId,
                 "sharedToEmail": this.state.email
             };
-
+            this.setState({progress: true});
             post("/calendar/share", data, (res) => {
-
+                this.setState({progress: false});
                 this.handleClose();
             });
         }

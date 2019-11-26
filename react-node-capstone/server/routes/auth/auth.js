@@ -255,28 +255,12 @@ router.post('/forgotPassword', function (req, res, next) {
 
     pool.query("SELECT * FROM user_info WHERE campusEmail = ?", req.body.campusEmail, function (error, results, fields) {
         if (error) {
-            return res.json({"success": false, "message": "Couldn't connect to the database. " + error});
+            return next("Couldn't connect to the database. " + error);
         }
-        try {
-            if (results.length > 0) {
-
-                const idsAreEqual = ("" + req.body.user_id) === ("" + results[0].user_id);
-
-                if (idsAreEqual) {
-                    passwordResetHelper.sendPasswordResetEmail(results[0], res, next);
-                } else {
-                    return res.json({"success": false, "message": "Your campus Id was incorrect"});
-                }
-
-
-            } else {
-                return next("Email does not exist");
-
-            }
-        } catch (err) {
-            return next("Error while handling request. Are you sure that the email exists in our database? " + err);
+        if (results.length > 0) {
+            const user = results[0];
+            passwordResetHelper.sendPasswordResetEmail(user, res, next);
         }
-
     });
 
 });
