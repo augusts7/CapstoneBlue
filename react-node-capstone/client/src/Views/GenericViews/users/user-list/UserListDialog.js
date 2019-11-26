@@ -86,7 +86,7 @@ export default class DialogForm extends React.Component {
         let displayedUsers = [];
 
         this.state.displayedUsers.forEach((user) => {
-            displayedUsers.push(<SingleItemInUserList user={user} toggleChecked={this.toggleUserChecked}/>);
+            displayedUsers.push(<SingleItemInUserList key={user.campusEmail} user={user} toggleChecked={this.toggleUserChecked}/>);
         });
 
         return displayedUsers;

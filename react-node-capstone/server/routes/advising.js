@@ -68,10 +68,11 @@ router.post("/attend", function (req, res, next) {
                 await pool.query("INSERT INTO attending SET ?", value);
             });
 
-            pool.query("SELECT * FROM event WHERE eventID = ?", studentData.event_id, async (error, results, fields) => {
+            pool.query("SELECT * FROM event WHERE eventID = ?", studentData.event_id, (error, results, fields) => {
                 if (error) {
                     return next(error);
                 }
+                console.log(results);
                 if (results.length > 0) {
                     socket.broadcastToUser(studentData.attendee_id, "newAttendingEvent", results[0]);
                     socket.broadcastToUser(facultyData.attendee_id, "newAttendingEvent", results[0]);
@@ -92,9 +93,9 @@ router.post("/attend", function (req, res, next) {
     });
 });
 
-router.post("/delete", async function (req, res, next) {
+router.post("/delete", function (req, res, next) {
 
-    pool.query("DELETE FROM attending WHERE attendee_id = ? AND event_id = " + req.body.eventId, req.user.user_id, (error, results, fields) => {
+    pool.query("DELETE FROM attending WHERE event_id = " + req.body.eventId, (error, results, fields) => {
         pool.query("UPDATE event SET available = 'yes' WHERE eventID = " + req.body.eventId, (error, results, fields) => {
             return res.json({success: true, message: "Deleted"})
         });

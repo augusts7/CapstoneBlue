@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import {get, post} from "../../../../../ApiHelper/ApiHelper"
 import Select from "../../../../../components/Select/Select";
 import CalendarFormBaseLayout from "../dialog-form/DialogForm";
+import LengthValidator from "../../../../../utils/length-utils/LengthValidator";
 
 const textFieldStyle = {marginRight: "16px"};
 
@@ -35,13 +36,14 @@ export default class ShareCalendarForm extends React.Component {
 
             let calendarId = this.props.sharedCalendarId;
 
-            if (calendarId === null || calendarId <= 0) {
+            if (LengthValidator.isEmpty(calendarId)) {
                 calendarId = this.state.calendarId;
             }
-            if (calendarId === null || calendarId <= 0) {
+            if (LengthValidator.isEmpty(calendarId)) {
                 this.handleClose();
                 return;
             }
+
             let data = {
                 "sharedCalendarName": this.state.name,
                 "sharedCalendarId": calendarId,

@@ -53,10 +53,10 @@ export default class NotificationsPopup extends React.Component {
         let invitedEvents = [];
         if (this.props.invitedEvents != null && this.props.invitedEvents.length > 0) {
             this.props.invitedEvents.forEach((iE) => {
-                invitedEvents.push(<NotificationsPopupItem onRemoveItem={this.handleRemoveItem} event={iE}/>);
+                invitedEvents.push(<NotificationsPopupItem key={iE.eventID} onRemoveItem={this.handleRemoveItem} event={iE}/>);
             });
         } else {
-            invitedEvents.push(<EmptyListView message="There are no notifications" />);
+            invitedEvents.push(<EmptyListView key="emptyNotificationsView" message="There are no notifications" />);
         }
 
         return (

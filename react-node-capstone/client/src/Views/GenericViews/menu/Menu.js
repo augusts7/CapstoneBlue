@@ -18,12 +18,11 @@ export default function CustomMenu(props) {
                 key={props.key}
                 anchorEl={props.anchor}
                 keepMounted
-                fullWidth
                 open={Boolean(props.anchor)}
                 onClose={props.onClose}>
 
                 {props.menuOptions.map((item) => {
-                    return <MenuItem fullWidth onClick={() => onMenuOptionClick(item.key)} key={item.key}>
+                    return <MenuItem onClick={() => onMenuOptionClick(item.key)} key={item.key}>
                         <ListItemText primary={item.name} />
                     </MenuItem>
                 })}

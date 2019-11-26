@@ -35,8 +35,7 @@ export default function ColorDialog(props) {
     if (selectedColor !== null) {
         const selectedColorHash = selectedColor.color;
         showSelected =
-            <ListItem className="selected color-dialog-item" key={selectedColor.id}
-                      selected={selectedColor.id === 'Pyxis'}>
+            <ListItem key="selected" className="selected color-dialog-item" selected={selectedColor.id === 'Pyxis'}>
                 <ListItemIcon style={iconStyle}><span style={{
                     height: "48px",
                     width: "48px",
@@ -44,7 +43,7 @@ export default function ColorDialog(props) {
                 }}/></ListItemIcon><ListItemText primary="Selected Color" secondary={selectedColor.name}/>
             </ListItem>;
     } else {
-        showSelected = <ListItem className="selected color-dialog-item" onClick={() => handleClick(null)}>
+        showSelected = <ListItem key="selected" className="selected color-dialog-item" onClick={() => handleClick(null)}>
             <ListItemIcon style={iconStyle}><span style={{height: "48px", width: "48px", backgroundColor: "#fff"}}/></ListItemIcon><ListItemText
             primary="Selected Color" secondary="None"/>
         </ListItem>;
@@ -67,7 +66,7 @@ export default function ColorDialog(props) {
 
 
                         return (
-                            <ListItem className="color-dialog-item" onClick={() => handleClick(option)} key={option}
+                            <ListItem className="color-dialog-item" onClick={() => handleClick(option)} key={option.color}
                                       selected={option === 'Pyxis'}>
                                 <ListItemIcon style={iconStyle}><span style={{
                                     height: "48px",

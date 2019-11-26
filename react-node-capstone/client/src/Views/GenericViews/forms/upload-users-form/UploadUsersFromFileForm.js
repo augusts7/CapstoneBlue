@@ -99,7 +99,7 @@ export default class UploadUsersFromFileForm extends React.Component {
             readFileData.push(<DialogFormContentText>{this.props.selectTitle}</DialogFormContentText>);
             let index = 1;
             this.state.usersList.forEach((data) => {
-                readFileData.push(<UsersListSingleRow onToggleUser={this.onToggleUser} data={data}
+                readFileData.push(<UsersListSingleRow key={data.campusEmail} onToggleUser={this.onToggleUser} data={data}
                                                       index={index}/>);
                 index++;
             });
