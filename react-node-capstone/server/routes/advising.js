@@ -72,6 +72,7 @@ router.post("/attend", function (req, res, next) {
                 if (error) {
                     return next(error);
                 }
+                console.log(results);
                 if (results.length > 0) {
                     socket.broadcastToUser(studentData.attendee_id, "newAttendingEvent", results[0]);
                     socket.broadcastToUser(facultyData.attendee_id, "newAttendingEvent", results[0]);

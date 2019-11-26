@@ -51,27 +51,27 @@ export default function ApplicationRouter(props) {
 
     if (props.auth) {
 
-        routesHtml.push(<Route auth={props.auth} path="/profile" component={Profile}/>);
-        routesHtml.push(<Route auth={props.auth} path="/calenderView" component={CalenderView}/>);
-        routesHtml.push(<Route auth={props.auth} path="/groupView" component={GroupView}/>);
-        routesHtml.push(<Route auth={props.auth} path="/eventsView" component={EventsView}/>);
-        routesHtml.push(<Route auth={props.auth} path="/viewAllEvents" component={ViewAllEvents}/>);
-        routesHtml.push(<Route auth={props.auth} path="/createGroupEvent" component={CreateGroupEvent}/>);
-        routesHtml.push(<Route auth={props.auth} path="/requestEvent" component={RequestEvent}/>);
-        routesHtml.push(<Route auth={props.auth} path="/viewAllEvents" component={ViewAllEvents}/>);
-        routesHtml.push(<Route auth={props.auth} path="/createEvent" component={CreateEvent}/>);
-        routesHtml.push(<Route auth={props.auth} path="/profileView" component={ProfileView}/>);
-        routesHtml.push(<Route auth={props.auth} path="/approveEvent" component={ApproveEvent}/>);
-        routesHtml.push(<Route auth={props.auth} path="/" component={Main}/>);
+        routesHtml.push(<Route key="profile" auth={props.auth} path="/profile" component={Profile}/>);
+        routesHtml.push(<Route key="calendar" auth={props.auth} path="/calenderView" component={CalenderView}/>);
+        routesHtml.push(<Route key="group" auth={props.auth} path="/groupView" component={GroupView}/>);
+        routesHtml.push(<Route key="events" auth={props.auth} path="/eventsView" component={EventsView}/>);
+        routesHtml.push(<Route key="viewAllEvents" auth={props.auth} path="/viewAllEvents" component={ViewAllEvents}/>);
+        routesHtml.push(<Route key="createGroupEvent" auth={props.auth} path="/createGroupEvent" component={CreateGroupEvent}/>);
+        routesHtml.push(<Route key="requestEvent" auth={props.auth} path="/requestEvent" component={RequestEvent}/>);
+        routesHtml.push(<Route key="viewAllEvents" auth={props.auth} path="/viewAllEvents" component={ViewAllEvents}/>);
+        routesHtml.push(<Route key="createEvent" auth={props.auth} path="/createEvent" component={CreateEvent}/>);
+        routesHtml.push(<Route key="profileView" auth={props.auth} path="/profileView" component={ProfileView}/>);
+        routesHtml.push(<Route key="approveEvent" auth={props.auth} path="/approveEvent" component={ApproveEvent}/>);
+        routesHtml.push(<Route key="main" auth={props.auth} path="/" component={Main}/>);
 
 
     } else {
 
-        routesHtml.push(<AuthRoute auth={props.auth} path="/login" component={Login}/>);
-        routesHtml.push(<AuthRoute auth={props.auth} path="/register" component={Register}/>);
-        routesHtml.push(<AuthRoute auth={props.auth} path="/forgotPassword" component={ForgotPassword}/>);
-        routesHtml.push(<AuthRoute auth={props.auth} path="/resetPassword/:token" component={ResetPassword}/>);
-        routesHtml.push(<AuthRoute auth={props.auth} path="/" component={Login}/>);
+        routesHtml.push(<AuthRoute key="login" auth={props.auth} path="/login" component={Login}/>);
+        routesHtml.push(<AuthRoute key="register" auth={props.auth} path="/register" component={Register}/>);
+        routesHtml.push(<AuthRoute key="forgotPassword" auth={props.auth} path="/forgotPassword" component={ForgotPassword}/>);
+        routesHtml.push(<AuthRoute key="resetPassword" auth={props.auth} path="/resetPassword/:token" component={ResetPassword}/>);
+        routesHtml.push(<AuthRoute key="login" auth={props.auth} path="/" component={Login}/>);
     }
 
     return (

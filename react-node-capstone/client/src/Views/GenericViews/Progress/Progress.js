@@ -9,7 +9,7 @@ export default function ProgressBar(props) {
     const progress = [];
 
     if (props.show === true) {
-        progress.push(<LinearProgress variant="query"/>);
+        progress.push(<LinearProgress key="progressBar" variant="query"/>);
     }
 
     return (

@@ -15,7 +15,7 @@ export default function BaseCalendarsLayout(props) {
     let items = [];
 
     props.cals.forEach(item => {
-        items.push(<ListItem {...props} cal={item}/>);
+        items.push(<ListItem key={item.calendarId} {...props} cal={item}/>);
     });
 
     return (

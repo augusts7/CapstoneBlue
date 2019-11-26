@@ -77,7 +77,7 @@ export default class CreatedUsersList extends React.Component {
         if (LengthValidator.isNotEmpty(this.state.createdUsers)) {
             createdUsers.push(<ProfileItemGridTitle titles={createdUsersTitles}/>);
             this.state.createdUsers.forEach((user) => {
-                createdUsers.push(<UserListItemGridRow menuOptions={menuItems} onMenuClick={this.handleMenuClick}
+                createdUsers.push(<UserListItemGridRow key={user.campusEmail} menuOptions={menuItems} onMenuClick={this.handleMenuClick}
                                                        data={user}/>);
             });
         }

@@ -39,9 +39,9 @@ export default function Header(props) {
                         <Link onClick={authContext.logout} className="mdl-navigation__link" to="/login">
                             Logout
                         </Link>
-                        <Link className="mdl-navigation__link">
+                        <span className="mdl-navigation__link">
                             <Notifications/>
-                        </Link>
+                        </span>
                     </nav>
 
                     <button
@@ -77,11 +77,11 @@ export default function Header(props) {
                                 <i className="material-icons">face</i>My Profile
                             </li>
                         </Link>
-                        <Link onClick={authContext.logout}>
+                        <span onClick={authContext.logout}>
                             <li className="mdl-menu__item">
                                 <i className="material-icons">remove_circle</i>Logout
                             </li>
-                        </Link>
+                        </span>
                     </ul>
                 </div>
             </div>

@@ -81,7 +81,7 @@ export default class AdvisingSignUpForm extends React.Component {
 
         if (this.state.slots) {
             this.state.slots.forEach((slot) => {
-                slots.push(<UnSelectedAdvisingItem onSelect={this.handleSlotSelected} event={slot}/>);
+                slots.push(<UnSelectedAdvisingItem key={slot.eventID} onSelect={this.handleSlotSelected} event={slot}/>);
             });
         }
 

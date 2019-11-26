@@ -38,7 +38,7 @@ export default function DialogForm(props) {
             </DialogContent>
             <DialogActions className="dialog-grey-footer">
                 {props.buttons.map(btn => (
-                    <Button onClick={btn.onClick} color="primary">
+                    <Button key={btn.name} onClick={btn.onClick} color="primary">
                         {btn.name}
                     </Button>
                 ))}

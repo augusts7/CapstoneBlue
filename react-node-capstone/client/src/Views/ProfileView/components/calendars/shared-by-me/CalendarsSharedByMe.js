@@ -63,7 +63,7 @@ export default class CalendarsSharedByMe extends React.Component {
         if (LengthValidator.isNotEmpty(this.state.calendars)) {
             calendars.push(<ProfileItemGridTitle titles={calendarTitles}/>);
             this.state.calendars.forEach((calendar) => {
-                calendars.push(<CalendarItemGridRow onDelete={this.handleDelete} data={calendar}/>);
+                calendars.push(<CalendarItemGridRow key={calendar.id} onDelete={this.handleDelete} data={calendar}/>);
             });
         }
 
