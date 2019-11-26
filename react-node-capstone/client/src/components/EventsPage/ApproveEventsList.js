@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Button } from "@material-ui/core";
 
 import "./Event.css";
+import EventIcon from "@material-ui/icons/Event";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
+import EventBusyIcon from "@material-ui/icons/EventBusy";
 import Tooltip from "@material-ui/core/Tooltip";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 class ApproveEventsList extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class ApproveEventsList extends Component {
     };
     this.addToCalendar = this.addToCalendar.bind(this);
     this.removeEvent = this.removeEvent.bind(this);
+    this.deleteEvent = this.deleteEvent.bind(this);
   }
 
   getMonth(month, type) {
@@ -100,6 +102,26 @@ class ApproveEventsList extends Component {
     this.props.action();
   }
 
+  deleteEvent(event) {
+    console.log(event);
+    fetch("/events/delete", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        event_id: event
+      })
+    })
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(body) {
+          console.log(body);
+        });
+    this.props.action();
+  }
+
   removeEvent(event) {
     fetch("/events/remove", {
       method: "POST",
@@ -120,13 +142,39 @@ class ApproveEventsList extends Component {
     this.props.action();
   }
 
-  getDeleteButton(eventID) {
-    if (this.props.creator_id === this.props.user) {
+  getRemoveButton(eventID) {
       return (
-          <Tooltip title="Delete from Calendar">
+          <Tooltip title="Remove from Calendar">
             <IconButton
                 aria-label="delete"
                 onClick={() => this.removeEvent(eventID)}
+            >
+              <EventBusyIcon />
+            </IconButton>
+          </Tooltip>
+      );
+  }
+
+  getAddButton(eventID) {
+    return (
+        <Tooltip title="Add To Calendar">
+          <IconButton
+              aria-label="delete"
+              onClick={() => this.addToCalendar(eventID)}
+          >
+            <EventIcon />
+          </IconButton>
+        </Tooltip>
+    );
+  }
+
+  getDeleteButton(eventID) {
+    if (this.props.user_type === "faculty") {
+      return (
+          <Tooltip title="Delete Event">
+            <IconButton
+                aria-label="delete"
+                onClick={() => this.deleteEvent(eventID)}
             >
               <DeleteIcon />
             </IconButton>
@@ -162,22 +210,38 @@ class ApproveEventsList extends Component {
                 </div>
                 {event.description}
                 <div className="addButton">
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    size="large"
-                    className="addButton"
-                    onClick={() => this.addToCalendar(event.eventID)}
-                  >
-                    <i className="material-icons">check_circle_outline</i> Add
-                    Event to Calendar
-                  </Button>
+                  {this.getAddButton(event.eventID)}
+                  {this.getDeleteButton(event.eventID)}
                 </div>
               </div>
             </div>
           );
         });
-      } if(window.location.pathname === "/"){
+      }  else if (window.location.pathname === "/eventsView"){
+        eventList = this.props.events.map(event => {
+          return (
+            <div className="eventListItem" key={event.eventID}>
+              <div className="date">
+                <div className="date-number">
+                  {new Date(event.start).getDate()}
+                </div>
+                <div className="date-name">
+                  {this.getMonth(new Date(event.start).getMonth() + 1, "abrv")}{" "}
+                </div>
+              </div>
+              <div className="description">
+                <div className="event-title">{event.title}</div>
+                <div className="time">
+                  {new Date(event.start).toLocaleTimeString("en-US")} -{" "}
+                  {new Date(event.end).toLocaleTimeString("en-US")}
+                </div>
+                {event.description}
+              </div>
+              {this.getRemoveButton(event.eventID)}
+            </div>
+          );
+        });
+      }else {
         eventList = this.props.events.map(event => {
           return (
               <div className="eventItem" key={event.eventID}>
@@ -198,30 +262,6 @@ class ApproveEventsList extends Component {
                   {event.description}
                 </div>
               </div>
-          );
-        });
-      } else {
-        eventList = this.props.events.map(event => {
-          return (
-            <div className="eventListItem" key={event.eventID}>
-              <div className="date">
-                <div className="date-number">
-                  {new Date(event.start).getDate()}
-                </div>
-                <div className="date-name">
-                  {this.getMonth(new Date(event.start).getMonth() + 1, "abrv")}{" "}
-                </div>
-              </div>
-              <div className="description">
-                <div className="event-title">{event.title}</div>
-                <div className="time">
-                  {new Date(event.start).toLocaleTimeString("en-US")} -{" "}
-                  {new Date(event.end).toLocaleTimeString("en-US")}
-                </div>
-                {event.description}
-              </div>
-              {this.getDeleteButton(event.eventID)}
-            </div>
           );
         });
       }
