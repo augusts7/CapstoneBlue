@@ -5,7 +5,7 @@ import ApproveEventsList from "../../components/EventsPage/ApproveEventsList";
 import "./Main.css";
 import {isNullOrUndefined} from "util";
 
-const carouselStyle = {height: 0.9 * window.innerHeight, width: "100%"};
+const carouselStyle = {width: "100%"};
 const eventListStyle = {height: 0.77 * window.innerHeight};
 
 class Main extends React.Component {
