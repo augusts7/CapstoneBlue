@@ -1,5 +1,5 @@
 const tokens = require("../../utils/tokens/tokens");
-const HOST_IP_ADDRESS = "ec2-3-133-159-242.us-east-2.compute.amazonaws.com";
+const HOST_IP_ADDRESS = "18.222.150.216:3000";
 const emailHelper = require("../../utils/email/email-sender");
 
 function sendHtmlBasedResetEmail (user, res, next) {
@@ -26,7 +26,7 @@ function _getResetEmailHtml (name, link) {
 
     let header = "<div style='margin-bottom: 24px; color: #800029;'>Hi " + name + ",</div>";
 
-    let text = "<div style='margin-top: 8px; margin-bottom: 16px;'>To reset your password follow this link:</div>";
+    let text = "<div style='margin-top: 8px; margin-bottom: 16px;'>To reset your password please follow this link:</div>";
 
     let linkHtml = "<div style='color: #800029; margin-bottom: 16px;'><a href='http://" + link + "'>" + link + "</a></div>";
 
