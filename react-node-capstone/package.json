@@ -32,7 +32,7 @@
     "ejs": "^3.0.1",
     "email-templates": "^6.0.3",
     "express": "^4.17.1",
-    "express-fileupload": "^1.1.6-alpha.6",
+    "express-fileupload": "^1.1.9",
     "express-session": "^1.16.2",
     "http": "0.0.0",
     "i": "^0.3.6",
