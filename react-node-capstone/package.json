@@ -35,7 +35,7 @@
     "express-fileupload": "^1.1.6-alpha.6",
     "express-session": "^1.16.2",
     "http": "0.0.0",
-    "i": "^0.3.6",
+    "i": "^0.3.7",
     "jsonwebtoken": "^8.5.1",
     "local-storage": "^2.0.0",
     "mysql": "^2.17.1",
