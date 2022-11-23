@@ -45,7 +45,7 @@
     "passport-local": "^1.0.0",
     "react-responsive-carousel": "^3.1.50",
     "react-swipeable-views": "^0.13.3",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.5.0",
     "swagger-ui-express": "^4.1.2",
     "util.promisify": "^1.0.0",
     "xlsx": "^0.15.1"
